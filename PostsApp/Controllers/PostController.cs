@@ -23,6 +23,8 @@ public class PostController : Controller
             return StatusCode(401, "You are not authorized to make post");
         if (postRequest.title.IsNullOrEmpty() || postRequest.body.IsNullOrEmpty())
             return BadRequest("Title and body of the post must be filled");
+        if (postRequest.title.Length > 255 || postRequest.body.Length > 255)
+            return BadRequest("Length of title and body must be less than 255");
 
         await _postsService.CreatePost(postRequest, HttpContext.Session.GetUserInSession()!);
 
