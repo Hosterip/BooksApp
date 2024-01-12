@@ -1,3 +1,4 @@
 ﻿DB/Migrations
 bin/
 obj/
+../.idea
