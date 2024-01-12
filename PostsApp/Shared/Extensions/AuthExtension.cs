@@ -6,6 +6,6 @@ public static class AuthExtension
 {
     public static bool IsAuthorized(this HttpContext httpContext)
     {
-        return !(httpContext.Session.GetUserInSession().IsNullOrEmpty());
+        return !httpContext.Session.GetUserInSession().IsNullOrEmpty();
     }
 }

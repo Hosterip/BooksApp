@@ -1,5 +1,4 @@
 ﻿using PostsApp.Models;
-using PostsApp.Shared.Responses;
 using PostsApp.Shared.Responses.User;
 
 namespace PostsApp.Services.Users;

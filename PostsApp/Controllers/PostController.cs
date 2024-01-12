@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PostsApp.Services.Posts;
@@ -20,7 +19,7 @@ public class PostController : Controller
     [HttpPost("Create")]
     public async Task<IActionResult> CreatePost(PostRequest postRequest)
     {
-        if (!(HttpContext.IsAuthorized()))
+        if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized to make post");
         if (postRequest.title.IsNullOrEmpty() || postRequest.body.IsNullOrEmpty())
             return BadRequest("Title and body of the post must be filled");
@@ -33,7 +32,7 @@ public class PostController : Controller
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeletePost(int id)
     {
-        if (!(HttpContext.IsAuthorized()))
+        if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized to delete post");
 
         try

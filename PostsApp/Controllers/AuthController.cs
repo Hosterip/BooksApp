@@ -24,6 +24,8 @@ public class AuthController : Controller
         
         if (request.username.IsNullOrEmpty() || request.password.IsNullOrEmpty()) 
             return BadRequest("Please enter required data");
+        if (request.username.Length > 255)
+            return BadRequest("Username length must be less than 255 ");
         
         try
         {
@@ -73,7 +75,7 @@ public class AuthController : Controller
     [HttpPost("Logout")]
     public IActionResult LogoutPost()
     {
-        if (!(HttpContext.IsAuthorized()))
+        if (!HttpContext.IsAuthorized())
             return StatusCode(403, "You are not authorized");
         HttpContext.Session.RemoveUserInSession();
         return Ok("You've been signed out");

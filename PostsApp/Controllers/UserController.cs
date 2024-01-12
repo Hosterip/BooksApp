@@ -19,7 +19,7 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult GetUser()
     {
-        if (!(HttpContext.IsAuthorized()))
+        if (!HttpContext.IsAuthorized())
             return StatusCode(401,"You are not authorized");
 
         return Ok(new DefaultUserResponse{username = HttpContext.Session.GetUserInSession()!});
@@ -59,7 +59,7 @@ public class UserController : Controller
     [HttpDelete]
     public async Task<IActionResult> DeleteUser()
     {
-        if (!(HttpContext.IsAuthorized()))
+        if (!HttpContext.IsAuthorized())
             return StatusCode(401,"You are not authorized");
             
         await _userService.DeleteUser(HttpContext.Session.GetUserInSession()!);

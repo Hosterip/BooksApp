@@ -16,29 +16,29 @@ public class PostsService : IPostsService
     {
         _dbContext = dbContext;
     }
-    
+
     public PostResponse GetSinglePost(int id)
     {
         var post = _dbContext.Posts.Include(post => post.User).SingleOrDefault(post => post.Id == id);
-        if(post == null) throw new BadHttpRequestException("Post not found");
+        if (post == null) throw new BadHttpRequestException("Post not found");
 
         var user = new DefaultUserResponse { username = post.User.Username };
-        
+
         return new PostResponse { id = post.Id, title = post.Title, body = post.Body, user = user };
     }
 
     public PostsResponse GetPosts(int page, int limit, string query)
     {
         var rawPosts =
-            (from post in _dbContext.Posts
-                where query.IsNullOrEmpty() || post.Title.Contains(query)
-                let user = new DefaultUserResponse { username = post.User.Username }
-                select new PostResponse {id = post.Id, title = post.Title, body = post.Body, user = user});
+            from post in _dbContext.Posts
+            where query.IsNullOrEmpty() || post.Title.Contains(query)
+            let user = new DefaultUserResponse { username = post.User.Username }
+            select new PostResponse { id = post.Id, title = post.Title, body = post.Body, user = user };
         var posts = rawPosts
             .Skip((page - 1) * limit)
             .Take(limit)
             .ToArray();
-        
+
         int totalCount = rawPosts.Count();
         int totalPages = (int)Math.Ceiling((decimal)totalCount / limit);
 
