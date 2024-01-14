@@ -1,6 +1,6 @@
 ﻿namespace PostsApp.Shared.Extensions;
 
-public static class SessionExtension
+public static class SessionUserExtension
 {
     public static void SetUserInSession(this ISession session, string username)
     {

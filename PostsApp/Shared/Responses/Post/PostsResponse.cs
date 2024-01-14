@@ -1,8 +1,6 @@
 namespace PostsApp.Shared.Responses.Post;
 
-public class PostsResponse
+public class PostsResponse : DefaultPagination
 {
-    public int totalPages { get; set; }
-    public int totalCount { get; set; }
     public PostResponse[] posts { get; set; }
 }
