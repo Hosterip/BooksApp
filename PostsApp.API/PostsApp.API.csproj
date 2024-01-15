@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>PostsApp</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PostsApp.Contracts\PostsApp.Contracts.csproj" />
+      <ProjectReference Include="..\PostsApp.Application\PostsApp.Application.csproj" />
+      <ProjectReference Include="..\PostsApp.Infrastructure\PostsApp.Infrastructure.csproj" />
+      <ProjectReference Include="..\PostsApp.Domain\PostsApp.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
