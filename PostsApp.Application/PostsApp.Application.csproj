@@ -2,7 +2,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\PostsApp.Domain\PostsApp.Domain.csproj" />
-        <ProjectReference Include="..\PostsApp.Infrastructure\PostsApp.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

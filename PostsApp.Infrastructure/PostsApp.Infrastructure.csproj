@@ -8,6 +8,7 @@
     <ItemGroup>
         <Folder Include="DB\Migrations\" />
         <ProjectReference Include="..\PostsApp.Domain\PostsApp.Domain.csproj" />
+        <ProjectReference Include="..\PostsApp.Application\PostsApp.Application.csproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />

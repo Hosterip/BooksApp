@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PostsApp.Application.Services.Users;
+using PostsApp.Application.Interfaces;
 using PostsApp.Shared.Extensions;
 using PostsApp.Contracts.Responses.User;
 using PostsApp.Domain.Exceptions;

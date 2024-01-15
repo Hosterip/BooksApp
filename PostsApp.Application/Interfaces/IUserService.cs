@@ -1,7 +1,7 @@
 ﻿using PostsApp.Contracts.Responses.User;
 using PostsApp.Models;
 
-namespace PostsApp.Application.Services.Users;
+namespace PostsApp.Application.Interfaces;
 
 public interface IUserService
 {

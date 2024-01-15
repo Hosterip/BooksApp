@@ -1,6 +1,6 @@
 using PostsApp.Contracts.Responses.Post;
 
-namespace PostsApp.Application.Services.Posts;
+namespace PostsApp.Application.Interfaces;
 
 public interface IPostsService
 {

@@ -1,9 +1,8 @@
 ﻿using System.Security.Cryptography;
-using PostsApp.Application.Services.Users;
+using PostsApp.Application.Interfaces;
 using PostsApp.Domain.Auth;
-using PostsApp.Domain.Exceptions;
 
-namespace PostsApp.Application.Services.Auth;
+namespace PostsApp.Infrastructure.Services;
 
 public class AuthService : IAuthService
 {

@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PostsApp.Application.Interfaces;
 using PostsApp.Application.Results.User;
 using PostsApp.Contracts.Responses.Post;
 using PostsApp.Domain.Exceptions;
 using PostsApp.Infrastructure.DB;
 using PostsApp.Models;
 
-namespace PostsApp.Application.Services.Posts;
+namespace PostsApp.Infrastructure.Services;
 
 public class PostsService : IPostsService
 {

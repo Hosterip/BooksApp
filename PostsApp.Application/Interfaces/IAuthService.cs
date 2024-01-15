@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Application.Services.Auth;
+﻿namespace PostsApp.Application.Interfaces;
 
 public interface IAuthService
 {

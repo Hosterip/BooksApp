@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
-using PostsApp.Application.Services.Auth;
+using PostsApp.Application.Interfaces;
 using PostsApp.Contracts.Requests.Auth;
 using PostsApp.Domain.Auth;
 using PostsApp.Domain.Exceptions;
