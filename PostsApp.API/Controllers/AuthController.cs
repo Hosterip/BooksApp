@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using PostsApp.Application.Interfaces;
 using PostsApp.Contracts.Requests.Auth;
 using PostsApp.Domain.Auth;
-using PostsApp.Domain.Exceptions;
 using PostsApp.Shared.Extensions;
 
 namespace PostsApp.Controllers;
@@ -12,12 +11,10 @@ namespace PostsApp.Controllers;
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
-    private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IAuthService authService, ILogger<AuthController> logger)
+    public AuthController(IAuthService authService)
     {
         _authService = authService;
-        _logger = logger;
     }
     
     [HttpPost("Register")]
@@ -43,11 +40,6 @@ public class AuthController : Controller
         {
             return StatusCode(500, "Something went wrong!");
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while adding a user.");
-        }
-        
         
         HttpContext.Session.SetUserInSession(request.username);
         
