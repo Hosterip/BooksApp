@@ -1,4 +1,4 @@
-namespace PostsApp.Contracts.Responses;
+namespace PostsApp.Application.Common.Results;
 
 public class DefaultPagination
 {

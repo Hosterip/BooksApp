@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PostsApp.Application.Interfaces;
+using PostsApp.Application.Users.Commands.DeleteUser;
+using PostsApp.Application.Users.Queries.GetSingleUser;
+using PostsApp.Application.Users.Queries.GetUsers;
 using PostsApp.Shared.Extensions;
 using PostsApp.Contracts.Responses.User;
 using PostsApp.Domain.Exceptions;
@@ -10,11 +13,11 @@ namespace PostsApp.Controllers;
 [Route("user")]
 public class UserController : Controller
 {
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService)
+    private readonly ISender _sender;
+    
+    public UserController(ISender sender)
     {
-        _userService = userService;
+        _sender = sender;
     }
         
     [HttpGet]
@@ -27,14 +30,15 @@ public class UserController : Controller
     }
     
     [HttpGet("many/{page:int}")]
-    public IActionResult GetManyUsers(int page)
+    public async Task<IActionResult> GetManyUsers(int page, CancellationToken cancellationToken)
     {
         try
         {
-            string? query = Request.Query["q"];
             string? strLimit = Request.Query["limit"];
             int intLimit = !strLimit.IsNullOrEmpty() ? Convert.ToInt32(strLimit) : 10;
-            return Ok(_userService.GetUsers(intLimit, page, query ?? ""));
+            var query = new GetUsersQuery { Query = Request.Query["q"], Page = page, Limit = intLimit};
+            var users = await _sender.Send(query, cancellationToken);
+            return Ok(users);
         }
         catch (FormatException)
         {
@@ -43,29 +47,33 @@ public class UserController : Controller
     }
 
     [HttpGet("{username}")]
-    public IActionResult GetUserByUsername(string username)
+    public async Task<IActionResult> GetUserByUsername(string username, CancellationToken cancellationToken)
     {
         try
         {
-            return Ok(_userService.GetUserByUsername(username));
+            var query = new GetSingleUserQuery{Username = username};
+            var user = await _sender.Send(query, cancellationToken);
+            return Ok(user);
         }
-        catch (UserException)
+        catch (UserException ex)
         {
-            return BadRequest("User not found");
+            return BadRequest(ex.Message);
         }
     }
     
     
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteUser()
+    public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401,"You are not authorized");
-            
-        await _userService.DeleteUser(HttpContext.Session.GetUserInSession()!);
+
+        var command = new DeleteUserCommand{username = HttpContext.Session.GetUserInSession()!};
+        await _sender.Send(command, cancellationToken);
+        
         HttpContext.Session.RemoveUserInSession();
 
-        return Ok("User were deleted");
+        return Ok("User was deleted");
     }
 }

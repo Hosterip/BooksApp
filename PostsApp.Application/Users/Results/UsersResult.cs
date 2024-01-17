@@ -1,6 +1,6 @@
-using PostsApp.Application.Results.User;
+using PostsApp.Application.Common.Results;
 
-namespace PostsApp.Contracts.Responses.User;
+namespace PostsApp.Application.Users.Results;
 
 public class UsersResult : DefaultPagination
 {

@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using PostsApp.Application.Common.Interfaces;
 using PostsApp.Models;
 
 namespace PostsApp.Infrastructure.DB;
 
-public class AppDbContext : DbContext
+public class AppDbContext : DbContext, IAppDbContext
 {
     private readonly IConfiguration _configuration;
 

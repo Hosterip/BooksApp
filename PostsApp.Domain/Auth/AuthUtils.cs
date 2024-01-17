@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+﻿using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace PostsApp.Domain.Auth;
 
@@ -20,5 +21,10 @@ public static class AuthUtils
             .Where(x => x % 2 == 0)
             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
             .ToArray();
+    }
+
+    public static byte[] GenerateSalt()
+    {
+        return RandomNumberGenerator.GetBytes(32);
     }
 }

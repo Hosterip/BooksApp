@@ -1,4 +1,4 @@
-namespace PostsApp.Application.Results.User;
+namespace PostsApp.Application.Users.Results;
 
 public class DefaultUserResult
 {
