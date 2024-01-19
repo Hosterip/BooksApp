@@ -1,28 +1,38 @@
 using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 
 namespace PostsApp.Application.Common.Behavior;
 
-public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
-    private readonly IValidator<TRequest> _validator;
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public ValidationBehavior(IValidator<TRequest> validator)
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        _validator = validator;
+        _validators = validators;
     }
+
     public async Task<TResponse> Handle(
-        TRequest request, 
-        RequestHandlerDelegate<TResponse> next, 
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        var result = await _validator.ValidateAsync(request, cancellationToken);
-
-        if (!result.IsValid)
+        if (_validators.Any())
         {
-            throw new ValidationException(result.Errors);
+            var validationResults = await Task.WhenAll(_validators
+                .Select(validator => validator.ValidateAsync(request, cancellationToken)));
+
+            var failures = validationResults
+                .Where(r => r.Errors.Any())
+                .SelectMany(r => r.Errors)
+                .ToList();
+            if (failures.Any())
+            {
+                throw new ValidationException(failures);
+            }
         }
+
 
         return await next();
     }
