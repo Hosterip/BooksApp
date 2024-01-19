@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PostsApp.Application.Auth.Commands.Register;
 using PostsApp.Application.Auth.Queries.Login;
+using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Auth;
 using PostsApp.Domain.Auth;
 using PostsApp.Shared.Extensions;
@@ -12,7 +13,6 @@ namespace PostsApp.Controllers;
 public class AuthController : Controller
 {
     private readonly ISender _sender;
-
     public AuthController(ISender sender)
     {
         _sender = sender;
@@ -43,17 +43,16 @@ public class AuthController : Controller
     }
 
     [HttpPost("Login")]
-    public async Task<IActionResult> LoginPost(AuthPostRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> LoginPost(
+        AuthPostRequest request,
+        CancellationToken cancellationToken)
     {
         if (HttpContext.IsAuthorized())
             return StatusCode(403, "You are already authorized");
-        
-        if(request.username.IsNullOrEmpty() || request.password.IsNullOrEmpty()) 
-            return BadRequest("Please enter required data");
 
         try
         {
-            var command = new LoginUserQuery { Username = request.username, Password = request.password};
+            var command = new LoginUserQuery { Username = request.username, Password = request.password };
             var user = await _sender.Send(command, cancellationToken);
             HttpContext.Session.SetUserInSession(user.username);
             return Ok(user);
