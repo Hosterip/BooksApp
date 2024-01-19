@@ -58,9 +58,9 @@ public class AuthController : Controller
             HttpContext.Session.SetUserInSession(user.username);
             return Ok(user);
         }
-        catch (AuthException exception)
+        catch (AuthException e)
         {
-            return BadRequest(exception.Message);
+            return BadRequest(e.Message);
         }
     }
 
