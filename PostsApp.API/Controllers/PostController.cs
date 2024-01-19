@@ -1,8 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Posts.Commands;
 using PostsApp.Application.Posts.Commands.CreatePost;
 using PostsApp.Application.Posts.Commands.DeletePost;
 using PostsApp.Application.Posts.Queries.GetPosts;
@@ -43,9 +41,9 @@ public class PostController : Controller
 
             return StatusCode(201, post);
         }
-        catch (PostException e)
+        catch (PostException ex)
         {
-            return BadRequest(e.Message);
+            return BadRequest(ex.Message);
         }
     }
 
@@ -57,38 +55,30 @@ public class PostController : Controller
 
         try
         {
-            var command = new DeletePostCommand { Id = id, Username = HttpContext.Session.GetUserInSession()!};
+            var command = new DeletePostCommand { Id = id, Username = HttpContext.Session.GetUserInSession()! };
             await _sender.Send(command, cancellationToken);
             return Ok("Post was deleted");
         }
-        catch (PostException)
+        catch (PostException ex)
         {
-            return BadRequest("Post not found or post not yours");
+            return BadRequest(ex.Message);
         }
     }
 
     [HttpGet("many/{page:int}")]
-    public async Task<IActionResult> GetPosts(int page, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetPosts(int page, int? limit, string q, CancellationToken cancellationToken)
     {
-        try
-        {
-            string? strLimit = Request.Query["limit"];
-            int intLimit = !strLimit.IsNullOrEmpty() ? Convert.ToInt32(strLimit) : 10;
-            var query = new GetPostsQuery { Query = Request.Query["q"],Limit = intLimit, Page = page};
-            var result = await _sender.Send(query, cancellationToken);
-            return Ok(result);
-        }
-        catch (FormatException)
-        {
-            return BadRequest("Limit must be an integer");
-        }
+        var query = new GetPostsQuery { Query = q, Limit = limit, Page = page };
+        var result = await _sender.Send(query, cancellationToken);
+        return Ok(result);
     }
+
     [HttpGet("single/{id:int}")]
     public async Task<IActionResult> GetPost(int id, CancellationToken cancellationToken)
     {
         try
         {
-            var query = new GetSinglePostQuery{Id = id};
+            var query = new GetSinglePostQuery { Id = id };
             var post = await _sender.Send(query, cancellationToken);
             return Ok(post);
         }

@@ -14,44 +14,35 @@ namespace PostsApp.Controllers;
 public class UserController : Controller
 {
     private readonly ISender _sender;
-    
+
     public UserController(ISender sender)
     {
         _sender = sender;
     }
-        
+
     [HttpGet]
     public IActionResult GetUser()
     {
         if (!HttpContext.IsAuthorized())
-            return StatusCode(401,"You are not authorized");
+            return StatusCode(401, "You are not authorized");
 
-        return Ok(new DefaultUserResponse{username = HttpContext.Session.GetUserInSession()!});
+        return Ok(new DefaultUserResponse { username = HttpContext.Session.GetUserInSession()! });
     }
-    
+
     [HttpGet("many/{page:int}")]
-    public async Task<IActionResult> GetManyUsers(int page, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetManyUsers(int page, int? limit, string? q, CancellationToken cancellationToken)
     {
-        try
-        {
-            string? strLimit = Request.Query["limit"];
-            int intLimit = !strLimit.IsNullOrEmpty() ? Convert.ToInt32(strLimit) : 10;
-            var query = new GetUsersQuery { Query = Request.Query["q"], Page = page, Limit = intLimit};
-            var users = await _sender.Send(query, cancellationToken);
-            return Ok(users);
-        }
-        catch (FormatException)
-        {
-            return BadRequest("Limit must be an integer");
-        }
+        var query = new GetUsersQuery { Query = q, Page = page, Limit = limit };
+        var users = await _sender.Send(query, cancellationToken);
+        return Ok(users);
     }
 
-    [HttpGet("{username}")]
+    [HttpGet("single/{username}")]
     public async Task<IActionResult> GetUserByUsername(string username, CancellationToken cancellationToken)
     {
         try
         {
-            var query = new GetSingleUserQuery{Username = username};
+            var query = new GetSingleUserQuery { Username = username };
             var user = await _sender.Send(query, cancellationToken);
             return Ok(user);
         }
@@ -60,18 +51,17 @@ public class UserController : Controller
             return BadRequest(ex.Message);
         }
     }
-    
-    
+
 
     [HttpDelete]
     public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
-            return StatusCode(401,"You are not authorized");
+            return StatusCode(401, "You are not authorized");
 
-        var command = new DeleteUserCommand{username = HttpContext.Session.GetUserInSession()!};
+        var command = new DeleteUserCommand { username = HttpContext.Session.GetUserInSession()! };
         await _sender.Send(command, cancellationToken);
-        
+
         HttpContext.Session.RemoveUserInSession();
 
         return Ok("User was deleted");
