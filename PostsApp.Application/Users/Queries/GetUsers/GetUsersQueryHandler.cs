@@ -1,4 +1,5 @@
 using MediatR;
+using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 
@@ -21,12 +22,12 @@ internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Pagi
         int limit = request.Limit ?? 10;
         int page = request.Page;
 
-        var rawUsers =
-            from user in _dbContext.Users
-            where query == null || user.Username.Contains(query)
-            select new UserResult { username = user.Username };
-        
-        var result = await PaginatedArray<UserResult>.CreateAsync(rawUsers, page, limit);
+        var result = await 
+            (
+                from user in _dbContext.Users
+                where query == null || user.Username.Contains(query)
+                select new UserResult { Username = user.Username })
+            .PaginationAsync(page, limit);
         
         return result;
     }
