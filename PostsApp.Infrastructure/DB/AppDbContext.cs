@@ -16,7 +16,7 @@ public class AppDbContext : DbContext, IAppDbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=HOSTERIP\\SQLEXPRESS;Database=postsapp;Trusted_Connection=True; TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"));
     }
     
     public DbSet<User> Users { get; set; }
