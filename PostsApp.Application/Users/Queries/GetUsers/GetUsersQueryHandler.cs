@@ -1,10 +1,10 @@
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Users.Results;
+using PostsApp.Application.Common.Results;
 
 namespace PostsApp.Application.Users.Queries.GetUsers;
 
-internal class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, UsersResult>
+internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, PaginatedArray<UserResult>>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -13,23 +13,21 @@ internal class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, UsersResult
         _dbContext = dbContext;
     }
 
-    public async Task<UsersResult> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedArray<UserResult>> Handle(
+        GetUsersQuery request,
+        CancellationToken cancellationToken)
     {
         string? query = request.Query;
         int limit = request.Limit ?? 10;
         int page = request.Page;
-        
+
         var rawUsers =
-            (from user in _dbContext.Users
-                where query == null || user.Username.Contains(query)
-                select new DefaultUserResult { username = user.Username });
-        var users = rawUsers
-            .Skip((page - 1) * limit)
-            .Take(limit)
-            .ToArray();
+            from user in _dbContext.Users
+            where query == null || user.Username.Contains(query)
+            select new UserResult { username = user.Username };
         
-        int totalCount = rawUsers.Count();
-        int totalPages = (int)Math.Ceiling((decimal)totalCount / limit);
-        return new UsersResult{users = users, totalPages = totalPages, totalCount = totalCount};
+        var result = await PaginatedArray<UserResult>.CreateAsync(rawUsers, page, limit);
+        
+        return result;
     }
 }
