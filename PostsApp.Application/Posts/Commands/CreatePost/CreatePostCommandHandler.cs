@@ -1,13 +1,13 @@
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Application.Common.Results;
 using PostsApp.Application.Posts.Results;
-using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Exceptions;
 using PostsApp.Models;
 
 namespace PostsApp.Application.Posts.Commands.CreatePost;
 
-internal class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostResult>
+internal sealed class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostResult>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -25,7 +25,7 @@ internal class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Pos
         await _dbContext.SaveChangesAsync(cancellationToken);
         var result = new PostResult
         {
-            user = new DefaultUserResult { username = user.Username }, title = post.Title, body = post.Body,
+            user = new UserResult { username = user.Username }, title = post.Title, body = post.Body,
             id = post.Id
         };
         return result;

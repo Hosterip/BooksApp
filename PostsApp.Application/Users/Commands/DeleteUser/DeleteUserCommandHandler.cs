@@ -5,7 +5,7 @@ using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Users.Commands.DeleteUser;
 
-internal class DeleteUserCommandHandler : IRequestHandler<DeletePostCommand>
+internal sealed class DeleteUserCommandHandler : IRequestHandler<DeletePostCommand>
 {
     private readonly IAppDbContext _dbContext;
 

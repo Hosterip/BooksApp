@@ -4,7 +4,7 @@ using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Posts.Commands.DeletePost;
 
-internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand>
+internal sealed class DeletePostCommandHandler : IRequestHandler<DeletePostCommand>
 {
     private readonly IAppDbContext _dbContext;
 

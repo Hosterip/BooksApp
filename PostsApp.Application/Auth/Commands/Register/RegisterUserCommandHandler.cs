@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Auth;
 using PostsApp.Models;

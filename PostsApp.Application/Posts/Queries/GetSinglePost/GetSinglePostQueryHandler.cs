@@ -1,13 +1,13 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Application.Common.Results;
 using PostsApp.Application.Posts.Results;
-using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Posts.Queries.GetSinglePost;
 
-internal class GetSinglePostQueryHandler : IRequestHandler<GetSinglePostQuery, PostResult>
+internal sealed class GetSinglePostQueryHandler : IRequestHandler<GetSinglePostQuery, PostResult>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -21,7 +21,7 @@ internal class GetSinglePostQueryHandler : IRequestHandler<GetSinglePostQuery, P
         if (post == null) 
             throw new PostException("Post not found");
 
-        var user = new DefaultUserResult { username = post.User.Username };
+        var user = new UserResult { username = post.User.Username };
 
         return new PostResult { id = post.Id, title = post.Title, body = post.Body, user = user };
     }

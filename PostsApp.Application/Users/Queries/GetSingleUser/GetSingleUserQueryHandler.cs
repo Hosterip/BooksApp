@@ -1,12 +1,13 @@
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Application.Common.Results;
 using PostsApp.Application.Posts.Results;
 using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
-internal class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, SingleUserResult>
+internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, SingleUserResult>
 {
     private readonly IAppDbContext _dbContext;
 
