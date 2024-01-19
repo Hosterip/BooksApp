@@ -4,20 +4,17 @@ namespace PostsApp.Application.Common.Results;
 
 public class PaginatedArray<T>
 {
-    private PaginatedArray(T[] propItems, int propPage, int propPageSize, int propTotalCount)
+    private PaginatedArray(T[] items, int page, int pageSize, int totalCount)
     {
-        items = propItems;
-        page = propPage;
-        pageSize = propPageSize;
-        totalCount = propTotalCount;
+        Items = items;
+        Page = page;
+        TotalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+        TotalCount = totalCount;
     }
-    public T[] items { get; set; }
-    public int page { get; set; }
-    public int pageSize { get; set; }
-    public int totalCount { get; set; }
-
-    public bool HasNextPage => page * pageSize < totalCount;
-    public bool HasPreviousPage => page > 1;
+    public T[] Items { get; }
+    public int Page { get; }
+    public int TotalPages { get; }
+    public int TotalCount { get; }
 
     public static async Task<PaginatedArray<T>> CreateAsync(IQueryable<T> queryable, int page, int pageSize)
     {

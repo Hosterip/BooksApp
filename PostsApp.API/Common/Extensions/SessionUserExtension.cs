@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Shared.Extensions;
+﻿namespace PostsApp.Common.Extensions;
 
 public static class SessionUserExtension
 {

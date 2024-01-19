@@ -25,8 +25,8 @@ internal sealed class CreatePostCommandHandler : IRequestHandler<CreatePostComma
         await _dbContext.SaveChangesAsync(cancellationToken);
         var result = new PostResult
         {
-            user = new UserResult { username = user.Username }, title = post.Title, body = post.Body,
-            id = post.Id
+            User = new UserResult { Username = user.Username }, Title = post.Title, Body = post.Body,
+            Id = post.Id
         };
         return result;
     }

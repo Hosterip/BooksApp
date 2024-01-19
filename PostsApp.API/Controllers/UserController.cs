@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using PostsApp.Application.Users.Commands.DeleteUser;
 using PostsApp.Application.Users.Queries.GetSingleUser;
 using PostsApp.Application.Users.Queries.GetUsers;
+using PostsApp.Common.Extensions;
 using PostsApp.Shared.Extensions;
 using PostsApp.Contracts.Responses.User;
 using PostsApp.Domain.Exceptions;
@@ -19,14 +19,14 @@ public class UserController : Controller
     {
         _sender = sender;
     }
-
+    
     [HttpGet]
     public IActionResult GetUser()
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized");
 
-        return Ok(new DefaultUserResponse { username = HttpContext.Session.GetUserInSession()! });
+        return Ok(new UserResponse { username = HttpContext.Session.GetUserInSession()! });
     }
 
     [HttpGet("many/{page:int}")]

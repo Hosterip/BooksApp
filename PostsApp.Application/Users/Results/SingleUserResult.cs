@@ -4,5 +4,5 @@ namespace PostsApp.Application.Users.Results;
 
 public class SingleUserResult : UserResult
 { 
-    public PostWithoutUser[] posts { get; set; }
+    public PostWithoutUser[] Posts { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.IdentityModel.Tokens;
+using PostsApp.Common.Extensions;
 
 namespace PostsApp.Shared.Extensions;
 

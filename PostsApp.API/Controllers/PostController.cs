@@ -5,6 +5,7 @@ using PostsApp.Application.Posts.Commands.CreatePost;
 using PostsApp.Application.Posts.Commands.DeletePost;
 using PostsApp.Application.Posts.Queries.GetPosts;
 using PostsApp.Application.Posts.Queries.GetSinglePost;
+using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Post;
 using PostsApp.Domain.Exceptions;
 using PostsApp.Shared.Extensions;
