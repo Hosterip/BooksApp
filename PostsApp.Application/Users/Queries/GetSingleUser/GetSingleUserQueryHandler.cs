@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Posts.Results;
@@ -22,13 +23,13 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
         if (user is null)
             throw new UserException("User not found");
 
-        var posts =
+        var posts = await 
             (
                 from post in _dbContext.Posts
                 where post.User == user
                 select new PostResult
-                    { id = post.Id, title = post.Title, body = post.Body })
-            .ToArray();
-        return new SingleUserResult { username = user.Username, posts = posts };
+                    { Id = post.Id, Title = post.Title, Body = post.Body })
+            .ToArrayAsync(cancellationToken);
+        return new SingleUserResult { Username = user.Username, Posts = posts };
     }
 }

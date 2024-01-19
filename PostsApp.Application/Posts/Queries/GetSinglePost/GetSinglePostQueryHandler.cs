@@ -17,12 +17,14 @@ internal sealed class GetSinglePostQueryHandler : IRequestHandler<GetSinglePostQ
     }
     public async Task<PostResult> Handle(GetSinglePostQuery request, CancellationToken cancellationToken)
     {
-        var post = _dbContext.Posts.Include(post => post.User).SingleOrDefault(post => post.Id == request.Id);
+        var post = await _dbContext.Posts
+            .Include(post => post.User)
+            .SingleOrDefaultAsync(post => post.Id == request.Id, cancellationToken);
         if (post == null) 
             throw new PostException("Post not found");
 
-        var user = new UserResult { username = post.User.Username };
+        var user = new UserResult { Username = post.User.Username };
 
-        return new PostResult { id = post.Id, title = post.Title, body = post.Body, user = user };
+        return new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, User = user };
     }
 }
