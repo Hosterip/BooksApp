@@ -1,5 +1,6 @@
 using PostsApp.Application;
 using PostsApp.Infrastructure;
+using PostsApp.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -28,6 +29,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ValidationExceptionMiddleware>();
 app.MapControllers();
 
 app.UseSession();
