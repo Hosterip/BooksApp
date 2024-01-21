@@ -1,14 +1,15 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using PostsApp.Application.Posts.Commands.CreatePost;
 using PostsApp.Application.Posts.Commands.DeletePost;
+using PostsApp.Application.Posts.Commands.UpdatePost;
 using PostsApp.Application.Posts.Queries.GetPosts;
 using PostsApp.Application.Posts.Queries.GetSinglePost;
+using PostsApp.Application.Posts.Results;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Post;
 using PostsApp.Domain.Exceptions;
-using PostsApp.Shared.Extensions;
 
 namespace PostsApp.Controllers;
 
@@ -22,25 +23,42 @@ public class PostController : Controller
         _sender = sender;
     }
 
-    [HttpPost("Create")]
+    [HttpPost]
     public async Task<IActionResult> CreatePost(PostRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized to make post");
-        if (request.title.IsNullOrEmpty() || request.body.IsNullOrEmpty())
-            return BadRequest("Title and body of the post must be filled");
-        if (request.title.Length > 255 || request.body.Length > 255)
-            return BadRequest("Length of title and body must be less than 255");
 
         try
         {
             var command = new CreatePostCommand
             {
-                Username = HttpContext.Session.GetUserInSession()!, Title = request.title, Body = request.body
+                Id = (int)HttpContext.GetId()!, Title = request.Title, Body = request.Body
             };
             var post = await _sender.Send(command, cancellationToken);
 
             return StatusCode(201, post);
+        }
+        catch (PostException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdatePost(UpdatePostRequest request, CancellationToken cancellationToken)
+    {
+        if (!HttpContext.IsAuthorized())
+            return StatusCode(401, "You are not authorized");
+        
+        try
+        {
+            var command = new UpdatePostCommand
+            {
+                Id = request.Id, UserId = (int)HttpContext.GetId()!,Title = request.Title, Body = request.Body
+            };
+            var result = await _sender.Send(command, cancellationToken);
+            return Ok(result);
         }
         catch (PostException ex)
         {
@@ -56,7 +74,7 @@ public class PostController : Controller
 
         try
         {
-            var command = new DeletePostCommand { Id = id, Username = HttpContext.Session.GetUserInSession()! };
+            var command = new DeletePostCommand { Id = id, UserId = (int)HttpContext.GetId()! };
             await _sender.Send(command, cancellationToken);
             return Ok("Post was deleted");
         }

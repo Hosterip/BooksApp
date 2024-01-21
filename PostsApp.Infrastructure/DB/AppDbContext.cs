@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Models;
 using PostsApp.Models;
 
 namespace PostsApp.Infrastructure.DB;
