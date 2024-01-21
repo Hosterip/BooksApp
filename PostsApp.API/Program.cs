@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using PostsApp.Application;
 using PostsApp.Infrastructure;
 using PostsApp.Middlewares;
@@ -8,16 +10,21 @@ builder.Services.AddControllers();
 // Adding Dependency Injectable 
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
-// Session
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
+
+// Authentication || Authorization
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.SlidingExpiration = true;
+    });
+
+builder.Services.AddAuthorization(options =>
 {
-    options.IdleTimeout = TimeSpan.FromDays(1);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
+    options.AddPolicy("IsAuthorized", policy =>
+        policy.RequireClaim(ClaimTypes.NameIdentifier));
 });
-
-
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -29,9 +36,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseMiddleware<ValidationExceptionMiddleware>();
 app.MapControllers();
-
-app.UseSession();
 
 app.Run();

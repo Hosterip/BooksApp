@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PostsApp.Models;
+namespace PostsApp.Domain.Models;
 
 public class User
 {
     [Key]
+    public int Id { get; set; }
     [StringLength(255)]
     public string Username { get; set; }
     [Required]
