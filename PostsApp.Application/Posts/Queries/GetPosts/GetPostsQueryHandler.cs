@@ -24,7 +24,7 @@ internal sealed class GetPostsQueryHandler : IRequestHandler<GetPostsQuery, Pagi
             (
                 from post in _dbContext.Posts
                 where query == null || post.Title.Contains(request.Query)
-                let user = new UserResult { Username = post.User.Username }
+                let user = new UserResult { Id = post.User.Id, Username = post.User.Username }
                 select new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, User = user })
             .PaginationAsync(page, limit);
         

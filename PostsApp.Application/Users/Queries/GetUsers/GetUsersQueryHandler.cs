@@ -26,7 +26,7 @@ internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Pagi
             (
                 from user in _dbContext.Users
                 where query == null || user.Username.Contains(query)
-                select new UserResult { Username = user.Username })
+                select new UserResult { Id = user.Id, Username = user.Username })
             .PaginationAsync(page, limit);
         
         return result;

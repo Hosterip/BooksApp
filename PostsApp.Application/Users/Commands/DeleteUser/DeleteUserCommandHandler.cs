@@ -15,7 +15,7 @@ internal sealed class DeleteUserCommandHandler : IRequestHandler<DeletePostComma
     }
     public async Task Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
-        var user = _dbContext.Users.SingleOrDefault(user => user.Username == request.Username);
+        var user = _dbContext.Users.SingleOrDefault(user => user.Id == request.Id);
         if (user is null)
             throw new UserException("User not found");
         _dbContext.Users.Remove(user);

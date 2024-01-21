@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Auth;
 
@@ -14,17 +15,10 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
     }
     public async Task<AuthResult> Handle(LoginUserQuery request, CancellationToken cancellationToken)
     {
-        var user = _dbContext.Users.SingleOrDefault(user => user.Username == request.Username);
-        if (user is null)
-            ThrowAuthException();
-        string hash = AuthUtils.CreateHash(request.Password, AuthUtils.StringToByteArray(user.Salt));
-        if (hash != user.Hash)
-            ThrowAuthException();
-        return new AuthResult{username = user.Username};
-    }
-
-    private void ThrowAuthException()
-    {
-        throw new AuthException("Username or password is incorrect");
+        var user = await 
+            _dbContext.Users.SingleAsync(user => user.Username == request.Username, cancellationToken);
+        if (!AuthUtils.IsPasswordValid(user.Hash, user.Salt, request.Password))
+            throw new AuthException("Password is incorrect");
+        return new AuthResult{Id = user.Id, username = user.Username};
     }
 }

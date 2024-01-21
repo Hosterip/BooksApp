@@ -14,7 +14,7 @@ internal sealed class DeletePostCommandHandler : IRequestHandler<DeletePostComma
     }
     public async Task Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
-        var post = _dbContext.Posts.SingleOrDefault(post => post.Id == request.Id && post.User.Username == request.Username);
+        var post = _dbContext.Posts.SingleOrDefault(post => post.Id == request.Id && post.User.Id == request.Id);
         if (post == null)
             throw new PostException("Post not found or post not yours");
         _dbContext.Posts.Remove(post);

@@ -19,7 +19,7 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
 
     public async Task<SingleUserResult> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
     {
-        var user = _dbContext.Users.SingleOrDefault(user => user.Username == request.Username);
+        var user = _dbContext.Users.SingleOrDefault(user => user.Id == request.Id);
         if (user is null)
             throw new UserException("User not found");
 
@@ -30,6 +30,6 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
                 select new PostResult
                     { Id = post.Id, Title = post.Title, Body = post.Body })
             .ToArrayAsync(cancellationToken);
-        return new SingleUserResult { Username = user.Username, Posts = posts };
+        return new SingleUserResult { Id = user.Id, Username = user.Username, Posts = posts };
     }
 }
