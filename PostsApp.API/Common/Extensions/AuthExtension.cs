@@ -1,13 +1,11 @@
-﻿
-using Microsoft.IdentityModel.Tokens;
-using PostsApp.Common.Extensions;
+﻿using System.Security.Claims;
 
-namespace PostsApp.Shared.Extensions;
+namespace PostsApp.Common.Extensions;
 
 public static class AuthExtension
 {
     public static bool IsAuthorized(this HttpContext httpContext)
     {
-        return !httpContext.Session.GetUserInSession().IsNullOrEmpty();
+        return httpContext.User.HasClaim(user => user.Value != ClaimTypes.NameIdentifier);
     }
 }
