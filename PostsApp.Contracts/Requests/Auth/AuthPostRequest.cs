@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PostsApp.Contracts.Requests.Auth;
+﻿namespace PostsApp.Contracts.Requests.Auth;
 
 public class AuthPostRequest
 {
-    [Required]
-    public string username { get; set; }
-    [Required]
-    public string password { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
 }

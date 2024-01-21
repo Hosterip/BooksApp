@@ -2,6 +2,6 @@ namespace PostsApp.Contracts.Requests.Post;
 
 public class PostRequest
 {
-    public string title { get; set; }
-    public string body { get; set; }
+    public string Title { get; set; }
+    public string Body { get; set; }
 }
