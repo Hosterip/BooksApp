@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PostsApp.Models;
+using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Common.Interfaces;
 

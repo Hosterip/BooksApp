@@ -1,7 +1,8 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Auth;
-using PostsApp.Models;
+using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Auth.Commands.Register;
 
@@ -15,13 +16,12 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
     }
     public async Task<AuthResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        if (_dbContext.Users.SingleOrDefault(user => user.Username == request.Username) != null)
+        if (await _dbContext.Users.AnyAsync(user => user.Username == request.Username, cancellationToken))
             throw new AuthException("Username is occupied");
-        byte[] salt = AuthUtils.GenerateSalt();
-        string hash = AuthUtils.CreateHash(request.Password, salt);
-        User user = new User { Username = request.Username, Hash = hash, Salt = Convert.ToHexString(salt) };
+        var hashSalt = AuthUtils.CreateHashSalt(request.Password);
+        User user = new User { Username = request.Username, Hash = hashSalt.hash, Salt = hashSalt.salt };
         _dbContext.Users.Add(user);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return new AuthResult { username = request.Username };
+        return new AuthResult {Id = user.Id, username = request.Username };
     }
 }

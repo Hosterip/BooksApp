@@ -4,7 +4,7 @@ using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Posts.Results;
 using PostsApp.Domain.Exceptions;
-using PostsApp.Models;
+using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Posts.Commands.CreatePost;
 
