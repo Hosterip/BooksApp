@@ -1,10 +1,12 @@
 using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
+using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Common.Behavior;
 
-public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -26,6 +28,8 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             var failures = validationResults
                 .Where(r => r.Errors.Any())
                 .SelectMany(r => r.Errors)
+                .Select(r => 
+                    new ValidationFailure{ErrorMessage = r.ErrorMessage, PropertyName = r.PropertyName})
                 .ToList();
             if (failures.Any())
             {
