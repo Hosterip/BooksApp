@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Auth;
+using PostsApp.Domain.Constants;
 
 namespace PostsApp.Application.Auth.Queries.Login;
 
@@ -18,7 +19,7 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
         var user = await 
             _unitOfWork.User.GetSingleWhereAsync(user => user.Username == request.Username);
         if (!AuthUtils.IsPasswordValid(user!.Hash, user.Salt, request.Password))
-            throw new AuthException("Password is incorrect");
+            throw new AuthException(AuthExceptionConstants.Password);
         return new AuthResult{Id = user.Id, username = user.Username};
     }
 }

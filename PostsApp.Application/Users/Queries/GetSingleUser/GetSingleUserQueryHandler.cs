@@ -4,6 +4,7 @@ using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Posts.Results;
 using PostsApp.Application.Users.Results;
+using PostsApp.Domain.Constants;
 using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Users.Queries.GetSingleUser;
@@ -21,7 +22,7 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
     {
         var user = await _unitOfWork.User.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
-            throw new UserException("User not found");
+            throw new UserException(UserExceptionConstants.NotFound);
 
         var posts =
         (

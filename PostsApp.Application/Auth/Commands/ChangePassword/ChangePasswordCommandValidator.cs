@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Constants;
 
 namespace PostsApp.Application.Auth.Commands.ChangePassword;
 
@@ -14,6 +15,6 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
             {
                 return await unitOfWork.User.AnyAsync(user => user.Id == id);
             })
-            .WithMessage("Username must be correct");
+            .WithMessage(AuthExceptionConstants.NotFound);
     }
 }

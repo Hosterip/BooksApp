@@ -1,5 +1,6 @@
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Constants;
 using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Posts.Commands.DeletePost;
@@ -16,9 +17,7 @@ internal sealed class DeletePostCommandHandler : IRequestHandler<DeletePostComma
     {
         var post = await _unitOfWork
             .Post.GetSingleWhereAsync(post => post.Id == request.Id && post.User.Id == request.Id);
-        if (post == null)
-            throw new PostException("Post not found or post not yours");
-        await _unitOfWork.Post.RemoveAsync(post);
+        await _unitOfWork.Post.RemoveAsync(post!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

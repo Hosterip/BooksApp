@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Constants;
 
 namespace PostsApp.Application.Posts.Commands.CreatePost;
 
@@ -13,7 +14,7 @@ public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
         RuleFor(post => post.Id).MustAsync(async (id, cancellationToken) =>
         {
             return await unitOfWork.User.AnyAsync(user => user.Id == id);
-        }).WithMessage("User must be registered");
+        }).WithMessage(PostExceptionConstants.UserNotRight);
         
     }
 }

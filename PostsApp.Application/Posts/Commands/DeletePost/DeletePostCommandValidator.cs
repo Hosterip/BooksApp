@@ -1,17 +1,13 @@
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Constants;
-using PostsApp.Domain.Models;
 
-namespace PostsApp.Application.Posts.Commands.UpdatePost;
+namespace PostsApp.Application.Posts.Commands.DeletePost;
 
-public class UpdatePostCommandValidator : AbstractValidator<UpdatePostCommand>
+public class DeletePostCommandValidator : AbstractValidator<DeletePostCommand>
 {
-    public UpdatePostCommandValidator(IUnitOfWork unitOfWork)
+    public DeletePostCommandValidator(IUnitOfWork unitOfWork)
     {
-        RuleFor(post => post.Title).NotEmpty().Length(1, 255);
-        RuleFor(post => post.Body).NotEmpty().Length(1, 255);
         RuleFor(post => post)
             .MustAsync(async (request, cancellationToken) =>
             {
