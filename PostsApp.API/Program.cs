@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using PostsApp.Application;
+using PostsApp.Common.Extensions;
 using PostsApp.Infrastructure;
 using PostsApp.Middlewares;
 
@@ -13,18 +14,7 @@ builder.Services.AddApplication();
 
 // Authentication || Authorization
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.ExpireTimeSpan = TimeSpan.FromDays(1);
-        options.SlidingExpiration = true;
-    });
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("IsAuthorized", policy =>
-        policy.RequireClaim(ClaimTypes.NameIdentifier));
-});
+builder.Services.AddAuth();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
