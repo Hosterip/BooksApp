@@ -8,20 +8,20 @@ namespace PostsApp.Application.Auth.Commands.Register;
 
 internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthResult>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RegisterUserCommandHandler(IAppDbContext dbContext)
+    public RegisterUserCommandHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     public async Task<AuthResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        if (await _dbContext.Users.AnyAsync(user => user.Username == request.Username, cancellationToken))
+        if (await _unitOfWork.User.AnyAsync(user => user.Username == request.Username))
             throw new AuthException("Username is occupied");
         var hashSalt = AuthUtils.CreateHashSalt(request.Password);
         User user = new User { Username = request.Username, Hash = hashSalt.hash, Salt = hashSalt.salt };
-        _dbContext.Users.Add(user);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.User.AddAsync(user);
+        await _unitOfWork.SaveAsync(cancellationToken);
         return new AuthResult {Id = user.Id, username = request.Username };
     }
 }

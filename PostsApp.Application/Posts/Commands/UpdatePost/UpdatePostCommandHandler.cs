@@ -9,27 +9,20 @@ namespace PostsApp.Application.Posts.Commands.UpdatePost;
 
 internal sealed class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostResult>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdatePostCommandHandler(IAppDbContext dbContext)
+    public UpdatePostCommandHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     public async Task<PostResult> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
     {
-        var post = await _dbContext.Posts
-            .Include(post => post.User)
-            .SingleOrDefaultAsync(
-                post => post.Id == request.Id,
-                cancellationToken);
+        var post = await _unitOfWork.Post.GetSingleWhereAsync(post => post.Id == request.Id);
 
-        if (post is null)
-            throw new PostException("Post not found");
-
-        post.Title = request.Title;
+        post!.Title = request.Title;
         post.Body = request.Body;
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveAsync(cancellationToken);
         
         return new PostResult
         {

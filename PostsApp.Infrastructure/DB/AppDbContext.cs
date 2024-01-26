@@ -5,7 +5,7 @@ using PostsApp.Domain.Models;
 
 namespace PostsApp.Infrastructure.DB;
 
-public class AppDbContext : DbContext, IAppDbContext
+public class AppDbContext : DbContext
 {
     private readonly IConfiguration _configuration;
 

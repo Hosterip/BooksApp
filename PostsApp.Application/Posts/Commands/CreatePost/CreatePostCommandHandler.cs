@@ -10,22 +10,21 @@ namespace PostsApp.Application.Posts.Commands.CreatePost;
 
 internal sealed class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostResult>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreatePostCommandHandler(IAppDbContext dbContext)
+    public CreatePostCommandHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     public async Task<PostResult> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
-            .SingleAsync(user => user.Id == request.Id, cancellationToken);
-        var post = new Post { User = user, Title = request.Title, Body = request.Body };
-        _dbContext.Posts.Add(post);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        var user = await _unitOfWork.User.GetSingleWhereAsync(user => user.Id == request.Id);
+        var post = new Post { User = user!, Title = request.Title, Body = request.Body };
+        await _unitOfWork.Post.AddAsync(post);
+        await _unitOfWork.SaveAsync(cancellationToken);
         var result = new PostResult
         {
-            User = new UserResult { Id = user.Id, Username = user.Username }, Title = post.Title, Body = post.Body,
+            User = new UserResult { Id = user!.Id, Username = user.Username }, Title = post.Title, Body = post.Body,
             Id = post.Id
         };
         return result;

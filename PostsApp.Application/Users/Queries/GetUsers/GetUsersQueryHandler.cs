@@ -7,28 +7,22 @@ namespace PostsApp.Application.Users.Queries.GetUsers;
 
 internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, PaginatedArray<UserResult>>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetUsersQueryHandler(IAppDbContext dbContext)
+    public GetUsersQueryHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<PaginatedArray<UserResult>> Handle(
         GetUsersQuery request,
         CancellationToken cancellationToken)
     {
-        string? query = request.Query;
+        string query = request.Query ?? "";
         int limit = request.Limit ?? 10;
         int page = request.Page;
 
-        var result = await 
-            (
-                from user in _dbContext.Users
-                where query == null || user.Username.Contains(query)
-                select new UserResult { Id = user.Id, Username = user.Username })
-            .PaginationAsync(page, limit);
-        
+        var result = await _unitOfWork.User.GetPaginated(page, limit, query);
         return result;
     }
 }

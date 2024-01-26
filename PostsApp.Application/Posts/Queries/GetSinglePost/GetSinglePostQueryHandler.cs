@@ -9,21 +9,17 @@ namespace PostsApp.Application.Posts.Queries.GetSinglePost;
 
 internal sealed class GetSinglePostQueryHandler : IRequestHandler<GetSinglePostQuery, PostResult>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetSinglePostQueryHandler(IAppDbContext dbContext)
+    public GetSinglePostQueryHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     public async Task<PostResult> Handle(GetSinglePostQuery request, CancellationToken cancellationToken)
     {
-        var post = await _dbContext.Posts
-            .Include(post => post.User)
-            .SingleOrDefaultAsync(post => post.Id == request.Id, cancellationToken);
-        if (post == null) 
-            throw new PostException("Post not found");
+        var post = await _unitOfWork.Post.GetSingleWhereAsync(post => post.Id == request.Id);
 
-        var user = new UserResult { Username = post.User.Username };
+        var user = new UserResult { Username = post!.User.Username };
 
         return new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, User = user };
     }

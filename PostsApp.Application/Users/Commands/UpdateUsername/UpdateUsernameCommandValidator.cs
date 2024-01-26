@@ -7,14 +7,12 @@ namespace PostsApp.Application.Users.Commands.UpdateUsername;
 public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCommand>
 {
 
-    public UpdateUsernameCommandValidator(IAppDbContext dbContext)
+    public UpdateUsernameCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Id)
             .MustAsync(async (id, cancellationToken) =>
             {
-                var user = await dbContext.Users
-                    .SingleOrDefaultAsync(user => user.Id == id, cancellationToken);
-                return user != null;
+                return await unitOfWork.User.AnyAsync(user => user.Id == id);
             })
             .WithMessage("User not found");
         RuleFor(user => user.NewUsername)
@@ -23,7 +21,7 @@ public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCo
         RuleFor(user => user.NewUsername)
             .MustAsync(async (username, cancellationToken) =>
             {
-                return !await dbContext.Users.AnyAsync(user => user.Username == username, cancellationToken);
+                return !await unitOfWork.User.AnyAsync(user => user.Username == username);
             }).WithMessage("New username is occupied");
     }
 }

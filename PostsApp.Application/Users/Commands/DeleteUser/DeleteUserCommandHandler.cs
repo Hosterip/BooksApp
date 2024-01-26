@@ -7,18 +7,18 @@ namespace PostsApp.Application.Users.Commands.DeleteUser;
 
 internal sealed class DeleteUserCommandHandler : IRequestHandler<DeletePostCommand>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteUserCommandHandler(IAppDbContext dbContext)
+    public DeleteUserCommandHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     public async Task Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
-        var user = _dbContext.Users.SingleOrDefault(user => user.Id == request.Id);
+        var user = await _unitOfWork.User.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
             throw new UserException("User not found");
-        _dbContext.Users.Remove(user);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.User.RemoveAsync(user);
+        await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

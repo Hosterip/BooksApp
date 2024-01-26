@@ -6,18 +6,19 @@ namespace PostsApp.Application.Posts.Commands.DeletePost;
 
 internal sealed class DeletePostCommandHandler : IRequestHandler<DeletePostCommand>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeletePostCommandHandler(IAppDbContext dbContext)
+    public DeletePostCommandHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     public async Task Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
-        var post = _dbContext.Posts.SingleOrDefault(post => post.Id == request.Id && post.User.Id == request.Id);
+        var post = await _unitOfWork
+            .Post.GetSingleWhereAsync(post => post.Id == request.Id && post.User.Id == request.Id);
         if (post == null)
             throw new PostException("Post not found or post not yours");
-        _dbContext.Posts.Remove(post);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.Post.RemoveAsync(post);
+        await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

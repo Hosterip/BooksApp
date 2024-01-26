@@ -7,17 +7,17 @@ namespace PostsApp.Application.Auth.Queries.Login;
 
 internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, AuthResult>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public LoginUserQueryHandler(IAppDbContext dbContext)
+    public LoginUserQueryHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     public async Task<AuthResult> Handle(LoginUserQuery request, CancellationToken cancellationToken)
     {
         var user = await 
-            _dbContext.Users.SingleAsync(user => user.Username == request.Username, cancellationToken);
-        if (!AuthUtils.IsPasswordValid(user.Hash, user.Salt, request.Password))
+            _unitOfWork.User.GetSingleWhereAsync(user => user.Username == request.Username);
+        if (!AuthUtils.IsPasswordValid(user!.Hash, user.Salt, request.Password))
             throw new AuthException("Password is incorrect");
         return new AuthResult{Id = user.Id, username = user.Username};
     }

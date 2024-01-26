@@ -11,7 +11,7 @@ public class PaginatedArray<T>
         TotalPages = (int)Math.Ceiling((double)totalCount / pageSize);
         TotalCount = totalCount;
     }
-    public T[] Items { get; }
+    public T[] Items { get; set; }
     public int Page { get; }
     public int TotalPages { get; }
     public int TotalCount { get; }

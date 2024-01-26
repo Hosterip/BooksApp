@@ -6,19 +6,19 @@ namespace PostsApp.Application.Users.Commands.UpdateUsername;
 
 internal sealed class UpdateUsernameCommandHandler : IRequestHandler<UpdateUsernameCommand>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateUsernameCommandHandler(IAppDbContext dbContext)
+    public UpdateUsernameCommandHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task Handle(UpdateUsernameCommand request, CancellationToken cancellationToken)
     {
         var user = 
-            await _dbContext.Users.SingleAsync(user => user.Id == request.Id, cancellationToken);
+            await _unitOfWork.User.GetSingleWhereAsync(user => user.Id == request.Id);
 
-        user.Username = request.NewUsername;
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        user!.Username = request.NewUsername;
+        await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

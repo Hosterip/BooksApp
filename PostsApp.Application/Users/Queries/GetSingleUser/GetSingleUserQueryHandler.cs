@@ -10,26 +10,24 @@ namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
 internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, SingleUserResult>
 {
-    private readonly IAppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetSingleUserQueryHandler(IAppDbContext dbContext)
+    public GetSingleUserQueryHandler(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<SingleUserResult> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
     {
-        var user = _dbContext.Users.SingleOrDefault(user => user.Id == request.Id);
+        var user = await _unitOfWork.User.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
             throw new UserException("User not found");
 
-        var posts = await 
-            (
-                from post in _dbContext.Posts
-                where post.User == user
-                select new PostResult
-                    { Id = post.Id, Title = post.Title, Body = post.Body })
-            .ToArrayAsync(cancellationToken);
+        var posts =
+        (
+            from post in await _unitOfWork.Post.GetAllWhereAsync(post => post.User.Id == user.Id)
+            select new PostWithoutUser { Id = post.Id, Title = post.Title, Body = post.Body }
+        ).ToArray();
         return new SingleUserResult { Id = user.Id, Username = user.Username, Posts = posts };
     }
 }
