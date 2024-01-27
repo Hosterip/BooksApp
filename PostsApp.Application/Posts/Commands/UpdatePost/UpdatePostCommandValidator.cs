@@ -1,8 +1,6 @@
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Constants;
-using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Posts.Commands.UpdatePost;
 
@@ -15,7 +13,7 @@ public class UpdatePostCommandValidator : AbstractValidator<UpdatePostCommand>
         RuleFor(post => post)
             .MustAsync(async (request, cancellationToken) =>
             {
-                return await unitOfWork.Post.PostAny(post => post.Id == request.Id && post.User.Id == request.UserId);
+                return await unitOfWork.Post.AnyAsync(post => post.Id == request.Id && post.User.Id == request.UserId);
             }).WithMessage(PostExceptionConstants.PostNotYour);
     }
 }

@@ -26,18 +26,16 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
             .PaginationAsync(page, limit);
     }
 
-    public async Task<PostResult> GetById(int id)
+    public override async Task<Post?> GetSingleWhereAsync(Expression<Func<Post, bool>> expression)
     {
         var post = await _dbContext.Posts
             .Include(post => post.User)
-            .SingleAsync(post => post.Id == id);
+            .SingleAsync(expression);
 
-        var user = new UserResult { Username = post.User.Username };
-
-        return new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, User = user };
+        return post;
     }
 
-    public async Task<bool> PostAny(Expression<Func<Post, bool>> expression)
+    public override async Task<bool> AnyAsync(Expression<Func<Post, bool>> expression)
     {
         return await _dbContext.Posts
             .Include(post => post.User)

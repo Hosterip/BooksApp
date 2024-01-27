@@ -11,7 +11,7 @@ public class DeletePostCommandValidator : AbstractValidator<DeletePostCommand>
         RuleFor(post => post)
             .MustAsync(async (request, cancellationToken) =>
             {
-                return await unitOfWork.Post.PostAny(post => post.Id == request.Id && post.User.Id == request.UserId);
+                return await unitOfWork.Post.AnyAsync(post => post.Id == request.Id && post.User.Id == request.UserId);
             }).WithMessage(PostExceptionConstants.PostNotYour);
     }
 }

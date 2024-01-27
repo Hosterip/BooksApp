@@ -24,12 +24,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _dbContext.Set<T>().Where(expression).ToListAsync();
     }
 
-    public async Task<T?> GetSingleWhereAsync(Expression<Func<T, bool>> expression)
+    public virtual async Task<T?> GetSingleWhereAsync(Expression<Func<T, bool>> expression)
     {
         return await _dbContext.Set<T>().SingleOrDefaultAsync(expression);
     }
 
-    public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
+    public virtual async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
     {
         return await _dbContext.Set<T>().AnyAsync(expression);
     }
