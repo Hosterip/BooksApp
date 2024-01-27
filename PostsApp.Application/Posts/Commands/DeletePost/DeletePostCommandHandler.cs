@@ -16,7 +16,7 @@ internal sealed class DeletePostCommandHandler : IRequestHandler<DeletePostComma
     public async Task Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
         var post = await _unitOfWork
-            .Post.GetSingleWhereAsync(post => post.Id == request.Id && post.User.Id == request.Id);
+            .Post.GetSingleWhereAsync(post => post.Id == request.Id && post.User.Id == request.UserId);
         await _unitOfWork.Post.RemoveAsync(post!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
