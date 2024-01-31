@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Models;
 
 namespace PostsApp.Infrastructure.DB;
@@ -21,4 +20,5 @@ public class AppDbContext : DbContext
     
     public DbSet<User> Users { get; set; }
     public DbSet<Post> Posts { get; set; }
+    public DbSet<Like> Likes { get; set; }
 }
