@@ -17,10 +17,12 @@ internal sealed class GetSinglePostQueryHandler : IRequestHandler<GetSinglePostQ
     }
     public async Task<PostResult> Handle(GetSinglePostQuery request, CancellationToken cancellationToken)
     {
-        var post = await _unitOfWork.Post.GetSingleWhereAsync(post => post.Id == request.Id);
+        var post = await _unitOfWork.Posts.GetSingleWhereAsync(post => post.Id == request.Id);
 
-        var user = new UserResult { Username = post!.User.Username };
-
-        return new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, User = user };
+        var user = new UserResult { Id = post!.User.Id, Username = post!.User.Username };
+        var likeCount = await 
+            _unitOfWork.Likes.GetAllWhereAsync(like => like.User.Id == user.Id && like.Post.Id == request.Id);
+        
+        return new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, User = user, LikeCount = likeCount.Count()};
     }
 }

@@ -20,9 +20,9 @@ internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Pagi
     {
         string query = request.Query ?? "";
         int limit = request.Limit ?? 10;
-        int page = request.Page;
+        int page = request.Page ?? 1;
 
-        var result = await _unitOfWork.User.GetPaginated(page, limit, query);
+        var result = await _unitOfWork.Users.GetPaginated(page, limit, query);
         return result;
     }
 }

@@ -9,9 +9,9 @@ using PostsApp.Infrastructure.DB;
 
 namespace PostsApp.Infrastructure.Implementation;
 
-public class PostRepository : GenericRepository<Post>, IPostRepository
+public class PostsRepository : GenericRepository<Post>, IPostsRepository
 {
-    public PostRepository(AppDbContext dbContext) : base(dbContext)
+    public PostsRepository(AppDbContext dbContext) : base(dbContext)
     {
     }
 
@@ -22,8 +22,24 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                 from post in _dbContext.Posts
                 where query == null || post.Title.Contains(query)
                 let user = new UserResult { Id = post.User.Id, Username = post.User.Username }
-                select new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, User = user })
+                join like in _dbContext.Likes.Include(like => like.Post)
+                    on post.Id equals like.Post.Id into likes
+                select new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, User = user, LikeCount = likes.Count()})
             .PaginationAsync(page, limit);
+    }
+
+    public async Task<IEnumerable<PostResult>> GetPosts(Expression<Func<Post, bool>> expression)
+    {
+        return (
+            from post in _dbContext.Posts
+                .Where(expression)
+                .Include(post => post.User)
+            
+            join like in _dbContext.Likes.Include(like => like.Post)
+                on post.Id equals like.Post.Id into likes 
+            let user = new UserResult{Id = post.User.Id, Username = post.User.Username }
+            select new PostResult { Id = post.Id, Title = post.Title, Body = post.Body, LikeCount = likes.Count(), User = user }
+        );
     }
 
     public override async Task<Post?> GetSingleWhereAsync(Expression<Func<Post, bool>> expression)

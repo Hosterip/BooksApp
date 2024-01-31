@@ -18,9 +18,9 @@ internal sealed class GetPostsQueryHandler : IRequestHandler<GetPostsQuery, Pagi
     {
         string query = request.Query ?? "";
         int limit = request.Limit ?? 10;
-        int page = request.Page;
+        int page = request.Page ?? 1;
 
-        var result = await _unitOfWork.Post.GetPaginated(limit, page, query);
+        var result = await _unitOfWork.Posts.GetPaginated(limit, page, query);
         
         return result;
     }

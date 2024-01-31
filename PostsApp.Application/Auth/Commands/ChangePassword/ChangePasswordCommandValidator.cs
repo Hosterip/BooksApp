@@ -13,7 +13,7 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
         RuleFor(request => request.Id)
             .MustAsync(async (id, cancellationToken) =>
             {
-                return await unitOfWork.User.AnyAsync(user => user.Id == id);
+                return await unitOfWork.Users.AnyAsync(user => user.Id == id);
             })
             .WithMessage(AuthExceptionConstants.NotFound);
     }

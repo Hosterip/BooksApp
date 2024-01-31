@@ -17,7 +17,7 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
     public async Task<AuthResult> Handle(LoginUserQuery request, CancellationToken cancellationToken)
     {
         var user = await 
-            _unitOfWork.User.GetSingleWhereAsync(user => user.Username == request.Username);
+            _unitOfWork.Users.GetSingleWhereAsync(user => user.Username == request.Username);
         if (!AuthUtils.IsPasswordValid(user!.Hash, user.Salt, request.Password))
             throw new AuthException(AuthExceptionConstants.Password);
         return new AuthResult{Id = user.Id, username = user.Username};

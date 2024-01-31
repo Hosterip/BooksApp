@@ -7,6 +7,6 @@ namespace PostsApp.Application.Posts.Queries.GetPosts;
 public class GetPostsQuery : IRequest<PaginatedArray<PostResult>>
 {
     public string? Query { get; set; }
-    public int Page { get; set; }
+    public int? Page { get; set; }
     public int? Limit { get; set; }
 }

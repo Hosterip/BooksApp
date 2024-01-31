@@ -2,7 +2,7 @@ using PostsApp.Application.Common.Results;
 
 namespace PostsApp.Application.Posts.Results;
 
-public class PostResult : PostWithoutUser
+public record PostResult : PostWithoutUser
 {
     public UserResult User { get; set; }
 }

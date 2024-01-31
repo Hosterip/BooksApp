@@ -18,9 +18,9 @@ internal sealed class CreatePostCommandHandler : IRequestHandler<CreatePostComma
     }
     public async Task<PostResult> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.User.GetSingleWhereAsync(user => user.Id == request.Id);
+        var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
         var post = new Post { User = user!, Title = request.Title, Body = request.Body };
-        await _unitOfWork.Post.AddAsync(post);
+        await _unitOfWork.Posts.AddAsync(post);
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = new PostResult
         {

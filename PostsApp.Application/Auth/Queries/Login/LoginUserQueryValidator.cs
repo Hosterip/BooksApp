@@ -14,7 +14,7 @@ public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
         RuleFor(user => user.Username)
             .MustAsync(async (username, cancellationToken) =>
             {
-                return await unitOfWork.User.AnyAsync(user => user.Username == username);
+                return await unitOfWork.Users.AnyAsync(user => user.Username == username);
             }).WithMessage(AuthExceptionConstants.NotFound);
         RuleFor(user => user.Password)
             .NotEmpty();

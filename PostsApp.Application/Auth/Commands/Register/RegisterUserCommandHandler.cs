@@ -17,11 +17,11 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
     }
     public async Task<AuthResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        if (await _unitOfWork.User.AnyAsync(user => user.Username == request.Username))
+        if (await _unitOfWork.Users.AnyAsync(user => user.Username == request.Username))
             throw new AuthException(AuthExceptionConstants.Occupied);
         var hashSalt = AuthUtils.CreateHashSalt(request.Password);
         User user = new User { Username = request.Username, Hash = hashSalt.hash, Salt = hashSalt.salt };
-        await _unitOfWork.User.AddAsync(user);
+        await _unitOfWork.Users.AddAsync(user);
         await _unitOfWork.SaveAsync(cancellationToken);
         return new AuthResult {Id = user.Id, username = request.Username };
     }

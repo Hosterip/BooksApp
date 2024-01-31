@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PostsApp.Application.Posts.Commands.AddRemoveLike;
 using PostsApp.Application.Posts.Commands.CreatePost;
 using PostsApp.Application.Posts.Commands.DeletePost;
 using PostsApp.Application.Posts.Commands.UpdatePost;
@@ -84,8 +85,8 @@ public class PostController : Controller
         }
     }
 
-    [HttpGet("many/{page:int}")]
-    public async Task<IActionResult> GetPosts(int page, int? limit, string q, CancellationToken cancellationToken)
+    [HttpGet("many")]
+    public async Task<IActionResult> GetPosts(int? page,int? limit, string q, CancellationToken cancellationToken)
     {
         var query = new GetPostsQuery { Query = q, Limit = limit, Page = page };
         var result = await _sender.Send(query, cancellationToken);
@@ -100,6 +101,21 @@ public class PostController : Controller
             var query = new GetSinglePostQuery { Id = id };
             var post = await _sender.Send(query, cancellationToken);
             return Ok(post);
+        }
+        catch (PostException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpGet("like/{id:int}")]
+    public async Task<IActionResult> AddRemoveLike(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var query = new AddRemoveLikeCommand { UserId = (int)HttpContext.GetId()!, PostId = id };
+            await _sender.Send(query, cancellationToken);
+            return Ok("Like was added or removed");
         }
         catch (PostException ex)
         {

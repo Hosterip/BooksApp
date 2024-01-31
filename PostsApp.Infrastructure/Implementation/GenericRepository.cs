@@ -19,7 +19,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _dbContext.Set<T>().ToListAsync();
     }
 
-    public async Task<IEnumerable<T>> GetAllWhereAsync(Expression<Func<T, bool>> expression)
+    public virtual async Task<IEnumerable<T>> GetAllWhereAsync(Expression<Func<T, bool>> expression)
     {
         return await _dbContext.Set<T>().Where(expression).ToListAsync();
     }

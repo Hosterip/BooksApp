@@ -17,7 +17,7 @@ internal sealed class UpdatePostCommandHandler : IRequestHandler<UpdatePostComma
     }
     public async Task<PostResult> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
     {
-        var post = await _unitOfWork.Post.GetSingleWhereAsync(post => post.Id == request.Id);
+        var post = await _unitOfWork.Posts.GetSingleWhereAsync(post => post.Id == request.Id);
 
         post!.Title = request.Title;
         post.Body = request.Body;

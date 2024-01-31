@@ -2,7 +2,8 @@ namespace PostsApp.Application.Common.Interfaces;
 
 public interface IUnitOfWork
 {
-    public IPostRepository Post { get; }
-    public IUserRepository User { get; }
+    public IPostsRepository Posts { get; }
+    public IUsersRepository Users { get; }
+    public ILikesRepository Likes { get; }
     Task SaveAsync(CancellationToken cancellationToken);
 }

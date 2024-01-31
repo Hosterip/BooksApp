@@ -13,7 +13,7 @@ public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
         RuleFor(post => post.Body).NotEmpty().Length(1, 255);
         RuleFor(post => post.Id).MustAsync(async (id, cancellationToken) =>
         {
-            return await unitOfWork.User.AnyAsync(user => user.Id == id);
+            return await unitOfWork.Users.AnyAsync(user => user.Id == id);
         }).WithMessage(PostExceptionConstants.UserNotRight);
         
     }

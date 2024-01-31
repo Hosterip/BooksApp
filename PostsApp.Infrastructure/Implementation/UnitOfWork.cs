@@ -8,12 +8,14 @@ public class UnitOfWork : IUnitOfWork
     public AppDbContext _dbContext { get; private set; }
     public UnitOfWork(AppDbContext dbContext)
     {
-        Post = new PostRepository(dbContext);
-        User = new UserRepository(dbContext);
+        Posts = new PostsRepository(dbContext);
+        Users = new UsersRepository(dbContext);
+        Likes = new LikesRepository(dbContext);
         _dbContext = dbContext;
     }
-    public IPostRepository Post { get; private set; }
-    public IUserRepository User { get; private set; }
+    public IPostsRepository Posts { get; private set; }
+    public IUsersRepository Users { get; private set; }
+    public ILikesRepository Likes { get; private set; }
     public async Task SaveAsync(CancellationToken cancellationToken)
     {
         await _dbContext.SaveChangesAsync(cancellationToken);

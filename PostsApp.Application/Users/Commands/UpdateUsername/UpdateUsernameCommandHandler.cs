@@ -16,7 +16,7 @@ internal sealed class UpdateUsernameCommandHandler : IRequestHandler<UpdateUsern
     public async Task Handle(UpdateUsernameCommand request, CancellationToken cancellationToken)
     {
         var user = 
-            await _unitOfWork.User.GetSingleWhereAsync(user => user.Id == request.Id);
+            await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
 
         user!.Username = request.NewUsername;
         await _unitOfWork.SaveAsync(cancellationToken);

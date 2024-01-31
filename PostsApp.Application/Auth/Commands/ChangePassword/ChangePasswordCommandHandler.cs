@@ -15,7 +15,7 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
     }
     public async Task Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.User
+        var user = await _unitOfWork.Users
             .GetSingleWhereAsync(user => user.Id == request.Id);
         
         if (!AuthUtils.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword)) 

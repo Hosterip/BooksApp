@@ -6,6 +6,7 @@ using PostsApp.Application.Posts.Results;
 using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Constants;
 using PostsApp.Domain.Exceptions;
+using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
@@ -20,15 +21,19 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
 
     public async Task<SingleUserResult> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.User.GetSingleWhereAsync(user => user.Id == request.Id);
+        var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
             throw new UserException(UserExceptionConstants.NotFound);
 
-        var posts =
-        (
-            from post in await _unitOfWork.Post.GetAllWhereAsync(post => post.User.Id == user.Id)
-            select new PostWithoutUser { Id = post.Id, Title = post.Title, Body = post.Body }
+        var rawLikes = await
+            _unitOfWork.Likes.GetAllWhereAsync(like => like.User.Id == request.Id);
+
+        var likes = (
+            from like in rawLikes
+            select new LikeResult { Id = like.Id, UserId = like.User.Id, PostId = like.Post.Id }
         ).ToArray();
-        return new SingleUserResult { Id = user.Id, Username = user.Username, Posts = posts };
+
+        var posts = await _unitOfWork.Posts.GetPosts(post => request.Id == post.User.Id);
+        return new SingleUserResult { Id = user.Id, Username = user.Username, Posts = posts.ToArray(), Likes = likes };
     }
 }

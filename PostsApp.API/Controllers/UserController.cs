@@ -34,8 +34,8 @@ public class UserController : Controller
         return Ok(new UserResponse { Id = id, Username = username });
     }
 
-    [HttpGet("many/{page:int}")]
-    public async Task<IActionResult> GetManyUsers(int page, int? limit, string? q, CancellationToken cancellationToken)
+    [HttpGet("many")]
+    public async Task<IActionResult> GetManyUsers(int? page, int? limit, string? q, CancellationToken cancellationToken)
     {
         var query = new GetUsersQuery { Query = q, Page = page, Limit = limit };
         var users = await _sender.Send(query, cancellationToken);

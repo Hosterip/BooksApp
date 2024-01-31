@@ -6,9 +6,9 @@ using PostsApp.Infrastructure.DB;
 
 namespace PostsApp.Infrastructure.Implementation;
 
-public class UserRepository : GenericRepository<User>, IUserRepository
+public class UsersRepository : GenericRepository<User>, IUsersRepository
 {
-    public UserRepository(AppDbContext dbContext) : base(dbContext) { }
+    public UsersRepository(AppDbContext dbContext) : base(dbContext) { }
 
     public async Task<PaginatedArray<UserResult>> GetPaginated(int page, int limit, string query)
     {
@@ -16,7 +16,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             (
                 from user in _dbContext.Users
                 where query == null || user.Username.Contains(query)
-                select new UserResult{Username = user.Username})
+                select new UserResult{Id = user.Id,Username = user.Username})
             .PaginationAsync(page, limit);
     }
 }
