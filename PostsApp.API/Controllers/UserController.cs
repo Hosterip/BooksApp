@@ -63,10 +63,16 @@ public class UserController : Controller
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized");
-
-        var command = new DeleteUserCommand { Id = (int)HttpContext.GetId()! };
-        await _sender.Send(command, cancellationToken);
-
+        try
+        {
+            var command = new DeleteUserCommand { Id = (int)HttpContext.GetId()! };
+            await _sender.Send(command, cancellationToken);
+        }
+        catch (UserException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        
         await HttpContext.SignOutAsync();
 
         return Ok("User was deleted");
