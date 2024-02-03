@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PostsApp.Domain.Models;
 
-namespace PostsApp.Infrastructure.DB;
+namespace PostsApp.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
@@ -17,7 +17,7 @@ public class AppDbContext : DbContext
     {
         optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"));
     }
-    
+
     public DbSet<User> Users { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Like> Likes { get; set; }

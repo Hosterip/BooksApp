@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PostsApp.Infrastructure.Data;
 using PostsApp.Infrastructure.DB;
 
 #nullable disable
@@ -11,11 +11,9 @@ using PostsApp.Infrastructure.DB;
 namespace PostsApp.Infrastructure.DB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240131202715_Likes Update")]
-    partial class LikesUpdate
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

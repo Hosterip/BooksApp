@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <Folder Include="DB\Migrations\" />
+        <Folder Include="Data\Migrations\" />
         <ProjectReference Include="..\PostsApp.Domain\PostsApp.Domain.csproj" />
         <ProjectReference Include="..\PostsApp.Application\PostsApp.Application.csproj" />
     </ItemGroup>

@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Infrastructure.Data;
 using PostsApp.Infrastructure.DB;
 
 namespace PostsApp.Infrastructure.Implementation;

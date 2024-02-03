@@ -2,6 +2,7 @@ using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Domain.Models;
+using PostsApp.Infrastructure.Data;
 using PostsApp.Infrastructure.DB;
 
 namespace PostsApp.Infrastructure.Implementation;
