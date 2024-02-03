@@ -6,7 +6,7 @@ using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Users.Commands.DeleteUser;
 
-internal sealed class DeleteUserCommandHandler : IRequestHandler<DeletePostCommand>
+internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -14,12 +14,12 @@ internal sealed class DeleteUserCommandHandler : IRequestHandler<DeletePostComma
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task Handle(DeletePostCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
             throw new UserException(UserExceptionConstants.NotFound);
-        await _unitOfWork.Users.RemoveAsync(user);
+        await _unitOfWork.Users.RemoveAsync(user!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }
