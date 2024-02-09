@@ -1,13 +1,13 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Books.Results;
-using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Extensions;
+using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
 using PostsApp.Domain.Models;
 using PostsApp.Infrastructure.Data;
 
-namespace PostsApp.Infrastructure.Implementation;
+namespace PostsApp.Infrastructure.Implementation.Repositories;
 
 public class BooksRepository : GenericRepository<Book>, IPostsRepository
 {
@@ -44,17 +44,17 @@ public class BooksRepository : GenericRepository<Book>, IPostsRepository
 
     public override async Task<Book?> GetSingleWhereAsync(Expression<Func<Book, bool>> expression)
     {
-        var post = await _dbContext.Books
-            .Include(post => post.Author)
+        var book = await _dbContext.Books
+            .Include(book => book.Author)
             .SingleAsync(expression);
 
-        return post;
+        return book;
     }
 
     public override async Task<bool> AnyAsync(Expression<Func<Book, bool>> expression)
     {
         return await _dbContext.Books
-            .Include(post => post.Author)
+            .Include(book => book.Author)
             .AnyAsync(expression);
     }
 }

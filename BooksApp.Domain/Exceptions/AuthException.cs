@@ -1,4 +1,4 @@
-namespace PostsApp.Domain.Auth;
+namespace PostsApp.Domain.Exceptions;
 
 public class AuthException : Exception
 {

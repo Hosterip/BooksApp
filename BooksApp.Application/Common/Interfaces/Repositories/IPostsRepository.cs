@@ -3,7 +3,7 @@ using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Results;
 using PostsApp.Domain.Models;
 
-namespace PostsApp.Application.Common.Interfaces;
+namespace PostsApp.Application.Common.Interfaces.Repositories;
 
 public interface IPostsRepository : IGenericRepository<Book>
 {

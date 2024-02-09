@@ -1,9 +1,9 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using PostsApp.Application.Common.Interfaces;
+using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Infrastructure.Data;
 
-namespace PostsApp.Infrastructure.Implementation;
+namespace PostsApp.Infrastructure.Implementation.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {

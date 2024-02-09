@@ -1,10 +1,10 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using PostsApp.Application.Common.Interfaces;
+using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Domain.Models;
 using PostsApp.Infrastructure.Data;
 
-namespace PostsApp.Infrastructure.Implementation;
+namespace PostsApp.Infrastructure.Implementation.Repositories;
 
 public class LikesRepository : GenericRepository<Like>, ILikesRepository
 {
@@ -12,6 +12,7 @@ public class LikesRepository : GenericRepository<Like>, ILikesRepository
     public override async Task<bool> AnyAsync(Expression<Func<Like, bool>> expression)
     {
         return await _dbContext.Likes
+            .Include(like => like.User)
             .Include(like => like.User)
             .Include(like => like.Book)
             .AnyAsync(expression);

@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace PostsApp.Application.Common.Interfaces;
+namespace PostsApp.Application.Common.Interfaces.Repositories;
 
 public interface IGenericRepository<T> where T : class
 {
