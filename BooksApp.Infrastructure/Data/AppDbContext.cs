@@ -7,15 +7,10 @@ namespace PostsApp.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
-    private readonly IConfiguration _configuration;
-    public AppDbContext(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"));
+        optionsBuilder.UseSqlServer("Server=HOSTERIP\\SQLEXPRESS;Database=postsapp;Trusted_Connection=True;TrustServerCertificate=True");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,4 +22,5 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Book> Books { get; set; }
     public DbSet<Like> Likes { get; set; }
+    public DbSet<Role> Roles { get; set; }
 }
