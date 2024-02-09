@@ -1,10 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Users.Commands.UpdateRole;
+using PostsApp.Application.Roles.Commands.UpdateRole;
+using PostsApp.Application.Roles.Queries.GetRoles;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Role;
-using PostsApp.Domain.Constants;
 
 namespace PostsApp.Controllers;
 
@@ -19,13 +19,11 @@ public class RolesController : Controller
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        List<String> roles = new List<String>();
-        roles.Add(RoleConstants.Member);    
-        roles.Add(RoleConstants.Author);    
-        roles.Add(RoleConstants.Moderator);    
-        roles.Add(RoleConstants.Admin);
+        var command = new GetRoleQuery();
+
+        var roles = await _sender.Send(command, cancellationToken);
 
         return Ok(roles);
     }
