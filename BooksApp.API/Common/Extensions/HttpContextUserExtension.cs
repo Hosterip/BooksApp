@@ -25,10 +25,12 @@ public static class HttpContextUserExtension
 
     public static void ChangeUsername(this HttpContext httpContext, string valueOfClaim)
     {
-        var identity = httpContext.User.Identity as ClaimsIdentity;
-        
-        identity!.RemoveClaim(identity.FindFirst(ClaimTypes.NameIdentifier));
-        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, valueOfClaim));
+        httpContext.ChangeClaim(ClaimTypes.NameIdentifier, valueOfClaim);
+    }
+    
+    public static void ChangeRole(this HttpContext httpContext, string valueOfClaim)
+    {
+        httpContext.ChangeClaim(ClaimTypes.Role, valueOfClaim);
     }
 
     public static async Task Login(this HttpContext httpContext, string username, int id, string role)
@@ -45,4 +47,12 @@ public static class HttpContextUserExtension
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity));
     }
+    
+    private static void ChangeClaim(this HttpContext httpContext, string typeOfClaim, string valueOfClaim)
+    {
+        var identity = httpContext.User.Identity as ClaimsIdentity;
+        
+        identity!.RemoveClaim(identity.FindFirst(typeOfClaim));
+        identity.AddClaim(new Claim(typeOfClaim, valueOfClaim));
+    } 
 }

@@ -10,6 +10,7 @@ using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Auth;
 using PostsApp.Domain.Auth;
 using PostsApp.Domain.Constants;
+using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Controllers;
 [Route("auth")]
@@ -31,7 +32,7 @@ public class AuthController : Controller
         {
             var command = new RegisterUserCommand{Username = request.Username, Password = request.Password };
             var user = await _sender.Send(command, cancellationToken);
-            await HttpContext.Login(user.Username, user.Id, Roles.Member);
+            await HttpContext.Login(user.Username, user.Id, RoleConstants.Member);
             return StatusCode(201, user);
         }
         catch (AuthException e)
@@ -52,7 +53,7 @@ public class AuthController : Controller
         {
             var command = new LoginUserQuery { Username = request.Username, Password = request.Password };
             var user = await _sender.Send(command, cancellationToken);
-            await HttpContext.Login(user.Username, user.Id, user.Role ?? Roles.Member);
+            await HttpContext.Login(user.Username, user.Id, user.Role ?? RoleConstants.Member);
             return Ok(user);
         }
         catch (AuthException e)
