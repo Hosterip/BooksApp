@@ -17,10 +17,10 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
                 .AnyAsync(user => 
                     user.Id == id);
         }).WithMessage(UserExceptionConstants.NotFound);
-        RuleFor(post => post.Id).MustAsync(async (id, cancellationToken) =>
+        RuleFor(request => request.Id).MustAsync(async (id, cancellationToken) =>
         {
             return await unitOfWork.Users
-                .AnyAsync(user => user.Role == Roles.Author);
+                .AnyAsync(user => id == user.Id && user.Role.Name == RoleConstants.Author);
         }).WithMessage(BookExceptionConstants.MustBeAnAuthor);
         
     }

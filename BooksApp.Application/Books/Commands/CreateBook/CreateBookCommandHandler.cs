@@ -22,7 +22,7 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = new BookResult
         {
-            Author = new UserResult { Id = user!.Id, Username = user.Username, Role = user.Role! },
+            Author = new UserResult { Id = user!.Id, Username = user.Username, Role = user.Role.Name },
             Title = post.Title, Description = post.Description,
             Id = post.Id
         };

@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Constants;
+using PostsApp.Domain.Constants.Exceptions;
 
 namespace PostsApp.Application.Users.Commands.UpdateUsername;
 

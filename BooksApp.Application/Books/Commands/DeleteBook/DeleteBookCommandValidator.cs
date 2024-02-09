@@ -12,11 +12,12 @@ public class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
         RuleFor(post => post)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var isAdmin = await unitOfWork.Users
-                    .AnyAsync(user => user.Id == request.UserId && user.Role == Roles.Admin);
+                var doCan = await unitOfWork.Users
+                    .AnyAsync(user => user.Id == request.UserId &&
+                                      (user.Role.Name == RoleConstants.Admin || user.Role.Name == RoleConstants.Moderator));
                 return await unitOfWork.Posts.AnyAsync(book => 
                     book.Id == request.Id &&
-                    (book.Author.Id == request.UserId || isAdmin));
+                    (book.Author.Id == request.UserId || doCan));
             }).WithMessage(BookExceptionConstants.PostNotYour);
     }
 }

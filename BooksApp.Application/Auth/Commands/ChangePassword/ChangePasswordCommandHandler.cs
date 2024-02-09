@@ -2,6 +2,8 @@ using MediatR;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Auth;
 using PostsApp.Domain.Constants;
+using PostsApp.Domain.Constants.Exceptions;
+using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Auth.Commands.ChangePassword;
 

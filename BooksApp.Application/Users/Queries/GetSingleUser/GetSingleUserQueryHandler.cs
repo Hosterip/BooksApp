@@ -4,6 +4,7 @@ using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Constants;
+using PostsApp.Domain.Constants.Exceptions;
 using PostsApp.Domain.Exceptions;
 using PostsApp.Domain.Models;
 
@@ -33,6 +34,13 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
         ).ToArray();
 
         var posts = await _unitOfWork.Posts.GetBooks(post => request.Id == post.Author.Id);
-        return new SingleUserResult { Id = user.Id, Username = user.Username, Role = user.Role ?? Roles.Member, Posts = posts.ToArray(), Likes = likes };
+        return new SingleUserResult
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Role = user.Role.Name, 
+            Posts = posts.ToArray(),
+            Likes = likes
+        };
     }
 }
