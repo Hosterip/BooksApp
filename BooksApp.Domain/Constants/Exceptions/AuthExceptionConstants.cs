@@ -1,4 +1,4 @@
-namespace PostsApp.Domain.Constants;
+namespace PostsApp.Domain.Constants.Exceptions;
 
 public static class AuthExceptionConstants
 {
