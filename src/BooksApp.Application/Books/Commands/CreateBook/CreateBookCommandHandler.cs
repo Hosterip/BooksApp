@@ -24,6 +24,7 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
         {
             Author = new UserResult { Id = user!.Id, Username = user.Username, Role = user.Role.Name },
             Title = post.Title, Description = post.Description,
+            LikeCount = 0,
             Id = post.Id
         };
         return result;

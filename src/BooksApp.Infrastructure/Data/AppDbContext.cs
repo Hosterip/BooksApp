@@ -7,12 +7,18 @@ namespace PostsApp.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    private readonly IConfiguration _configuration;
+
+    public AppDbContext(IConfiguration configuration)
     {
-        optionsBuilder.UseSqlServer("Server=HOSTERIP\\SQLEXPRESS;Database=postsapp;Trusted_Connection=True;TrustServerCertificate=True");
+        _configuration = configuration;
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"));
+        
+    } 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

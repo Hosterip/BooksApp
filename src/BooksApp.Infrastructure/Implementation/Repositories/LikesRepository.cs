@@ -9,6 +9,12 @@ namespace PostsApp.Infrastructure.Implementation.Repositories;
 public class LikesRepository : GenericRepository<Like>, ILikesRepository
 {
     public LikesRepository(AppDbContext dbContext) : base(dbContext) { }
+    public async Task<int> CountLikes(int id)
+    {
+        return await _dbContext.Likes
+            .Include(like => like.Book)
+            .CountAsync(like => like.Book.Id == id);
+    }
     public override async Task<bool> AnyAsync(Expression<Func<Like, bool>> expression)
     {
         return await _dbContext.Likes
@@ -17,6 +23,7 @@ public class LikesRepository : GenericRepository<Like>, ILikesRepository
             .Include(like => like.Book)
             .AnyAsync(expression);
     }
+
     public override async Task<Like?> GetSingleWhereAsync(Expression<Func<Like, bool>> expression)
     {
         return await _dbContext.Likes

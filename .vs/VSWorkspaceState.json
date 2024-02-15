@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\BooksApp.API",
+    "\\src\\BooksApp.Infrastructure",
+    "\\src\\BooksApp.Infrastructure\\Data",
+    "\\src\\BooksApp.Infrastructure\\Data\\Migrations"
+  ],
+  "SelectedNode": "\\src\\BooksApp.API\\BooksApp.API.csproj",
+  "PreviewInSolutionExplorer": false
+}
