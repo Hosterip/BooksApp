@@ -23,15 +23,15 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreatePost(BookRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create(BookRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
-            return StatusCode(401, "You are not authorized to make post");
+            return StatusCode(401, "You are not authorized to create a book");
 
 
         var command = new CreateBookCommand
         {
-            Id = (int)HttpContext.GetId()!, Title = request.Title, Description = request.Description
+            UserId = (int)HttpContext.GetId()!, Title = request.Title, Description = request.Description
         };
         var post = await _sender.Send(command, cancellationToken);
 
@@ -39,7 +39,7 @@ public class BookController : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdatePost(UpdateBookRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update(UpdateBookRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized");
@@ -53,10 +53,10 @@ public class BookController : Controller
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeletePost(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
-            return StatusCode(401, "You are not authorized to delete post");
+            return StatusCode(401, "You are not authorized to delete a book");
 
         var command = new DeleteBookCommand { Id = id, UserId = (int)HttpContext.GetId()! };
         await _sender.Send(command, cancellationToken);
@@ -64,7 +64,7 @@ public class BookController : Controller
     }
 
     [HttpGet("many")]
-    public async Task<IActionResult> GetPosts(int? page, int? limit, string q, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMany(int? page, int? limit, string q, CancellationToken cancellationToken)
     {
         var query = new GetBooksQuery { Query = q, Limit = limit, Page = page };
         var result = await _sender.Send(query, cancellationToken);
@@ -72,7 +72,7 @@ public class BookController : Controller
     }
 
     [HttpGet("single/{id:int}")]
-    public async Task<IActionResult> GetPost(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSingle(int id, CancellationToken cancellationToken)
     {
         var query = new GetSingleBookQuery { Id = id };
         var post = await _sender.Send(query, cancellationToken);
@@ -82,6 +82,8 @@ public class BookController : Controller
     [HttpPost("like/{id:int}")]
     public async Task<IActionResult> AddRemoveLike(int id, CancellationToken cancellationToken)
     {
+        if (!HttpContext.IsAuthorized())
+            return StatusCode(401, "You are not authorized");
         var query = new AddRemoveLikeCommand { UserId = (int)HttpContext.GetId()!, PostId = id };
         await _sender.Send(query, cancellationToken);
         return Ok("Like was added or removed");
