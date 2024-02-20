@@ -5,7 +5,7 @@ namespace PostsApp.Application.Books.Commands.CreateBook;
 
 public sealed class CreateBookCommand : IRequest<BookResult>
 {
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
+    public required int UserId { get; init; }
+    public required string Title { get; init; }
+    public required string Description { get; init; }
 }
