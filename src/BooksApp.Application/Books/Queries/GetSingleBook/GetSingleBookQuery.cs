@@ -5,5 +5,5 @@ namespace PostsApp.Application.Books.Queries.GetSingleBook;
 
 public class GetSingleBookQuery : IRequest<BookResult>
 {
-    public int Id { get; set; } 
+    public required int Id { get; init; } 
 }

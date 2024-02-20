@@ -6,5 +6,5 @@ namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
 public class GetSingleUserQuery : IRequest<SingleUserResult>
 {
-    public int Id { get; set; }
+    public required int Id { get; init; }
 }
