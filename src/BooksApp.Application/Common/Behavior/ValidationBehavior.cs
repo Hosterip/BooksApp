@@ -1,7 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
-using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Common.Behavior;
 

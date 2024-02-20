@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksApp.Domain", "src\Book
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksApp.Infrastructure", "src\BooksApp.Infrastructure\BooksApp.Infrastructure.csproj", "{F621A38D-0893-430F-9521-B6FEBA64C8DE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8E277F04-0280-4AC1-9C88-440689775727}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksApp.Application.UnitTests", "tests\BooksApp.Application.UnitTests\BooksApp.Application.UnitTests.csproj", "{CD349189-DE53-4865-AFCD-C6BB612171A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,10 @@ Global
 		{F621A38D-0893-430F-9521-B6FEBA64C8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F621A38D-0893-430F-9521-B6FEBA64C8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F621A38D-0893-430F-9521-B6FEBA64C8DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD349189-DE53-4865-AFCD-C6BB612171A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD349189-DE53-4865-AFCD-C6BB612171A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD349189-DE53-4865-AFCD-C6BB612171A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD349189-DE53-4865-AFCD-C6BB612171A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1AC7EE36-B5DF-4037-B9BE-C5E2017C547F} = {D2176DB7-E125-438E-B04D-007B75C9E30F}
@@ -51,5 +59,6 @@ Global
 		{EFE95DE6-4D41-4559-8002-82038C370402} = {D2176DB7-E125-438E-B04D-007B75C9E30F}
 		{454F21EB-3730-42F5-A8C3-E49C1547A248} = {D2176DB7-E125-438E-B04D-007B75C9E30F}
 		{F621A38D-0893-430F-9521-B6FEBA64C8DE} = {D2176DB7-E125-438E-B04D-007B75C9E30F}
+		{CD349189-DE53-4865-AFCD-C6BB612171A4} = {8E277F04-0280-4AC1-9C88-440689775727}
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,6 @@
 using FluentValidation;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
 using PostsApp.Domain.Constants.Exceptions;
 
@@ -28,16 +29,12 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
             .MustAsync(async (request, cancellationToken) =>
             {
                 var targetUser = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
-                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.ChangerId);
-                if (user is null || targetUser is null) return false;
-                if (user.Role.Name == RoleConstants.Moderator &&
-                    (request.Role == RoleConstants.Moderator ||
-                     request.Role == RoleConstants.Admin ||
-                     targetUser.Role.Name == RoleConstants.Moderator ||
-                     targetUser.Role.Name == RoleConstants.Admin))
-                    return false;
-                
-                return user.Role.Name == RoleConstants.Admin || user.Role.Name == RoleConstants.Moderator;
+                var changerUser = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.ChangerId);
+                if (changerUser is null || targetUser is null) return false;
+                return RolePermissions.UpdateRole(
+                    changerUser.Role.Name, 
+                    targetUser.Role.Name,
+                    request.Role);
             }).WithMessage(UserExceptionConstants.Permission);
     }
 }

@@ -1,5 +1,6 @@
 using FluentValidation;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
 using PostsApp.Domain.Constants.Exceptions;
 
@@ -12,12 +13,12 @@ public class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
         RuleFor(post => post)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var doCan = await unitOfWork.Users
-                    .AnyAsync(user => user.Id == request.UserId &&
-                                      (user.Role.Name == RoleConstants.Admin || user.Role.Name == RoleConstants.Moderator));
+                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
+                if (user is null) return false; 
+                var canDelete = RolePermissions.UpdateOrDeleteBook(user.Role.Name);
                 return await unitOfWork.Posts.AnyAsync(book => 
                     book.Id == request.Id &&
-                    (book.Author.Id == request.UserId || doCan));
+                    (book.Author.Id == request.UserId || canDelete));
             }).WithMessage(BookExceptionConstants.PostNotYour);
     }
 }

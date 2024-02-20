@@ -17,10 +17,14 @@ internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQ
     {
         var post = await _unitOfWork.Posts.GetSingleWhereAsync(post => post.Id == request.Id);
 
-        var user = new UserResult { Id = post!.Author.Id, Username = post!.Author.Username };
-        var likeCount = await 
-            _unitOfWork.Likes.GetAllWhereAsync(like => like.User.Id == user.Id && like.Book.Id == request.Id);
+        var user = new UserResult
+        {
+            Id = post!.Author.Id, 
+            Username = post!.Author.Username,
+            Role = post.Author.Role.Name
+        };
+        var likeCount = await _unitOfWork.Likes.CountLikes(request.Id);
         
-        return new BookResult { Id = post.Id, Title = post.Title, Description = post.Description, Author = user, LikeCount = likeCount.Count()};
+        return new BookResult { Id = post.Id, Title = post.Title, Description = post.Description, Author = user, LikeCount = likeCount};
     }
 }
