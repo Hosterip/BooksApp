@@ -2,7 +2,7 @@ namespace PostsApp.Application.Common.Results;
 
 public class LikeResult
 {
-    public int Id { get; set; }
-    public int UserId { get; set; }
-    public int PostId { get; set; }
+    public required int Id { get; init; }
+    public required int UserId { get; init; }
+    public required int PostId { get; init; }
 }
