@@ -1,7 +1,7 @@
 ﻿using PostsApp.Domain.Constants;
 using PostsApp.Domain.Models;
 
-namespace Application.UnitTest.MockData;
+namespace Application.UnitTest.TestUtils.MockData;
 
 public static class MockUser
 {

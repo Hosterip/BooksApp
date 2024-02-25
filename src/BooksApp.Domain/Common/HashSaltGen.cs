@@ -1,13 +1,26 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace PostsApp.Domain.Auth;
+namespace PostsApp.Domain.Common;
 
-public record HashSaltResult(string hash, string salt);
+public record HashSaltResult(string Hash, string Salt);
 
-public static class AuthUtils
+public static class HashSaltGen
 {
-    private static string CreateHash(string password, byte[] salt)
+    public static bool IsPasswordValid(string userHash, string salt, string password)
+    {
+        string hashToValidate = GenerateHash(password, StringToByteArray(salt));
+        return hashToValidate == userHash;
+    }
+
+    public static HashSaltResult GenerateHashSalt(string password)
+    {
+        byte[] salt = GenerateSalt();
+        string hash = GenerateHash(password, salt);
+        return new HashSaltResult(hash, Convert.ToHexString(salt));
+    }
+    
+    private static string GenerateHash(string password, byte[] salt)
     {
         string hash = Convert.ToHexString(KeyDerivation.Pbkdf2(
             password: password,
@@ -28,18 +41,5 @@ public static class AuthUtils
     private static byte[] GenerateSalt()
     {
         return RandomNumberGenerator.GetBytes(32);
-    }
-
-    public static bool IsPasswordValid(string userHash, string salt, string password)
-    {
-        string hashToValidate = CreateHash(password, StringToByteArray(salt));
-        return hashToValidate == userHash;
-    }
-
-    public static HashSaltResult CreateHashSalt(string password)
-    {
-        byte[] salt = GenerateSalt();
-        string hash = CreateHash(password, salt);
-        return new HashSaltResult(hash, Convert.ToHexString(salt));
     }
 }
