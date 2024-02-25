@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Application.UnitTest.MockData;
+using Application.UnitTest.TestUtils.MockData;
 using FluentAssertions;
 using Moq;
 using PostsApp.Application.Common.Interfaces;
@@ -24,7 +24,7 @@ public class UpdateRoleCommandValidatorTests
     public async Task Constructor_ReturnFailureResult_WhenChangerIdMatchesTargetId()
     {
         // Arrange
-        ArrangeAllMethodsForUpdateRoleCommandValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
         var command = new UpdateRoleCommand { UserId = 1, ChangerId = 1, Role = RoleConstants.Admin};
 
         // Act
@@ -35,10 +35,10 @@ public class UpdateRoleCommandValidatorTests
     }
     
     [Fact]
-    public async Task Constructor_ReturnFailureResult_WhenRoleRuleNotSatisfied()
+    public async Task Constructor_WhenRoleRuleNotSatisfied_ReturnFailureResult()
     {
         // Arrange
-        ArrangeAllMethodsForUpdateRoleCommandValidator(true, true, MockUser.GetUser(RoleConstants.Member));
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleConstants.Member));
         var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleConstants.Admin };
 
         // Act
@@ -49,10 +49,10 @@ public class UpdateRoleCommandValidatorTests
     }
     
     [Fact]
-    public async Task Constructor_ReturnSuccessfulResult_WhenRoleRuleSatisfied()
+    public async Task Constructor_WhenRoleRuleSatisfied_ReturnSuccessfulResult()
     {
         // Arrange
-        ArrangeAllMethodsForUpdateRoleCommandValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
         var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleConstants.Admin };
 
         // Act
@@ -63,10 +63,10 @@ public class UpdateRoleCommandValidatorTests
     }
     
     [Fact]
-    public async Task Constructor_ReturnSuccessfulResult_WhenRulesSatisfied()
+    public async Task Constructor_WhenAllTheRulesSatisfied_ReturnSuccessfulResult()
     {
         // Arrange
-        ArrangeAllMethodsForUpdateRoleCommandValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
         var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleConstants.Admin};
 
         // Act
@@ -76,7 +76,7 @@ public class UpdateRoleCommandValidatorTests
         result.IsValid.Should().BeTrue();
     }
 
-    private void ArrangeAllMethodsForUpdateRoleCommandValidator(
+    private void ArrangeAllMethodsForValidator(
         bool roleAnyAsync, 
         bool usersAnyAsync,
         User? usersGetSingle)

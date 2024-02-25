@@ -19,7 +19,7 @@ internal sealed class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, Pagi
         int limit = request.Limit ?? 10;
         int page = request.Page ?? 1;
 
-        var result = await _unitOfWork.Posts.GetPaginated(limit, page, query);
+        var result = await _unitOfWork.Books.GetPaginated(limit, page, query);
         
         return result;
     }

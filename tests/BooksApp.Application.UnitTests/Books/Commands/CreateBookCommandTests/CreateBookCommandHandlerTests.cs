@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
-using Application.UnitTest.MockData;
+using Application.UnitTest.Books.Commands.CreateBookCommandTests.TestUtils;
+using Application.UnitTest.TestUtils.MockData;
 using FluentAssertions;
 using Moq;
 using PostsApp.Application.Books.Commands.CreateBook;
@@ -17,16 +18,16 @@ public class CreateBookCommandHandlerTests
         _unitOfWorkMock = new();
     }
     [Fact]
-    public async Task Handle_Should_ReturnBook_Success()
+    public async Task Handle_Success_ReturnBook()
     {
         // Arrange
-        var command = new CreateBookCommand { UserId = 1, Title = "1984", Description = "hello world" };
+        var command = CreateBookCommandUtils.CreateBookCommandMethod();
         var handler = new CreateBookCommandHandler(_unitOfWorkMock.Object);
 
         _unitOfWorkMock.Setup(x => x.Users.GetSingleWhereAsync(
             It.IsAny<Expression<Func<User, bool>>>()))
             .ReturnsAsync(MockUser.GetUser(null));
-        _unitOfWorkMock.Setup(x => x.Posts.AddAsync(
+        _unitOfWorkMock.Setup(x => x.Books.AddAsync(
                 It.IsAny<Book>()));
             
         // Act

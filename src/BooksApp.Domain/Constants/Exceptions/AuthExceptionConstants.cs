@@ -2,7 +2,7 @@ namespace PostsApp.Domain.Constants.Exceptions;
 
 public static class AuthExceptionConstants
 {
-    public static string NotFound = "User not found";
-    public static string Occupied = "Username is occupied";
-    public static string Password = "Password is wrong";
+    public const string NotFound = "User not found";
+    public const string Occupied = "Username is occupied";
+    public const string Password = "Password is wrong";
 }

@@ -5,7 +5,7 @@ using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Common.Interfaces.Repositories;
 
-public interface IPostsRepository : IGenericRepository<Book>
+public interface IBooksRepository : IGenericRepository<Book>
 {
     Task<PaginatedArray<BookResult>> GetPaginated(int limit, int page, string query);
     Task<IEnumerable<BookResult>> GetBooks(Expression<Func<Book, bool>> expression);

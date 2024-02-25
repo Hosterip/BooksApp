@@ -7,16 +7,16 @@ namespace PostsApp.Infrastructure.Implementation;
 
 public class UnitOfWork : IUnitOfWork
 {
-    public AppDbContext _dbContext { get; private set; }
+    private readonly AppDbContext _dbContext;
     public UnitOfWork(AppDbContext dbContext)
     {
-        Posts = new BooksRepository(dbContext);
+        Books = new BooksRepository(dbContext);
         Users = new UsersRepository(dbContext);
         Likes = new LikesRepository(dbContext);
         Roles = new RolesRepository(dbContext);
         _dbContext = dbContext;
     }
-    public IPostsRepository Posts { get; private set; }
+    public IBooksRepository Books { get; private set; }
     public IUsersRepository Users { get; private set; }
     public ILikesRepository Likes { get; private set; }
     public IRolesRepository Roles { get; private set; }

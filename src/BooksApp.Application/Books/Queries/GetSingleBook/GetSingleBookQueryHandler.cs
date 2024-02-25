@@ -15,7 +15,7 @@ internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQ
     }
     public async Task<BookResult> Handle(GetSingleBookQuery request, CancellationToken cancellationToken)
     {
-        var post = await _unitOfWork.Posts.GetSingleWhereAsync(post => post.Id == request.Id);
+        var post = await _unitOfWork.Books.GetSingleWhereAsync(post => post.Id == request.Id);
 
         var user = new UserResult
         {

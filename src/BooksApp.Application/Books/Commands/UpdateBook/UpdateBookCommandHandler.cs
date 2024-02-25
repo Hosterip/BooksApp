@@ -15,7 +15,7 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
     }
     public async Task<BookResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        var post = await _unitOfWork.Posts.GetSingleWhereAsync(post => post.Id == request.Id);
+        var post = await _unitOfWork.Books.GetSingleWhereAsync(post => post.Id == request.Id);
         post!.Title = request.Title;
         post.Description = request.Body;
         await _unitOfWork.SaveAsync(cancellationToken);

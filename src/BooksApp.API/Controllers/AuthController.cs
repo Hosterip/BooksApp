@@ -8,7 +8,6 @@ using PostsApp.Application.Auth.Commands.Register;
 using PostsApp.Application.Auth.Queries.Login;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Auth;
-using PostsApp.Domain.Auth;
 using PostsApp.Domain.Constants;
 using PostsApp.Domain.Exceptions;
 

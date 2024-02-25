@@ -17,7 +17,7 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 var doCan = await unitOfWork.Users
                     .AnyAsync(user => user.Id == request.UserId &&
                                       (user.Role.Name == RoleConstants.Admin || user.Role.Name == RoleConstants.Moderator));
-                return await unitOfWork.Posts.AnyAsync(book => 
+                return await unitOfWork.Books.AnyAsync(book => 
                     book.Id == request.Id &&
                     (book.Author.Id == request.UserId || doCan));
             }).WithMessage(BookExceptionConstants.PostNotYour);

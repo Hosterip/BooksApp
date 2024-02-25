@@ -23,7 +23,7 @@ public class AddRemoveLikeCommandHandler : IRequestHandler<AddRemoveLikeCommand>
             return;
         }
 
-        var post = await _unitOfWork.Posts.GetSingleWhereAsync(post => post.Id == request.PostId);
+        var post = await _unitOfWork.Books.GetSingleWhereAsync(post => post.Id == request.PostId);
         var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
         var newLike = new Like{User = user!, Book = post!};
         await _unitOfWork.Likes.AddAsync(newLike);

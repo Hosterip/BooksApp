@@ -16,7 +16,7 @@ public class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
                 var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
                 if (user is null) return false; 
                 var canDelete = RolePermissions.UpdateOrDeleteBook(user.Role.Name);
-                return await unitOfWork.Posts.AnyAsync(book => 
+                return await unitOfWork.Books.AnyAsync(book => 
                     book.Id == request.Id &&
                     (book.Author.Id == request.UserId || canDelete));
             }).WithMessage(BookExceptionConstants.PostNotYour);

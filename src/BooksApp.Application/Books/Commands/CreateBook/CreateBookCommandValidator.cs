@@ -22,7 +22,7 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         {
             var user = await unitOfWork.Users.GetSingleWhereAsync(user => id == user.Id);
             if (user is null) return false;
-            return RolePermissions.CreateBookBook(user.Role.Name);
+            return RolePermissions.CreateBook(user.Role.Name);
         }).WithMessage(BookExceptionConstants.MustBeAnAuthor);
         
     }

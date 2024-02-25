@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Auth;
+using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
 using PostsApp.Domain.Constants.Exceptions;
 using PostsApp.Domain.Exceptions;
@@ -20,7 +20,7 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
     {
         var user = await 
             _unitOfWork.Users.GetSingleWhereAsync(user => user.Username == request.Username);
-        if (!AuthUtils.IsPasswordValid(user!.Hash, user.Salt, request.Password))
+        if (!HashSaltGen.IsPasswordValid(user!.Hash, user.Salt, request.Password))
             throw new AuthException(AuthExceptionConstants.Password);
         return new AuthResult{Id = user.Id, Username = user.Username, Role = user.Role.Name};
     }

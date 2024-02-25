@@ -9,7 +9,7 @@ using PostsApp.Infrastructure.Data;
 
 namespace PostsApp.Infrastructure.Implementation.Repositories;
 
-public class BooksRepository : GenericRepository<Book>, IPostsRepository
+public class BooksRepository : GenericRepository<Book>, IBooksRepository
 {
     public BooksRepository(AppDbContext dbContext) : base(dbContext)
     {

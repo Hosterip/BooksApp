@@ -33,7 +33,7 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
             select new LikeResult { Id = like.Id, UserId = like.User.Id, PostId = like.Book.Id }
         ).ToArray();
 
-        var posts = await _unitOfWork.Posts.GetBooks(post => request.Id == post.Author.Id);
+        var posts = await _unitOfWork.Books.GetBooks(post => request.Id == post.Author.Id);
         return new SingleUserResult
         {
             Id = user.Id,

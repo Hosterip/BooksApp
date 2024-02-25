@@ -1,10 +1,12 @@
 ﻿using System.Linq.Expressions;
-using Application.UnitTest.MockData;
+using Application.UnitTest.Books.Commands.CreateBookCommandTests.TestUtils;
+using Application.UnitTest.TestUtils.MockData;
 using FluentAssertions;
 using FluentValidation.Results;
 using Moq;
 using PostsApp.Application.Books.Commands.CreateBook;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Constants;
 using PostsApp.Domain.Models;
 
 namespace Application.UnitTest.Books.Commands.CreateBookCommandTests;
@@ -23,10 +25,8 @@ public class CreateBookCommandValidatorTests
     public async Task Constructor_Should_ReturnFailedResult_WhenEveryRuleWithUserIsNotMatched()
     {
         // Arrange
-        var command = new CreateBookCommand{UserId = 1, Title = "1", Description = "1"};
-        _unitOfWorkMock.Setup(x => x.Users.AnyAsync(
-                It.IsAny<Expression<Func<User, bool>>>()))
-            .ReturnsAsync(false);
+        var command = CreateBookCommandUtils.CreateBookCommandMethod();
+        ArrangeAllMethodsForValidator(false, null);
         // Act
         var result = await _validator.ValidateAsync(command);
         // Assert
@@ -35,17 +35,27 @@ public class CreateBookCommandValidatorTests
     }
     
     [Fact]
-    public async Task Constructor_Should_ReturnFailedResult_WhenEveryRuleMatch()
+    public async Task Constructor_Should_ReturnSuccessfulResult_WhenEveryRuleMatch()
     {
         // Arrange
-        var command = new CreateBookCommand{UserId = 1, Title = "1", Description = "1"};
-        _unitOfWorkMock.Setup(x => x.Users.AnyAsync(
-                It.IsAny<Expression<Func<User, bool>>>()))
-            .ReturnsAsync(true);
+        var command = CreateBookCommandUtils.CreateBookCommandMethod();
+        ArrangeAllMethodsForValidator(true, MockUser.GetUser(RoleConstants.Author));
         // Act
         var result = await _validator.ValidateAsync(command);
+        
         // Assert
-
         result.IsValid.Should().BeTrue();
     }
+    
+    private void ArrangeAllMethodsForValidator(
+        bool usersAnyAsync,
+        User? usersGetSingle)
+    {
+        _unitOfWorkMock.Setup(x => x.Users.AnyAsync(
+                It.IsAny<Expression<Func<User, bool>>>()))
+            .ReturnsAsync(usersAnyAsync);
+        _unitOfWorkMock.Setup(x => x.Users.GetSingleWhereAsync(
+                It.IsAny<Expression<Func<User, bool>>>()))
+            .ReturnsAsync(usersGetSingle);
+    } 
 }

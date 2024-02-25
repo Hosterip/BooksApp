@@ -9,19 +9,17 @@ public class AddRemoveLikeCommandValidator : AbstractValidator<AddRemoveLikeComm
 {
     public AddRemoveLikeCommandValidator(IUnitOfWork unitOfWork)
     {
-        RuleFor(like => like)
-            .MustAsync(async (like, cancellationToken) =>
+        RuleFor(like => like.PostId)
+            .MustAsync(async (bookId, cancellationToken) =>
             {
-                return await unitOfWork.Posts.AnyAsync(post => post.Id == like.PostId);
+                return await unitOfWork.Books.AnyAsync(post => post.Id == bookId);
             })
-            .OverridePropertyName("Post Id")
             .WithMessage(BookExceptionConstants.NotFound);
-        RuleFor(like => like)
-            .MustAsync(async (like, cancellationToken) =>
+        RuleFor(like => like.UserId)
+            .MustAsync(async (userId, cancellationToken) =>
             {
-                return await unitOfWork.Users.AnyAsync(user => user.Id == like.UserId);
+                return await unitOfWork.Users.AnyAsync(user => user.Id == userId);
             })
-            .OverridePropertyName("User Id")
             .WithMessage(UserExceptionConstants.NotFound);
     }
 }

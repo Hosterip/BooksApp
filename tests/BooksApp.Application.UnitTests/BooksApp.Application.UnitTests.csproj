@@ -27,4 +27,9 @@
     <ProjectReference Include="..\..\src\BooksApp.Application\BooksApp.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Auth\Queries\" />
+    <Folder Include="TestUtils\" />
+  </ItemGroup>
+
 </Project>

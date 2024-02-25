@@ -29,7 +29,7 @@ public static class RolePermissions
                || changerUserRoleName == RoleConstants.Moderator
                || changerUserRoleName == RoleConstants.Author;
     }
-    public static bool CreateBookBook(string changerUserRoleName)
+    public static bool CreateBook(string changerUserRoleName)
     {
         // Only Authors can create a book. 
         return changerUserRoleName == RoleConstants.Author;

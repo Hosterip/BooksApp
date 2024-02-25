@@ -18,7 +18,7 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
     {
         var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
         var post = new Book { Author = user!, Title = request.Title, Description = request.Description };
-        await _unitOfWork.Posts.AddAsync(post);
+        await _unitOfWork.Books.AddAsync(post);
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = new BookResult
         {
