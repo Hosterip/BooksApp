@@ -1,8 +1,8 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Constants;
-using PostsApp.Domain.Constants.Exceptions;
 
 namespace PostsApp.Application.Users.Commands.UpdateUsername;
 
@@ -16,7 +16,7 @@ public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCo
             {
                 return await unitOfWork.Users.AnyAsync(user => user.Id == id);
             })
-            .WithMessage(UserExceptionConstants.NotFound);
+            .WithMessage(ConstantsUserException.NotFound);
         RuleFor(user => user.NewUsername)
             .Length(0, 255)
             .NotEmpty();
@@ -25,6 +25,6 @@ public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCo
             {
                 return !await unitOfWork.Users.AnyAsync(user => user.Username == username);
             })
-            .WithMessage(UserExceptionConstants.Occupied);
+            .WithMessage(ConstantsUserException.Occupied);
     }
 }

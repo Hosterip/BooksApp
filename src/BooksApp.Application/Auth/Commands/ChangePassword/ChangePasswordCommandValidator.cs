@@ -1,6 +1,6 @@
 using FluentValidation;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Constants.Exceptions;
 
 namespace PostsApp.Application.Auth.Commands.ChangePassword;
 
@@ -14,6 +14,6 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
             {
                 return await unitOfWork.Users.AnyAsync(user => user.Id == id);
             })
-            .WithMessage(AuthExceptionConstants.NotFound);
+            .WithMessage(ConstantsAuthException.NotFound);
     }
 }

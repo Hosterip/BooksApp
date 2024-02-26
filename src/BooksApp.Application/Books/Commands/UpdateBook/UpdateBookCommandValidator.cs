@@ -1,7 +1,7 @@
 using FluentValidation;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Constants;
-using PostsApp.Domain.Constants.Exceptions;
 
 namespace PostsApp.Application.Books.Commands.UpdateBook;
 
@@ -20,6 +20,6 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 return await unitOfWork.Books.AnyAsync(book => 
                     book.Id == request.Id &&
                     (book.Author.Id == request.UserId || doCan));
-            }).WithMessage(BookExceptionConstants.PostNotYour);
+            }).WithMessage(ConstantsBookException.PostNotYour);
     }
 }

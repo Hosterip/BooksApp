@@ -1,8 +1,8 @@
 using FluentValidation;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
-using PostsApp.Domain.Constants.Exceptions;
 
 namespace PostsApp.Application.Roles.Commands.UpdateRole;
 
@@ -14,13 +14,13 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
             .MustAsync(async (roleName, cancellationToken) =>
             {
                 return await unitOfWork.Roles.AnyAsync(role => role.Name == roleName);
-            }).WithMessage(RoleExceptionConstants.NotFound);    
+            }).WithMessage(ConstantsRoleException.NotFound);    
         
         RuleFor(user => user.UserId)
             .MustAsync(async (userId, cancellationToken) =>
             {
                 return await unitOfWork.Users.AnyAsync(user => user.Id == userId);
-            }).WithMessage(UserExceptionConstants.NotFound);
+            }).WithMessage(ConstantsUserException.NotFound);
         RuleFor(request => request)
             .Must(request => request.ChangerId != request.UserId)
             .WithMessage("You can not change your role")
@@ -35,6 +35,6 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
                     changerUser.Role.Name, 
                     targetUser.Role.Name,
                     request.Role);
-            }).WithMessage(UserExceptionConstants.Permission);
+            }).WithMessage(ConstantsUserException.Permission);
     }
 }

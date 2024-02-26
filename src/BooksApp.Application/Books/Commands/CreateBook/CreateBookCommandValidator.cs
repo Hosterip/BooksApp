@@ -1,8 +1,8 @@
 using FluentValidation;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
-using PostsApp.Domain.Constants.Exceptions;
 
 namespace PostsApp.Application.Books.Commands.CreateBook;
 
@@ -17,13 +17,13 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
             return await unitOfWork.Users
                 .AnyAsync(user => 
                     user.Id == id);
-        }).WithMessage(UserExceptionConstants.NotFound);
+        }).WithMessage(ConstantsUserException.NotFound);
         RuleFor(request => request.UserId).MustAsync(async (id, cancellationToken) =>
         {
             var user = await unitOfWork.Users.GetSingleWhereAsync(user => id == user.Id);
             if (user is null) return false;
             return RolePermissions.CreateBook(user.Role.Name);
-        }).WithMessage(BookExceptionConstants.MustBeAnAuthor);
+        }).WithMessage(ConstantsBookException.MustBeAnAuthor);
         
     }
 }

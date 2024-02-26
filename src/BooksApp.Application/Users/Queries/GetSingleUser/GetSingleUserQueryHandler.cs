@@ -1,10 +1,10 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Constants;
-using PostsApp.Domain.Constants.Exceptions;
 using PostsApp.Domain.Exceptions;
 using PostsApp.Domain.Models;
 
@@ -23,7 +23,7 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
     {
         var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
-            throw new UserException(UserExceptionConstants.NotFound);
+            throw new UserException(ConstantsUserException.NotFound);
 
         var rawLikes = await
             _unitOfWork.Likes.GetAllWhereAsync(like => like.User.Id == request.Id);

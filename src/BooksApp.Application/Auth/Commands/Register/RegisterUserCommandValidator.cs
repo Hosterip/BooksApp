@@ -1,6 +1,6 @@
 using FluentValidation;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Constants.Exceptions;
 
 namespace PostsApp.Application.Auth.Commands.Register;
 
@@ -16,6 +16,6 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .MustAsync(async (username, cancellationToken) =>
             {
                 return await unitOfWork.Users.AnyAsync(user => user.Username == username);
-            }).WithMessage(AuthExceptionConstants.Occupied);
+            }).WithMessage(ConstantsAuthException.Occupied);
     }
 }

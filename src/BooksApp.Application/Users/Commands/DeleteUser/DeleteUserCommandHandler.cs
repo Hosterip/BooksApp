@@ -1,6 +1,6 @@
 using MediatR;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Constants.Exceptions;
 using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Users.Commands.DeleteUser;
@@ -17,7 +17,7 @@ internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserComma
     {
         var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
-            throw new UserException(UserExceptionConstants.NotFound);
+            throw new UserException(ConstantsUserException.NotFound);
         await _unitOfWork.Users.RemoveAsync(user!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }

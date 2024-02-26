@@ -1,8 +1,8 @@
 using MediatR;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
-using PostsApp.Domain.Constants.Exceptions;
 using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Auth.Commands.ChangePassword;
@@ -21,7 +21,7 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
             .GetSingleWhereAsync(user => user.Id == request.Id);
         
         if (!HashSaltGen.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword)) 
-            throw new AuthException(AuthExceptionConstants.Password);
+            throw new AuthException(ConstantsAuthException.Password);
 
         var hashSalt = HashSaltGen.GenerateHashSalt(request.NewPassword);
         user.Hash = hashSalt.Hash;
