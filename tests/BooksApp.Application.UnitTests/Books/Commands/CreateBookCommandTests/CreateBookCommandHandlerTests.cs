@@ -26,7 +26,7 @@ public class CreateBookCommandHandlerTests
 
         _unitOfWorkMock.Setup(x => x.Users.GetSingleWhereAsync(
             It.IsAny<Expression<Func<User, bool>>>()))
-            .ReturnsAsync(MockUser.GetUser(null));
+            .ReturnsAsync(MockUser.GetUser());
         _unitOfWorkMock.Setup(x => x.Books.AddAsync(
                 It.IsAny<Book>()));
             
