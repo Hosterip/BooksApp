@@ -1,4 +1,5 @@
-﻿using Application.UnitTest.Auth.TestUtils;
+﻿using Application.UnitTest.Auth.Commands.TestUtils;
+using Application.UnitTest.Auth.TestUtils;
 using Application.UnitTest.Books.Commands.CreateBookCommandTests.TestUtils;
 using FluentAssertions;
 using Moq;
@@ -24,7 +25,8 @@ public class ChangePasswordCommandValidatorTests
     {
         // Arrange
         AuthTestUtils.SetupUsersAnyAsyncMethod(_mockUnitOfWork, false);
-        var command = AuthCommandsUtils.ChangePasswordCommand;
+        //   In this case the correct or incorrect command doesn't change anything
+        var command = AuthCommandsUtils.ChangePasswordCommandCorrect;
         // Act
         var result = await _validator.ValidateAsync(command);
 
@@ -37,7 +39,8 @@ public class ChangePasswordCommandValidatorTests
     {
         // Arrange
         AuthTestUtils.SetupUsersAnyAsyncMethod(_mockUnitOfWork, true);
-        var command = AuthCommandsUtils.ChangePasswordCommand;
+        //  In this case the correct or incorrect command doesn't change anything
+        var command = AuthCommandsUtils.ChangePasswordCommandCorrect;
         // Act
         var result = await _validator.ValidateAsync(command);
 
