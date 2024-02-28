@@ -1,0 +1,51 @@
+﻿using Application.UnitTest.Auth.Commands.TestUtils;
+using Application.UnitTest.Auth.TestUtils;
+using FluentAssertions;
+using Moq;
+using PostsApp.Application.Auth;
+using PostsApp.Application.Auth.Commands.ChangePassword;
+using PostsApp.Application.Auth.Queries.Login;
+using PostsApp.Application.Common.Interfaces;
+
+namespace Application.UnitTest.Auth.Queries.LoginTests;
+
+public class LoginQueryTests
+{
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    public LoginQueryTests()
+    {
+        _unitOfWorkMock = new();
+    }
+
+    [Fact]
+    public async Task Handle_CorrectPassword_ReturnAuthResult()
+    {
+        // Arrange
+        // Query with CORRECT password
+        var query = AuthQueriesUtils.LoginUserQueryCorrect;
+        var handler = new LoginUserQueryHandler(_unitOfWorkMock.Object);
+        AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
+        
+        // Act
+        var result = await handler.Handle(query, default);
+        
+        // Assert
+        result.Should().BeOfType<AuthResult>();
+    }
+    
+    [Fact]
+    public async Task Handle_IncorrectPassword_ThrowAnException()
+    {
+        // Arrange
+        // Query with INCORRECT password
+        var query = AuthQueriesUtils.LoginUserQueryIncorrect;
+        var handler = new LoginUserQueryHandler(_unitOfWorkMock.Object);
+        AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
+        
+        // Act
+        var exception = await Record.ExceptionAsync(() => handler.Handle(query, default));
+        
+        // Assert
+        exception.Should().NotBeNull();
+    }
+}
