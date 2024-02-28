@@ -1,4 +1,6 @@
 ﻿using System.Linq.Expressions;
+using Application.UnitTest.Auth.TestUtils.Constants;
+using Application.UnitTest.TestUtils.MockData;
 using Moq;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Models;
@@ -12,5 +14,12 @@ public static class AuthTestUtils
         mockUnitOfWork.Setup(x => x.Users.AnyAsync(
                 It.IsAny<Expression<Func<User, bool>>>()))
             .ReturnsAsync(user);
+    }
+    
+    public static void SetupUsersGetSingleWhereAsync(Mock<IUnitOfWork> mockUnitOfWork)
+    {
+        mockUnitOfWork.Setup(x => x.Users.GetSingleWhereAsync(
+                It.IsAny<Expression<Func<User, bool>>>()))
+            .ReturnsAsync(MockUser.GetUser(null, HashSaltConstants.Hash, HashSaltConstants.Salt));
     }
 }
