@@ -1,12 +1,11 @@
 ﻿using Application.UnitTest.Auth.Commands.TestUtils;
+using Application.UnitTest.Auth.TestUtils;
 using FluentAssertions;
 using Moq;
-using PostsApp.Application.Auth;
 using PostsApp.Application.Auth.Commands.ChangePassword;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Exceptions;
 
-namespace Application.UnitTest.Auth.Commands.ChangePasswordCommandTests;
+namespace Application.UnitTest.Auth.Commands.ChangePasswordTests;
 
 public class ChangePasswordCommandTests
 {
@@ -17,32 +16,32 @@ public class ChangePasswordCommandTests
     }
 
     [Fact]
-    public async Task Handle_CorrectPassword_ReturnAuthResult()
+    public async Task Handle_CorrectPassword_ReturnVoid()
     {
         // Arrange
         var command = AuthCommandsUtils.ChangePasswordCommandCorrect;
         var handler = new ChangePasswordCommandHandler(_unitOfWorkMock.Object);
-        AuthCommandsUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
+        AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
         
         // Act
         var exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
         
         // Assert
-        Assert.Null(exception);
+        exception.Should().BeNull();
     }
     
     [Fact]
-    public async Task Handle_IncorrectPassword_ReturnAuthResult()
+    public async Task Handle_IncorrectPassword_ReturnVoid()
     {
         // Arrange
         var command = AuthCommandsUtils.ChangePasswordCommandIncorrect;
         var handler = new ChangePasswordCommandHandler(_unitOfWorkMock.Object);
-        AuthCommandsUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
+        AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
         
         // Act
         var exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
         
         // Assert
-        Assert.NotNull(exception);
+        exception.Should().NotBeNull();
     }
 }

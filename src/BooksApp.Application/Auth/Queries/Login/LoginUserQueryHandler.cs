@@ -20,8 +20,10 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
     {
         var user = await 
             _unitOfWork.Users.GetSingleWhereAsync(user => user.Username == request.Username);
+        
         if (user is null || !HashSaltGen.IsPasswordValid(user.Hash, user.Salt, request.Password))
             throw new AuthException(ConstantsAuthException.UsernameOrPassword);
+        
         return new AuthResult{Id = user.Id, Username = user.Username, Role = user.Role.Name};
     }
 }
