@@ -1,13 +1,11 @@
 ﻿using Application.UnitTest.Auth.Commands.TestUtils;
 using Application.UnitTest.Auth.TestUtils;
-using Application.UnitTest.Books.Commands.CreateBookCommandTests.TestUtils;
 using FluentAssertions;
 using Moq;
 using PostsApp.Application.Auth.Commands.ChangePassword;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Models;
 
-namespace Application.UnitTest.Auth.Commands.ChangePasswordCommandTests;
+namespace Application.UnitTest.Auth.Commands.ChangePasswordTests;
 
 public class ChangePasswordCommandValidatorTests
 {

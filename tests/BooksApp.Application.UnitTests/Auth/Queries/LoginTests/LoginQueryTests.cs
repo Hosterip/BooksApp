@@ -1,9 +1,7 @@
-﻿using Application.UnitTest.Auth.Commands.TestUtils;
-using Application.UnitTest.Auth.TestUtils;
+﻿using Application.UnitTest.Auth.TestUtils;
 using FluentAssertions;
 using Moq;
 using PostsApp.Application.Auth;
-using PostsApp.Application.Auth.Commands.ChangePassword;
 using PostsApp.Application.Auth.Queries.Login;
 using PostsApp.Application.Common.Interfaces;
 
