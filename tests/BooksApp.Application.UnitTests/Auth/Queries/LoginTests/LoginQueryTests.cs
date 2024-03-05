@@ -16,10 +16,10 @@ public class LoginQueryTests
     }
 
     [Fact]
-    public async Task Handle_CorrectPassword_ReturnAuthResult()
+    public async Task Handle_Success_ReturnAuthResult()
     {
         // Arrange
-        // Query with CORRECT password
+        // All the work has been made through validator (validating password) here you just returning user
         var query = AuthQueriesUtils.LoginUserQueryCorrect;
         var handler = new LoginUserQueryHandler(_unitOfWorkMock.Object);
         AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
@@ -29,21 +29,5 @@ public class LoginQueryTests
         
         // Assert
         result.Should().BeOfType<AuthResult>();
-    }
-    
-    [Fact]
-    public async Task Handle_IncorrectPassword_ThrowAnException()
-    {
-        // Arrange
-        // Query with INCORRECT password
-        var query = AuthQueriesUtils.LoginUserQueryIncorrect;
-        var handler = new LoginUserQueryHandler(_unitOfWorkMock.Object);
-        AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
-        
-        // Act
-        var exception = await Record.ExceptionAsync(() => handler.Handle(query, default));
-        
-        // Assert
-        exception.Should().NotBeNull();
     }
 }

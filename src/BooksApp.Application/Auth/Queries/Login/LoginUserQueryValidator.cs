@@ -1,17 +1,30 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
 
 namespace PostsApp.Application.Auth.Queries.Login;
 
 public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
 {
-    public LoginUserQueryValidator()
+    public LoginUserQueryValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Username)
             .NotEmpty().Length(0, 255);
         RuleFor(user => user.Password)
             .NotEmpty();
+        RuleFor(request => request)
+            .MustAsync(async (request, cancellationToken) =>
+            {
+                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Username == request.Username);
+                
+                if (user is null) return false;
+                
+                return HashSaltGen.IsPasswordValid(user.Hash, user.Salt, request.Password);
+            })
+            .WithMessage(ConstantsAuthException.UsernameOrPassword)
+            .OverridePropertyName("Username or Password");
     }
 }
