@@ -19,7 +19,7 @@ public class LoginQueryTests
     public async Task Handle_Success_ReturnAuthResult()
     {
         // Arrange
-        // All the work has been made through validator (validating password) here you just returning user
+        // All the work with validating password has been made through validator. Here we just returning user
         var query = AuthQueriesUtils.LoginUserQueryCorrect;
         var handler = new LoginUserQueryHandler(_unitOfWorkMock.Object);
         AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);

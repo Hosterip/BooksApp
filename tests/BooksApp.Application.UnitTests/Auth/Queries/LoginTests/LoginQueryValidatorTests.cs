@@ -2,9 +2,7 @@
 using FluentAssertions;
 using FluentValidation.Results;
 using Moq;
-using PostsApp.Application.Auth;
 using PostsApp.Application.Auth.Queries.Login;
-using PostsApp.Application.Books.Commands.CreateBook;
 using PostsApp.Application.Common.Interfaces;
 
 namespace Application.UnitTest.Auth.Queries.LoginTests;
