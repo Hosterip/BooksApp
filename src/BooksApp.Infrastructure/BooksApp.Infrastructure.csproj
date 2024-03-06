@@ -7,7 +7,6 @@
         <RootNamespace>PostsApp.Infrastructure</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <Folder Include="Data\Migrations\" />
         <ProjectReference Include="..\BooksApp.Domain\BooksApp.Domain.csproj" />
         <ProjectReference Include="..\BooksApp.Application\BooksApp.Application.csproj" />
     </ItemGroup>
