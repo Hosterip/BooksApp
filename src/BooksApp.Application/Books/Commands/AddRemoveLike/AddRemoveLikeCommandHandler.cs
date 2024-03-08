@@ -19,7 +19,8 @@ public class AddRemoveLikeCommandHandler : IRequestHandler<AddRemoveLikeCommand>
         {
             var like = await _unitOfWork.Likes.GetSingleWhereAsync(like =>
                 like.User.Id == request.UserId && like.Book.Id == request.PostId);
-            await _unitOfWork.Likes.RemoveAsync(like!);
+            _unitOfWork.Likes.Remove(like!);
+            await _unitOfWork.SaveAsync(cancellationToken);
             return;
         }
 

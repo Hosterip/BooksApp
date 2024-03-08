@@ -15,7 +15,7 @@ internal sealed class DeleteBookCommandHandler : IRequestHandler<DeleteBookComma
     {
         var post = await _unitOfWork
             .Books.GetSingleWhereAsync(post => post.Id == request.Id && post.Author.Id == request.UserId);
-        await _unitOfWork.Books.RemoveAsync(post!);
+        _unitOfWork.Books.Remove(post!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

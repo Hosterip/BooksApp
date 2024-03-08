@@ -18,7 +18,7 @@ internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserComma
         var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
             throw new UserException(ConstantsUserException.NotFound);
-        await _unitOfWork.Users.RemoveAsync(user!);
+        _unitOfWork.Users.Remove(user!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }
