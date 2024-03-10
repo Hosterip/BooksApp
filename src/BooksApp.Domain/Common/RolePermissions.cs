@@ -34,4 +34,11 @@ public static class RolePermissions
         // Only Authors can create a book. 
         return changerUserRoleName == RoleConstants.Author;
     }
+
+    public static bool DeleteReview(string changerUserRoleName)
+    {
+        // Only Admin, Moderator or Author of that book can change it. 
+        return changerUserRoleName == RoleConstants.Admin
+               || changerUserRoleName == RoleConstants.Moderator;
+    }
 }

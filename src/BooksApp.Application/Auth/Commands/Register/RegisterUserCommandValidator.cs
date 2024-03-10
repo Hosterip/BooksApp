@@ -15,7 +15,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(user => user.Username)
             .MustAsync(async (username, cancellationToken) =>
             {
-                return await unitOfWork.Users.AnyAsync(user => user.Username == username);
+                return !await unitOfWork.Users.AnyAsync(user => user.Username == username);
             }).WithMessage(ConstantsAuthException.Occupied);
     }
 }
