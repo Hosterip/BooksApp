@@ -31,7 +31,7 @@ public class BookController : Controller
 
         var command = new CreateBookCommand
         {
-            UserId = (int)HttpContext.GetId()!, Title = request.Title, Description = request.Description
+            UserId = HttpContext.GetId(), Title = request.Title, Description = request.Description
         };
         var post = await _sender.Send(command, cancellationToken);
 

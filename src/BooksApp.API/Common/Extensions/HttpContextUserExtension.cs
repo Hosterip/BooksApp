@@ -17,10 +17,11 @@ public static class HttpContextUserExtension
         return httpContext.User.Claims.SingleOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value;
     }
     
-    public static int? GetId(this HttpContext httpContext)
+    // You must be already sure that user is exists before using it 
+    public static int GetId(this HttpContext httpContext)
     {
         var id = httpContext.User.Claims.SingleOrDefault(claim => claim.Type == "id")?.Value;
-        return id != null ? (int)Convert.ToInt32(id) : null;
+        return id != null ? Convert.ToInt32(id) : -1;
     }
 
     public static void ChangeUsername(this HttpContext httpContext, string valueOfClaim)

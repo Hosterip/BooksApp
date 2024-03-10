@@ -31,7 +31,7 @@ public class UserController : Controller
             return StatusCode(401, "You are not authorized");
         var username = HttpContext.GetUsername()!;
         var role = HttpContext.GetRole()!;
-        var id = (int)HttpContext.GetId()!;
+        var id = HttpContext.GetId();
         return Ok(new UserResponse { Id = id, Username = username, Role = role });
     }
 
@@ -66,7 +66,7 @@ public class UserController : Controller
             return StatusCode(401, "You are not authorized");
         try
         {
-            var command = new DeleteUserCommand { Id = (int)HttpContext.GetId()! };
+            var command = new DeleteUserCommand { Id = HttpContext.GetId() };
             await _sender.Send(command, cancellationToken);
         }
         catch (UserException ex)
@@ -84,7 +84,7 @@ public class UserController : Controller
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized");
 
-        var command = new UpdateUsernameCommand { Id = (int)HttpContext.GetId()!, NewUsername = request.NewUsername };
+        var command = new UpdateUsernameCommand { Id = HttpContext.GetId(), NewUsername = request.NewUsername };
         
         await _sender.Send(command, cancellationToken);
 

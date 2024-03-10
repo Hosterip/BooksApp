@@ -34,7 +34,7 @@ public class RolesController : Controller
     {
         var command = new UpdateRoleCommand
         {
-            ChangerId = (int)HttpContext.GetId()!, 
+            ChangerId = HttpContext.GetId()!, 
             Role = request.Role, 
             UserId = request.UserId
         };

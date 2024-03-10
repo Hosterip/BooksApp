@@ -75,7 +75,7 @@ public class AuthController : Controller
             {
                 NewPassword = request.NewPassword,
                 OldPassword = request.OldPassword,
-                Id = (int)HttpContext.GetId()!
+                Id = HttpContext.GetId()
             };
             await _sender.Send(command, cancellationToken);
             return Ok("Operation succeeded");
