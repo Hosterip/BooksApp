@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Reviews.Commands.CreateReview;
 using PostsApp.Application.Reviews.Commands.DeleteReview;
 using PostsApp.Application.Reviews.Commands.UpdateReview;
+using PostsApp.Application.Reviews.Queries.GetReviews;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Review;
 
@@ -16,6 +17,19 @@ public class ReviewController : Controller
     public ReviewController(ISender sender)
     {
         _sender = sender;
+    }
+    
+    [HttpGet("many/{id:int}")]
+    public async Task<IActionResult> GetMany(int id, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        var query = new GetReviewsQuery
+        {
+            BookId = id,
+            Page = page,
+            PageSize = pageSize
+        };
+        var result = await _sender.Send(query, cancellationToken);
+        return Ok(result);
     }
 
     [HttpPost]
@@ -64,4 +78,6 @@ public class ReviewController : Controller
         await _sender.Send(command, cancellationToken);
         return Ok("Review was successfully deleted");
     }
+    
+    
 }

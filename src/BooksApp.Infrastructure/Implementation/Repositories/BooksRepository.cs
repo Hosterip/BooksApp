@@ -24,7 +24,8 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                 let user = new UserResult { Id = book.Author.Id, Username = book.Author.Username, Role = book.Author.Role.Name }
                 join like in _dbContext.Likes.Include(like => like.Book)
                     on book.Id equals like.Book.Id into likes
-                select new BookResult { Id = book.Id, Title = book.Title, Description = book.Description, Author = user, LikeCount = likes.Count()})
+                select new BookResult { Id = book.Id, Title = book.Title, Description = book.Description, Author = user, LikeCount = likes.Count()}
+                )
             .PaginationAsync(page, limit);
     }
 
