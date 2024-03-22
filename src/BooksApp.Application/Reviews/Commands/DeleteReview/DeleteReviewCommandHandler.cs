@@ -3,7 +3,7 @@ using PostsApp.Application.Common.Interfaces;
 
 namespace PostsApp.Application.Reviews.Commands.DeleteReview;
 
-public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
+internal sealed class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 

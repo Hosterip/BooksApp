@@ -12,8 +12,8 @@ public class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewComman
             .MaximumLength(1000)
             .NotEmpty();
         RuleFor(request => request.Rating)
-            .Must(value => value is <= 5 and >= 1)
-            .WithMessage("Value must be between 1 and 5");
+            .GreaterThanOrEqualTo(1)
+            .LessThanOrEqualTo(5);
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
             {

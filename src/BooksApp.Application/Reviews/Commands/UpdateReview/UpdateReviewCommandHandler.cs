@@ -2,11 +2,10 @@
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Reviews.Results;
-using PostsApp.Domain.Exceptions;
 
 namespace PostsApp.Application.Reviews.Commands.UpdateReview;
 
-public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, ReviewResult>
+internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, ReviewResult>
 {
     private readonly IUnitOfWork _unitOfWork;
 
