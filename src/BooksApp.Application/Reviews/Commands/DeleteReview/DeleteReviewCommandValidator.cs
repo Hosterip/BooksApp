@@ -14,7 +14,8 @@ public class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewComman
             {
                 var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
                 return RolePermissions.DeleteReview(user!.Role.Name) ||
-                       await unitOfWork.Reviews.AnyAsync(review => review.User.Id == request.UserId);
+                       await unitOfWork.Reviews
+                           .AnyAsync(review => review.User.Id == request.UserId && request.ReviewId == review.Id);
             })
             .WithMessage(ConstantsUserException.Permission)
             .OverridePropertyName("UserId");
