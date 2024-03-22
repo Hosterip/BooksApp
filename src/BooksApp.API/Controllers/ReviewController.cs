@@ -20,13 +20,13 @@ public class ReviewController : Controller
     }
     
     [HttpGet("many/{id:int}")]
-    public async Task<IActionResult> GetMany(int id, int page, int pageSize, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMany(int id, int? page, int? pageSize, CancellationToken cancellationToken)
     {
         var query = new GetReviewsQuery
         {
             BookId = id,
-            Page = page,
-            PageSize = pageSize
+            Page = page ?? 1,
+            PageSize = pageSize ?? 10
         };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
