@@ -1,11 +1,13 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using PostsApp.Application;
 using PostsApp.Common.Extensions;
 using PostsApp.Infrastructure;
 using PostsApp.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add CORS
+var corsAllow = "CorsAllow";
+builder.Services.AddCorsPolicy(corsAllow);
+
 // Add services to the container.
 builder.Services.AddControllers();
 // Adding Dependency Injectable 
@@ -26,6 +28,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(corsAllow);
 
 app.UseAuthentication();
 app.UseAuthorization();

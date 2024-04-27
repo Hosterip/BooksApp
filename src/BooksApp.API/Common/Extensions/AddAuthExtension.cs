@@ -3,7 +3,7 @@ using PostsApp.Domain.Constants;
 
 namespace PostsApp.Common.Extensions;
 
-public static class ServiceCollectionExtension
+public static class AddAuthExtension
 {
     public static void AddAuth(this IServiceCollection serviceCollection)
     {
