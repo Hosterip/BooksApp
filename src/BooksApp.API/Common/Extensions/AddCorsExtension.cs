@@ -7,11 +7,11 @@ public static class AddCorsExtension
         services.AddCors(options =>
         {
             options.AddPolicy(name: policyName, policyBuilder =>
-            {
-                policyBuilder.AllowAnyOrigin();
-                policyBuilder.AllowAnyHeader();
-                policyBuilder.AllowAnyMethod();
-            });
+                policyBuilder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed(hostName => true));
         });
     }
 }
