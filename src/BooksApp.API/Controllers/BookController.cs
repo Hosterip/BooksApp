@@ -23,7 +23,7 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(BookRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody]BookRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized to create a book");
@@ -39,7 +39,7 @@ public class BookController : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateBookRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromBody]UpdateBookRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized");

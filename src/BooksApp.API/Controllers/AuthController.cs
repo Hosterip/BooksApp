@@ -22,7 +22,7 @@ public class AuthController : Controller
     }
     
     [HttpPost("Register")]
-    public async Task<IActionResult> RegisterPost(AuthPostRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RegisterPost([FromBody]AuthPostRequest request, CancellationToken cancellationToken)
     {
         if (HttpContext.IsAuthorized())
             return StatusCode(401, "You are already authorized");
@@ -42,7 +42,7 @@ public class AuthController : Controller
 
     [HttpPost("Login")]
     public async Task<IActionResult> LoginPost(
-        AuthPostRequest request,
+        [FromBody]AuthPostRequest request,
         CancellationToken cancellationToken)
     {
         if (HttpContext.IsAuthorized())

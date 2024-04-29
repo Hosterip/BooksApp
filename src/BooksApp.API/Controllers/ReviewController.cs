@@ -33,7 +33,7 @@ public class ReviewController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateReviewRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody]CreateReviewRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are already authorized");
@@ -49,7 +49,7 @@ public class ReviewController : Controller
     }
     
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateReviewRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromBody]UpdateReviewRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are already authorized");

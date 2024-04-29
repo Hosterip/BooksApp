@@ -30,7 +30,7 @@ public class RolesController : Controller
     
     [Authorize(Policy = "AdminOrModerator")]
     [HttpPut]
-    public async Task<IActionResult> UpdateRole(ChangeRoleRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateRole([FromBody]ChangeRoleRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateRoleCommand
         {

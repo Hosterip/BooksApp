@@ -79,7 +79,7 @@ public class UserController : Controller
         return Ok("User was deleted");
     }
     [HttpPut("username")]
-    public async Task<IActionResult> UpdateUsername(UpdateUsername request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateUsername([FromBody]UpdateUsername request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are not authorized");
