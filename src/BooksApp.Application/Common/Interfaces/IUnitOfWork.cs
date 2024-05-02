@@ -6,7 +6,6 @@ public interface IUnitOfWork
 {
     public IBooksRepository Books { get; }
     public IUsersRepository Users { get; }
-    public ILikesRepository Likes { get; }
     public IRolesRepository Roles { get; }
     public IReviewsRepository Reviews { get; }
     Task SaveAsync(CancellationToken cancellationToken);

@@ -6,5 +6,4 @@ namespace PostsApp.Application.Users.Results;
 public class SingleUserResult : UserResult
 { 
     public required BookResult[] Posts { get; init; }
-    public required LikeResult[] Likes { get; init; }
 }

@@ -25,14 +25,6 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
         if (user is null)
             throw new UserException(ConstantsUserException.NotFound);
 
-        var rawLikes = await
-            _unitOfWork.Likes.GetAllWhereAsync(like => like.User.Id == request.Id);
-
-        var likes = (
-            from like in rawLikes
-            select new LikeResult { Id = like.Id, UserId = like.User.Id, PostId = like.Book.Id }
-        ).ToArray();
-
         var posts = await _unitOfWork.Books.GetBooks(post => request.Id == post.Author.Id);
         return new SingleUserResult
         {
@@ -40,7 +32,6 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
             Username = user.Username,
             Role = user.Role.Name, 
             Posts = posts.ToArray(),
-            Likes = likes
         };
     }
 }

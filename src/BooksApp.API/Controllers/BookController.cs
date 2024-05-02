@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Books.Commands.AddRemoveLike;
 using PostsApp.Application.Books.Commands.CreateBook;
 using PostsApp.Application.Books.Commands.DeleteBook;
 using PostsApp.Application.Books.Commands.UpdateBook;
@@ -77,15 +76,5 @@ public class BookController : Controller
         var query = new GetSingleBookQuery { Id = id };
         var post = await _sender.Send(query, cancellationToken);
         return Ok(post);
-    }
-
-    [HttpPost("like/{id:int}")]
-    public async Task<IActionResult> AddRemoveLike(int id, CancellationToken cancellationToken)
-    {
-        if (!HttpContext.IsAuthorized())
-            return StatusCode(401, "You are not authorized");
-        var query = new AddRemoveLikeCommand { UserId = (int)HttpContext.GetId()!, PostId = id };
-        await _sender.Send(query, cancellationToken);
-        return Ok("Like was added or removed");
     }
 }

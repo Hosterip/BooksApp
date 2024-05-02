@@ -23,8 +23,7 @@ internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQ
             Username = post!.Author.Username,
             Role = post.Author.Role.Name
         };
-        var likeCount = await _unitOfWork.Likes.CountLikes(request.Id);
         
-        return new BookResult { Id = post.Id, Title = post.Title, Description = post.Description, Author = user, LikeCount = likeCount};
+        return new BookResult { Id = post.Id, Title = post.Title, Description = post.Description, Author = user };
     }
 }

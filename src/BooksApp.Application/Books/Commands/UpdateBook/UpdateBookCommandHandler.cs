@@ -19,7 +19,6 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
         post!.Title = request.Title;
         post.Description = request.Body;
         await _unitOfWork.SaveAsync(cancellationToken);
-        var likeCount = await _unitOfWork.Likes.CountLikes(request.Id);
         var user = new UserResult
         {
             Id = post.Author.Id,
@@ -31,7 +30,6 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
             Id = post.Id,
             Title = post.Title,
             Description = post.Description,
-            LikeCount = likeCount,
             Author = user
         };
     }

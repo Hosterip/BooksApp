@@ -12,14 +12,12 @@ public class UnitOfWork : IUnitOfWork
     {
         Books = new BooksRepository(dbContext);
         Users = new UsersRepository(dbContext);
-        Likes = new LikesRepository(dbContext);
         Roles = new RolesRepository(dbContext);
         Reviews = new ReviewsRepository(dbContext);
         _dbContext = dbContext;
     }
     public IBooksRepository Books { get; private set; }
     public IUsersRepository Users { get; private set; }
-    public ILikesRepository Likes { get; private set; }
     public IRolesRepository Roles { get; private set; }
     public IReviewsRepository Reviews { get; private set; }
     public async Task SaveAsync(CancellationToken cancellationToken)
