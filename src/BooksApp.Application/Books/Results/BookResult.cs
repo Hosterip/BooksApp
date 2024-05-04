@@ -4,8 +4,9 @@ namespace PostsApp.Application.Books.Results;
 
 public record BookResult
 {
-    public required int Id { get; init; }
-    public required string Title { get; init; }
-    public required string Description { get; init; }
-    public required UserResult Author { get; init; }
+    public required int Id { get; set; }
+    public required string Title { get; set; }
+    public required string Description { get; set; }
+    public required double Average { get; set; }
+    public required UserResult Author { get; set; }
 }

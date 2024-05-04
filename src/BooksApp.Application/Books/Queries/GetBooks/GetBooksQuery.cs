@@ -6,7 +6,8 @@ namespace PostsApp.Application.Books.Queries.GetBooks;
 
 public class GetBooksQuery : IRequest<PaginatedArray<BookResult>>
 {
-    public string? Query { get; set; }
-    public int? Page { get; set; }
-    public int? Limit { get; set; }
+    public string? Query { get; init; }
+    public int? Page { get; init; }
+    public int? Limit { get; init; }
+    public int? UserId { get; init; }
 }

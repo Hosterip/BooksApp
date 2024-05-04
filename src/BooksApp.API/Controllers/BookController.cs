@@ -63,9 +63,15 @@ public class BookController : Controller
     }
 
     [HttpGet("many")]
-    public async Task<IActionResult> GetMany(int? page, int? limit, string q, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMany(
+        CancellationToken cancellationToken,
+        [FromQuery] int? page,
+        [FromQuery] int? limit,
+        [FromQuery] string? q,
+        [FromQuery] int? userId
+        )
     {
-        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page };
+        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }
