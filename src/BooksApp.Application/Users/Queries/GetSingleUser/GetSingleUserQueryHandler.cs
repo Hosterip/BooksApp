@@ -10,7 +10,7 @@ using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
-internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, SingleUserResult>
+internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, UserResult>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -19,19 +19,17 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<SingleUserResult> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
+    public async Task<UserResult> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
         if (user is null)
             throw new UserException(ConstantsUserException.NotFound);
 
-        var posts = await _unitOfWork.Books.GetBooks(post => request.Id == post.Author.Id);
-        return new SingleUserResult
+        return new UserResult
         {
             Id = user.Id,
             Username = user.Username,
             Role = user.Role.Name, 
-            Posts = posts.ToArray(),
         };
     }
 }
