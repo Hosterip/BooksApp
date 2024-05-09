@@ -2,10 +2,12 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Auth.Commands.ChangePassword;
 using PostsApp.Application.Auth.Commands.Register;
 using PostsApp.Application.Auth.Queries.Login;
+using PostsApp.Common.Constants;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Auth;
 using PostsApp.Domain.Constants;
@@ -22,11 +24,9 @@ public class AuthController : Controller
     }
     
     [HttpPost("Register")]
-    public async Task<IActionResult> RegisterPost([FromBody]AuthPostRequest request, CancellationToken cancellationToken)
+    [Authorize(Policy = Policies.NotAuthorized)]
+    public async Task<IActionResult> RegisterPost([FromForm] [FromBody]AuthPostRequest request, CancellationToken cancellationToken)
     {
-        if (HttpContext.IsAuthorized())
-            return StatusCode(401, "You are already authorized");
-
         try
         {
             var command = new RegisterUserCommand{Username = request.Username, Password = request.Password };
@@ -41,13 +41,12 @@ public class AuthController : Controller
     }
 
     [HttpPost("Login")]
+    [Authorize(Policy = Policies.NotAuthorized)]
+
     public async Task<IActionResult> LoginPost(
-        [FromBody]AuthPostRequest request,
+        [FromForm] [FromBody]AuthPostRequest request,
         CancellationToken cancellationToken)
     {
-        if (HttpContext.IsAuthorized())
-            return StatusCode(401, "You are already authorized");
-
         try
         {
             var command = new LoginUserQuery { Username = request.Username, Password = request.Password };
@@ -62,13 +61,11 @@ public class AuthController : Controller
     }
     
     [HttpPut("change")]
+    [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> UpdatePassword(
-        AuthUpdatePasswordRequest request,
+        [FromForm] [FromBody]AuthUpdatePasswordRequest request,
         CancellationToken cancellationToken)
     {
-        if (!HttpContext.IsAuthorized())
-            return StatusCode(401, "You are not authorized");
-
         try
         {
             var command = new ChangePasswordCommand
@@ -87,10 +84,9 @@ public class AuthController : Controller
     }
 
     [HttpPost("Logout")]
+    [Authorize(Policy = Policies.Authorized)]
     public IActionResult LogoutPost()
     {
-        if (!HttpContext.IsAuthorized())
-            return StatusCode(401, "You are not authorized");
         HttpContext.SignOutAsync();
         return Ok("You've been signed out");
     }

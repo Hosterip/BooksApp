@@ -4,6 +4,7 @@ using PostsApp.Infrastructure;
 using PostsApp.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Add CORS
 var corsAllow = "CorsAllow";
 builder.Services.AddCorsPolicy(corsAllow);

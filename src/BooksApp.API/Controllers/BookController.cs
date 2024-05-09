@@ -1,10 +1,12 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Books.Commands.CreateBook;
 using PostsApp.Application.Books.Commands.DeleteBook;
 using PostsApp.Application.Books.Commands.UpdateBook;
 using PostsApp.Application.Books.Queries.GetBooks;
 using PostsApp.Application.Books.Queries.GetSingleBook;
+using PostsApp.Common.Constants;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Book;
 using PostsApp.Contracts.Requests.Post;
@@ -22,12 +24,9 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody]BookRequest request, CancellationToken cancellationToken)
+    [Authorize(Policy = Policies.Authorized)]
+    public async Task<IActionResult> Create([FromForm] [FromBody]BookRequest request, CancellationToken cancellationToken)
     {
-        if (!HttpContext.IsAuthorized())
-            return StatusCode(401, "You are not authorized to create a book");
-
-
         var command = new CreateBookCommand
         {
             UserId = HttpContext.GetId(), Title = request.Title, Description = request.Description
@@ -38,11 +37,10 @@ public class BookController : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody]UpdateBookRequest request, CancellationToken cancellationToken)
-    {
-        if (!HttpContext.IsAuthorized())
-            return StatusCode(401, "You are not authorized");
+    [Authorize(Policy = Policies.Authorized)]
 
+    public async Task<IActionResult> Update([FromForm] [FromBody]UpdateBookRequest request, CancellationToken cancellationToken)
+    {
         var command = new UpdateBookCommand
         {
             Id = request.Id, UserId = (int)HttpContext.GetId()!, Title = request.Title, Body = request.Description
@@ -52,11 +50,9 @@ public class BookController : Controller
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        if (!HttpContext.IsAuthorized())
-            return StatusCode(401, "You are not authorized to delete a book");
-
         var command = new DeleteBookCommand { Id = id, UserId = (int)HttpContext.GetId()! };
         await _sender.Send(command, cancellationToken);
         return Ok("Book was deleted");
