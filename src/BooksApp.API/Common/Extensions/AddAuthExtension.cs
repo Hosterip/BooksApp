@@ -13,7 +13,8 @@ public static class AddAuthExtension
     {
         // Overriding default AuthorizationMiddlewareResultHandler
         serviceCollection.AddSingleton<IAuthorizationMiddlewareResultHandler, MyAuthorizationMiddlewareResultHandler>();
-
+        serviceCollection.AddSingleton<IAuthorizationHandler, AuthorizedRequirementHandler>();
+        serviceCollection.AddSingleton<IAuthorizationHandler, NotAuthorizedRequirementHandler>();
         // Adding a cookie for auth
         serviceCollection.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
