@@ -42,7 +42,6 @@ public class AuthController : Controller
 
     [HttpPost("Login")]
     [Authorize(Policy = Policies.NotAuthorized)]
-
     public async Task<IActionResult> LoginPost(
         [FromForm] [FromBody]AuthPostRequest request,
         CancellationToken cancellationToken)
