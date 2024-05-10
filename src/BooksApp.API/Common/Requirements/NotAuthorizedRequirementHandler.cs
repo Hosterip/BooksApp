@@ -3,18 +3,21 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PostsApp.Common.Requirements;
 
-public class NotAuthorizedRequirement : AuthorizationHandler<NotAuthorizedRequirement>, IAuthorizationRequirement
+public class NotAuthorizedRequirement : IAuthorizationRequirement {}
+
+public class NotAuthorizedRequirementHandler : AuthorizationHandler<NotAuthorizedRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
         NotAuthorizedRequirement requirement)
     {
-        if (!context.User.HasClaim(claim => claim.Type == ClaimTypes.NameIdentifier))
+        if (!context.User.HasClaim(user => user.Type == ClaimTypes.NameIdentifier))
         {
             context.Succeed(requirement);
         }
         else
         {
-            context.Fail();
+            var reason = new AuthorizationFailureReason(this, "You are already authorized");
+            context.Fail(reason);
         }
 
         return Task.CompletedTask;
