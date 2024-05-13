@@ -6,6 +6,7 @@ using PostsApp.Application.Reviews.Commands.UpdateReview;
 using PostsApp.Application.Reviews.Queries.GetReviews;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Review;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
@@ -33,7 +34,7 @@ public class ReviewController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromForm] [FromBody] CreateReviewRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBodyOrDefault] CreateReviewRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are already authorized");
@@ -49,7 +50,7 @@ public class ReviewController : Controller
     }
     
     [HttpPut]
-    public async Task<IActionResult> Update([FromForm] [FromBody]UpdateReviewRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromBodyOrDefault]UpdateReviewRequest request, CancellationToken cancellationToken)
     {
         if (!HttpContext.IsAuthorized())
             return StatusCode(401, "You are already authorized");

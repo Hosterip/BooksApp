@@ -2,6 +2,7 @@ using PostsApp.Application;
 using PostsApp.Common.Extensions;
 using PostsApp.Infrastructure;
 using PostsApp.Middlewares;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,10 @@ var corsAllow = "CorsAllow";
 builder.Services.AddCorsPolicy(corsAllow);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.InsertBodyOrDefaultBinding();
+});
 // Adding Dependency Injectable 
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();

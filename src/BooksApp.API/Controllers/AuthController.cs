@@ -12,6 +12,7 @@ using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Auth;
 using PostsApp.Domain.Constants;
 using PostsApp.Domain.Exceptions;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 [Route("auth")]
@@ -25,7 +26,7 @@ public class AuthController : Controller
     
     [HttpPost("Register")]
     [Authorize(Policy = Policies.NotAuthorized)]
-    public async Task<IActionResult> RegisterPost([FromForm] [FromBody]AuthPostRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RegisterPost([FromBodyOrDefault]AuthPostRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -43,7 +44,7 @@ public class AuthController : Controller
     [HttpPost("Login")]
     [Authorize(Policy = Policies.NotAuthorized)]
     public async Task<IActionResult> LoginPost(
-        [FromForm] [FromBody]AuthPostRequest request,
+        [FromBodyOrDefault]AuthPostRequest request,
         CancellationToken cancellationToken)
     {
         try
@@ -62,7 +63,7 @@ public class AuthController : Controller
     [HttpPut("change")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> UpdatePassword(
-        [FromForm] [FromBody]AuthUpdatePasswordRequest request,
+        [FromBodyOrDefault]AuthUpdatePasswordRequest request,
         CancellationToken cancellationToken)
     {
         try

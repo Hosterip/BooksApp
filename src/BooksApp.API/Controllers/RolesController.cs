@@ -5,6 +5,7 @@ using PostsApp.Application.Roles.Commands.UpdateRole;
 using PostsApp.Application.Roles.Queries.GetRoles;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Role;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
@@ -30,7 +31,7 @@ public class RolesController : Controller
     
     [Authorize(Policy = "AdminOrModerator")]
     [HttpPut]
-    public async Task<IActionResult> UpdateRole([FromForm] [FromBody]ChangeRoleRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateRole([FromBodyOrDefault]ChangeRoleRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateRoleCommand
         {

@@ -10,6 +10,7 @@ using PostsApp.Common.Constants;
 using PostsApp.Common.Extensions;
 using PostsApp.Contracts.Requests.Book;
 using PostsApp.Contracts.Requests.Post;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
@@ -25,7 +26,7 @@ public class BookController : Controller
 
     [HttpPost]
     [Authorize(Policy = Policies.Authorized)]
-    public async Task<IActionResult> Create([FromForm] [FromBody]BookRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBodyOrDefault]BookRequest request, CancellationToken cancellationToken)
     {
         var command = new CreateBookCommand
         {
@@ -39,7 +40,7 @@ public class BookController : Controller
     [HttpPut]
     [Authorize(Policy = Policies.Authorized)]
 
-    public async Task<IActionResult> Update([FromForm] [FromBody]UpdateBookRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromBodyOrDefault]UpdateBookRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateBookCommand
         {
