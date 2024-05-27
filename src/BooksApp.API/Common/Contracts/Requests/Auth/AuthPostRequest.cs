@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Contracts.Requests.Auth;
+﻿namespace PostsApp.Common.Contracts.Requests.Auth;
 
 public class AuthPostRequest
 {

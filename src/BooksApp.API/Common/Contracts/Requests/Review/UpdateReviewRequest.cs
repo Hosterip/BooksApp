@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Contracts.Requests.Review;
+﻿namespace PostsApp.Common.Contracts.Requests.Review;
 
 public class UpdateReviewRequest
 {

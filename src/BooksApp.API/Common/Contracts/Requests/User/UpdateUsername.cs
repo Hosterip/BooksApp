@@ -1,4 +1,4 @@
-namespace PostsApp.Contracts.Requests.User;
+namespace PostsApp.Common.Contracts.Requests.User;
 
 public class UpdateUsername
 {
