@@ -1,17 +1,23 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using PostsApp.Domain.Constants;
 using PostsApp.Domain.Models;
 
 namespace PostsApp.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
-    
+    private readonly IConfiguration _configuration;
+
+    public AppDbContext(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=HOSTERIP\\SQLEXPRESS;Database=postsapp;Trusted_Connection=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer(_configuration.GetConnectionString(EnvironmentNames.DatabaseConnectionString));
         
     } 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -14,12 +14,14 @@ public class UnitOfWork : IUnitOfWork
         Users = new UsersRepository(dbContext);
         Roles = new RolesRepository(dbContext);
         Reviews = new ReviewsRepository(dbContext);
+        Images = new ImagesRepository(dbContext);
         _dbContext = dbContext;
     }
     public IBooksRepository Books { get; private set; }
     public IUsersRepository Users { get; private set; }
     public IRolesRepository Roles { get; private set; }
     public IReviewsRepository Reviews { get; private set; }
+    public IImagesRepository Images { get; private set; }
     public async Task SaveAsync(CancellationToken cancellationToken)
     {
         await _dbContext.SaveChangesAsync(cancellationToken);

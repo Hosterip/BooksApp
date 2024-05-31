@@ -23,16 +23,24 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                 from book in _dbContext.Books
                     .Include(book => book.Author)
                     .Include(book => book.Author.Role)
+                    .Include(book => book.Author.Avatar)
+                    .Include(book => book.Cover)
                     .Where(expression)
                 let user = new UserResult
-                    { Id = book.Author.Id, Username = book.Author.Username, Role = book.Author.Role.Name }
+                {
+                    Id = book.Author.Id,
+                    Username = book.Author.Username, 
+                    Role = book.Author.Role.Name,
+                    AvatarName = book.Author.Avatar.ImageName
+                }
                 select new BookResult
                 {
                     Id = book.Id,
                     Title = book.Title,
                     Description = book.Description,
                     Author = user,
-                    Average = -1
+                    Average = -1,
+                    CoverName = book.Cover.ImageName
                 }
             )
             .PaginationAsync(page, limit);
@@ -49,12 +57,16 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         return (
             from book in _dbContext.Books
                 .Include(book => book.Author)
+                .Include(book => book.Author.Role)
+                .Include(book => book.Author.Avatar)
+                .Include(book => book.Cover)
                 .Where(expression)
             let user = new UserResult
             {
                 Id = book.Author.Id,
                 Username = book.Author.Username,
-                Role = book.Author.Role.Name
+                Role = book.Author.Role.Name,
+                AvatarName = book.Author.Avatar.ImageName
             }
             select new BookResult
             {
@@ -62,7 +74,8 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                 Title = book.Title,
                 Description = book.Description,
                 Author = user,
-                Average = AverageRating(book.Id)
+                Average = AverageRating(book.Id),
+                CoverName = book.Cover.ImageName
             }
         );
     }
@@ -84,6 +97,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
         var book = await _dbContext.Books
             .Include(book => book.Author)
+            .Include(book => book.Author.Role)
+            .Include(book => book.Author.Avatar)
+            .Include(book => book.Cover)
             .SingleAsync(expression);
 
         return book;
@@ -93,6 +109,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
         return await _dbContext.Books
             .Include(book => book.Author)
+            .Include(book => book.Author.Role)
+            .Include(book => book.Author.Avatar)
+            .Include(book => book.Cover)
             .AnyAsync(expression);
     }
 }

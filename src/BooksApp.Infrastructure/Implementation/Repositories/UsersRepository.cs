@@ -17,9 +17,16 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         return await 
             (
-                from user in _dbContext.Users.Include(user => user.Role)
+                from user in _dbContext.Users
+                    .Include(user => user.Role)
                 where query == null || user.Username.Contains(query)
-                select new UserResult{Id = user.Id, Username = user.Username, Role = user.Role.Name})
+                select new UserResult
+                {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Role = user.Role.Name,
+                    AvatarName = user.Avatar.ImageName ?? null
+                })
             .PaginationAsync(page, limit);
     }
     

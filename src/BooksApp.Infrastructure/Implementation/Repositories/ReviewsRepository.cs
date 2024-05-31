@@ -20,13 +20,16 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
                 from review in _dbContext.Reviews
                     .Include(review => review.User)
                     .Include(review => review.User.Role)
+                    .Include(review => review.User.Avatar)
                     .Include(review => review.Book)
+                    .Include(review => review.Book.Cover)
                 where review.Book.Id == bookId
                 let user = new UserResult
                 {
                     Id = review.User.Id,
                     Username = review.User.Username,
-                    Role = review.User.Role.Name
+                    Role = review.User.Role.Name,
+                    AvatarName = review.User.Avatar.ImageName
                 }
                 select new ReviewResult
                 {
@@ -45,7 +48,9 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         return await _dbContext.Reviews
             .Include(review => review.User)
             .Include(review => review.User.Role)
+            .Include(review => review.User.Avatar)
             .Include(review => review.Book)
+            .Include(review => review.Book.Cover)
             .AnyAsync(expression);
     }
 
@@ -54,7 +59,9 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         return await _dbContext.Reviews
             .Include(review => review.User)
             .Include(review => review.User.Role)
+            .Include(review => review.User.Avatar)
             .Include(review => review.Book)
+            .Include(review => review.Book.Cover)
             .SingleOrDefaultAsync(expression);
     }
     public override async Task<IEnumerable<Review>> GetAllWhereAsync(Expression<Func<Review, bool>> expression)
@@ -62,7 +69,9 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         return _dbContext.Reviews
             .Include(review => review.User)
             .Include(review => review.User.Role)
+            .Include(review => review.User.Avatar)
             .Include(review => review.Book)
+            .Include(review => review.Book.Cover)
             .Where(expression);
     }
 }
