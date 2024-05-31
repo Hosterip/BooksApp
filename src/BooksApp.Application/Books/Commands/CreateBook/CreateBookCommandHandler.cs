@@ -17,15 +17,24 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
     public async Task<BookResult> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
-        var book = new Book { Author = user!, Title = request.Title, Description = request.Description };
+        var image = new Image { ImageName = request.ImageName };
+        var book = new Book { Author = user!, Title = request.Title, Description = request.Description, Cover = image};
         await _unitOfWork.Books.AddAsync(book);
+        await _unitOfWork.Images.AddAsync(image);
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = new BookResult
         {
-            Author = new UserResult { Id = user!.Id, Username = user.Username, Role = user.Role.Name },
+            Id = book.Id,
+            Author = new UserResult
+            {
+                Id = user!.Id,
+                Username = user.Username,
+                Role = user.Role.Name,
+                AvatarName = user.Avatar?.ImageName 
+            },
             Title = book.Title, Description = book.Description,
             Average = 0,
-            Id = book.Id
+            CoverName = book.Cover.ImageName
         };
         return result;
     }

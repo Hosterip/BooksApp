@@ -15,6 +15,7 @@
     <ItemGroup>
       <Folder Include="Common\Constants\" />
       <Folder Include="Roles\Commands\" />
+      <Folder Include="Users\Results\" />
     </ItemGroup>
 
     <ItemGroup>

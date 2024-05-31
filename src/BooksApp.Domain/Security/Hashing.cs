@@ -1,11 +1,11 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace PostsApp.Domain.Common;
+namespace PostsApp.Domain.Security;
 
-public record HashSaltResult(string Hash, string Salt);
+public record HashingResult(string Hash, string Salt);
 
-public static class HashSaltGen
+public static class Hashing
 {
     public static bool IsPasswordValid(string userHash, string salt, string password)
     {
@@ -13,11 +13,11 @@ public static class HashSaltGen
         return hashToValidate == userHash;
     }
 
-    public static HashSaltResult GenerateHashSalt(string password)
+    public static HashingResult GenerateHashSalt(string password)
     {
         byte[] salt = GenerateSalt();
         string hash = GenerateHash(password, salt);
-        return new HashSaltResult(hash, Convert.ToHexString(salt));
+        return new HashingResult(hash, Convert.ToHexString(salt));
     }
     
     private static string GenerateHash(string password, byte[] salt)

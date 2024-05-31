@@ -21,7 +21,8 @@ internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQ
         {
             Id = book!.Author.Id, 
             Username = book!.Author.Username,
-            Role = book.Author.Role.Name
+            Role = book.Author.Role.Name,
+            AvatarName = book.Author.Avatar?.ImageName
         };
 
         var average = _unitOfWork.Books.AverageRating(book.Id);
@@ -32,7 +33,8 @@ internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQ
             Title = book.Title,
             Description = book.Description,
             Average = average,
-            Author = user
+            Author = user,
+            CoverName = book.Cover.ImageName
         };
     }
 }

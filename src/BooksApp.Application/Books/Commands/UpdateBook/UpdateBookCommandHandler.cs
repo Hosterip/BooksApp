@@ -13,20 +13,27 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
     {
         _unitOfWork = unitOfWork;
     }
+
     public async Task<BookResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
         var book = await _unitOfWork.Books.GetSingleWhereAsync(book => book.Id == request.Id);
         book!.Title = request.Title;
         book.Description = request.Body;
+        if (request.ImageName is not null)
+        {
+            book.Cover.ImageName = request.ImageName;
+        }
+
         await _unitOfWork.SaveAsync(cancellationToken);
-        
+
         var average = _unitOfWork.Books.AverageRating(book.Id);
-        
+
         var user = new UserResult
         {
             Id = book.Author.Id,
             Username = book.Author.Username,
-            Role = book.Author.Role.Name
+            Role = book.Author.Role.Name,
+            AvatarName = book.Author.Avatar?.ImageName
         };
         return new BookResult
         {
@@ -34,7 +41,8 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
             Title = book.Title,
             Description = book.Description,
             Average = average,
-            Author = user
+            Author = user,
+            CoverName = book.Cover.ImageName
         };
     }
 }

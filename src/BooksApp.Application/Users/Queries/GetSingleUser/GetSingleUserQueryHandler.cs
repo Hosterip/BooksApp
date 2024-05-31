@@ -1,12 +1,8 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.Constants;
 using PostsApp.Domain.Exceptions;
-using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
@@ -29,7 +25,8 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
         {
             Id = user.Id,
             Username = user.Username,
-            Role = user.Role.Name, 
+            Role = user.Role.Name,
+            AvatarName = user.Avatar?.ImageName
         };
     }
 }

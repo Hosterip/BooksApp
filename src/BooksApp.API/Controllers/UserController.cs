@@ -1,28 +1,37 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Users.Commands.DeleteUser;
 using PostsApp.Application.Users.Commands.UpdateUsername;
 using PostsApp.Application.Users.Queries.GetSingleUser;
 using PostsApp.Application.Users.Queries.GetUsers;
 using PostsApp.Common.Constants;
+using PostsApp.Common.Contracts.Requests.User;
+using PostsApp.Common.Contracts.Responses.User;
 using PostsApp.Common.Extensions;
-using PostsApp.Contracts.Requests.User;
-using PostsApp.Contracts.Responses.User;
 using PostsApp.Domain.Exceptions;
+using PostsApp.Domain.Models;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
+
+public class ImageRequest
+{
+    public IFormFile Image { get; set; }
+}
 
 [Route("user")]
 public class UserController : Controller
 {
     private readonly ISender _sender;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public UserController(ISender sender)
+    public UserController(ISender sender, UserManager<IdentityUser> userManager)
     {
         _sender = sender;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -34,6 +43,13 @@ public class UserController : Controller
         var id = HttpContext.GetId();
         return Ok(new UserResponse { Id = id, Username = username, Role = role });
     }
+    
+    [HttpGet("manager")]
+    [Authorize(Policy = Policies.Authorized)]
+    public IActionResult GetUserManager()
+    {
+        return Ok(_userManager.Users);
+    }
 
     [HttpGet("many")]
     public async Task<IActionResult> GetManyUsers(int? page, int? limit, string? q, CancellationToken cancellationToken)
@@ -44,7 +60,7 @@ public class UserController : Controller
     }
 
     [HttpGet("single/{id:int}")]
-    public async Task<IActionResult> GetUserByUsername(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUserById(int id, CancellationToken cancellationToken)
     {
         try
         {
@@ -56,6 +72,19 @@ public class UserController : Controller
         {
             return BadRequest(ex.Message);
         }
+    }
+
+    [HttpPost("avatar")]
+    [Authorize(Policy = Policies.Authorized)]
+    public async Task<IActionResult> AddAvatar([FromBodyOrDefault] ImageRequest request, CancellationToken cancellationToken)
+    {
+    //     var command = new CreateImageCommand {
+    //         Image = request.Image
+    //     };
+    //
+    //     await _sender.Send(command, cancellationToken);
+
+        return Ok("all good");
     }
 
 
@@ -80,7 +109,7 @@ public class UserController : Controller
 
     [HttpPut("username")]
     [Authorize(Policy = Policies.Authorized)]
-    public async Task<IActionResult> UpdateUsername([FromForm] [FromBody] UpdateUsername request,
+    public async Task<IActionResult> UpdateUsername([FromBodyOrDefault] UpdateUsername request,
         CancellationToken cancellationToken)
     {
         var command = new UpdateUsernameCommand { Id = HttpContext.GetId(), NewUsername = request.NewUsername };

@@ -8,5 +8,6 @@ public interface IUnitOfWork
     public IUsersRepository Users { get; }
     public IRolesRepository Roles { get; }
     public IReviewsRepository Reviews { get; }
+    public IImagesRepository Images { get; }
     Task SaveAsync(CancellationToken cancellationToken);
 }

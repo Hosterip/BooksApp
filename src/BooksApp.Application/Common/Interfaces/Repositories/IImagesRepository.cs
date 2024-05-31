@@ -2,4 +2,4 @@
 
 namespace PostsApp.Application.Common.Interfaces.Repositories;
 
-public interface IImageRepository : IGenericRepository<Image> { }
+public interface IImagesRepository : IGenericRepository<Image> { }

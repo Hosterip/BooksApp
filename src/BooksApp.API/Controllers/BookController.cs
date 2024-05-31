@@ -6,10 +6,11 @@ using PostsApp.Application.Books.Commands.DeleteBook;
 using PostsApp.Application.Books.Commands.UpdateBook;
 using PostsApp.Application.Books.Queries.GetBooks;
 using PostsApp.Application.Books.Queries.GetSingleBook;
+using PostsApp.Application.Images.Commands.CreateImage;
+using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Common.Constants;
+using PostsApp.Common.Contracts.Requests.Book;
 using PostsApp.Common.Extensions;
-using PostsApp.Contracts.Requests.Book;
-using PostsApp.Contracts.Requests.Post;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
@@ -24,17 +25,26 @@ public class BookController : Controller
         _sender = sender;
     }
 
-    [HttpPost]
+    [HttpPost("")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Create([FromBodyOrDefault]BookRequest request, CancellationToken cancellationToken)
     {
-        var command = new CreateBookCommand
+        var imageCommand = new CreateImageCommand
         {
-            UserId = HttpContext.GetId(), Title = request.Title, Description = request.Description
+            Image = request.Cover
         };
-        var post = await _sender.Send(command, cancellationToken);
+        var fileName = await _sender.Send(imageCommand, cancellationToken);
 
-        return StatusCode(201, post);
+        var createBookCommand = new CreateBookCommand
+        {
+            UserId = HttpContext.GetId(), 
+            Title = request.Title,
+            Description = request.Description,
+            ImageName = fileName
+        };
+        var book = await _sender.Send(createBookCommand, cancellationToken);
+
+        return StatusCode(201, book);
     }
 
     [HttpPut]
@@ -42,11 +52,35 @@ public class BookController : Controller
 
     public async Task<IActionResult> Update([FromBodyOrDefault]UpdateBookRequest request, CancellationToken cancellationToken)
     {
-        var command = new UpdateBookCommand
+        string? fileName = null;
+        if (request.Cover is not null)
         {
-            Id = request.Id, UserId = (int)HttpContext.GetId()!, Title = request.Title, Body = request.Description
+            var bookQuery = new GetSingleBookQuery
+            {
+                Id = request.Id
+            };
+            var book = await _sender.Send(bookQuery, cancellationToken);
+            var deleteImageCommand = new DeleteImageCommand
+            {
+                ImageName = book.CoverName
+            };
+            await _sender.Send(deleteImageCommand, cancellationToken);
+            var imageCommand = new CreateImageCommand
+            {
+                Image = request.Cover
+            };
+            fileName = await _sender.Send(imageCommand, cancellationToken);
+        }
+        
+        var updateBookCommand = new UpdateBookCommand
+        {
+            Id = request.Id, 
+            UserId = HttpContext.GetId(),
+            Title = request.Title, 
+            Body = request.Description,
+            ImageName = fileName ?? null
         };
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await _sender.Send(updateBookCommand, cancellationToken);
         return Ok(result);
     }
 
@@ -54,7 +88,7 @@ public class BookController : Controller
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var command = new DeleteBookCommand { Id = id, UserId = (int)HttpContext.GetId()! };
+        var command = new DeleteBookCommand { Id = id, UserId = HttpContext.GetId()! };
         await _sender.Send(command, cancellationToken);
         return Ok("Book was deleted");
     }
