@@ -52,7 +52,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("CoverId");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Models.Image", b =>
@@ -69,7 +69,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Image", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Models.Review", b =>
@@ -100,7 +100,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Models.Role", b =>
@@ -117,7 +117,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Models.User", b =>
@@ -156,7 +156,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Models.Book", b =>
