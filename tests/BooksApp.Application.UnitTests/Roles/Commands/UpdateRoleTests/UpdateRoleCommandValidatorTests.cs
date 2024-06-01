@@ -24,8 +24,8 @@ public class UpdateRoleCommandValidatorTests
     public async Task Constructor_ReturnFailureResult_WhenChangerIdMatchesTargetId()
     {
         // Arrange
-        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
-        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 1, Role = RoleConstants.Admin};
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
+        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 1, Role = RoleNames.Admin};
 
         // Act
         var result = await _validator.ValidateAsync(command);
@@ -38,8 +38,8 @@ public class UpdateRoleCommandValidatorTests
     public async Task Constructor_WhenRoleRuleNotSatisfied_ReturnFailureResult()
     {
         // Arrange
-        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleConstants.Member));
-        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleConstants.Admin };
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Member));
+        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleNames.Admin };
 
         // Act
         var result = await _validator.ValidateAsync(command);
@@ -52,8 +52,8 @@ public class UpdateRoleCommandValidatorTests
     public async Task Constructor_WhenRoleRuleSatisfied_ReturnSuccessfulResult()
     {
         // Arrange
-        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
-        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleConstants.Admin };
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
+        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleNames.Admin };
 
         // Act
         var result = await _validator.ValidateAsync(command);
@@ -66,8 +66,8 @@ public class UpdateRoleCommandValidatorTests
     public async Task Constructor_WhenAllTheRulesSatisfied_ReturnSuccessfulResult()
     {
         // Arrange
-        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleConstants.Admin));
-        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleConstants.Admin};
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
+        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleNames.Admin};
 
         // Act
         var result = await _validator.ValidateAsync(command);

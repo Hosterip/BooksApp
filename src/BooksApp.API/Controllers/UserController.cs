@@ -12,7 +12,6 @@ using PostsApp.Common.Contracts.Requests.User;
 using PostsApp.Common.Contracts.Responses.User;
 using PostsApp.Common.Extensions;
 using PostsApp.Domain.Exceptions;
-using PostsApp.Domain.Models;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
@@ -26,12 +25,10 @@ public class ImageRequest
 public class UserController : Controller
 {
     private readonly ISender _sender;
-    private readonly UserManager<IdentityUser> _userManager;
 
-    public UserController(ISender sender, UserManager<IdentityUser> userManager)
+    public UserController(ISender sender)
     {
         _sender = sender;
-        _userManager = userManager;
     }
 
     [HttpGet]
@@ -44,13 +41,6 @@ public class UserController : Controller
         return Ok(new UserResponse { Id = id, Username = username, Role = role });
     }
     
-    [HttpGet("manager")]
-    [Authorize(Policy = Policies.Authorized)]
-    public IActionResult GetUserManager()
-    {
-        return Ok(_userManager.Users);
-    }
-
     [HttpGet("many")]
     public async Task<IActionResult> GetManyUsers(int? page, int? limit, string? q, CancellationToken cancellationToken)
     {

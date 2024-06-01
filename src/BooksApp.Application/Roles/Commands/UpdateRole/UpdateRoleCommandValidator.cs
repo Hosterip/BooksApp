@@ -1,8 +1,8 @@
 using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
+using PostsApp.Domain.Security;
 
 namespace PostsApp.Application.Roles.Commands.UpdateRole;
 
@@ -23,7 +23,7 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
             }).WithMessage(ConstantsUserException.NotFound);
         RuleFor(request => request)
             .Must(request => request.ChangerId != request.UserId)
-            .WithMessage("You can not change your role")
+            .WithMessage("You can not change your own role")
             .OverridePropertyName("UserId And ChangerId");
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>

@@ -33,7 +33,8 @@ internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewC
             {
                 Id = review.User.Id,
                 Username = review.User.Username,
-                Role = review.User.Role.Name
+                Role = review.User.Role.Name,
+                AvatarName = review.User.Avatar?.ImageName
             }
         };
     }

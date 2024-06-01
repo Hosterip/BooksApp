@@ -39,7 +39,7 @@ public class CreateBookCommandValidatorTests
     {
         // Arrange
         var command = CreateBookCommandUtils.CreateBookCommandMethod();
-        ArrangeAllMethodsForValidator(true, MockUser.GetUser(RoleConstants.Author));
+        ArrangeAllMethodsForValidator(true, MockUser.GetUser(RoleNames.Author));
         // Act
         var result = await _validator.ValidateAsync(command);
         

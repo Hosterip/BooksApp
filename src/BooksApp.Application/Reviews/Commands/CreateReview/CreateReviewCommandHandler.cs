@@ -34,7 +34,8 @@ internal sealed class CreateReviewCommandHandler : IRequestHandler<CreateReviewC
             {
                 Id = user!.Id,
                 Username = user.Username,
-                Role = user.Role.Name
+                Role = user.Role.Name,
+                AvatarName = user.Avatar?.ImageName
             }
         };
     }

@@ -4,6 +4,7 @@ using Moq;
 using PostsApp.Application.Auth;
 using PostsApp.Application.Auth.Queries.Login;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Application.Common.Results;
 
 namespace Application.UnitTest.Auth.Queries.LoginTests;
 
@@ -28,6 +29,6 @@ public class LoginQueryTests
         var result = await handler.Handle(query, default);
         
         // Assert
-        result.Should().BeOfType<AuthResult>();
+        result.Should().BeOfType<UserResult>();
     }
 }

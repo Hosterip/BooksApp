@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common;
+using PostsApp.Domain.Security;
 
 namespace PostsApp.Application.Reviews.Commands.DeleteReview;
 

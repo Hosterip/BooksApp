@@ -14,6 +14,6 @@ public static class MockUser
         Username = "Hello world",
         Hash = hash ?? "Hello world",
         Salt = salt ?? "Hello world",
-        Role = MockRole.GetRole(role ?? RoleConstants.Member)
+        Role = MockRole.GetRole(role ?? RoleNames.Member)
     };
 }
