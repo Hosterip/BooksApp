@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,79 +6,70 @@ using PostsApp.Application.Auth.Commands.ChangePassword;
 using PostsApp.Application.Auth.Commands.Register;
 using PostsApp.Application.Auth.Queries.Login;
 using PostsApp.Common.Constants;
+using PostsApp.Common.Contracts.Requests.Auth;
+using PostsApp.Common.Contracts.Responses.User;
 using PostsApp.Common.Extensions;
-using PostsApp.Contracts.Requests.Auth;
-using PostsApp.Domain.Constants;
-using PostsApp.Domain.Exceptions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
+
 [Route("auth")]
 public class AuthController : Controller
 {
     private readonly ISender _sender;
+
     public AuthController(ISender sender)
     {
         _sender = sender;
     }
-    
+
     [HttpPost("Register")]
     [Authorize(Policy = Policies.NotAuthorized)]
-    public async Task<IActionResult> RegisterPost([FromBodyOrDefault]AuthPostRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RegisterPost([FromBodyOrDefault] AuthPostRequest request,
+        CancellationToken cancellationToken)
     {
-        try
+        var command = new RegisterUserCommand { Username = request.Username, Password = request.Password };
+        var user = await _sender.Send(command, cancellationToken);
+        await HttpContext.Login(user.Id, user.Username, user.Role, user.SecurityStamp);
+        return StatusCode(201, new UserResponse
         {
-            var command = new RegisterUserCommand{Username = request.Username, Password = request.Password };
-            var user = await _sender.Send(command, cancellationToken);
-            await HttpContext.Login(user.Username, user.Id, RoleConstants.Member);
-            return StatusCode(201, user);
-        }
-        catch (AuthException e)
-        {
-            return BadRequest(e.Message);
-        }
+            Id = user.Id,
+            Username = user.Username,
+            Role = user.Role
+        });
     }
 
     [HttpPost("Login")]
     [Authorize(Policy = Policies.NotAuthorized)]
     public async Task<IActionResult> LoginPost(
-        [FromBodyOrDefault]AuthPostRequest request,
+        [FromBodyOrDefault] AuthPostRequest request,
         CancellationToken cancellationToken)
     {
-        try
+        var command = new LoginUserQuery { Username = request.Username, Password = request.Password };
+        var user = await _sender.Send(command, cancellationToken);
+        await HttpContext.Login(user.Id, user.Username, user.Role, user.SecurityStamp);
+        return Ok(new UserResponse
         {
-            var command = new LoginUserQuery { Username = request.Username, Password = request.Password };
-            var user = await _sender.Send(command, cancellationToken);
-            await HttpContext.Login(user.Username, user.Id, user.Role ?? RoleConstants.Member);
-            return Ok(user);
-        }
-        catch (AuthException e)
-        {
-            return BadRequest(e.Message);
-        }
+            Id = user.Id,
+            Username = user.Username,
+            Role = user.Role
+        });
     }
-    
+
     [HttpPut("change")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> UpdatePassword(
-        [FromBodyOrDefault]AuthUpdatePasswordRequest request,
+        [FromBodyOrDefault] AuthUpdatePasswordRequest request,
         CancellationToken cancellationToken)
     {
-        try
+        var command = new ChangePasswordCommand
         {
-            var command = new ChangePasswordCommand
-            {
-                NewPassword = request.NewPassword,
-                OldPassword = request.OldPassword,
-                Id = HttpContext.GetId()
-            };
-            await _sender.Send(command, cancellationToken);
-            return Ok("Operation succeeded");
-        }
-        catch (AuthException e)
-        {
-            return BadRequest(e.Message);
-        }
+            NewPassword = request.NewPassword,
+            OldPassword = request.OldPassword,
+            Id = HttpContext.GetId()
+        };
+        await _sender.Send(command, cancellationToken);
+        return Ok("Operation succeeded");
     }
 
     [HttpPost("Logout")]
@@ -90,5 +79,4 @@ public class AuthController : Controller
         HttpContext.SignOutAsync();
         return Ok("You've been signed out");
     }
-    
 }

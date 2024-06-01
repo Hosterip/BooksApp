@@ -1,8 +1,8 @@
+﻿using PostsApp.Application.Common.Results;
+
 namespace PostsApp.Application.Auth;
 
-public class AuthResult
+public class AuthResult : UserResult
 {
-    public int Id { get; init; }
-    public string Username { get; init; }
-    public string? Role { get; init; }
+    public required string SecurityStamp { get; init; }
 }

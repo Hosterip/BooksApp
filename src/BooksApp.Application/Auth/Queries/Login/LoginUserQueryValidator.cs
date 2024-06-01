@@ -2,8 +2,8 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common;
 using PostsApp.Domain.Constants;
+using PostsApp.Domain.Security;
 
 namespace PostsApp.Application.Auth.Queries.Login;
 
@@ -22,7 +22,7 @@ public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
                 
                 if (user is null) return false;
                 
-                return HashSaltGen.IsPasswordValid(user.Hash, user.Salt, request.Password);
+                return Hashing.IsPasswordValid(user.Hash, user.Salt, request.Password);
             })
             .WithMessage(ConstantsAuthException.UsernameOrPassword)
             .OverridePropertyName("Username or Password");

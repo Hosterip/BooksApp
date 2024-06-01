@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using PostsApp.Common.Constants;
 using PostsApp.Domain.Constants;
 
 namespace PostsApp.Common.Extensions;
@@ -20,8 +21,12 @@ public static class HttpContextUserExtension
     // You must be already sure that user is exists before using it 
     public static int GetId(this HttpContext httpContext)
     {
-        var id = httpContext.User.Claims.SingleOrDefault(claim => claim.Type == "id")?.Value;
+        var id = httpContext.User.Claims.SingleOrDefault(claim => claim.Type == AdditionalClaimTypes.Id)?.Value;
         return id != null ? Convert.ToInt32(id) : -1;
+    }
+    public static string GetSecurityStamp(this HttpContext httpContext)
+    {
+        return httpContext.User.Claims.SingleOrDefault(claim => claim.Type == AdditionalClaimTypes.SecurityStamp)?.Value;
     }
 
     public static void ChangeUsername(this HttpContext httpContext, string valueOfClaim)
@@ -33,14 +38,20 @@ public static class HttpContextUserExtension
     {
         httpContext.ChangeClaim(ClaimTypes.Role, valueOfClaim);
     }
+    
+    public static void ChangeSecurityStamp(this HttpContext httpContext, string valueOfClaim)
+    {
+        httpContext.ChangeClaim(AdditionalClaimTypes.SecurityStamp, valueOfClaim);
+    }
 
-    public static async Task Login(this HttpContext httpContext, string username, int id, string role)
+    public static async Task Login(this HttpContext httpContext, int id, string username, string role, string securityStamp)
     {
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, username),
-            new Claim("id", Convert.ToString(id)),
-            new Claim(ClaimTypes.Role, role)
+            new Claim(ClaimTypes.Role, role),
+            new Claim(AdditionalClaimTypes.SecurityStamp, securityStamp),
+            new Claim(AdditionalClaimTypes.Id, Convert.ToString(id)),
         };
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);

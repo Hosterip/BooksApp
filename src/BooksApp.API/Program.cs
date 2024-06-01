@@ -39,6 +39,7 @@ app.UseCors(corsAllow);
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<ValidateUserMiddleware>();
 app.UseMiddleware<ValidationExceptionMiddleware>();
 app.MapControllers();
 

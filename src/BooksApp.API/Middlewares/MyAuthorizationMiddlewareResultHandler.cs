@@ -16,7 +16,7 @@ public class MyAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareRe
             await defaultHandler.HandleAsync(next, context, policy, authorizeResult);
             return;
         }
-        // User must be authorized to failureReasons not be null 
+        // User must be authorized for failureReasons not to be null 
         var result = authorizeResult.AuthorizationFailure?.FailureReasons.FirstOrDefault();
         
         context.Response.StatusCode = StatusCodes.Status403Forbidden;

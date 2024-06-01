@@ -25,9 +25,9 @@ public static class AddAuthExtension
         // Adding policies
         serviceCollection.AddAuthorization(options =>
         {
-            options.AddPolicy(Policies.Admin, policy => policy.RequireRole([RoleConstants.Admin]));
+            options.AddPolicy(Policies.Admin, policy => policy.RequireRole([RoleNames.Admin]));
             
-            options.AddPolicy(Policies.Moderator, policy => policy.RequireRole([RoleConstants.Moderator]));
+            options.AddPolicy(Policies.Moderator, policy => policy.RequireRole([RoleNames.Moderator]));
             
             options.AddPolicy(Policies.Authorized, policy =>
                 policy.Requirements.Add(AuthRequirements.Authorized));

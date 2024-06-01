@@ -4,8 +4,8 @@ using PostsApp.Application.Reviews.Commands.CreateReview;
 using PostsApp.Application.Reviews.Commands.DeleteReview;
 using PostsApp.Application.Reviews.Commands.UpdateReview;
 using PostsApp.Application.Reviews.Queries.GetReviews;
+using PostsApp.Common.Contracts.Requests.Review;
 using PostsApp.Common.Extensions;
-using PostsApp.Contracts.Requests.Review;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;

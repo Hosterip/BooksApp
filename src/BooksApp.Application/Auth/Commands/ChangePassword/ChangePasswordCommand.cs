@@ -2,7 +2,7 @@ using MediatR;
 
 namespace PostsApp.Application.Auth.Commands.ChangePassword;
 
-public class ChangePasswordCommand : IRequest
+public class ChangePasswordCommand : IRequest<AuthResult>
 {
     public required int Id { get; init; }
     public required string OldPassword { get; init; }

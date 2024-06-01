@@ -1,4 +1,5 @@
 using MediatR;
+using PostsApp.Application.Common.Results;
 
 namespace PostsApp.Application.Auth.Queries.Login;
 

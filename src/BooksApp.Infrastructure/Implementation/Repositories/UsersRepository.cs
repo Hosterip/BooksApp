@@ -13,6 +13,12 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 {
     public UsersRepository(AppDbContext dbContext) : base(dbContext) { }
 
+    public async Task AddAsync(User entity)
+    {
+        entity.SecurityStamp = Guid.NewGuid().ToString();
+        await _dbContext.Users.AddAsync(entity);
+    }
+
     public async Task<PaginatedArray<UserResult>> GetPaginated(int page, int limit, string query)
     {
         return await 

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Roles.Commands.UpdateRole;
 using PostsApp.Application.Roles.Queries.GetRoles;
+using PostsApp.Common.Contracts.Requests.Role;
 using PostsApp.Common.Extensions;
-using PostsApp.Contracts.Requests.Role;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;

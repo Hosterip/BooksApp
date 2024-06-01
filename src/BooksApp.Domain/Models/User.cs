@@ -6,6 +6,7 @@ public class User
     public string Username { get; set; }
     public Role Role { get; set; }
     public string Hash { get; set; }
-    public Image? Avatar { get; set; }
     public string Salt { get; set; }
+    public string SecurityStamp { get; set; }
+    public Image? Avatar { get; set; }
 }
