@@ -25,6 +25,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             (
                 from user in _dbContext.Users
                     .Include(user => user.Role)
+                    .Include(user => user.Avatar)
                 where query == null || user.Username.Contains(query)
                 select new UserResult
                 {
@@ -40,18 +41,21 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         return await _dbContext.Users
             .Include(user => user.Role)
+            .Include(user => user.Avatar)
             .AnyAsync(expression);
     }
     public override async Task<User?> GetSingleWhereAsync(Expression<Func<User, bool>> expression)
     {
         return await _dbContext.Users
             .Include(user => user.Role)
+            .Include(user => user.Avatar)
             .SingleOrDefaultAsync(expression);
     }
     public override async Task<IEnumerable<User>> GetAllWhereAsync(Expression<Func<User, bool>> expression)
     {
         return _dbContext.Users
             .Include(user => user.Role)
+            .Include(user => user.Avatar)
             .Where(expression);
     }
 }

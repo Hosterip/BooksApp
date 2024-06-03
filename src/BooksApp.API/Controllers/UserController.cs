@@ -3,7 +3,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PostsApp.Application.Images.Commands.CreateImage;
+using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Application.Users.Commands.DeleteUser;
+using PostsApp.Application.Users.Commands.InsertAvatar;
+using PostsApp.Application.Users.Commands.UpdateUser;
 using PostsApp.Application.Users.Commands.UpdateUsername;
 using PostsApp.Application.Users.Queries.GetSingleUser;
 using PostsApp.Application.Users.Queries.GetUsers;
@@ -15,11 +19,6 @@ using PostsApp.Domain.Exceptions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
-
-public class ImageRequest
-{
-    public IFormFile Image { get; set; }
-}
 
 [Route("user")]
 public class UserController : Controller
@@ -64,20 +63,6 @@ public class UserController : Controller
         }
     }
 
-    [HttpPost("avatar")]
-    [Authorize(Policy = Policies.Authorized)]
-    public async Task<IActionResult> AddAvatar([FromBodyOrDefault] ImageRequest request, CancellationToken cancellationToken)
-    {
-    //     var command = new CreateImageCommand {
-    //         Image = request.Image
-    //     };
-    //
-    //     await _sender.Send(command, cancellationToken);
-
-        return Ok("all good");
-    }
-
-
     [HttpDelete]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
@@ -102,12 +87,55 @@ public class UserController : Controller
     public async Task<IActionResult> UpdateUsername([FromBodyOrDefault] UpdateUsername request,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateUsernameCommand { Id = HttpContext.GetId(), NewUsername = request.NewUsername };
+        var command = new UpdateUserCommand
+        {
+            Id = HttpContext.GetId(),
+            NewUsername = request.NewUsername,
+        };
 
         await _sender.Send(command, cancellationToken);
 
         HttpContext.ChangeUsername(request.NewUsername);
 
         return Ok("Username was updated");
+    }
+    
+    [HttpPut("avatar")]
+    [Authorize(Policy = Policies.Authorized)]
+    public async Task<IActionResult> UpdateAvatar([FromBodyOrDefault] InsertAvatarRequest request,
+        CancellationToken cancellationToken)
+    {
+        var createImageCommand = new CreateImageCommand
+        {
+            Image = request.Image
+        };
+        
+        var imageName = await _sender.Send(createImageCommand, cancellationToken);
+        
+        var userQuery = new GetSingleUserQuery
+        {
+            Id = HttpContext.GetId()
+        };
+        
+        var user = await _sender.Send(userQuery, cancellationToken);
+
+        if (user.AvatarName is not null)
+        {
+            var deleteImageCommand = new DeleteImageCommand
+            {
+                ImageName = user.AvatarName
+            };
+            await _sender.Send(deleteImageCommand, cancellationToken);
+        }
+        
+        var command = new InsertAvatarCommand
+        {
+            Id = HttpContext.GetId(),
+            ImageName = imageName
+        };
+
+        var result = await _sender.Send(command, cancellationToken);
+
+        return Ok(result);
     }
 }

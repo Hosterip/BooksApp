@@ -3,4 +3,5 @@ bin/
 obj/
 .idea/
 .vs
+src/BooksApp.API/images
 aspnet-books-project.sln.DotSettings.user
