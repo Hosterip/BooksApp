@@ -7,7 +7,7 @@ internal sealed class CreateImageCommandHandler : IRequestHandler<CreateImageCom
 {
     public async Task<string> Handle(CreateImageCommand request, CancellationToken cancellationToken)
     {
-        var path = Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images");;
+        var path = Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images");
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
