@@ -8,7 +8,9 @@ public class DeleteImageCommandHandler : IRequestHandler<DeleteImageCommand>
     public Task Handle(DeleteImageCommand request, CancellationToken cancellationToken)
     {
         var fileInfo = new FileInfo(
-                Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images")
+                Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images",
+                    request.ImageName
+                    )
         );
         if (fileInfo.Exists)
         {
