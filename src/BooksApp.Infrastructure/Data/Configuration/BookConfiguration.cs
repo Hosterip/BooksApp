@@ -8,11 +8,16 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
 {
     public void Configure(EntityTypeBuilder<Book> builder)
     {
-        builder.Property(p => p.Title)
+        builder.Property(b => b.Title)
             .HasMaxLength(255)
             .IsRequired();
-        builder.Property(p => p.Description)
+        builder.Property(b => b.Description)
             .HasMaxLength(1000)
             .IsRequired();
+        // AutoIncludes
+        builder.Navigation(b => b.Author)
+            .AutoInclude();
+        builder.Navigation(b => b.Cover)
+            .AutoInclude();
     }
 }

@@ -17,5 +17,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
         builder.Property(u => u.Salt)
             .IsRequired();
+        // AutoIncludes
+        builder
+            .Navigation(u => u.Avatar)
+            .AutoInclude();
+        builder
+            .Navigation(u => u.Role)
+            .AutoInclude();
     }
 }

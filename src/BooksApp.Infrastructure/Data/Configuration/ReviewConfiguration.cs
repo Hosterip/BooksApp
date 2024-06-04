@@ -8,14 +8,19 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
-        builder.Property(r => r.Body)
-            .HasMaxLength(1000)
-            .IsRequired();
         builder.HasOne(r => r.User)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(r => r.Book)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
+        // AutoIncludes
+        builder.Property(r => r.Body)
+            .HasMaxLength(1000)
+            .IsRequired();
+        builder.Navigation(r => r.User)
+            .AutoInclude();
+        builder.Navigation(r => r.Book)
+            .AutoInclude();
     }
 }

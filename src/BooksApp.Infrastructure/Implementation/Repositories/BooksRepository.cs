@@ -21,10 +21,6 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         var result = await
             (
                 from book in _dbContext.Books
-                    .Include(book => book.Author)
-                    .Include(book => book.Author.Role)
-                    .Include(book => book.Author.Avatar)
-                    .Include(book => book.Cover)
                     .Where(expression)
                 let user = new UserResult
                 {
@@ -56,10 +52,6 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
         return (
             from book in _dbContext.Books
-                .Include(book => book.Author)
-                .Include(book => book.Author.Role)
-                .Include(book => book.Author.Avatar)
-                .Include(book => book.Cover)
                 .Where(expression)
             let user = new UserResult
             {
@@ -91,27 +83,5 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         }
 
         return 0;
-    }
-
-    public override async Task<Book?> GetSingleWhereAsync(Expression<Func<Book, bool>> expression)
-    {
-        var book = await _dbContext.Books
-            .Include(book => book.Author)
-            .Include(book => book.Author.Role)
-            .Include(book => book.Author.Avatar)
-            .Include(book => book.Cover)
-            .SingleAsync(expression);
-
-        return book;
-    }
-
-    public override async Task<bool> AnyAsync(Expression<Func<Book, bool>> expression)
-    {
-        return await _dbContext.Books
-            .Include(book => book.Author)
-            .Include(book => book.Author.Role)
-            .Include(book => book.Author.Avatar)
-            .Include(book => book.Cover)
-            .AnyAsync(expression);
     }
 }

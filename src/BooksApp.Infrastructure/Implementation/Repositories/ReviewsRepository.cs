@@ -18,11 +18,6 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         return await 
             (
                 from review in _dbContext.Reviews
-                    .Include(review => review.User)
-                    .Include(review => review.User.Role)
-                    .Include(review => review.User.Avatar)
-                    .Include(review => review.Book)
-                    .Include(review => review.Book.Cover)
                 where review.Book.Id == bookId
                 let user = new UserResult
                 {
@@ -41,37 +36,5 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
                 }
             )
             .PaginationAsync(page, limit);
-    }
-    
-    public override async Task<bool> AnyAsync(Expression<Func<Review, bool>> expression)
-    {
-        return await _dbContext.Reviews
-            .Include(review => review.User)
-            .Include(review => review.User.Role)
-            .Include(review => review.User.Avatar)
-            .Include(review => review.Book)
-            .Include(review => review.Book.Cover)
-            .AnyAsync(expression);
-    }
-
-    public override async Task<Review?> GetSingleWhereAsync(Expression<Func<Review, bool>> expression)
-    {
-        return await _dbContext.Reviews
-            .Include(review => review.User)
-            .Include(review => review.User.Role)
-            .Include(review => review.User.Avatar)
-            .Include(review => review.Book)
-            .Include(review => review.Book.Cover)
-            .SingleOrDefaultAsync(expression);
-    }
-    public override async Task<IEnumerable<Review>> GetAllWhereAsync(Expression<Func<Review, bool>> expression)
-    {
-        return _dbContext.Reviews
-            .Include(review => review.User)
-            .Include(review => review.User.Role)
-            .Include(review => review.User.Avatar)
-            .Include(review => review.Book)
-            .Include(review => review.Book.Cover)
-            .Where(expression);
     }
 }
