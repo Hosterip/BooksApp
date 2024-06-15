@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.User;
+using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Infrastructure.Data.Configuration;
 
@@ -8,6 +9,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.HasKey(u => u.Id);
+        builder.Property(o => o.Id)
+            .ValueGeneratedNever()
+            .HasConversion(
+                id => id.Value,
+                value => UserId.CreateUserId());
+
         builder.Property(u => u.Username)
             .HasMaxLength(255)
             .IsRequired();

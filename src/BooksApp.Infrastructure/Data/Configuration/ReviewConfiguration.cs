@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.Review;
+using PostsApp.Domain.Review.ValueObjects;
 
 namespace PostsApp.Infrastructure.Data.Configuration;
 
@@ -8,6 +9,14 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
+        builder.HasKey(r => r.Id);
+
+        builder.Property(o => o.Id)
+            .ValueGeneratedNever()
+            .HasConversion(
+                id => id.Value,
+                value => ReviewId.CreateReviewId());
+        
         builder.HasOne(r => r.User)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
