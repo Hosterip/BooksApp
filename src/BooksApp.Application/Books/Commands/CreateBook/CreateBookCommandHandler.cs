@@ -2,7 +2,8 @@ using MediatR;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.Book;
+using PostsApp.Domain.Image;
 
 namespace PostsApp.Application.Books.Commands.CreateBook;
 
@@ -16,18 +17,18 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
     }
     public async Task<BookResult> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
-        var image = new Image { ImageName = request.ImageName };
-        var book = new Book { Author = user!, Title = request.Title, Description = request.Description, Cover = image};
+        var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.UserId);
+        var image = Image.Create(request.ImageName);
+        var book = Book.Create(request.Title, request.Description, image, user!);
         await _unitOfWork.Books.AddAsync(book);
         await _unitOfWork.Images.AddAsync(image);
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = new BookResult
         {
-            Id = book.Id,
+            Id = book.Id.Value.ToString(),
             Author = new UserResult
             {
-                Id = user!.Id,
+                Id = user!.Id.Value.ToString(),
                 Username = user.Username,
                 Role = user.Role.Name,
                 AvatarName = user.Avatar?.ImageName 

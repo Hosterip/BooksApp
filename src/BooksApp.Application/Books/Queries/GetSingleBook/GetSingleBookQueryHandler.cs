@@ -15,21 +15,21 @@ internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQ
     }
     public async Task<BookResult> Handle(GetSingleBookQuery request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork.Books.GetSingleWhereAsync(post => post.Id == request.Id);
+        var book = await _unitOfWork.Books.GetSingleWhereAsync(book => book.Id.Value == request.Id);
 
         var user = new UserResult
         {
-            Id = book!.Author.Id, 
+            Id = book!.Author.Id.Value.ToString(), 
             Username = book!.Author.Username,
             Role = book.Author.Role.Name,
             AvatarName = book.Author.Avatar?.ImageName
         };
 
-        var average = _unitOfWork.Books.AverageRating(book.Id);
+        var average = _unitOfWork.Books.AverageRating(book.Id.Value);
         
         return new BookResult
         {
-            Id = book.Id,
+            Id = book.Id.Value.ToString(),
             Title = book.Title,
             Description = book.Description,
             Average = average,

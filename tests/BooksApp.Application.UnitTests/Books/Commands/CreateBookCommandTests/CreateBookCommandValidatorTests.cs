@@ -6,8 +6,8 @@ using FluentValidation.Results;
 using Moq;
 using PostsApp.Application.Books.Commands.CreateBook;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Constants;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.Common.Constants;
+using PostsApp.Domain.User;
 
 namespace Application.UnitTest.Books.Commands.CreateBookCommandTests;
 

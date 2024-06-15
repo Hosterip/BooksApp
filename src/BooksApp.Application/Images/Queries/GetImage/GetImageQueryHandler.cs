@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using PostsApp.Application.Images.Results;
-using PostsApp.Domain.Constants;
+using PostsApp.Domain.Common.Constants;
 
 namespace PostsApp.Application.Images.Queries.GetImage;
 

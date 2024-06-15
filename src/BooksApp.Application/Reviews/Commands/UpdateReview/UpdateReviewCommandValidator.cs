@@ -17,13 +17,13 @@ public class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewComman
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
             {
-                return await unitOfWork.Users.AnyAsync(user => user.Id == userId);
+                return await unitOfWork.Users.AnyAsync(user => user.Id.Value == userId);
             })
             .WithMessage(ConstantsUserException.NotFound);
         RuleFor(request => request.ReviewId)
             .MustAsync(async (reviewId, cancellationToken) =>
             {
-                return await unitOfWork.Reviews.AnyAsync(review => review.Id == reviewId);
+                return await unitOfWork.Reviews.AnyAsync(review => review.Id.Value == reviewId);
             })
             .WithMessage(ConstantsReviewException.NotFound);
     }

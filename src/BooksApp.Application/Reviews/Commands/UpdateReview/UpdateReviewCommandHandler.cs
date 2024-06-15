@@ -16,7 +16,7 @@ internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewC
 
     public async Task<ReviewResult> Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
     {
-        var review = await _unitOfWork.Reviews.GetSingleWhereAsync(review => review.Id == request.ReviewId);
+        var review = await _unitOfWork.Reviews.GetSingleWhereAsync(review => review.Id.Value == request.ReviewId);
         
         review!.Rating = request.Rating;
         review.Body = request.Body;
@@ -25,13 +25,13 @@ internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewC
         
         return new ReviewResult
         {
-            Id = review.Id,
-            BookId = review.Book.Id,
+            Id = review.Id.Value.ToString(),
+            BookId = review.Book.Id.Value.ToString(),
             Body = review.Body,
             Rating = review.Rating,
             User = new UserResult
             {
-                Id = review.User.Id,
+                Id = review.User.Id.Value.ToString(),
                 Username = review.User.Username,
                 Role = review.User.Role.Name,
                 AvatarName = review.User.Avatar?.ImageName

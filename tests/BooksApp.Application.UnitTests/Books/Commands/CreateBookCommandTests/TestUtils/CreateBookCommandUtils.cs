@@ -7,6 +7,6 @@ public static class CreateBookCommandUtils
     public static CreateBookCommand CreateBookCommandMethod() =>
         new CreateBookCommand
         {
-            UserId = 1, Title = "1", Description = "1"
+            UserId = new Guid("1"), Title = "1", Description = "1", ImageName = "1"
         };
 }

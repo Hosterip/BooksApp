@@ -6,7 +6,7 @@ namespace PostsApp.Application.Reviews.Queries.GetReviews;
 
 public class GetReviewsQuery : IRequest<PaginatedArray<ReviewResult>>
 {
-    public required int BookId { get; init; }
+    public required Guid BookId { get; init; }
     public required int Page { get; init; }
     public required int PageSize { get; init; }
 }

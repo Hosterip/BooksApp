@@ -33,7 +33,7 @@ public class AuthController : Controller
         await HttpContext.Login(user.Id, user.Username, user.Role, user.SecurityStamp);
         return StatusCode(201, new UserResponse
         {
-            Id = user.Id,
+            Id = user.Id.ToString(),
             Username = user.Username,
             Role = user.Role
         });
@@ -50,7 +50,7 @@ public class AuthController : Controller
         await HttpContext.Login(user.Id, user.Username, user.Role, user.SecurityStamp);
         return Ok(new UserResponse
         {
-            Id = user.Id,
+            Id = user.Id.ToString(),
             Username = user.Username,
             Role = user.Role
         });
@@ -66,7 +66,7 @@ public class AuthController : Controller
         {
             NewPassword = request.NewPassword,
             OldPassword = request.OldPassword,
-            Id = HttpContext.GetId()
+            Id = new Guid(HttpContext.GetId()!)
         };
         var result = await _sender.Send(command, cancellationToken);
         HttpContext.ChangeSecurityStamp(result.SecurityStamp);

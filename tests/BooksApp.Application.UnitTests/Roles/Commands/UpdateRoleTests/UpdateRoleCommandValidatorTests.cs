@@ -4,8 +4,9 @@ using FluentAssertions;
 using Moq;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Roles.Commands.UpdateRole;
-using PostsApp.Domain.Constants;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.Common.Constants;
+using PostsApp.Domain.Role;
+using PostsApp.Domain.User;
 
 namespace Application.UnitTest.Roles.Commands.UpdateRoleTests;
 
@@ -25,7 +26,7 @@ public class UpdateRoleCommandValidatorTests
     {
         // Arrange
         ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
-        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 1, Role = RoleNames.Admin};
+        var command = new UpdateRoleCommand { UserId = new Guid("1"), ChangerId = new Guid("1"), Role = RoleNames.Admin};
 
         // Act
         var result = await _validator.ValidateAsync(command);
@@ -39,7 +40,7 @@ public class UpdateRoleCommandValidatorTests
     {
         // Arrange
         ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Member));
-        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleNames.Admin };
+        var command = new UpdateRoleCommand { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin };
 
         // Act
         var result = await _validator.ValidateAsync(command);
@@ -53,7 +54,7 @@ public class UpdateRoleCommandValidatorTests
     {
         // Arrange
         ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
-        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleNames.Admin };
+        var command = new UpdateRoleCommand { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin };
 
         // Act
         var result = await _validator.ValidateAsync(command);
@@ -67,7 +68,7 @@ public class UpdateRoleCommandValidatorTests
     {
         // Arrange
         ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
-        var command = new UpdateRoleCommand { UserId = 1, ChangerId = 2, Role = RoleNames.Admin};
+        var command = new UpdateRoleCommand { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin};
 
         // Act
         var result = await _validator.ValidateAsync(command);

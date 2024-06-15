@@ -1,4 +1,4 @@
-using PostsApp.Domain.Models;
+using PostsApp.Domain.Role;
 
 namespace PostsApp.Application.Common.Interfaces.Repositories;
 

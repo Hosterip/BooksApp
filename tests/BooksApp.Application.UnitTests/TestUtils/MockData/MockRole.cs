@@ -1,12 +1,8 @@
-﻿using PostsApp.Domain.Models;
+﻿using PostsApp.Domain.Role;
 
 namespace Application.UnitTest.TestUtils.MockData;
 
 public static class MockRole
 {
-    public static Role GetRole(string role) => new Role
-    {
-        Id = 0,
-        Name = role
-    };
+    public static Role GetRole(string role) => Role.Create(role);
 }

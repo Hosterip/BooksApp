@@ -4,5 +4,5 @@ namespace PostsApp.Application.Users.Commands.DeleteUser;
 
 public class DeleteUserCommand : IRequest
 {
-    public required int Id { get; init; }
+    public required Guid Id { get; init; }
 }

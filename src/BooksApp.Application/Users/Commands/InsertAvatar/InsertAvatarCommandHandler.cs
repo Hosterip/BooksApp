@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.Image;
 
 namespace PostsApp.Application.Users.Commands.InsertAvatar;
 
@@ -15,13 +15,10 @@ public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, U
     public async Task<UserResult> Handle(InsertAvatarCommand request, CancellationToken cancellationToken)
     {
         var user = 
-            await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
+            await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.Id);
         if (user?.Avatar is null)
         {
-            var image = new Image
-            {
-                ImageName = request.ImageName
-            };
+            var image = Image.Create(request.ImageName);
             user!.Avatar = image;
             await _unitOfWork.Images.AddAsync(image);
         } else 
@@ -33,7 +30,7 @@ public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, U
         
         return new UserResult
         {
-            Id = user.Id,
+            Id = user.Id.Value.ToString(),
             Username = user!.Username,
             Role = user.Role.Name,
             AvatarName = user.Avatar?.ImageName

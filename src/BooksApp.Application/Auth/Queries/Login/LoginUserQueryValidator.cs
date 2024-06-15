@@ -2,8 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Constants;
-using PostsApp.Domain.Security;
+using PostsApp.Domain.Common.Security;
 
 namespace PostsApp.Application.Auth.Queries.Login;
 

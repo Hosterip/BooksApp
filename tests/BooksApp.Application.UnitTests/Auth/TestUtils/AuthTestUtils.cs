@@ -3,7 +3,7 @@ using Application.UnitTest.Auth.TestUtils.Constants;
 using Application.UnitTest.TestUtils.MockData;
 using Moq;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.User;
 
 namespace Application.UnitTest.Auth.TestUtils;
 

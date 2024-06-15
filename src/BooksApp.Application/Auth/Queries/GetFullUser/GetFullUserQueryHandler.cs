@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.User;
 
-namespace PostsApp.Application.Auth.Queries.IsSessionValid;
+namespace PostsApp.Application.Auth.Queries.GetFullUser;
 
 internal sealed class GetFullUserQueryHandler : IRequestHandler<GetFullUserQuery, User?>
 {
@@ -14,6 +14,6 @@ internal sealed class GetFullUserQueryHandler : IRequestHandler<GetFullUserQuery
     }
     public async Task<User?> Handle(GetFullUserQuery request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.UserId);
+        return await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.UserId);
     }
 }

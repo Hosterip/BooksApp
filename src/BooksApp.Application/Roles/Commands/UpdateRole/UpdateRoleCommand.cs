@@ -5,7 +5,7 @@ namespace PostsApp.Application.Roles.Commands.UpdateRole;
 
 public sealed class UpdateRoleCommand : IRequest<UserResult>
 {
-    public required int ChangerId { get; init; }
-    public required int UserId { get; init; }
+    public required Guid? ChangerId { get; init; }
+    public required Guid UserId { get; init; }
     public required string Role { get; init; }
 }

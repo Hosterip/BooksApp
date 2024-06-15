@@ -16,7 +16,7 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
 
     public async Task<BookResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork.Books.GetSingleWhereAsync(book => book.Id == request.Id);
+        var book = await _unitOfWork.Books.GetSingleWhereAsync(book => book.Id.Value == request.Id);
         book!.Title = request.Title;
         book.Description = request.Body;
         if (request.ImageName is not null)
@@ -26,18 +26,18 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
 
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        var average = _unitOfWork.Books.AverageRating(book.Id);
+        var average = _unitOfWork.Books.AverageRating(book.Id.Value);
 
         var user = new UserResult
         {
-            Id = book.Author.Id,
+            Id = book.Author.Id.Value.ToString(),
             Username = book.Author.Username,
             Role = book.Author.Role.Name,
             AvatarName = book.Author.Avatar?.ImageName
         };
         return new BookResult
         {
-            Id = book.Id,
+            Id = book.Id.Value.ToString(),
             Title = book.Title,
             Description = book.Description,
             Average = average,

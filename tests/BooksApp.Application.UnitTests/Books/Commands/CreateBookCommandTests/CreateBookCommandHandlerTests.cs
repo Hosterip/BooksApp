@@ -6,7 +6,8 @@ using Moq;
 using PostsApp.Application.Books.Commands.CreateBook;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.Book;
+using PostsApp.Domain.User;
 
 namespace Application.UnitTest.Books.Commands.CreateBookCommandTests;
 

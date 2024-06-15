@@ -1,19 +1,18 @@
-﻿using PostsApp.Domain.Constants;
-using PostsApp.Domain.Models;
+﻿using PostsApp.Domain.Common.Constants;
+using PostsApp.Domain.Image;
+using PostsApp.Domain.User;
 
 namespace Application.UnitTest.TestUtils.MockData;
 
 public static class MockUser
 {
     public static User GetUser(
-        string? role = null,
+        string role = RoleNames.Member,
         string? hash = null,
-        string? salt = null) => new User
-    {
-        Id = 0,
-        Username = "Hello world",
-        Hash = hash ?? "Hello world",
-        Salt = salt ?? "Hello world",
-        Role = MockRole.GetRole(role ?? RoleNames.Member)
-    };
+        string? salt = null) => User.Create(
+        "Hello world",
+        MockRole.GetRole(role ?? RoleNames.Member),
+        hash ?? "Hello world",
+        salt ?? "Hello world",
+        Image.Create("hello world"));
 }

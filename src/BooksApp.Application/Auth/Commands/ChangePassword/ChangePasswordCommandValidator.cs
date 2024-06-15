@@ -1,7 +1,7 @@
 using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Security;
+using PostsApp.Domain.Common.Security;
 
 namespace PostsApp.Application.Auth.Commands.ChangePassword;
 
@@ -13,7 +13,7 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id == request.Id);
+                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.Id);
                 if (user is null)
                     return false;
                 return Hashing.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword);

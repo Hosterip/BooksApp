@@ -1,21 +1,17 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Images.Commands.CreateImage;
 using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Application.Users.Commands.DeleteUser;
 using PostsApp.Application.Users.Commands.InsertAvatar;
-using PostsApp.Application.Users.Commands.UpdateUser;
 using PostsApp.Application.Users.Commands.UpdateUsername;
 using PostsApp.Application.Users.Queries.GetSingleUser;
 using PostsApp.Application.Users.Queries.GetUsers;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.User;
-using PostsApp.Common.Contracts.Responses.User;
 using PostsApp.Common.Extensions;
-using PostsApp.Domain.Exceptions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
@@ -32,14 +28,14 @@ public class UserController : Controller
 
     [HttpGet]
     [Authorize(Policy = Policies.Authorized)]
-    public IActionResult GetUser()
+    public async Task<IActionResult> GetUser(CancellationToken cancellationToken)
     {
-        var username = HttpContext.GetUsername()!;
-        var role = HttpContext.GetRole()!;
-        var id = HttpContext.GetId();
-        return Ok(new UserResponse { Id = id, Username = username, Role = role });
+        var id = new Guid(HttpContext.GetId()!);
+        var query = new GetSingleUserQuery { Id = id };
+        var user = await _sender.Send(query, cancellationToken);
+        return Ok(user);
     }
-    
+
     [HttpGet("many")]
     public async Task<IActionResult> GetManyUsers(int? page, int? limit, string? q, CancellationToken cancellationToken)
     {
@@ -48,34 +44,20 @@ public class UserController : Controller
         return Ok(users);
     }
 
-    [HttpGet("single/{id:int}")]
-    public async Task<IActionResult> GetUserById(int id, CancellationToken cancellationToken)
+    [HttpGet("single/{id:guid}")]
+    public async Task<IActionResult> GetUserById(Guid id, CancellationToken cancellationToken)
     {
-        try
-        {
-            var query = new GetSingleUserQuery { Id = id };
-            var user = await _sender.Send(query, cancellationToken);
-            return Ok(user);
-        }
-        catch (UserException ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var query = new GetSingleUserQuery { Id = id };
+        var user = await _sender.Send(query, cancellationToken);
+        return Ok(user);
     }
 
     [HttpDelete]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
     {
-        try
-        {
-            var command = new DeleteUserCommand { Id = HttpContext.GetId() };
-            await _sender.Send(command, cancellationToken);
-        }
-        catch (UserException ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var command = new DeleteUserCommand { Id = new Guid(HttpContext.GetId()!) };
+        await _sender.Send(command, cancellationToken);
 
         await HttpContext.SignOutAsync();
 
@@ -87,9 +69,9 @@ public class UserController : Controller
     public async Task<IActionResult> UpdateUsername([FromBodyOrDefault] UpdateUsername request,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateUserCommand
+        var command = new UpdateUsernameCommand
         {
-            Id = HttpContext.GetId(),
+            Id = new Guid(HttpContext.GetId()!),
             NewUsername = request.NewUsername,
         };
 
@@ -99,7 +81,7 @@ public class UserController : Controller
 
         return Ok("Username was updated");
     }
-    
+
     [HttpPut("avatar")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> UpdateAvatar([FromBodyOrDefault] InsertAvatarRequest request,
@@ -109,14 +91,14 @@ public class UserController : Controller
         {
             Image = request.Image
         };
-        
+
         var imageName = await _sender.Send(createImageCommand, cancellationToken);
-        
+
         var userQuery = new GetSingleUserQuery
         {
-            Id = HttpContext.GetId()
+            Id = new Guid(HttpContext.GetId()!)
         };
-        
+
         var user = await _sender.Send(userQuery, cancellationToken);
 
         if (user.AvatarName is not null)
@@ -127,10 +109,10 @@ public class UserController : Controller
             };
             await _sender.Send(deleteImageCommand, cancellationToken);
         }
-        
+
         var command = new InsertAvatarCommand
         {
-            Id = HttpContext.GetId(),
+            Id = new Guid(HttpContext.GetId()!),
             ImageName = imageName
         };
 

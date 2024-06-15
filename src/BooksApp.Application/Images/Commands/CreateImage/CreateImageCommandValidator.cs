@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using PostsApp.Application.Common.Constants;
-using PostsApp.Domain.Constants;
+using PostsApp.Domain.Common.Constants;
 
 namespace PostsApp.Application.Images.Commands.CreateImage;
 

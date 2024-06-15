@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Images.Queries.GetImage;
-using PostsApp.Domain.Constants;
 
 namespace PostsApp.Controllers;
 

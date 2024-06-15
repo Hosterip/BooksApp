@@ -2,7 +2,6 @@ using MediatR;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
-using PostsApp.Domain.Models;
 
 namespace PostsApp.Application.Books.Queries.GetBooks;
 
@@ -29,7 +28,7 @@ internal sealed class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, Pagi
         else
         {
             result = await _unitOfWork.Books
-                .GetPaginated(limit, page, book => book.Title.Contains(query) && book.Author.Id == request.UserId);
+                .GetPaginated(limit, page, book => book.Title.Contains(query) && book.Author.Id.Value == request.UserId);
         }
         
         

@@ -12,8 +12,8 @@ using PostsApp.Infrastructure.Data;
 namespace PostsApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240601191742_Security Stamp to the user model")]
-    partial class SecurityStamptotheusermodel
+    [Migration("20240615200454_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,19 +25,13 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("PostsApp.Domain.Models.Book", b =>
+            modelBuilder.Entity("PostsApp.Domain.Book.Book", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -51,20 +45,15 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.HasIndex("CoverId");
 
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("PostsApp.Domain.Models.Image", b =>
+            modelBuilder.Entity("PostsApp.Domain.Image.Image", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageName")
                         .IsRequired()
@@ -75,27 +64,24 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("PostsApp.Domain.Models.Review", b =>
+            modelBuilder.Entity("PostsApp.Domain.Review.Review", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -106,13 +92,10 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("PostsApp.Domain.Models.Role", b =>
+            modelBuilder.Entity("PostsApp.Domain.Role.Role", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -123,23 +106,20 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("PostsApp.Domain.Models.User", b =>
+            modelBuilder.Entity("PostsApp.Domain.User.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AvatarId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("AvatarId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Hash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Salt")
                         .IsRequired()
@@ -166,34 +146,26 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PostsApp.Domain.Models.Book", b =>
+            modelBuilder.Entity("PostsApp.Domain.Book.Book", b =>
                 {
-                    b.HasOne("PostsApp.Domain.Models.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PostsApp.Domain.Models.Image", "Cover")
+                    b.HasOne("PostsApp.Domain.Image.Image", "Cover")
                         .WithMany()
                         .HasForeignKey("CoverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
-
                     b.Navigation("Cover");
                 });
 
-            modelBuilder.Entity("PostsApp.Domain.Models.Review", b =>
+            modelBuilder.Entity("PostsApp.Domain.Review.Review", b =>
                 {
-                    b.HasOne("PostsApp.Domain.Models.Book", "Book")
+                    b.HasOne("PostsApp.Domain.Book.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("PostsApp.Domain.Models.User", "User")
+                    b.HasOne("PostsApp.Domain.User.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -204,13 +176,13 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PostsApp.Domain.Models.User", b =>
+            modelBuilder.Entity("PostsApp.Domain.User.User", b =>
                 {
-                    b.HasOne("PostsApp.Domain.Models.Image", "Avatar")
+                    b.HasOne("PostsApp.Domain.Image.Image", "Avatar")
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
-                    b.HasOne("PostsApp.Domain.Models.Role", "Role")
+                    b.HasOne("PostsApp.Domain.Role.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

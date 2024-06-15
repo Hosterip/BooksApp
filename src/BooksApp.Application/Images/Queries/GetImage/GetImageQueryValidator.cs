@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using PostsApp.Domain.Constants;
+using PostsApp.Domain.Common.Constants;
 
 namespace PostsApp.Application.Images.Queries.GetImage;
 

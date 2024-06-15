@@ -1,5 +1,5 @@
 using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Domain.Models;
+using PostsApp.Domain.Role;
 using PostsApp.Infrastructure.Data;
 
 namespace PostsApp.Infrastructure.Implementation.Repositories;

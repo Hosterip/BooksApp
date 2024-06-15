@@ -15,7 +15,7 @@ public class GetRoleQueryHandler : IRequestHandler<GetRoleQuery, RoleResult[]>
         var roles =
             (
                 from role in await _unitOfWork.Roles.GetAllAsync()
-                select new RoleResult { Id = role.Id, Name = role.Name }
+                select new RoleResult { Id = role.Id.Value.ToString(), Name = role.Name }
                 ).ToArray();
         return roles;
     }

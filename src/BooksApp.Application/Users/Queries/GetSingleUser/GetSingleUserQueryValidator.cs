@@ -2,13 +2,13 @@
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Users.Commands.InsertAvatar;
+namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
-public class InsertAvatarCommandValidator : AbstractValidator<InsertAvatarCommand>
+public class GetSingleUserQueryValidator : AbstractValidator<GetSingleUserQuery>
 {
-    public InsertAvatarCommandValidator(IUnitOfWork unitOfWork)
+    public GetSingleUserQueryValidator(IUnitOfWork unitOfWork)
     {
-        RuleFor(user => user.Id)
+        RuleFor(request => request.Id)
             .MustAsync(async (id, cancellationToken) =>
             {
                 return await unitOfWork.Users.AnyAsync(user => user.Id.Value == id);

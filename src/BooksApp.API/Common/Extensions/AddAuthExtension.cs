@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Requirements;
-using PostsApp.Domain.Constants;
+using PostsApp.Domain.Common.Constants;
 using PostsApp.Middlewares;
 
 namespace PostsApp.Common.Extensions;

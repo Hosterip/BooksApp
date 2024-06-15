@@ -37,7 +37,7 @@ public class BookController : Controller
 
         var createBookCommand = new CreateBookCommand
         {
-            UserId = HttpContext.GetId(), 
+            UserId = new Guid(HttpContext.GetId()!), 
             Title = request.Title,
             Description = request.Description,
             ImageName = fileName
@@ -75,7 +75,7 @@ public class BookController : Controller
         var updateBookCommand = new UpdateBookCommand
         {
             Id = request.Id, 
-            UserId = HttpContext.GetId(),
+            UserId = new Guid(HttpContext.GetId()!),
             Title = request.Title, 
             Body = request.Description,
             ImageName = fileName ?? null
@@ -84,11 +84,11 @@ public class BookController : Controller
         return Ok(result);
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:guid}")]
     [Authorize(Policy = Policies.Authorized)]
-    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteBookCommand { Id = id, UserId = HttpContext.GetId()! };
+        var command = new DeleteBookCommand { Id = id, UserId = new Guid(HttpContext.GetId()!) };
         await _sender.Send(command, cancellationToken);
         return Ok("Book was deleted");
     }
@@ -99,7 +99,7 @@ public class BookController : Controller
         [FromQuery] int? page,
         [FromQuery] int? limit,
         [FromQuery] string? q,
-        [FromQuery] int? userId
+        [FromQuery] Guid? userId
         )
     {
         var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId };
@@ -108,7 +108,7 @@ public class BookController : Controller
     }
 
     [HttpGet("single/{id:int}")]
-    public async Task<IActionResult> GetSingle(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSingle(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetSingleBookQuery { Id = id };
         var post = await _sender.Send(query, cancellationToken);

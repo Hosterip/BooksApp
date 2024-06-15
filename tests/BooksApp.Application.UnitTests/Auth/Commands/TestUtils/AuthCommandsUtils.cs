@@ -8,14 +8,14 @@ public static class AuthCommandsUtils
     public static ChangePasswordCommand ChangePasswordCommandCorrect => 
         new ChangePasswordCommand
         {
-            Id = 1,
+            Id = new Guid("1"),
             NewPassword = PasswordConstants.MockPassword,
             OldPassword = PasswordConstants.CorrectPassword
         };
     public static ChangePasswordCommand ChangePasswordCommandIncorrect => 
         new ChangePasswordCommand
         {
-            Id = 1,
+            Id = new Guid("1"),
             NewPassword = PasswordConstants.MockPassword,
             OldPassword = PasswordConstants.IncorrectPassword
         };
