@@ -1,4 +1,4 @@
-namespace PostsApp.Domain.Constants;
+namespace PostsApp.Domain.Common.Constants;
 
 public static class RoleNames
 {

@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Constants;
+﻿using PostsApp.Domain.Common.Constants;
 
-namespace PostsApp.Domain.Security;
+namespace PostsApp.Domain.Common.Security;
 
 public static class RolePermissions
 {

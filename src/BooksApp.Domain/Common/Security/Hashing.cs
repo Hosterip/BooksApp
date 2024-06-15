@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace PostsApp.Domain.Security;
+namespace PostsApp.Domain.Common.Security;
 
 public record HashingResult(string Hash, string Salt);
 
