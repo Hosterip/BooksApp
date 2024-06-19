@@ -11,9 +11,9 @@ public class RoleId : ValueObject
         Value = value;
     }
 
-    public static RoleId CreateRoleId()
+    public static RoleId CreateRoleId(Guid? value = null)
     {
-        return new(Guid.NewGuid());
+        return new(value ?? Guid.NewGuid());
     }
     
     public override IEnumerable<object> GetEqualityComponents()

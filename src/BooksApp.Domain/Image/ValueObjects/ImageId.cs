@@ -11,9 +11,9 @@ public class ImageId : ValueObject
         Value = value;
     }
 
-    public static ImageId CreateImageId()
+    public static ImageId CreateImageId(Guid? value = null)
     {
-        return new(Guid.NewGuid());
+        return new(value ?? Guid.NewGuid());
     }
     
     public override IEnumerable<object> GetEqualityComponents()

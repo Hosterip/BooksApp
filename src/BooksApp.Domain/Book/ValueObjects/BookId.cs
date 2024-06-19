@@ -11,9 +11,9 @@ public class BookId : ValueObject
         Value = value;
     }
 
-    public static BookId CreateBookId()
+    public static BookId CreateBookId(Guid? value = null)
     {
-        return new(Guid.NewGuid());
+        return new(value ?? Guid.NewGuid());
     }
     
     public override IEnumerable<object> GetEqualityComponents()

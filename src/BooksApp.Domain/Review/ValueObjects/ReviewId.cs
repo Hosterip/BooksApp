@@ -6,14 +6,15 @@ public class ReviewId : ValueObject
 {
     public Guid Value { get; }
 
+    
     public ReviewId(Guid value)
     {
         Value = value;
     }
 
-    public static ReviewId CreateReviewId()
+    public static ReviewId CreateReviewId(Guid? value = null)
     {
-        return new(Guid.NewGuid());
+        return new(value ?? Guid.NewGuid());
     }
     
     public override IEnumerable<object> GetEqualityComponents()

@@ -6,30 +6,43 @@ public abstract class ValueObject : IEquatable<ValueObject>
 
     public override bool Equals(object? obj)
     {
-        if (obj is null || obj.GetType() != GetType())
+        if (obj == null || obj.GetType() != GetType())
             return false;
 
-        var valueObject = (ValueObject)obj;
+        var other = (ValueObject)obj;
 
-        return GetEqualityComponents()
-            .SequenceEqual(valueObject.GetEqualityComponents());
+        return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
 
-    public static bool operator ==(ValueObject left, ValueObject right)
+    public static bool operator ==(ValueObject one, ValueObject two)
     {
-        return Equals(left, right);
+        return EqualOperator(one, two);
+    }
+
+    public static bool operator !=(ValueObject one, ValueObject two)
+    {
+        return NotEqualOperator(one, two);
     }
     
-    public static bool operator !=(ValueObject left, ValueObject right)
+    protected static bool EqualOperator(ValueObject left, ValueObject right)
     {
-        return !Equals(left, right);
+        if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+        {
+            return false;
+        }
+        return ReferenceEquals(left, right) || left.Equals(right);
+    }
+
+    protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+    {
+        return !(EqualOperator(left, right));
     }
 
     public override int GetHashCode()
     {
         return GetEqualityComponents()
-            .Select(x => x?.GetHashCode() ?? 0)
-            .Aggregate((x, y ) => x ^ y);
+            .Select(x => x != null ? x.GetHashCode() : 0)
+            .Aggregate((x, y) => x ^ y);
     }
     
     public bool Equals(ValueObject? other)
