@@ -19,7 +19,7 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
         
         return new AuthResult
         {
-            Id = user.Id.Value.ToString(),
+            Id = user!.Id.Value.ToString(),
             Role = user.Role.Name,
             SecurityStamp = user.SecurityStamp,
             Username = user.Username,

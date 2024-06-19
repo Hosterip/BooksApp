@@ -15,7 +15,7 @@ public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, U
     public async Task<UserResult> Handle(InsertAvatarCommand request, CancellationToken cancellationToken)
     {
         var user = 
-            await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.Id);
+            await _unitOfWork.Users.GetSingleById(request.Id);
         if (user?.Avatar is null)
         {
             var image = Image.Create(request.ImageName);

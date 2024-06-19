@@ -1,5 +1,7 @@
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Book.ValueObjects;
+using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Application.Books.Commands.DeleteBook;
 
@@ -13,9 +15,11 @@ internal sealed class DeleteBookCommandHandler : IRequestHandler<DeleteBookComma
     }
     public async Task Handle(DeleteBookCommand request, CancellationToken cancellationToken)
     {
-        var post = await _unitOfWork
-            .Books.GetSingleWhereAsync(book => book.Id.Value == request.Id && book.Author.Id.Value == request.UserId);
-        _unitOfWork.Books.Remove(post!);
+        var book = await _unitOfWork
+            .Books.GetSingleWhereAsync(book => 
+                book.Id == BookId.CreateBookId(request.Id) &&
+                book.Author.Id == UserId.CreateUserId(request.UserId));
+        _unitOfWork.Books.Remove(book!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

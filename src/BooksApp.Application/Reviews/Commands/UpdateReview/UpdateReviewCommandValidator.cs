@@ -15,16 +15,10 @@ public class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewComman
             .GreaterThanOrEqualTo(1)
             .LessThanOrEqualTo(5);
         RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) =>
-            {
-                return await unitOfWork.Users.AnyAsync(user => user.Id.Value == userId);
-            })
+            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
             .WithMessage(ConstantsUserException.NotFound);
         RuleFor(request => request.ReviewId)
-            .MustAsync(async (reviewId, cancellationToken) =>
-            {
-                return await unitOfWork.Reviews.AnyAsync(review => review.Id.Value == reviewId);
-            })
+            .MustAsync(async (reviewId, cancellationToken) => await unitOfWork.Reviews.AnyById(reviewId))
             .WithMessage(ConstantsReviewException.NotFound);
     }
 }

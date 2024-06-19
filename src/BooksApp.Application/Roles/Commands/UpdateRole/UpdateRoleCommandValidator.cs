@@ -27,8 +27,8 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var targetUser = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.UserId);
-                var changerUser = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.ChangerId);
+                var targetUser = await unitOfWork.Users.GetSingleById(request.UserId);
+                var changerUser = await unitOfWork.Users.GetSingleById(request.ChangerId);
                 if (changerUser is null || targetUser is null) return false;
                 return RolePermissions.UpdateRole(
                     changerUser.Role.Name, 

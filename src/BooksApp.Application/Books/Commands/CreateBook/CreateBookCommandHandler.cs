@@ -17,7 +17,7 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
     }
     public async Task<BookResult> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.UserId);
+        var user = await _unitOfWork.Users.GetSingleById(request.UserId);
         var image = Image.Create(request.ImageName);
         var book = Book.Create(request.Title, request.Description, image, user!);
         await _unitOfWork.Books.AddAsync(book);

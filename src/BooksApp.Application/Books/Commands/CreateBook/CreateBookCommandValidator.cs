@@ -11,15 +11,12 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
     {
         RuleFor(post => post.Title).NotEmpty().Length(1, 255);
         RuleFor(post => post.Description).NotEmpty().Length(1, 1000);
-        RuleFor(post => post.UserId).MustAsync(async (id, cancellationToken) =>
-        {
-            return await unitOfWork.Users
-                .AnyAsync(user => 
-                    user.Id.Value == id);
-        }).WithMessage(ConstantsUserException.NotFound);
+        RuleFor(post => post.UserId)
+            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
+            .WithMessage(ConstantsUserException.NotFound);
         RuleFor(request => request.UserId).MustAsync(async (id, cancellationToken) =>
         {
-            var user = await unitOfWork.Users.GetSingleWhereAsync(user => id == user.Id.Value);
+            var user = await unitOfWork.Users.GetSingleById(id);
             if (user is null) return false;
             return RolePermissions.CreateBook(user.Role.Name);
         }).WithMessage(ConstantsBookException.MustBeAnAuthor);

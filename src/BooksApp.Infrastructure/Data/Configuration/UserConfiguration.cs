@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PostsApp.Domain.Role;
 using PostsApp.Domain.User;
 using PostsApp.Domain.User.ValueObjects;
 
@@ -14,7 +15,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => UserId.CreateUserId());
+                value => UserId.CreateUserId(value));
 
         builder.Property(u => u.Username)
             .HasMaxLength(255)

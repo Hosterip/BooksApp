@@ -15,7 +15,7 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
     public async Task<AuthResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users
-            .GetSingleWhereAsync(user => user.Id.Value == request.Id);
+            .GetSingleById(request.Id);
 
         var hashSalt = Hashing.GenerateHashSalt(request.NewPassword);
         user!.Hash = hashSalt.Hash;

@@ -13,7 +13,7 @@ internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserComma
     }
     public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.Id);
+        var user = await _unitOfWork.Users.GetSingleById(request.Id);
         _unitOfWork.Users.Remove(user!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }

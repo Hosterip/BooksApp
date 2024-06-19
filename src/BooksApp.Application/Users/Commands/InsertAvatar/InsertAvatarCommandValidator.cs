@@ -9,10 +9,7 @@ public class InsertAvatarCommandValidator : AbstractValidator<InsertAvatarComman
     public InsertAvatarCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Id)
-            .MustAsync(async (id, cancellationToken) =>
-            {
-                return await unitOfWork.Users.AnyAsync(user => user.Id.Value == id);
-            })
+            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(ConstantsUserException.NotFound);
     }
 }

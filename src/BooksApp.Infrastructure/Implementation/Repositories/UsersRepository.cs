@@ -5,6 +5,7 @@ using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
 using PostsApp.Domain.User;
+using PostsApp.Domain.User.ValueObjects;
 using PostsApp.Infrastructure.Data;
 
 namespace PostsApp.Infrastructure.Implementation.Repositories;
@@ -27,5 +28,15 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     AvatarName = user.Avatar.ImageName ?? null
                 })
             .PaginationAsync(page, limit);
+    }
+
+    public async Task<User?> GetSingleById(Guid guid)
+    {
+        return await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == UserId.CreateUserId(guid));
+    }
+
+    public async Task<bool> AnyById(Guid guid)
+    {
+        return await _dbContext.Users.AnyAsync(user => user.Id == UserId.CreateUserId(guid));
     }
 }

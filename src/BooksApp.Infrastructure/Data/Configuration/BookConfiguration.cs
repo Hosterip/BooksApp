@@ -16,18 +16,14 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => BookId.CreateBookId());
-
+                value => BookId.CreateBookId(value));
+        
         builder.Property(b => b.Title)
             .HasMaxLength(255)
             .IsRequired();
         builder.Property(b => b.Description)
             .HasMaxLength(1000)
             .IsRequired();
-        
-        builder.Property<BookId>("Id")  // Id is a shadow property
-            .IsRequired();
-        builder.HasKey("Id");
         
         // AutoIncludes
         builder.Navigation(b => b.Cover)

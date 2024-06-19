@@ -16,14 +16,14 @@ public class ValidateUserMiddleware
 
     public async Task InvokeAsync(HttpContext context, ISender sender)
     {
-        var id = new Guid(context.GetId()!);
+        var id = context.GetId();
         var securityStamp = context.GetSecurityStamp();
         var role = context.GetRole();
         if (id != null && securityStamp != null)
         {
             var query = new GetFullUserQuery
             {
-                UserId = id
+                UserId = new Guid(id)
             };
             var result = await sender.Send(query);
             if (result is null || result.SecurityStamp.ToString() != securityStamp)

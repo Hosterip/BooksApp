@@ -18,6 +18,14 @@ public class AppDbContext : DbContext
     } 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Book>().HasOne(b => b.Author);
+        modelBuilder.Entity<Book>().HasOne(b => b.Cover);
+        
+        modelBuilder.Entity<Review>().HasOne(r => r.User);
+        modelBuilder.Entity<Review>().HasOne(r => r.Book);
+
+        modelBuilder.Entity<User>().HasOne(u => u.Role);
+        
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }

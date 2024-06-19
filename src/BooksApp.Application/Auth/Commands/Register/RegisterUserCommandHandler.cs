@@ -3,6 +3,7 @@ using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Domain.Common.Constants;
 using PostsApp.Domain.Common.Security;
+using PostsApp.Domain.Role;
 using PostsApp.Domain.User;
 
 namespace PostsApp.Application.Auth.Commands.Register;
@@ -19,6 +20,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
     {
         var hashSalt = Hashing.GenerateHashSalt(request.Password);
         var memberRole = await _unitOfWork.Roles.GetSingleWhereAsync(role => role.Name == RoleNames.Member);
+        
         User user = User.Create(
             request.Username, 
             memberRole!,

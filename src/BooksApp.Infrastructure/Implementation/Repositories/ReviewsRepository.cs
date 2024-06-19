@@ -4,7 +4,9 @@ using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Reviews.Results;
+using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Review;
+using PostsApp.Domain.Review.ValueObjects;
 using PostsApp.Infrastructure.Data;
 
 namespace PostsApp.Infrastructure.Implementation.Repositories;
@@ -18,7 +20,7 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         return await 
             (
                 from review in _dbContext.Reviews
-                where review.Book.Id.Value == bookId
+                where review.Book.Id == BookId.CreateBookId(bookId)
                 let user = new UserResult
                 {
                     Id = review.User.Id.Value.ToString(),
@@ -36,5 +38,15 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
                 }
             )
             .PaginationAsync(page, limit);
+    }
+
+    public async Task<Review?> GetSingleById(Guid guid)
+    {
+        return await _dbContext.Reviews.SingleOrDefaultAsync(review => review.Id == ReviewId.CreateReviewId(guid));
+    }
+
+    public async Task<bool> AnyById(Guid guid)
+    {
+        return await _dbContext.Reviews.AnyAsync(review => review.Id == ReviewId.CreateReviewId(guid));
     }
 }

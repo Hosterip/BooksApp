@@ -13,7 +13,7 @@ public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCo
         RuleFor(user => user.Id)
             .MustAsync(async (id, cancellationToken) =>
             {
-                return await unitOfWork.Users.AnyAsync(user => user.Id.Value == id);
+                return await unitOfWork.Users.AnyById(id);
             })
             .WithMessage(ConstantsUserException.NotFound);
         RuleFor(user => user.NewUsername)

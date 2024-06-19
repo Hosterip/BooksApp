@@ -15,7 +15,7 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => ReviewId.CreateReviewId());
+                value => ReviewId.CreateReviewId(value));
         
         builder.HasOne(r => r.User)
             .WithMany()

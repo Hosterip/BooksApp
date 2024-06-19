@@ -13,11 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Roles\Commands\" />
-      <Folder Include="Users\Results\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <InternalsVisibleTo Include="BooksApp.Application.UnitTests" />
     </ItemGroup>
     

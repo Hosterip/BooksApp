@@ -16,6 +16,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => RoleId.CreateRoleId());
+                value => RoleId.CreateRoleId(value));
     }
 }

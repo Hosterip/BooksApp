@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
@@ -11,7 +12,7 @@ public class GetSingleUserQueryValidator : AbstractValidator<GetSingleUserQuery>
         RuleFor(request => request.Id)
             .MustAsync(async (id, cancellationToken) =>
             {
-                return await unitOfWork.Users.AnyAsync(user => user.Id.Value == id);
+                return await unitOfWork.Users.AnyById(id);
             })
             .WithMessage(ConstantsUserException.NotFound);
     }

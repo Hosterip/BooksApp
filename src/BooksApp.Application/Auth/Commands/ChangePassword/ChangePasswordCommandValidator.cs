@@ -13,7 +13,7 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Id.Value == request.Id);
+                var user = await unitOfWork.Users.GetSingleById(request.Id);
                 if (user is null)
                     return false;
                 return Hashing.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword);
