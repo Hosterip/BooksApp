@@ -4,7 +4,7 @@ using PostsApp.Application.Images.Queries.GetImage;
 
 namespace PostsApp.Controllers;
 
-[Route("Images")]
+[Route("[controller]")]
 public class ImagesController : Controller
 {
     private readonly ISender _sender;

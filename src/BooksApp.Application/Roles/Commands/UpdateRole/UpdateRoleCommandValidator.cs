@@ -16,10 +16,8 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
             }).WithMessage(ConstantsRoleException.NotFound);    
         
         RuleFor(user => user.UserId)
-            .MustAsync(async (userId, cancellationToken) =>
-            {
-                return await unitOfWork.Users.AnyAsync(user => user.Id.Value == userId);
-            }).WithMessage(ConstantsUserException.NotFound);
+            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
+            .WithMessage(ConstantsUserException.NotFound);
         RuleFor(request => request)
             .Must(request => request.ChangerId != request.UserId)
             .WithMessage("You can not change your own role")

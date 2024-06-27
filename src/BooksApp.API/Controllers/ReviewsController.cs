@@ -12,12 +12,12 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
-[Route("Reviews")]
-public class ReviewController : Controller
+[Route("[controller]")]
+public class ReviewsController : Controller
 {
     private readonly ISender _sender;
 
-    public ReviewController(ISender sender)
+    public ReviewsController(ISender sender)
     {
         _sender = sender;
     }

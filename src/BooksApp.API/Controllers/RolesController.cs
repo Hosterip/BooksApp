@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Roles.Commands.UpdateRole;
 using PostsApp.Application.Roles.Queries.GetRoles;
+using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.Role;
 using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
-[Route("roles")]
+[Route("[controller]")]
 public class RolesController : Controller
 {
     private readonly ISender _sender;
@@ -29,7 +30,7 @@ public class RolesController : Controller
         return Ok(roles);
     }
     
-    [Authorize(Policy = "AdminOrModerator")]
+    [Authorize(Policy = Policies.Authorized)]
     [HttpPut]
     public async Task<IActionResult> UpdateRole([FromBodyOrDefault]ChangeRoleRequest request, CancellationToken cancellationToken)
     {

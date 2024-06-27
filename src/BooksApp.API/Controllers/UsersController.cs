@@ -16,12 +16,12 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
-[Route("user")]
-public class UserController : Controller
+[Route("[controller]")]
+public class UsersController : Controller
 {
     private readonly ISender _sender;
 
-    public UserController(ISender sender)
+    public UsersController(ISender sender)
     {
         _sender = sender;
     }

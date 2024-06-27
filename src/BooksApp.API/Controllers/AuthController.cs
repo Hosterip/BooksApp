@@ -13,7 +13,7 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
-[Route("auth")]
+[Route("[controller]")]
 public class AuthController : Controller
 {
     private readonly ISender _sender;

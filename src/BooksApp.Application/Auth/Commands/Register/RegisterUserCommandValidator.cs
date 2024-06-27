@@ -9,7 +9,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
     public RegisterUserCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Username)
-            .NotEmpty().Length(0, 255);
+            .NotEmpty()
+            .Length(0, 255);
         RuleFor(user => user.Password)
             .NotEmpty();
         RuleFor(user => user.Username)
@@ -18,4 +19,4 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
                 return !await unitOfWork.Users.AnyAsync(user => user.Username == username);
             }).WithMessage(ConstantsAuthException.Occupied);
     }
-}
+} 
