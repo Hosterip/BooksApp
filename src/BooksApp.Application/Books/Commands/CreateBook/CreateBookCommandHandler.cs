@@ -20,8 +20,8 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
         var user = await _unitOfWork.Users.GetSingleById(request.UserId);
         var image = Image.Create(request.ImageName);
         var book = Book.Create(request.Title, request.Description, image, user!);
-        await _unitOfWork.Books.AddAsync(book);
         await _unitOfWork.Images.AddAsync(image);
+        await _unitOfWork.Books.AddAsync(book);
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = new BookResult
         {

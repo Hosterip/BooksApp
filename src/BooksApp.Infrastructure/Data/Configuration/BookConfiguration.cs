@@ -26,6 +26,8 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .IsRequired();
         
         // AutoIncludes
+        builder.Navigation(b => b.Author)
+            .AutoInclude();
         builder.Navigation(b => b.Cover)
             .AutoInclude();
     }
