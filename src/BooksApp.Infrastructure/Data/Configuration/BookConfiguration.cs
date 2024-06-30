@@ -11,6 +11,10 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
     public void Configure(EntityTypeBuilder<Book> builder)
     {
         builder.HasKey(b => b.Id);
+
+        builder
+            .HasMany(b => b.Genres)
+            .WithMany(g => g.Books);
         
         builder.Property(o => o.Id)
             .ValueGeneratedNever()

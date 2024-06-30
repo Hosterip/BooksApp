@@ -9,5 +9,6 @@ public interface IUnitOfWork
     public IRolesRepository Roles { get; }
     public IReviewsRepository Reviews { get; }
     public IImagesRepository Images { get; }
+    public IGenresRepository Genres { get; }
     Task SaveAsync(CancellationToken cancellationToken);
 }

@@ -20,6 +20,7 @@ public class Book : AggregateRoot<BookId>
     public string Description { get; set; }
     public Image.Image Cover { get; set; }
     public User.User Author { get; }
+    public List<Genre.Genre> Genres { get; set; }
     public static Book Create(string title, string description, Image.Image cover, User.User author)
     {
         return new(BookId.CreateBookId(), title, description, cover, author);
