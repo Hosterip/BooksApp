@@ -32,7 +32,7 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 return await unitOfWork.Books.AnyAsync(book => 
                     book.Id == BookId.CreateBookId(request.Id) &&
                     (book.Author.Id == UserId.CreateUserId(request.UserId) || canUpdate));
-            }).WithMessage(ConstantsBookException.PostNotYour);
+            }).WithMessage(BookValidationMessages.PostNotYour);
         RuleFor(request => request.GenreIds).Must(genreIds =>
         {
             if (genreIds is null)
