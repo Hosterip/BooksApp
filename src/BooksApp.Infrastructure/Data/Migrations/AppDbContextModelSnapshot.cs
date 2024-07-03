@@ -78,7 +78,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Image.Image", b =>

@@ -14,12 +14,19 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         RuleFor(post => post.UserId)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(ConstantsUserException.NotFound);
-        RuleFor(request => request.UserId).MustAsync(async (id, cancellationToken) =>
+        RuleFor(request => request.GenreIds).Must(genreIds =>
         {
-            var user = await unitOfWork.Users.GetSingleById(id);
-            if (user is null) return false;
-            return RolePermissions.CreateBook(user.Role.Name);
-        }).WithMessage(ConstantsBookException.MustBeAnAuthor);
-        
+            if (genreIds is null)
+                return false;
+            return !unitOfWork.Genres.GetAllByIds(genreIds).Any(genre => genre is null);
+        }).WithMessage("One or more of the genres weren't found.");
+        RuleFor(request => request.GenreIds)
+            .Must(genreIds =>
+            {
+                if (genreIds is null)
+                    return false;
+                return genreIds.Any();
+            })
+            .WithMessage("Book must have at least one genre.");
     }
 }

@@ -23,7 +23,7 @@ public class UnitOfWork : IUnitOfWork
     public IRolesRepository Roles { get; private set; }
     public IReviewsRepository Reviews { get; private set; }
     public IImagesRepository Images { get; private set; }
-    public IGenresRepository Genres { get; }
+    public IGenresRepository Genres { get; private set; }
 
     public async Task SaveAsync(CancellationToken cancellationToken)
     {

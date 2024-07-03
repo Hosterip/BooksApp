@@ -2,6 +2,7 @@ using MediatR;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
+using PostsApp.Application.Genres;
 
 namespace PostsApp.Application.Books.Queries.GetSingleBook;
 
@@ -34,7 +35,8 @@ internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQ
             Description = book.Description,
             Average = average,
             Author = user,
-            CoverName = book.Cover.ImageName
+            CoverName = book.Cover.ImageName,
+            Genres = book.Genres.Select(genre => new GenreResult{ Id = genre.Id.Value, Name = genre.Name }).ToList()
         };
     }
 }

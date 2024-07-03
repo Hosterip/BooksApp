@@ -34,13 +34,14 @@ public class BooksController : Controller
             Image = request.Cover
         };
         var fileName = await _sender.Send(imageCommand, cancellationToken);
-
+        
         var createBookCommand = new CreateBookCommand
         {
             UserId = new Guid(HttpContext.GetId()!), 
             Title = request.Title,
             Description = request.Description,
-            ImageName = fileName
+            ImageName = fileName,
+            GenreIds = request.GenreIds
         };
         var book = await _sender.Send(createBookCommand, cancellationToken);
 
@@ -77,8 +78,9 @@ public class BooksController : Controller
             Id = request.Id, 
             UserId = new Guid(HttpContext.GetId()!),
             Title = request.Title, 
-            Body = request.Description,
-            ImageName = fileName ?? null
+            Description = request.Description,
+            ImageName = fileName ?? null,
+            GenreIds = request.GenreIds
         };
         var result = await _sender.Send(updateBookCommand, cancellationToken);
         return Ok(result);
@@ -107,7 +109,7 @@ public class BooksController : Controller
         return Ok(result);
     }
 
-    [HttpGet("single/{id:int}")]
+    [HttpGet("single/{id:guid}")]
     public async Task<IActionResult> GetSingle(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetSingleBookQuery { Id = id };

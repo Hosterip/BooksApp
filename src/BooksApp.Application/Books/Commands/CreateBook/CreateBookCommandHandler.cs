@@ -2,6 +2,7 @@ using MediatR;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
+using PostsApp.Application.Genres;
 using PostsApp.Domain.Book;
 using PostsApp.Domain.Image;
 
@@ -20,6 +21,8 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
         var user = await _unitOfWork.Users.GetSingleById(request.UserId);
         var image = Image.Create(request.ImageName);
         var book = Book.Create(request.Title, request.Description, image, user!);
+        var genres = _unitOfWork.Genres.GetAllByIds(request.GenreIds);
+        book.Genres = genres.ToList()!;
         await _unitOfWork.Images.AddAsync(image);
         await _unitOfWork.Books.AddAsync(book);
         await _unitOfWork.SaveAsync(cancellationToken);
@@ -35,7 +38,8 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
             },
             Title = book.Title, Description = book.Description,
             Average = 0,
-            CoverName = book.Cover.ImageName
+            CoverName = book.Cover.ImageName,
+            Genres = book.Genres.Select(genre => new GenreResult{ Id = genre.Id.Value, Name = genre.Name }).ToList()
         };
         return result;
     }

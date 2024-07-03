@@ -4,8 +4,10 @@ using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
+using PostsApp.Application.Genres;
 using PostsApp.Domain.Book;
 using PostsApp.Domain.Book.ValueObjects;
+using PostsApp.Domain.Genre;
 using PostsApp.Infrastructure.Data;
 
 namespace PostsApp.Infrastructure.Implementation.Repositories;
@@ -37,7 +39,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                     Description = book.Description,
                     Author = user,
                     Average = -1,
-                    CoverName = book.Cover.ImageName
+                    CoverName = book.Cover.ImageName,
+                    Genres = book.Genres.Select(genre => new GenreResult{ Id = genre.Id.Value, Name = genre.Name }).ToList()
+
                 }
             )
             .PaginationAsync(page, limit);
