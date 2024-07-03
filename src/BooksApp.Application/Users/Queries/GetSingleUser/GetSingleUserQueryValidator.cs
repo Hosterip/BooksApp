@@ -14,6 +14,6 @@ public class GetSingleUserQueryValidator : AbstractValidator<GetSingleUserQuery>
             {
                 return await unitOfWork.Users.AnyById(id);
             })
-            .WithMessage(ConstantsUserException.NotFound);
+            .WithMessage(UserValidationMessages.NotFound);
     }
 }

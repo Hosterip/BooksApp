@@ -15,7 +15,7 @@ public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCo
             {
                 return await unitOfWork.Users.AnyById(id);
             })
-            .WithMessage(ConstantsUserException.NotFound);
+            .WithMessage(UserValidationMessages.NotFound);
         RuleFor(user => user.NewUsername)
             .Length(0, 255)
             .NotEmpty();
@@ -24,6 +24,6 @@ public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCo
             {
                 return !await unitOfWork.Users.AnyAsync(user => user.Username == username);
             })
-            .WithMessage(ConstantsUserException.Occupied);
+            .WithMessage(UserValidationMessages.Occupied);
     }
 }

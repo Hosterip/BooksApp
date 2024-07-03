@@ -10,6 +10,6 @@ public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
     {
         RuleFor(request => request.Id)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
-            .WithMessage(ConstantsUserException.NotFound);
+            .WithMessage(UserValidationMessages.NotFound);
     }
 }

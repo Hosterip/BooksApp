@@ -1,6 +1,6 @@
 namespace PostsApp.Application.Common.Constants.Exceptions;
 
-public static class ConstantsAuthException
+public static class AuthValidationMessages
 {
     public const string NotFound = "User not found";
     public const string Occupied = "Username is occupied";

@@ -16,12 +16,12 @@ public class CreateReviewCommandValidator : AbstractValidator<CreateReviewComman
             .LessThanOrEqualTo(5);
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
-            .WithMessage(ConstantsUserException.NotFound);
+            .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) =>
             {
                 return await unitOfWork.Books.AnyById(bookId);
             })
-            .WithMessage(ConstantsReviewException.NotFound);
+            .WithMessage(ReviewValidationMessages.NotFound);
     }
 }

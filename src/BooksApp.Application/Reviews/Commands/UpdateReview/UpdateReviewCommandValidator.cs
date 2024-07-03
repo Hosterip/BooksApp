@@ -16,9 +16,9 @@ public class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewComman
             .LessThanOrEqualTo(5);
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
-            .WithMessage(ConstantsUserException.NotFound);
+            .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request.ReviewId)
             .MustAsync(async (reviewId, cancellationToken) => await unitOfWork.Reviews.AnyById(reviewId))
-            .WithMessage(ConstantsReviewException.NotFound);
+            .WithMessage(ReviewValidationMessages.NotFound);
     }
 }

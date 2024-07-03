@@ -13,7 +13,7 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         RuleFor(post => post.Description).NotEmpty().Length(1, 1000);
         RuleFor(post => post.UserId)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
-            .WithMessage(ConstantsUserException.NotFound);
+            .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request.GenreIds).Must(genreIds =>
         {
             if (genreIds is null)
@@ -21,12 +21,7 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
             return !unitOfWork.Genres.GetAllByIds(genreIds).Any(genre => genre is null);
         }).WithMessage("One or more of the genres weren't found.");
         RuleFor(request => request.GenreIds)
-            .Must(genreIds =>
-            {
-                if (genreIds is null)
-                    return false;
-                return genreIds.Any();
-            })
+            .Must(genreIds => genreIds is not null && genreIds.Any())
             .WithMessage("Book must have at least one genre.");
     }
 }
