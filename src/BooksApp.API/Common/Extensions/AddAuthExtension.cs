@@ -29,6 +29,8 @@ public static class AddAuthExtension
             
             options.AddPolicy(Policies.Moderator, policy => policy.RequireRole([RoleNames.Moderator]));
             
+            options.AddPolicy(Policies.AdminOrModerator, policy => policy.RequireRole([RoleNames.Admin, RoleNames.Moderator]));
+            
             options.AddPolicy(Policies.Authorized, policy =>
                 policy.Requirements.Add(AuthRequirements.Authorized));
             
