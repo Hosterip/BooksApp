@@ -10,4 +10,5 @@ public class GetBooksQuery : IRequest<PaginatedArray<BookResult>>
     public int? Page { get; init; }
     public int? Limit { get; init; }
     public Guid? UserId { get; init; }
+    public Guid? GenreId { get; init; }
 }

@@ -101,10 +101,11 @@ public class BooksController : Controller
         [FromQuery] int? page,
         [FromQuery] int? limit,
         [FromQuery] string? q,
-        [FromQuery] Guid? userId
+        [FromQuery] Guid? userId,
+        [FromQuery] Guid? genreId
         )
     {
-        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId };
+        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId, GenreId = genreId};
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }
