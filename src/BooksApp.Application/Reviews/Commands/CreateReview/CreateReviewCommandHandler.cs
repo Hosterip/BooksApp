@@ -2,6 +2,7 @@
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Reviews.Results;
+using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Review;
 
 namespace PostsApp.Application.Reviews.Commands.CreateReview;

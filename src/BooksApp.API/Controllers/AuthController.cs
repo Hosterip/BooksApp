@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Mapster;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,12 +32,7 @@ public class AuthController : Controller
         var command = new RegisterUserCommand { Username = request.Username, Password = request.Password };
         var user = await _sender.Send(command, cancellationToken);
         await HttpContext.Login(user.Id, user.Username, user.Role, user.SecurityStamp);
-        return StatusCode(201, new UserResponse
-        {
-            Id = user.Id.ToString(),
-            Username = user.Username,
-            Role = user.Role
-        });
+        return StatusCode(201, user.Adapt<UserResponse>());
     }
 
     [HttpPost("Login")]
@@ -48,12 +44,7 @@ public class AuthController : Controller
         var command = new LoginUserQuery { Username = request.Username, Password = request.Password };
         var user = await _sender.Send(command, cancellationToken);
         await HttpContext.Login(user.Id, user.Username, user.Role, user.SecurityStamp);
-        return Ok(new UserResponse
-        {
-            Id = user.Id.ToString(),
-            Username = user.Username,
-            Role = user.Role
-        });
+        return Ok(user.Adapt<UserResponse>());
     }
 
     [HttpPut("change")]

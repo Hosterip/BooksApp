@@ -1,5 +1,6 @@
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Genres;
+using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Genre;
 
 namespace PostsApp.Application.Books.Results;

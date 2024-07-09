@@ -1,4 +1,5 @@
 using PostsApp.Application.Common.Results;
+using PostsApp.Application.Users.Results;
 using PostsApp.Domain.User;
 
 namespace PostsApp.Application.Common.Interfaces.Repositories;

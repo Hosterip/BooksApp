@@ -2,6 +2,7 @@ using MediatR;
 using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
+using PostsApp.Application.Users.Results;
 
 namespace PostsApp.Application.Users.Queries.GetUsers;
 

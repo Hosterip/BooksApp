@@ -4,6 +4,7 @@ using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
+using PostsApp.Application.Users.Results;
 using PostsApp.Domain.User;
 using PostsApp.Domain.User.ValueObjects;
 using PostsApp.Infrastructure.Data;

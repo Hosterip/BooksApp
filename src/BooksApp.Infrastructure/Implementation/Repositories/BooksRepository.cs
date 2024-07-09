@@ -5,6 +5,7 @@ using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Genres;
+using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Book;
 using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Genre;

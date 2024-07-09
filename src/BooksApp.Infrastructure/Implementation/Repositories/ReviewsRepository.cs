@@ -4,6 +4,7 @@ using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Reviews.Results;
+using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Review;
 using PostsApp.Domain.Review.ValueObjects;

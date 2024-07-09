@@ -23,7 +23,7 @@ public class ValidateUserMiddleware
         {
             var query = new GetFullUserQuery
             {
-                UserId = new Guid(id)
+                UserId = Guid.Parse(id)
             };
             var result = await sender.Send(query);
             if (result is null || result.SecurityStamp.ToString() != securityStamp)
