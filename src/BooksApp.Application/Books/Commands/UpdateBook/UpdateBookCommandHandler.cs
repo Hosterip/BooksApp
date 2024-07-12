@@ -1,3 +1,4 @@
+using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
@@ -10,10 +11,12 @@ namespace PostsApp.Application.Books.Commands.UpdateBook;
 internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, BookResult>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public UpdateBookCommandHandler(IUnitOfWork unitOfWork)
+    public UpdateBookCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<BookResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
@@ -31,25 +34,9 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
         book!.Genres = _unitOfWork.Genres.GetAllByIds(request.GenreIds).ToList()!;
 
         await _unitOfWork.SaveAsync(cancellationToken);
-
+        var result = _mapper.Map<BookResult>(book);
         var average = _unitOfWork.Books.AverageRating(book.Id.Value);
-
-        var user = new UserResult
-        {
-            Id = book.Author.Id.Value.ToString(),
-            Username = book.Author.Username,
-            Role = book.Author.Role.Name,
-            AvatarName = book.Author.Avatar?.ImageName
-        };
-        return new BookResult
-        {
-            Id = book.Id.Value.ToString(),
-            Title = book.Title,
-            Description = book.Description,
-            Average = average,
-            Author = user,
-            CoverName = book.Cover.ImageName,
-            Genres = book.Genres.Select(genre => new GenreResult{ Id = genre.Id.Value, Name = genre.Name }).ToList()
-        };
+        result.Average = average;
+        return result;
     }
 }

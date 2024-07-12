@@ -1,3 +1,4 @@
+using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
@@ -9,22 +10,18 @@ namespace PostsApp.Application.Users.Queries.GetSingleUser;
 internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, UserResult>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public GetSingleUserQueryHandler(IUnitOfWork unitOfWork)
+    public GetSingleUserQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<UserResult> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetSingleById(request.Id);
 
-        return new UserResult
-        {
-            Id = user!.Id.Value.ToString(),
-            Username = user.Username,
-            Role = user.Role.Name,
-            AvatarName = user.Avatar?.ImageName
-        };
+        return _mapper.Map<UserResult>(user!);
     }
 }

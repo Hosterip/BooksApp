@@ -1,3 +1,4 @@
+using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
@@ -10,34 +11,21 @@ namespace PostsApp.Application.Books.Queries.GetSingleBook;
 internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQuery, BookResult>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public GetSingleBookQueryHandler(IUnitOfWork unitOfWork)
+    public GetSingleBookQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     public async Task<BookResult> Handle(GetSingleBookQuery request, CancellationToken cancellationToken)
     {
         var book = await _unitOfWork.Books.GetSingleById(request.Id);
 
-        var user = new UserResult
-        {
-            Id = book!.Author.Id.Value.ToString(), 
-            Username = book!.Author.Username,
-            Role = book.Author.Role.Name,
-            AvatarName = book.Author.Avatar?.ImageName
-        };
-
-        var average = _unitOfWork.Books.AverageRating(book.Id.Value);
+        var result = _mapper.Map<BookResult>(book!);
+        var average = _unitOfWork.Books.AverageRating(book!.Id.Value);
+        result.Average = average;
         
-        return new BookResult
-        {
-            Id = book.Id.Value.ToString(),
-            Title = book.Title,
-            Description = book.Description,
-            Average = average,
-            Author = user,
-            CoverName = book.Cover.ImageName,
-            Genres = book.Genres.Select(genre => new GenreResult{ Id = genre.Id.Value, Name = genre.Name }).ToList()
-        };
+        return result;
     }
 }

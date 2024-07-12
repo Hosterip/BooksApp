@@ -1,3 +1,4 @@
+using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
@@ -12,10 +13,12 @@ namespace PostsApp.Application.Books.Commands.CreateBook;
 internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookResult>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CreateBookCommandHandler(IUnitOfWork unitOfWork)
+    public CreateBookCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     public async Task<BookResult> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
@@ -27,21 +30,9 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
         await _unitOfWork.Images.AddAsync(image);
         await _unitOfWork.Books.AddAsync(book);
         await _unitOfWork.SaveAsync(cancellationToken);
-        var result = new BookResult
-        {
-            Id = book.Id.Value.ToString(),
-            Author = new UserResult
-            {
-                Id = user!.Id.Value.ToString(),
-                Username = user.Username,
-                Role = user.Role.Name,
-                AvatarName = user.Avatar?.ImageName 
-            },
-            Title = book.Title, Description = book.Description,
-            Average = 0,
-            CoverName = book.Cover.ImageName,
-            Genres = book.Genres.Select(genre => new GenreResult{ Id = genre.Id.Value, Name = genre.Name }).ToList()
-        };
+        
+        var result = _mapper.Map<BookResult>(book);
+        result.Average = 0;
         return result;
     }
 }

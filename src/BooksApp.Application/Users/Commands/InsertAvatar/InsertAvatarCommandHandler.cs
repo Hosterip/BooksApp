@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using MapsterMapper;
+using MediatR;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Users.Results;
@@ -9,9 +10,12 @@ namespace PostsApp.Application.Users.Commands.InsertAvatar;
 public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, UserResult>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public InsertAvatarCommandHandler(IUnitOfWork unitOfWork)
+    private readonly IMapper _mapper;
+
+    public InsertAvatarCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     public async Task<UserResult> Handle(InsertAvatarCommand request, CancellationToken cancellationToken)
     {
@@ -29,12 +33,6 @@ public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, U
 
         await _unitOfWork.SaveAsync(cancellationToken);
         
-        return new UserResult
-        {
-            Id = user.Id.Value.ToString(),
-            Username = user!.Username,
-            Role = user.Role.Name,
-            AvatarName = user.Avatar?.ImageName
-        };
+        return _mapper.Map<UserResult>(user);
     }
 }

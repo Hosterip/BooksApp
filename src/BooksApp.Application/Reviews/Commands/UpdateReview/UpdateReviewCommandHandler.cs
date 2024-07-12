@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using MapsterMapper;
+using MediatR;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Reviews.Results;
@@ -9,10 +10,12 @@ namespace PostsApp.Application.Reviews.Commands.UpdateReview;
 internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, ReviewResult>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public UpdateReviewCommandHandler(IUnitOfWork unitOfWork)
+    public UpdateReviewCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<ReviewResult> Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
@@ -23,20 +26,7 @@ internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewC
         review.Body = request.Body;
 
         await _unitOfWork.SaveAsync(cancellationToken);
-        
-        return new ReviewResult
-        {
-            Id = review.Id.Value.ToString(),
-            BookId = review.Book.Id.Value.ToString(),
-            Body = review.Body,
-            Rating = review.Rating,
-            User = new UserResult
-            {
-                Id = review.User.Id.Value.ToString(),
-                Username = review.User.Username,
-                Role = review.User.Role.Name,
-                AvatarName = review.User.Avatar?.ImageName
-            }
-        };
+
+        return _mapper.Map<ReviewResult>(review);
     }
 }
