@@ -2,6 +2,8 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PostsApp.Domain.Book;
+using PostsApp.Domain.Bookshelf;
+using PostsApp.Domain.Bookshelf.Entities;
 using PostsApp.Domain.Genre;
 using PostsApp.Domain.Image;
 using PostsApp.Domain.Review;
@@ -37,4 +39,6 @@ public class AppDbContext : DbContext
     public DbSet<Review>  Reviews { get; set; }
     public DbSet<Image>  Images { get; set; }
     public DbSet<Genre>  Genres { get; set; }
+    public DbSet<Bookshelf>  Bookshelfes { get; set; }
+    public DbSet<BookshelfBook>  BookshelfBooks { get; set; }
 }

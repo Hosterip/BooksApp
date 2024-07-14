@@ -6,7 +6,7 @@ public class GenreId : ValueObject
 {
     public Guid Value { get; }
 
-    public GenreId(Guid value)
+    private GenreId(Guid value)
     {
         Value = value;
     }
