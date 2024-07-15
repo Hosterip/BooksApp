@@ -4,6 +4,7 @@ using PostsApp.Domain.Book;
 using PostsApp.Domain.Bookshelf;
 using PostsApp.Domain.Bookshelf.Entities;
 using PostsApp.Domain.Bookshelf.ValueObjects;
+using PostsApp.Domain.User;
 
 namespace PostsApp.Infrastructure.Data.Configuration;
 
@@ -19,13 +20,17 @@ public class BookshelfConfiguration : IEntityTypeConfiguration<Bookshelf>
                 id => id.Value,
                 value => BookshelfId.CreateBookshelfId(value));
 
+        builder.HasOne(b => b.User)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+        
         builder.OwnsMany<BookshelfBook>(b => b.BookshelfBooks, bb =>
         {
             bb.HasKey(b => b.Id);
 
             bb.HasOne<Book>(b => b.Book)
                 .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
             
             bb.Property(o => o.Id)
                 .ValueGeneratedNever()

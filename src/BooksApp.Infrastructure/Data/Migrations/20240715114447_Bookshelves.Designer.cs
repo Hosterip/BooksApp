@@ -12,8 +12,8 @@ using PostsApp.Infrastructure.Data;
 namespace PostsApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240714202220_Bookshelf")]
-    partial class Bookshelf
+    [Migration("20240715114447_Bookshelves")]
+    partial class Bookshelves
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BookGenre", b =>
+            modelBuilder.Entity("BooksGenres", b =>
                 {
                     b.Property<Guid>("BooksId")
                         .HasColumnType("uniqueidentifier");
@@ -37,7 +37,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("GenresId");
 
-                    b.ToTable("BookGenre");
+                    b.ToTable("BooksGenres");
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Book.Book", b =>
@@ -79,7 +79,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -199,12 +199,12 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BookGenre", b =>
+            modelBuilder.Entity("BooksGenres", b =>
                 {
                     b.HasOne("PostsApp.Domain.Book.Book", null)
                         .WithMany()
                         .HasForeignKey("BooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("PostsApp.Domain.Genre.Genre", null)
@@ -238,8 +238,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.HasOne("PostsApp.Domain.User.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.OwnsMany("PostsApp.Domain.Bookshelf.Entities.BookshelfBook", "BookshelfBooks", b1 =>
                         {
@@ -263,7 +262,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
                             b1.HasOne("PostsApp.Domain.Book.Book", "Book")
                                 .WithMany()
                                 .HasForeignKey("BookId")
-                                .OnDelete(DeleteBehavior.NoAction)
+                                .OnDelete(DeleteBehavior.Cascade)
                                 .IsRequired();
 
                             b1.WithOwner()

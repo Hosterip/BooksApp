@@ -19,3 +19,4 @@ public class BookshelfBook : Entity<BookshelfBookId>
         return new(BookshelfBookId.CreateBookshelfBookId(), book);
     }
 }
+

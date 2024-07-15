@@ -7,13 +7,14 @@ namespace PostsApp.Domain.Bookshelf;
 public class Bookshelf : AggregateRoot<BookshelfId>
 {
     public string Name { get; set; }
-    public User.User User { get; set; }
-    public ICollection<BookshelfBook> BookshelfBooks { get; set; } 
+    public User.User? User { get; set; }
+    public List<BookshelfBook> BookshelfBooks { get; } 
     private Bookshelf(BookshelfId id) : base(id) { }
 
     private Bookshelf(BookshelfId id, User.User user) : base(id)
     {
         User = user;
+        BookshelfBooks = new List<BookshelfBook>();
     }
 
     public static Bookshelf Create(User.User user)
