@@ -16,6 +16,7 @@ public class UnitOfWork : IUnitOfWork
         Reviews = new ReviewsRepository(dbContext);
         Images = new ImagesRepository(dbContext);
         Genres = new GenresRepository(dbContext);
+        Bookshelves = new BookshelvesRepository(dbContext);
         _dbContext = dbContext;
     }
     public IBooksRepository Books { get; private set; }
@@ -24,6 +25,7 @@ public class UnitOfWork : IUnitOfWork
     public IReviewsRepository Reviews { get; private set; }
     public IImagesRepository Images { get; private set; }
     public IGenresRepository Genres { get; private set; }
+    public IBookshelvesRepository Bookshelves { get; private set; }
 
     public async Task SaveAsync(CancellationToken cancellationToken)
     {

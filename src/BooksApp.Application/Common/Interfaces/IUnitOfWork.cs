@@ -10,5 +10,6 @@ public interface IUnitOfWork
     public IReviewsRepository Reviews { get; }
     public IImagesRepository Images { get; }
     public IGenresRepository Genres { get; }
+    public IBookshelvesRepository Bookshelves { get; }
     Task SaveAsync(CancellationToken cancellationToken);
 }
