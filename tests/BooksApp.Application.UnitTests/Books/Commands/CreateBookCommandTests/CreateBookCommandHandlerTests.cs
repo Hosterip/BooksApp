@@ -2,6 +2,7 @@
 using Application.UnitTest.Books.Commands.CreateBookCommandTests.TestUtils;
 using Application.UnitTest.TestUtils.MockData;
 using FluentAssertions;
+using MapsterMapper;
 using Moq;
 using PostsApp.Application.Books.Commands.CreateBook;
 using PostsApp.Application.Books.Results;
@@ -14,16 +15,19 @@ namespace Application.UnitTest.Books.Commands.CreateBookCommandTests;
 public class CreateBookCommandHandlerTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IMapper> _mapper;
+
     public CreateBookCommandHandlerTests()
     {
         _unitOfWorkMock = new();
+        _mapper = new();
     }
     [Fact]
     public async Task Handle_Success_ReturnBook()
     {
         // Arrange
         var command = CreateBookCommandUtils.CreateBookCommandMethod();
-        var handler = new CreateBookCommandHandler(_unitOfWorkMock.Object);
+        var handler = new CreateBookCommandHandler(_unitOfWorkMock.Object, _mapper.Object);
 
         _unitOfWorkMock.Setup(x => x.Users.GetSingleWhereAsync(
             It.IsAny<Expression<Func<User, bool>>>()))
