@@ -20,7 +20,6 @@
 
     <ItemGroup>
       <Folder Include="Bookshelves\Commands\AddBook\" />
-      <Folder Include="Bookshelves\Commands\CreateBookshelf\" />
       <Folder Include="Bookshelves\Commands\CreateDefaultBookshelves\" />
       <Folder Include="Bookshelves\Queries\GetBookshelfBooks\" />
       <Folder Include="Bookshelves\Queries\GetBookshelves\" />

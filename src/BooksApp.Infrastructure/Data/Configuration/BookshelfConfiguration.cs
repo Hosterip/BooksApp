@@ -44,7 +44,5 @@ public class BookshelfConfiguration : IEntityTypeConfiguration<Bookshelf>
 
         builder.Navigation(b => b.User)
             .AutoInclude();
-        builder.Navigation(b => b.BookshelfBooks)
-            .AutoInclude();
     }
 }
