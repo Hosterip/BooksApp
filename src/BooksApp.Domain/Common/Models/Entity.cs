@@ -17,7 +17,16 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
 
     public override bool Equals(object? obj)
     {
-        return obj is Entity<TId> entity && Id.Equals(entity.Id);
+        if (obj is not Entity<TId> other)
+            return false;
+
+        if (ReferenceEquals(this, other))
+            return true;
+
+        if (Id.Equals(default) || other.Id.Equals(default))
+            return false;
+
+        return Id.Equals(other.Id);
     }
 
     public override int GetHashCode()
@@ -25,13 +34,19 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
         return Id.GetHashCode();
     }
     
-    public static bool operator ==(Entity<TId> left, Entity<TId> right)
+    public static bool operator ==(Entity<TId>? a, Entity<TId>? b)
     {
-        return Equals(left, right);
+        if (a is null && b is null)
+            return true;
+
+        if (a is null || b is null)
+            return false;
+
+        return a.Equals(b);
     }
-    
-    public static bool operator !=(Entity<TId> left, Entity<TId> right)
+
+    public static bool operator !=(Entity<TId>? a, Entity<TId>? b)
     {
-        return !Equals(left, right);
+        return !(a == b);
     }
 }
