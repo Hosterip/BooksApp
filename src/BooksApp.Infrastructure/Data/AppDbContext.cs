@@ -16,8 +16,8 @@ public class AppDbContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=HOSTERIP\\SQLEXPRESS;Database=postsapp;Trusted_Connection=True;TrustServerCertificate=True");
-        
+        optionsBuilder
+            .UseSqlServer("Server=localhost;Database=booksapp;Trusted_Connection=True;TrustServerCertificate=True");
     } 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
