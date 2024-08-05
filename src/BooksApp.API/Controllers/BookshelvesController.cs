@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Bookshelves.Commands.AddBook;
 using PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
+using PostsApp.Application.Bookshelves.Commands.RemoveBook;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 using PostsApp.Common.Constants;
@@ -65,7 +66,7 @@ public class BookshelvesController : Controller
     [HttpPost("addBook")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> AddBookToBookshelf(
-        [FromBodyOrDefault]AddBookToBookshelfRequest request)
+        [FromBodyOrDefault]AddRemoveBookBookshelfRequest request)
     {
         var command = new AddBookCommand
         {
@@ -76,5 +77,21 @@ public class BookshelvesController : Controller
         await _sender.Send(command);
 
         return Ok("Book was added successfully!");
+    }
+    
+    [HttpDelete("removeBook")]
+    [Authorize(Policy = Policies.Authorized)]
+    public async Task<IActionResult> RemoveBookBookshelf(
+        [FromBodyOrDefault]AddRemoveBookBookshelfRequest request)
+    {
+        var command = new RemoveBookCommand
+        {
+            BookshelfId = request.BookshelfId,
+            BookId = request.BookId,
+            UserId = Guid.Parse(HttpContext.GetId()!)
+        };
+        await _sender.Send(command);
+
+        return Ok("Book was deleted successfully!");
     }
 }

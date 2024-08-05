@@ -22,8 +22,14 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         return new(BookshelfId.CreateBookshelfId(), user);
     }
 
-    public void Add(Book.Book book)
+    public void AddBook(Book.Book book)
     {
         BookshelfBooks.Add(BookshelfBook.Create(book));
+    }
+
+    public void RemoveBook(Guid bookId)
+    {
+        var book = BookshelfBooks.FirstOrDefault();
+        if(book != null) BookshelfBooks.Remove(book);
     }
 }
