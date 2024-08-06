@@ -28,6 +28,11 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Review>().HasOne(r => r.Book);
 
         modelBuilder.Entity<User>().HasOne(u => u.Role);
+
+        modelBuilder.Entity<Role>().HasData(Role.Member());
+        modelBuilder.Entity<Role>().HasData(Role.Author());
+        modelBuilder.Entity<Role>().HasData(Role.Moderator());
+        modelBuilder.Entity<Role>().HasData(Role.Admin());
         
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
