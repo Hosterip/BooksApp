@@ -12,6 +12,9 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
     {
         builder.HasKey(r => r.Id);
 
+        builder.HasIndex(r => r.Name)
+            .IsUnique();
+        
         builder.Property(o => o.Id)
             .ValueGeneratedNever()
             .HasConversion(
