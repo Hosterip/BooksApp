@@ -11,15 +11,16 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     public List<BookshelfBook> BookshelfBooks { get; } 
     private Bookshelf(BookshelfId id) : base(id) { }
 
-    private Bookshelf(BookshelfId id, User.User user) : base(id)
+    private Bookshelf(BookshelfId id, User.User user, string name) : base(id)
     {
         User = user;
         BookshelfBooks = new List<BookshelfBook>();
+        Name = name;
     }
 
-    public static Bookshelf Create(User.User user)
+    public static Bookshelf Create(User.User user, string name)
     {
-        return new(BookshelfId.CreateBookshelfId(), user);
+        return new(BookshelfId.CreateBookshelfId(), user, name);
     }
 
     public void AddBook(Book.Book book)

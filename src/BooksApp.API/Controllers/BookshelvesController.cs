@@ -23,7 +23,7 @@ public class BookshelvesController : Controller
         _sender = sender;
     }
 
-    [HttpGet("bookshelves/{userId:guid}")]
+    [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetBookshelves(Guid userId)
     {
         var query = new GetBookshelvesQuery
@@ -35,12 +35,12 @@ public class BookshelvesController : Controller
         return Ok(result);
     }
     
-    [HttpGet("books/{bookshlfId:guid}")]
-    public async Task<IActionResult> GetBooks(Guid bookshlfId, int? limit, int? page)
+    [HttpGet("books/{bookshelfId:guid}")]
+    public async Task<IActionResult> GetBooks(Guid bookshelfId, int? limit, int? page)
     {
         var query = new GetBookshelfBooksQuery
         {
-            BookshelfId = bookshlfId,
+            BookshelfId = bookshelfId,
             Limit = limit,
             Page = page
         };
