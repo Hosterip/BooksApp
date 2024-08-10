@@ -26,7 +26,7 @@ public class BooksController : Controller
     }
 
     [HttpPost("")]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize(Policy = Policies.Author)]
     public async Task<IActionResult> Create([FromBodyOrDefault]BookRequest request, CancellationToken cancellationToken)
     {
         var imageCommand = new CreateImageCommand

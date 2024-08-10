@@ -58,11 +58,21 @@ public static class HttpContextUserExtension
             new ClaimsPrincipal(claimsIdentity));
     }
     
-    private static void ChangeClaim(this HttpContext httpContext, string typeOfClaim, string valueOfClaim)
+    private static async void ChangeClaim(this HttpContext httpContext, string typeOfClaim, string valueOfClaim)
     {
-        var identity = httpContext.User.Identity as ClaimsIdentity;
+        var claims = httpContext.User.Claims.ToList();
+        var claim = claims.FirstOrDefault(c => c.Type == typeOfClaim);
+
+        if (claim != null)
+        {
+            claims.Remove(claim);
+            claims.Add(new Claim(typeOfClaim, valueOfClaim));
+            var identity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
         
-        identity!.RemoveClaim(identity.FindFirst(typeOfClaim));
-        identity.AddClaim(new Claim(typeOfClaim, valueOfClaim));
+            await httpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme, 
+                new ClaimsPrincipal(identity));
+        }
     } 
 }
