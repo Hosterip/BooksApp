@@ -26,7 +26,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .HasMaxLength(255)
             .IsRequired();
         builder.Property(b => b.Description)
-            .HasMaxLength(1000)
+            .HasMaxLength(5000)
             .IsRequired();
         
         // AutoIncludes
