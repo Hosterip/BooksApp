@@ -10,7 +10,7 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
     public CreateBookCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(post => post.Title).NotEmpty().Length(1, 255);
-        RuleFor(post => post.Description).NotEmpty().Length(1, 1000);
+        RuleFor(post => post.Description).NotEmpty().Length(1, 5000);
         RuleFor(post => post.UserId)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(UserValidationMessages.NotFound);

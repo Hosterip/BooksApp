@@ -21,8 +21,8 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
         {
             if (body is null)
                 return true;
-            return body.Length <= 255;
-        }).WithMessage("Description must be under 255 characters.");
+            return body.Length <= 5000;
+        }).WithMessage("Description must be under 5000 characters.");
         RuleFor(book => book)
             .MustAsync(async (request, cancellationToken) =>
             {
