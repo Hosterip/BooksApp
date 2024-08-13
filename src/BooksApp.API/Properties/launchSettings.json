@@ -16,7 +16,7 @@
       "applicationUrl": "https://localhost:7190;http://localhost:5200",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "C:\\Users\\hoste\\RiderProjects\\aspnet-posts-project\\src\\BooksApp.API\\images"
+        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
       }
     },
     "IIS Express": {
@@ -24,7 +24,7 @@
       "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "C:\\Users\\hoste\\RiderProjects\\aspnet-posts-project\\src\\BooksApp.API\\images"
+        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
       }
     }
   }
