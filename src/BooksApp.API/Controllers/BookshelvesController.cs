@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Bookshelves.Commands.AddBook;
+using PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
 using PostsApp.Application.Bookshelves.Commands.RemoveBook;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
@@ -71,6 +72,22 @@ public class BookshelvesController : Controller
         var command = new AddBookCommand
         {
             BookshelfId = request.BookshelfId,
+            BookId = request.BookId,
+            UserId = Guid.Parse(HttpContext.GetId()!)
+        };
+        await _sender.Send(command);
+
+        return Ok("Book was added successfully!");
+    }
+    
+    [HttpPost("addBookToDefaultBookshelf")]
+    [Authorize(Policy = Policies.Authorized)]
+    public async Task<IActionResult> AddBookToDefaultBookshelf(
+        [FromBodyOrDefault]AddBookToDefaultBookshelfRequest request)
+    {
+        var command = new AddBookToDefaultBookshelfCommand()
+        {
+            BookshelfName = request.BookshelfName,
             BookId = request.BookId,
             UserId = Guid.Parse(HttpContext.GetId()!)
         };

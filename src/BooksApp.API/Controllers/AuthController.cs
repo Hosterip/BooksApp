@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Auth.Commands.ChangePassword;
 using PostsApp.Application.Auth.Commands.Register;
 using PostsApp.Application.Auth.Queries.Login;
+using PostsApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.Auth;
 using PostsApp.Common.Contracts.Responses.User;
@@ -31,6 +32,11 @@ public class AuthController : Controller
     {
         var command = new RegisterUserCommand { Username = request.Username, Password = request.Password };
         var user = await _sender.Send(command, cancellationToken);
+        var createDefaultBookshelves = new CreateDefaultBookshelvesCommand
+        {
+            UserId = Guid.Parse(user.Id)
+        };
+        await _sender.Send(createDefaultBookshelves, cancellationToken);
         await HttpContext.Login(user.Id, user.Username, user.Role, user.SecurityStamp);
         return StatusCode(201, user.Adapt<UserResponse>());
     }
