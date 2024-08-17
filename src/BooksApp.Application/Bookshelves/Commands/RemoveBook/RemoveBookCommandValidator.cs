@@ -20,6 +20,11 @@ public class RemoveBookCommandValidator : AbstractValidator<RemoveBookCommand>
                 return bookshelf == null || bookshelf.User?.Id.Value == request.UserId;
             })
             .WithMessage(BookshelfValidationMessages.NotYours);
+        RuleFor(request => request)
+            .MustAsync(async (request, cancellationToken) =>
+                await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId, request.BookId))
+            .WithMessage(BookshelfValidationMessages.NoBookToRemove)
+            .OverridePropertyName("BookId");
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) =>
                 await unitOfWork.Books.AnyById(bookId))
