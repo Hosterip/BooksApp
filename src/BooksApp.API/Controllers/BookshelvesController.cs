@@ -5,6 +5,7 @@ using PostsApp.Application.Bookshelves.Commands.AddBook;
 using PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
 using PostsApp.Application.Bookshelves.Commands.RemoveBook;
+using PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 using PostsApp.Common.Constants;
@@ -83,7 +84,7 @@ public class BookshelvesController : Controller
     [HttpPost("addBookToDefaultBookshelf")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> AddBookToDefaultBookshelf(
-        [FromBodyOrDefault]AddBookToDefaultBookshelfRequest request)
+        [FromBodyOrDefault]AddRemoveBookToDefaultBookshelfRequest request)
     {
         var command = new AddBookToDefaultBookshelfCommand()
         {
@@ -104,6 +105,22 @@ public class BookshelvesController : Controller
         var command = new RemoveBookCommand
         {
             BookshelfId = request.BookshelfId,
+            BookId = request.BookId,
+            UserId = Guid.Parse(HttpContext.GetId()!)
+        };
+        await _sender.Send(command);
+
+        return Ok("Book was deleted successfully!");
+    }
+    
+    [HttpDelete("removeBookFromDefaultBookshelf")]
+    [Authorize(Policy = Policies.Authorized)]
+    public async Task<IActionResult> RemoveBookFromDefaultBookshelf(
+        [FromBodyOrDefault]AddRemoveBookToDefaultBookshelfRequest request)
+    {
+        var command = new RemoveBookFromDefaultBookshelfCommand
+        {
+            BookshelfName = request.BookshelfName,
             BookId = request.BookId,
             UserId = Guid.Parse(HttpContext.GetId()!)
         };
