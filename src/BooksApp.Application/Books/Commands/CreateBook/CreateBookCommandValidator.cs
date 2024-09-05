@@ -10,6 +10,11 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
     public CreateBookCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(post => post.Title).NotEmpty().Length(1, 255);
+        RuleFor(request => request)
+            .MustAsync(async (request, cancellationToken) => 
+                await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
+            .WithMessage(UserValidationMessages.NotFound)
+            .OverridePropertyName("Title");
         RuleFor(post => post.Description).NotEmpty().Length(1, 5000);
         RuleFor(post => post.UserId)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
