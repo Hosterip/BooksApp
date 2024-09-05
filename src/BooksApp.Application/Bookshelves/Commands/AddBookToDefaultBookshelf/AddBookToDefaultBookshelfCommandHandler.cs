@@ -23,7 +23,7 @@ internal sealed class AddBookToDefaultBookshelfCommandHandler : IRequestHandler<
         if (bookshelf is null)
         {
             var user = await _unitOfWork.Users.GetSingleById(request.UserId);
-            bookshelf = Bookshelf.Create(user!, request.BookshelfName);
+            bookshelf = Bookshelf.Create(user!, request.BookshelfName.Trim().ToLowerInvariant());
             await _unitOfWork.Bookshelves.AddAsync(bookshelf);
         }
         var book = await _unitOfWork.Books.GetSingleById(request.BookId);

@@ -28,7 +28,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Review>().HasOne(r => r.Book);
 
         modelBuilder.Entity<User>().HasOne(u => u.Role);
-
+        
         modelBuilder.Entity<Role>().HasData(Role.Member());
         modelBuilder.Entity<Role>().HasData(Role.Author());
         modelBuilder.Entity<Role>().HasData(Role.Moderator());
@@ -44,6 +44,6 @@ public class AppDbContext : DbContext
     public DbSet<Review>  Reviews { get; set; }
     public DbSet<Image>  Images { get; set; }
     public DbSet<Genre>  Genres { get; set; }
-    public DbSet<Bookshelf>  Bookshelfes { get; set; }
+    public DbSet<Bookshelf>  Bookshelves { get; set; }
     public DbSet<BookshelfBook>  BookshelfBooks { get; set; }
 }

@@ -9,8 +9,9 @@ public interface IBooksRepository : IGenericRepository<Book>
 {
     Task<PaginatedArray<BookResult>> GetPaginated(int limit, int page, Expression<Func<Book,bool>> expression);
     Task<PaginatedArray<BookResult>?>? GetPaginatedBookshelfBooks(Guid bookshelfId, int limit, int page);
-
+    
     Task<Book?> GetSingleById(Guid guid);
     Task<bool> AnyById(Guid guid);
+    Task<bool> AnyByRefName(Guid userId, string title);
     double AverageRating(Guid bookId);
 }

@@ -1,12 +1,14 @@
 ﻿using PostsApp.Domain.Bookshelf.Entities;
 using PostsApp.Domain.Bookshelf.ValueObjects;
 using PostsApp.Domain.Common.Models;
+using PostsApp.Domain.Common.Utils;
 
 namespace PostsApp.Domain.Bookshelf;
 
 public class Bookshelf : AggregateRoot<BookshelfId>
 {
     public string Name { get; set; }
+    public string ReferentialName { get; set; }
     public User.User? User { get; set; }
     public List<BookshelfBook> BookshelfBooks { get; } 
     private Bookshelf(BookshelfId id) : base(id) { }
@@ -16,6 +18,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         User = user;
         BookshelfBooks = new List<BookshelfBook>();
         Name = name;
+        ReferentialName = name.ConvertToReferencial();
     }
 
     public static Bookshelf Create(User.User user, string name)

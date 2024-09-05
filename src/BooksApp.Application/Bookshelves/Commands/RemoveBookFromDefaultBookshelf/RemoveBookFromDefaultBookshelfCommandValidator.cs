@@ -21,7 +21,7 @@ public sealed class RemoveBookFromDefaultBookshelfCommandValidator : AbstractVal
             .OverridePropertyName("BookId");
         RuleFor(request => request.BookshelfName)
             .Must(bookshelfName => 
-                bookshelfName is
+                bookshelfName.ToLowerInvariant().Trim() is
                     DefaultBookshelvesNames.Read or
                     DefaultBookshelvesNames.ToRead or
                     DefaultBookshelvesNames.CurrentlyReading)

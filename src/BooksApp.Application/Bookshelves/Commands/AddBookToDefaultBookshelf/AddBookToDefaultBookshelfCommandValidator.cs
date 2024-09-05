@@ -20,10 +20,10 @@ public class AddBookToDefaultBookshelfCommandValidator : AbstractValidator<AddBo
             .WithMessage(BookValidationMessages.NotFound);
         RuleFor(request => request.BookshelfName)
             .Must(bookshelfName => 
-                    bookshelfName is
-                        DefaultBookshelvesNames.Read or
-                        DefaultBookshelvesNames.ToRead or
-                        DefaultBookshelvesNames.CurrentlyReading)
+                bookshelfName.ToLowerInvariant().Trim() is
+                    DefaultBookshelvesNames.Read or
+                    DefaultBookshelvesNames.ToRead or
+                    DefaultBookshelvesNames.CurrentlyReading)
             .WithMessage(BookshelfValidationMessages.WrongNameOfTheBookshelf);
     }
 }

@@ -9,7 +9,9 @@ using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Book;
 using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Bookshelf.ValueObjects;
+using PostsApp.Domain.Common.Utils;
 using PostsApp.Domain.Genre;
+using PostsApp.Domain.User.ValueObjects;
 using PostsApp.Infrastructure.Data;
 
 namespace PostsApp.Infrastructure.Implementation.Repositories;
@@ -38,6 +40,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                 {
                     Id = book.Id.Value.ToString(),
                     Title = book.Title,
+                    ReferentialName = book.ReferentialName,
                     Description = book.Description,
                     Author = user,
                     Average = -1,
@@ -57,9 +60,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
 
     public async Task<PaginatedArray<BookResult>?>? GetPaginatedBookshelfBooks(Guid bookshelfId, int limit, int page)
     {
-        if (!await _dbContext.Bookshelfes
+        if (!await _dbContext.Bookshelves
                 .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))) return null;
-        var result = await _dbContext.Bookshelfes
+        var result = await _dbContext.Bookshelves
             .Include(bookshelf => bookshelf.BookshelfBooks)
             .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
@@ -67,6 +70,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                 {
                     Id = bb.Book.Id.Value.ToString(),
                     Title = bb.Book.Title,
+                    ReferentialName = bb.Book.ReferentialName,
                     Description = bb.Book.Description,
                     Author = new UserResult
                     {
@@ -98,6 +102,12 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     public async Task<bool> AnyById(Guid guid)
     {
         return await _dbContext.Books.AnyAsync(book => book.Id == BookId.CreateBookId(guid));
+    }
+
+    public async Task<bool> AnyByRefName(Guid userId, string title)
+    {
+        return await _dbContext.Books.AnyAsync(book => book.Author.Id == UserId.CreateUserId(userId) &&
+                                                       book.ReferentialName == title.ConvertToReferencial());
     }
 
     public double AverageRating(Guid bookId)

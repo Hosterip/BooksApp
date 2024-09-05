@@ -1,5 +1,6 @@
 ﻿using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Common.Models;
+using PostsApp.Domain.Common.Utils;
 using PostsApp.Domain.Image.ValueObjects;
 using PostsApp.Domain.Review.ValueObjects;
 using PostsApp.Domain.User.ValueObjects;
@@ -11,13 +12,15 @@ public class Book : AggregateRoot<BookId>
     private Book(BookId id) : base(id) { }
     private Book(BookId id, string title, string description, Image.Image cover, User.User author) : base(id)
     {
-        Title = title;
+        Title = title.TrimStart().TrimEnd();
         Description = description;
         Cover = cover;
         Author = author;
+        ReferentialName = title.ConvertToReferencial();
     }
     public string Title { get; set; }
     public string Description { get; set; }
+    public string ReferentialName { get; set; }
     public Image.Image Cover { get; set; }
     public User.User Author { get; }
     public List<Genre.Genre> Genres { get; set; }
