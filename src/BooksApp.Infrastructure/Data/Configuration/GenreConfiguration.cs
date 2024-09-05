@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostsApp.Domain.Book;
+using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Genre;
 using PostsApp.Domain.Genre.ValueObjects;
+using PostsApp.Infrastructure.Data.Migrations;
 
 namespace PostsApp.Infrastructure.Data.Configuration;
 
@@ -19,13 +21,10 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
                 value => GenreId.CreateGenreId(value));
 
         builder
-            .HasMany<Book>(g => g.Books)
-            .WithMany(b => b.Genres)
+            .HasMany<Book>(genre => genre.Books)
+            .WithMany(book => book.Genres)
             .UsingEntity<Dictionary<string, object>>(
                 "BooksGenres",
-                j => j.HasOne<Book>().WithMany().OnDelete(DeleteBehavior.Restrict),
-                j => j.HasOne<Genre>().WithMany().OnDelete(DeleteBehavior.Cascade)
-            );
-
+                j => j.HasOne<Book>().WithMany().OnDelete(DeleteBehavior.NoAction));
     }
 }

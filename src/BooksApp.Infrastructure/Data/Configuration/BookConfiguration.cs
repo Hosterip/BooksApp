@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostsApp.Domain.Book;
 using PostsApp.Domain.Book.ValueObjects;
+using PostsApp.Domain.Genre;
 using PostsApp.Domain.User;
+using PostsApp.Infrastructure.Data.Migrations;
 
 namespace PostsApp.Infrastructure.Data.Configuration;
 
@@ -36,5 +38,6 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .AutoInclude();
         builder.Navigation(b => b.Cover)
             .AutoInclude();
+
     }
 }
