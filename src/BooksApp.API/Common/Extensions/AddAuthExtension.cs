@@ -20,6 +20,7 @@ public static class AddAuthExtension
             .AddCookie(options =>
             {
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.Cookie.MaxAge = options.ExpireTimeSpan;
                 options.SlidingExpiration = true;
             });
         // Adding policies
