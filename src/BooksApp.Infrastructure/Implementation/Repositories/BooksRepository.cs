@@ -43,7 +43,8 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                     ReferentialName = book.ReferentialName,
                     Description = book.Description,
                     Author = user,
-                    Average = -1,
+                    AverageRating = -1,
+                    Ratings = 0,
                     CoverName = book.Cover.ImageName,
                     Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
                         .ToList()
@@ -52,7 +53,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             .PaginationAsync(page, limit);
         result.Items = result.Items.Select(book =>
         {
-            book.Average = AverageRating(new Guid(book.Id));
+            var bookStats = RatingStatistics(new Guid(book.Id));
+            book.Ratings = bookStats.Ratings;
+            book.AverageRating = bookStats.AverageRating;
             return book;
         }).ToArray();
         return result;
@@ -79,7 +82,8 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                         AvatarName = bb.Book.Author.Avatar == null ? null : bb.Book.Author.Avatar.ImageName,
                         Role = bb.Book.Author.Role.Name
                     },
-                    Average = -1,
+                    AverageRating = -1,
+                    Ratings = 0,
                     CoverName = bb.Book.Cover.ImageName,
                     Genres = bb.Book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
                         .ToList()
@@ -87,7 +91,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             ).PaginationAsync(page, limit);
         result.Items = result.Items.Select(book =>
         {
-            book.Average = AverageRating(new Guid(book.Id));
+            var bookStats = RatingStatistics(new Guid(book.Id));
+            book.Ratings = bookStats.Ratings;
+            book.AverageRating = bookStats.AverageRating;
             return book;
         }).ToArray();
         return result;
@@ -110,16 +116,24 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                                                        book.ReferentialName == title.ConvertToReferencial());
     }
 
-    public double AverageRating(Guid bookId)
+    public RatingStatistics RatingStatistics(Guid bookId)
     {
         var reviews = _dbContext.Reviews
             .Include(review => review.Book)
             .Where(review => review.Book.Id == BookId.CreateBookId(bookId));
         if (reviews.Any())
         {
-            return reviews.Average(review => review.Rating);
+            return new RatingStatistics
+            {
+                AverageRating = reviews.Average(review => review.Rating),
+                Ratings = reviews.Count()
+            };
         }
 
-        return 0;
+        return new RatingStatistics
+        {
+            AverageRating = 0,
+            Ratings = 0
+        };
     }
 }

@@ -32,7 +32,8 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
         await _unitOfWork.SaveAsync(cancellationToken);
         
         var result = _mapper.Map<BookResult>(book);
-        result.Average = 0;
+        result.AverageRating = 0;
+        result.Ratings = 0;
         return result;
     }
 }

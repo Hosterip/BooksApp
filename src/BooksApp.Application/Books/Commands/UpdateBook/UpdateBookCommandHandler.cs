@@ -35,8 +35,9 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
 
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = _mapper.Map<BookResult>(book);
-        var average = _unitOfWork.Books.AverageRating(book.Id.Value);
-        result.Average = average;
+        var bookStats = _unitOfWork.Books.RatingStatistics(book.Id.Value);
+        result.AverageRating = bookStats.AverageRating;
+        result.Ratings = bookStats.Ratings;
         return result;
     }
 }

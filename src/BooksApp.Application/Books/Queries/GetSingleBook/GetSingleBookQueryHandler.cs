@@ -23,8 +23,9 @@ internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQ
         var book = await _unitOfWork.Books.GetSingleById(request.Id);
 
         var result = _mapper.Map<BookResult>(book!);
-        var average = _unitOfWork.Books.AverageRating(book!.Id.Value);
-        result.Average = average;
+        var bookStats = _unitOfWork.Books.RatingStatistics(book!.Id.Value);
+        result.AverageRating = bookStats.AverageRating;
+        result.Ratings = bookStats.Ratings;
         
         return result;
     }
