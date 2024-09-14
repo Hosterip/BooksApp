@@ -20,6 +20,6 @@ public class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
                 return await unitOfWork.Books.AnyAsync(book => 
                     book.Id == BookId.CreateBookId(request.Id) &&
                     (book.Author.Id == user.Id || canDelete));
-            }).WithMessage(BookValidationMessages.PostNotYour);
+            }).WithMessage(BookValidationMessages.BookNotYour);
     }
 }

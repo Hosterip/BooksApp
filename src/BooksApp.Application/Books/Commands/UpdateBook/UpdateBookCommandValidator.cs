@@ -17,8 +17,8 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
             .WithMessage("Title must be under 255 characters.");
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) => 
-                request.Title == null || await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
-            .WithMessage(UserValidationMessages.NotFound)
+                request.Title == null || !await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
+            .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
             .OverridePropertyName("Title");
         RuleFor(book => book.Description).Must(body =>
         {
@@ -35,7 +35,7 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 return await unitOfWork.Books.AnyAsync(book => 
                     book.Id == BookId.CreateBookId(request.Id) &&
                     (book.Author.Id == UserId.CreateUserId(request.UserId) || canUpdate));
-            }).WithMessage(BookValidationMessages.PostNotYour);
+            }).WithMessage(BookValidationMessages.BookNotYour);
         RuleFor(request => request.GenreIds).Must(genreIds =>
         {
             if (genreIds is null)

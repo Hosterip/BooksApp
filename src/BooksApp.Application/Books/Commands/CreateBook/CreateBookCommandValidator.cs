@@ -1,5 +1,6 @@
 using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
+using PostsApp.Application.Common.Constants.ValidationMessages;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Common.Security;
 
@@ -12,8 +13,8 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         RuleFor(post => post.Title).NotEmpty().Length(1, 255);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) => 
-                await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
-            .WithMessage(UserValidationMessages.NotFound)
+                !await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
+            .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
             .OverridePropertyName("Title");
         RuleFor(post => post.Description).NotEmpty().Length(1, 5000);
         RuleFor(post => post.UserId)
