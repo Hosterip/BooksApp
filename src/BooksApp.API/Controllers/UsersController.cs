@@ -26,7 +26,7 @@ public class UsersController : Controller
         _sender = sender;
     }
 
-    [HttpGet]
+    [HttpGet("")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> GetUser(CancellationToken cancellationToken)
     {

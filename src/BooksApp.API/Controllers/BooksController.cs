@@ -48,9 +48,8 @@ public class BooksController : Controller
         return StatusCode(201, book);
     }
 
-    [HttpPut]
+    [HttpPut("")]
     [Authorize(Policy = Policies.Authorized)]
-
     public async Task<IActionResult> Update([FromBodyOrDefault]UpdateBookRequest request, CancellationToken cancellationToken)
     {
         string? fileName = null;

@@ -44,6 +44,10 @@ public static class HttpContextUserExtension
 
     public static async Task Login(this HttpContext httpContext, string id, string username, string role, string securityStamp)
     {
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = true
+        };
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, username),
@@ -55,7 +59,8 @@ public static class HttpContextUserExtension
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
         await httpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme, 
-            new ClaimsPrincipal(claimsIdentity));
+            new ClaimsPrincipal(claimsIdentity),
+            authProperties);
     }
     
     private static async void ChangeClaim(this HttpContext httpContext, string typeOfClaim, string valueOfClaim)
