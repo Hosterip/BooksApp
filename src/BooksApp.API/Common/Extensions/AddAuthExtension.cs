@@ -22,7 +22,7 @@ public static class AddAuthExtension
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
                 options.Cookie.MaxAge = options.ExpireTimeSpan;
                 options.SlidingExpiration = true;
-                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SameSite = SameSiteMode.Strict;
             });
         // Adding policies
         serviceCollection.AddAuthorization(options =>
