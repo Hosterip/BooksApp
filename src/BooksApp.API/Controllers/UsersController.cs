@@ -52,7 +52,7 @@ public class UsersController : Controller
         return Ok(user);
     }
 
-    [HttpDelete]
+    [HttpDelete("")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
     {

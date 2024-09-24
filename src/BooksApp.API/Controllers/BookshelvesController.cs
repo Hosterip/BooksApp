@@ -86,7 +86,7 @@ public class BookshelvesController : Controller
     public async Task<IActionResult> AddBookToDefaultBookshelf(
         [FromBodyOrDefault]AddRemoveBookToDefaultBookshelfRequest request)
     {
-        var command = new AddBookToDefaultBookshelfCommand()
+        var command = new AddBookToDefaultBookshelfCommand
         {
             BookshelfName = request.BookshelfName,
             BookId = request.BookId,
