@@ -30,7 +30,7 @@ public class AuthController : Controller
     public async Task<IActionResult> RegisterPost([FromBodyOrDefault] AuthPostRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new RegisterUserCommand { Username = request.Username, Password = request.Password };
+        var command = new RegisterUserCommand { Email = request.Email, FirstName = request.Username, Password = request.Password };
         var user = await _sender.Send(command, cancellationToken);
         var createDefaultBookshelves = new CreateDefaultBookshelvesCommand
         {
