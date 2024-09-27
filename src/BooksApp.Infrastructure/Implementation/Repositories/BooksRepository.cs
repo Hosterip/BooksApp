@@ -32,7 +32,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                 let user = new UserResult
                 {
                     Id = book.Author.Id.Value.ToString(),
-                    Username = book.Author.Username,
+                    Username = book.Author.FirstName,
                     Role = book.Author.Role.Name,
                     AvatarName = book.Author.Avatar.ImageName
                 }
@@ -78,7 +78,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                     Author = new UserResult
                     {
                         Id = bb.Book.Author.Id.Value.ToString(),
-                        Username = bb.Book.Author.Username,
+                        Username = bb.Book.Author.FirstName,
                         AvatarName = bb.Book.Author.Avatar == null ? null : bb.Book.Author.Avatar.ImageName,
                         Role = bb.Book.Author.Role.Name
                     },

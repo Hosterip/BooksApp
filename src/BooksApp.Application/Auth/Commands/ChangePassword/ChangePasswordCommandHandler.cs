@@ -31,7 +31,7 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
             Id = user.Id.Value.ToString(),
             Role = user.Role.Name,
             SecurityStamp = user.SecurityStamp,
-            Username = user.Username,
+            Username = user.FirstName,
             AvatarName = user.Avatar?.ImageName
         };
     }

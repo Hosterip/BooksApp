@@ -22,7 +22,10 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
         var memberRole = await _unitOfWork.Roles.GetSingleWhereAsync(role => role.Name == RoleNames.Member);
         
         User user = User.Create(
-            request.Username, 
+            request.Email,
+            request.FirstName, 
+            null,
+            null,
             memberRole!,
             hashSalt.Hash, 
             hashSalt.Salt,
@@ -36,7 +39,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
             Id = user.Id.Value.ToString(),
             Role = user.Role.Name,
             SecurityStamp = user.SecurityStamp,
-            Username = user.Username,
+            Username = user.FirstName,
             AvatarName = null
         };
     }

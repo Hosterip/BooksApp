@@ -22,7 +22,7 @@ public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCo
         RuleFor(user => user.NewUsername)
             .MustAsync(async (username, cancellationToken) =>
             {
-                return !await unitOfWork.Users.AnyAsync(user => user.Username == username);
+                return !await unitOfWork.Users.AnyAsync(user => user.FirstName == username);
             })
             .WithMessage(UserValidationMessages.Occupied);
     }

@@ -8,15 +8,15 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 {
     public RegisterUserCommandValidator(IUnitOfWork unitOfWork)
     {
-        RuleFor(user => user.Username)
+        RuleFor(user => user.FirstName)
             .NotEmpty()
             .Length(0, 255);
         RuleFor(user => user.Password)
             .NotEmpty();
-        RuleFor(user => user.Username)
+        RuleFor(user => user.FirstName)
             .MustAsync(async (username, cancellationToken) =>
             {
-                return !await unitOfWork.Users.AnyAsync(user => user.Username == username);
+                return !await unitOfWork.Users.AnyAsync(user => user.FirstName == username);
             }).WithMessage(AuthValidationMessages.Occupied);
     }
 } 

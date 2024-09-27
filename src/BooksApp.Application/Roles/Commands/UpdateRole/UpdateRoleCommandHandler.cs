@@ -21,7 +21,7 @@ internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleComma
         return new UserResult
         {
             Id = user.Id.Value.ToString(),
-            Username = user.Username,
+            Username = user.FirstName,
             Role = user.Role.Name,
             AvatarName = user.Avatar?.ImageName
         };

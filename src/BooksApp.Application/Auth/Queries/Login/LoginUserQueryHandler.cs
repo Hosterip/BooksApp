@@ -18,7 +18,7 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
     public async Task<AuthResult> Handle(LoginUserQuery request, CancellationToken cancellationToken)
     {
         var user = await 
-            _unitOfWork.Users.GetSingleWhereAsync(user => user.Username == request.Username);
+            _unitOfWork.Users.GetSingleWhereAsync(user => user.FirstName == request.Username);
         
         return _mapper.Map<AuthResult>(user!);
     }

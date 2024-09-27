@@ -17,10 +17,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 id => id.Value,
                 value => UserId.CreateUserId(value));
 
-        builder.Property(u => u.Username)
+        builder.Property(u => u.FirstName)
             .HasMaxLength(255)
             .IsRequired();
-        builder.HasIndex(u => u.Username)
+        builder.HasIndex(u => u.FirstName)
             .IsUnique();
         builder.Property(u => u.Hash)
             .IsRequired();

@@ -25,7 +25,7 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
                 let user = new UserResult
                 {
                     Id = review.User.Id.Value.ToString(),
-                    Username = review.User.Username,
+                    Username = review.User.FirstName,
                     Role = review.User.Role.Name,
                     AvatarName = review.User.Avatar.ImageName
                 }

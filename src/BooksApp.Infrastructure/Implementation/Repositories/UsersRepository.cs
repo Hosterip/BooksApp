@@ -20,11 +20,11 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         return await 
             (
                 from user in _dbContext.Users
-                where query == null || user.Username.Contains(query)
+                where query == null || user.FirstName.Contains(query)
                 select new UserResult
                 {
                     Id = user.Id.Value.ToString(),
-                    Username = user.Username,
+                    Username = user.FirstName,
                     Role = user.Role.Name,
                     AvatarName = user.Avatar.ImageName ?? null
                 })

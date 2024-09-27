@@ -11,6 +11,9 @@ public static class MockUser
         string? hash = null,
         string? salt = null) => User.Create(
         "Hello world",
+        "Hello world",
+        "Hello world",
+        "Hello world",
         MockRole.GetRole(role ?? RoleNames.Member),
         hash ?? "Hello world",
         salt ?? "Hello world",

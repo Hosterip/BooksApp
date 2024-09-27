@@ -18,7 +18,7 @@ internal sealed class UpdateUsernameCommandHandler : IRequestHandler<UpdateUsern
     {
         var user = 
             await _unitOfWork.Users.GetSingleById(request.Id);
-        user!.Username = request.NewUsername;
+        user!.FirstName = request.NewUsername;
         
         await _unitOfWork.SaveAsync(cancellationToken);
     }
