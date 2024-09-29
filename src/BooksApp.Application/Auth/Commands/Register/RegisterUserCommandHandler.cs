@@ -1,3 +1,4 @@
+using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
@@ -11,10 +12,12 @@ namespace PostsApp.Application.Auth.Commands.Register;
 internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthResult>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public RegisterUserCommandHandler(IUnitOfWork unitOfWork)
+    public RegisterUserCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     public async Task<AuthResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
@@ -34,13 +37,6 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
         
         await _unitOfWork.Users.AddAsync(user);
         await _unitOfWork.SaveAsync(cancellationToken);
-        return new AuthResult
-        {
-            Id = user.Id.Value.ToString(),
-            Role = user.Role.Name,
-            SecurityStamp = user.SecurityStamp,
-            Username = user.FirstName,
-            AvatarName = null
-        };
+        return _mapper.Map<AuthResult>(user!);
     }
 }

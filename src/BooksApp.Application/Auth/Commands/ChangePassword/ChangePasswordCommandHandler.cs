@@ -26,13 +26,6 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
         user.SecurityStamp = Guid.NewGuid().ToString();
 
         await _unitOfWork.SaveAsync(cancellationToken);
-        return new AuthResult
-        {
-            Id = user.Id.Value.ToString(),
-            Role = user.Role.Name,
-            SecurityStamp = user.SecurityStamp,
-            Username = user.FirstName,
-            AvatarName = user.Avatar?.ImageName
-        };
+        return _mapper.Map<AuthResult>(user);
     }
 }

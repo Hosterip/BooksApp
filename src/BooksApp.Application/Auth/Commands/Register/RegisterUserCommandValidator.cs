@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
@@ -8,6 +9,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 {
     public RegisterUserCommandValidator(IUnitOfWork unitOfWork)
     {
+        RuleFor(user => user.Email)
+            .MustAsync(async (email, cancellationToken) => new EmailAddressAttribute().IsValid(email));
         RuleFor(user => user.FirstName)
             .NotEmpty()
             .Length(0, 255);
