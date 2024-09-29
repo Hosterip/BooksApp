@@ -24,7 +24,10 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                 select new UserResult
                 {
                     Id = user.Id.Value.ToString(),
-                    Username = user.FirstName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    MiddleName = user.MiddleName,
+                    LastName = user.LastName,
                     Role = user.Role.Name,
                     AvatarName = user.Avatar.ImageName ?? null
                 })

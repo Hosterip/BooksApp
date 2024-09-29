@@ -1,3 +1,4 @@
+using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
@@ -8,9 +9,12 @@ namespace PostsApp.Application.Roles.Commands.UpdateRole;
 internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, UserResult>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public UpdateRoleCommandHandler(IUnitOfWork unitOfWork)
+    private readonly IMapper _mapper;
+
+    public UpdateRoleCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     public async Task<UserResult> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
     {
@@ -18,12 +22,6 @@ internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleComma
         var role = await _unitOfWork.Roles.GetSingleWhereAsync(role => role.Name == request.Role);
         user!.Role = role!;
         await _unitOfWork.SaveAsync(cancellationToken);
-        return new UserResult
-        {
-            Id = user.Id.Value.ToString(),
-            Username = user.FirstName,
-            Role = user.Role.Name,
-            AvatarName = user.Avatar?.ImageName
-        };
+        return _mapper.Map<UserResult>(user);
     }
 }
