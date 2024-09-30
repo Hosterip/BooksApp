@@ -27,8 +27,8 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
         User user = User.Create(
             request.Email,
             request.FirstName, 
-            null,
-            null,
+            request.MiddleName,
+            request.LastName,
             memberRole!,
             hashSalt.Hash, 
             hashSalt.Salt,

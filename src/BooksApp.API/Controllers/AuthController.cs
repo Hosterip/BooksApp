@@ -27,10 +27,17 @@ public class AuthController : Controller
 
     [HttpPost("Register")]
     [Authorize(Policy = Policies.NotAuthorized)]
-    public async Task<IActionResult> RegisterPost([FromBodyOrDefault] AuthPostRequest request,
+    public async Task<IActionResult> RegisterPost([FromBodyOrDefault] RegisterRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new RegisterUserCommand { Email = request.Email, FirstName = request.Username, Password = request.Password };
+        var command = new RegisterUserCommand
+        {
+            Email = request.Email,
+            FirstName = request.FirstName,
+            MiddleName = request.MiddleName,
+            LastName = request.LastName,
+            Password = request.Password,
+        };
         var user = await _sender.Send(command, cancellationToken);
         var createDefaultBookshelves = new CreateDefaultBookshelvesCommand
         {
@@ -44,7 +51,7 @@ public class AuthController : Controller
     [HttpPost("Login")]
     [Authorize(Policy = Policies.NotAuthorized)]
     public async Task<IActionResult> LoginPost(
-        [FromBodyOrDefault] AuthPostRequest request,
+        [FromBodyOrDefault] LoginRequest request,
         CancellationToken cancellationToken)
     {
         var command = new LoginUserQuery { Username = request.Username, Password = request.Password };
