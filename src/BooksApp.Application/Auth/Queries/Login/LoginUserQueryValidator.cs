@@ -10,14 +10,14 @@ public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
 {
     public LoginUserQueryValidator(IUnitOfWork unitOfWork)
     {
-        RuleFor(user => user.Username)
+        RuleFor(user => user.Email)
             .NotEmpty().Length(0, 255);
         RuleFor(user => user.Password)
             .NotEmpty();
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.FirstName == request.Username);
+                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.FirstName == request.Email);
                 
                 if (user is null) return false;
                 

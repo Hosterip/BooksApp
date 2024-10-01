@@ -10,16 +10,16 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
     public RegisterUserCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Email)
-            .MustAsync(async (email, cancellationToken) => new EmailAddressAttribute().IsValid(email));
+            .Must(email => new EmailAddressAttribute().IsValid(email));
         RuleFor(user => user.FirstName)
             .NotEmpty()
             .Length(0, 255);
         RuleFor(user => user.Password)
             .NotEmpty();
-        RuleFor(user => user.FirstName)
-            .MustAsync(async (username, cancellationToken) =>
+        RuleFor(user => user.Email)
+            .MustAsync(async (email, cancellationToken) =>
             {
-                return !await unitOfWork.Users.AnyAsync(user => user.FirstName == username);
+                return !await unitOfWork.Users.AnyAsync(user => user.FirstName == email);
             }).WithMessage(AuthValidationMessages.Occupied);
     }
 } 

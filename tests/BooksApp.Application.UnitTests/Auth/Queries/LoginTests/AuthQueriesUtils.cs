@@ -8,13 +8,13 @@ public class AuthQueriesUtils
     public static LoginUserQuery LoginUserQueryCorrect => 
         new LoginUserQuery
         {
-            Username = "mock", 
+            Email = "mock", 
             Password = PasswordConstants.CorrectPassword
         };
     public static LoginUserQuery LoginUserQueryIncorrect => 
         new LoginUserQuery
         {
-            Username = "mock",
+            Email = "mock",
             Password = PasswordConstants.IncorrectPassword
         };
 }

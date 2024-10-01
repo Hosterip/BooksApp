@@ -54,7 +54,7 @@ public class AuthController : Controller
         [FromBodyOrDefault] LoginRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new LoginUserQuery { Username = request.Username, Password = request.Password };
+        var command = new LoginUserQuery { Email = request.Email, Password = request.Password };
         var user = await _sender.Send(command, cancellationToken);
         await HttpContext.Login(user.Id, user.FirstName, user.Role, user.SecurityStamp);
         return Ok(user.Adapt<UserResponse>());
