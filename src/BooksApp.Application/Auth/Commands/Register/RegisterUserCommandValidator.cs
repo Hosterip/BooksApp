@@ -17,9 +17,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(user => user.Password)
             .NotEmpty();
         RuleFor(user => user.Email)
-            .MustAsync(async (email, cancellationToken) =>
-            {
-                return !await unitOfWork.Users.AnyAsync(user => user.FirstName == email);
-            }).WithMessage(AuthValidationMessages.Occupied);
+            .MustAsync(async (email, cancellationToken) => 
+                !await unitOfWork.Users.AnyByEmail(email)).WithMessage(AuthValidationMessages.Occupied);
     }
 } 

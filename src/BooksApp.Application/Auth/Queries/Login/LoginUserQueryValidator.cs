@@ -17,7 +17,7 @@ public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.FirstName == request.Email);
+                var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Email == request.Email);
                 
                 if (user is null) return false;
                 
