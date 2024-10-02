@@ -22,7 +22,7 @@ public class BookshelfConfiguration : IEntityTypeConfiguration<Bookshelf>
 
         builder.HasOne(b => b.User)
             .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.SetNull);
         
         builder.OwnsMany<BookshelfBook>(b => b.BookshelfBooks, bb =>
         {
