@@ -11,6 +11,7 @@ public class User : AggregateRoot<UserId>
 
     private User(UserId id, string email, string firstName, string? middleName, string? lastName, Role.Role role, string hash, string salt, string securityStamp, Image.Image? avatar) : base(id)
     {
+        Email = email;
         FirstName = firstName;
         MiddleName = middleName;
         LastName = lastName;
