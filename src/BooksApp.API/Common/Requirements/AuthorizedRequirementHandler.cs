@@ -10,7 +10,7 @@ public class AuthorizedRequirementHandler : AuthorizationHandler<AuthorizedRequi
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
         AuthorizedRequirement requirement)
     {
-        if (context.User.HasClaim(user => user.Type == ClaimTypes.NameIdentifier))
+        if (context.User.HasClaim(user => user.Type == ClaimTypes.Email))
         {
             context.Succeed(requirement);
         }

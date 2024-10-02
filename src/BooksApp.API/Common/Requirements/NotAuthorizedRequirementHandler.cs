@@ -10,7 +10,7 @@ public class NotAuthorizedRequirementHandler : AuthorizationHandler<NotAuthorize
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
         NotAuthorizedRequirement requirement)
     {
-        if (!context.User.HasClaim(user => user.Type == ClaimTypes.NameIdentifier))
+        if (!context.User.HasClaim(user => user.Type == ClaimTypes.Email))
         {
             context.Succeed(requirement);
         }
