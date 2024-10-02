@@ -32,6 +32,6 @@ public class User : AggregateRoot<UserId>
 
     public static User Create(string email, string firstName, string? middleName, string? lastName, Role.Role role, string hash, string salt, Image.Image? avatar)
     {
-        return new(UserId.CreateUserId(), email, firstName, middleName, lastName, role, hash, salt, Guid.NewGuid().ToString(), avatar);
+        return new(UserId.CreateUserId(), email.ToLower(), firstName, middleName, lastName, role, hash, salt, Guid.NewGuid().ToString(), avatar);
     }
 }

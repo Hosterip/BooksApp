@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Extensions;
@@ -42,5 +43,11 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     public async Task<bool> AnyById(Guid guid)
     {
         return await _dbContext.Users.AnyAsync(user => user.Id == UserId.CreateUserId(guid));
+    }
+
+    public async Task<bool> AnyByEmail(string email)
+    {
+        if (new EmailAddressAttribute().IsValid(email) != true) return false;
+        return await _dbContext.Users.AnyAsync(user => user.Email == email.ToLower());
     }
 }
