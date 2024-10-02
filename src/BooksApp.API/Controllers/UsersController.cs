@@ -6,6 +6,8 @@ using PostsApp.Application.Images.Commands.CreateImage;
 using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Application.Users.Commands.DeleteUser;
 using PostsApp.Application.Users.Commands.InsertAvatar;
+using PostsApp.Application.Users.Commands.UpdateEmail;
+using PostsApp.Application.Users.Commands.UpdateName;
 using PostsApp.Application.Users.Commands.UpdateUsername;
 using PostsApp.Application.Users.Queries.GetSingleUser;
 using PostsApp.Application.Users.Queries.GetUsers;
@@ -64,24 +66,42 @@ public class UsersController : Controller
         return Ok("User was deleted");
     }
 
-    [HttpPut("username")]
+    [HttpPut("Email")]
     [Authorize(Policy = Policies.Authorized)]
-    public async Task<IActionResult> UpdateUsername([FromBodyOrDefault] UpdateUsername request,
+    public async Task<IActionResult> UpdateEmail([FromBodyOrDefault] UpdateEmail request,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateUsernameCommand
+        var command = new UpdateEmailCommand
         {
             Id = new Guid(HttpContext.GetId()!),
-            NewUsername = request.NewUsername,
+            Email = request.Email,
         };
 
         await _sender.Send(command, cancellationToken);
 
-        HttpContext.ChangeUsername(request.NewUsername);
+        HttpContext.ChangeEmail(request.Email);
 
-        return Ok("Username was updated");
+        return Ok("Email was updated");
     }
 
+    [HttpPut("Name")]
+    [Authorize(Policy = Policies.Authorized)]
+    public async Task<IActionResult> UpdateName([FromBodyOrDefault] UpdateName request,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateNameCommand
+        {
+            UserId = new Guid(HttpContext.GetId()!),
+            FirstName = request.FirstName,
+            MiddleName = request.MiddleName,
+            LastName = request.LastName,
+        };
+
+        await _sender.Send(command, cancellationToken);
+
+        return Ok("Name was updated");
+    }
+    
     [HttpPut("avatar")]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> UpdateAvatar([FromBodyOrDefault] InsertAvatarRequest request,
