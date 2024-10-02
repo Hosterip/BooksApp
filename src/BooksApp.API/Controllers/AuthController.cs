@@ -44,7 +44,7 @@ public class AuthController : Controller
             UserId = Guid.Parse(user.Id)
         };
         await _sender.Send(createDefaultBookshelves, cancellationToken);
-        await HttpContext.Login(user.Id, user.FirstName, user.Role, user.SecurityStamp);
+        await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return StatusCode(201, user.Adapt<UserResponse>());
     }
 
@@ -56,7 +56,7 @@ public class AuthController : Controller
     {
         var command = new LoginUserQuery { Email = request.Email, Password = request.Password };
         var user = await _sender.Send(command, cancellationToken);
-        await HttpContext.Login(user.Id, user.FirstName, user.Role, user.SecurityStamp);
+        await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return Ok(user.Adapt<UserResponse>());
     }
 

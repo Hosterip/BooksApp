@@ -7,9 +7,9 @@ namespace PostsApp.Common.Extensions;
 
 public static class HttpContextUserExtension
 {
-    public static string? GetUsername(this HttpContext httpContext)
+    public static string? GetEmail(this HttpContext httpContext)
     {
-        return httpContext.User.Claims.SingleOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
+        return httpContext.User.Claims.SingleOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
     }
     
     public static string? GetRole(this HttpContext httpContext)
@@ -27,9 +27,9 @@ public static class HttpContextUserExtension
         return httpContext.User.Claims.SingleOrDefault(claim => claim.Type == AdditionalClaimTypes.SecurityStamp)?.Value;
     }
 
-    public static void ChangeUsername(this HttpContext httpContext, string valueOfClaim)
+    public static void ChangeEmail(this HttpContext httpContext, string valueOfClaim)
     {
-        httpContext.ChangeClaim(ClaimTypes.NameIdentifier, valueOfClaim);
+        httpContext.ChangeClaim(ClaimTypes.Email, valueOfClaim);
     }
     
     public static void ChangeRole(this HttpContext httpContext, string valueOfClaim)
@@ -42,7 +42,7 @@ public static class HttpContextUserExtension
         httpContext.ChangeClaim(AdditionalClaimTypes.SecurityStamp, valueOfClaim);
     }
 
-    public static async Task Login(this HttpContext httpContext, string id, string username, string role, string securityStamp)
+    public static async Task Login(this HttpContext httpContext, string id, string email, string role, string securityStamp)
     {
         var authProperties = new AuthenticationProperties
         {
@@ -50,7 +50,7 @@ public static class HttpContextUserExtension
         };
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, username),
+            new Claim(ClaimTypes.Email, email),
             new Claim(ClaimTypes.Role, role),
             new Claim(AdditionalClaimTypes.SecurityStamp, securityStamp),
             new Claim(AdditionalClaimTypes.Id, id),
