@@ -26,11 +26,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         Expression<Func<Book, bool>> expression)
     {
         var result = await
-            (
-                from book in _dbContext.Books
-                    .AsNoTracking()
-                    .Where(expression)
-                select new BookResult
+            _dbContext.Books.Where(expression).Select(book => new BookResult
                 {
                     Id = book.Id.Value.ToString(),
                     Title = book.Title,
@@ -41,25 +37,20 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                         Id = book.Author.Id.Value.ToString(),
                         Email = book.Author.Email,
                         FirstName = book.Author.FirstName,
-                        MiddleName = "",
-                        LastName = "",
+                        MiddleName = book.Author.MiddleName,
+                        LastName = book.Author.LastName,
                         Role = book.Author.Role.Name,
                         AvatarName = book.Author.Avatar.ImageName
                     },
                     AverageRating = -1,
                     Ratings = 0,
                     CoverName = book.Cover.ImageName,
-                    Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
-                        .ToList()
-                }
-            )
-            .PaginationAsync(page, limit);
+                    Genres = book.Genres
+                        .Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name }).ToList()
+                })
+                .PaginationAsync(page, limit);
         result.Items = result.Items.Select(book =>
         {
-            var user = _dbContext.Users.Single(user => user.Id == UserId.CreateUserId(Guid.Parse(book.Author.Id)));
-            book.Author.MiddleName = user.MiddleName;
-            book.Author.LastName = user.LastName;
-
             var bookStats = RatingStatistics(new Guid(book.Id));
             book.Ratings = bookStats.Ratings;
             book.AverageRating = bookStats.AverageRating;

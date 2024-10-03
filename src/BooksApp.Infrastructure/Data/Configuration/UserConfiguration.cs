@@ -17,6 +17,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 id => id.Value,
                 value => UserId.CreateUserId(value));
 
+        builder.HasIndex(u => u.MiddleName);
+        builder.HasIndex(u => u.LastName);
         builder.Property(u => u.FirstName)
             .HasMaxLength(255)
             .IsRequired();
