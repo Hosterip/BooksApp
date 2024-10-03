@@ -28,24 +28,24 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         var result = await
             (
                 from book in _dbContext.Books
+                    .AsNoTracking()
                     .Where(expression)
-                let user = new UserResult
-                {
-                    Id = book.Author.Id.Value.ToString(),
-                    Email = book.Author.Email,
-                    FirstName = book.Author.FirstName,
-                    MiddleName = book.Author.MiddleName,
-                    LastName = book.Author.LastName,
-                    Role = book.Author.Role.Name,
-                    AvatarName = book.Author.Avatar.ImageName
-                }
                 select new BookResult
                 {
                     Id = book.Id.Value.ToString(),
                     Title = book.Title,
                     ReferentialName = book.ReferentialName,
                     Description = book.Description,
-                    Author = user,
+                    Author = new UserResult
+                    {
+                        Id = book.Author.Id.Value.ToString(),
+                        Email = book.Author.Email,
+                        FirstName = book.Author.FirstName,
+                        MiddleName = "",
+                        LastName = "",
+                        Role = book.Author.Role.Name,
+                        AvatarName = book.Author.Avatar.ImageName
+                    },
                     AverageRating = -1,
                     Ratings = 0,
                     CoverName = book.Cover.ImageName,
@@ -56,6 +56,10 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             .PaginationAsync(page, limit);
         result.Items = result.Items.Select(book =>
         {
+            var user = _dbContext.Users.Single(user => user.Id == UserId.CreateUserId(Guid.Parse(book.Author.Id)));
+            book.Author.MiddleName = user.MiddleName;
+            book.Author.LastName = user.LastName;
+
             var bookStats = RatingStatistics(new Guid(book.Id));
             book.Ratings = bookStats.Ratings;
             book.AverageRating = bookStats.AverageRating;
@@ -72,7 +76,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             .Include(bookshelf => bookshelf.BookshelfBooks)
             .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
-            .Select(bb =>  new BookResult
+            .Select(bb => new BookResult
                 {
                     Id = bb.Book.Id.Value.ToString(),
                     Title = bb.Book.Title,
@@ -103,7 +107,6 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             return book;
         }).ToArray();
         return result;
-
     }
 
     public async Task<Book?> GetSingleById(Guid guid)
