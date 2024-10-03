@@ -18,7 +18,7 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
                     return false;
                 return Hashing.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword);
             })
-            .WithMessage(AuthValidationMessages.UsernameOrPassword)
-            .OverridePropertyName("OldPassword or Id");
+            .WithMessage(AuthValidationMessages.Password)
+            .OverridePropertyName("OldPassword");
     }
 }
