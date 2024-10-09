@@ -6,7 +6,7 @@ public static class RolePermissions
 {
     public static bool UpdateRole(string changerUserRoleName, string targetUserRoleName, string roleNameToChange)
     {
-        // a Member or an Author can't promote someone 
+        // a Member or an Author can't change someone's role 
         if (changerUserRoleName == RoleNames.Member ||
             changerUserRoleName == RoleNames.Author)
             return false;
@@ -18,7 +18,7 @@ public static class RolePermissions
         if (changerUserRoleName == RoleNames.Moderator &&
             targetUserRoleName == RoleNames.Admin)
             return false;
-        // Admin can promote or demote every one
+        // Admin can change someone's role
         return changerUserRoleName == RoleNames.Admin;
     }
     
@@ -29,10 +29,10 @@ public static class RolePermissions
                || changerUserRoleName == RoleNames.Moderator
                || changerUserRoleName == RoleNames.Author;
     }
-    public static bool CreateBook(string changerUserRoleName)
+    public static bool CreateBook(string userRoleName)
     {
         // Only Authors can create a book. 
-        return changerUserRoleName == RoleNames.Author;
+        return userRoleName == RoleNames.Author;
     }
 
     public static bool DeleteReview(string changerUserRoleName)

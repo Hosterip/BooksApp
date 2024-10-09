@@ -17,6 +17,13 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         RuleFor(post => post.Description)
             .NotEmpty()
             .MaximumLength((int)BookMaxLengths.Description);
+        RuleFor(request => request.UserId)
+            .MustAsync(async (userId, cancellationToken) =>
+            {
+                var user = await unitOfWork.Users.GetSingleById(userId);
+                return user is not null && RolePermissions.CreateBook(user.Role.Name);
+            })
+            .WithMessage(BookValidationMessages.MustBeAnAuthor);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) => 
                 !await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
