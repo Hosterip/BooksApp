@@ -55,7 +55,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(5000)
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReferentialName")
@@ -64,8 +64,8 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -83,7 +83,8 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("ReferentialName")
                         .IsRequired()
@@ -106,7 +107,8 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -134,8 +136,8 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(15000)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
@@ -162,7 +164,8 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -204,22 +207,25 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Hash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
@@ -236,7 +242,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("AvatarId");
 
-                    b.HasIndex("FirstName")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.HasIndex("LastName");
