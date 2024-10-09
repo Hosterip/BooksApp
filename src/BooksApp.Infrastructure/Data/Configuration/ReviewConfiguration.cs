@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PostsApp.Domain.Common.Enums.MaxLengths;
 using PostsApp.Domain.Review;
 using PostsApp.Domain.Review.ValueObjects;
 
@@ -25,7 +26,7 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
             .OnDelete(DeleteBehavior.NoAction);
         // AutoIncludes
         builder.Property(r => r.Body)
-            .HasMaxLength(1000)
+            .HasMaxLength((int)ReviewMaxLengths.Body)
             .IsRequired();
         builder.Navigation(r => r.User)
             .AutoInclude();

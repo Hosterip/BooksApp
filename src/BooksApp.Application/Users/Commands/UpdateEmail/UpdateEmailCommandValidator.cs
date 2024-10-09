@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Users.Commands.UpdateEmail;
+using PostsApp.Domain.Common.Enums.MaxLengths;
 
 namespace PostsApp.Application.Users.Commands.UpdateUsername;
 
@@ -28,5 +29,9 @@ public class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailCommand>
                        && new EmailAddressAttribute().IsValid(email);
             })
             .WithMessage(UserValidationMessages.Occupied);
+        
+        RuleFor(user => user.Email)
+            .NotEmpty()
+            .Length(1, (int)UserMaxLengths.Email);
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostsApp.Domain.Book;
 using PostsApp.Domain.Book.ValueObjects;
+using PostsApp.Domain.Common.Enums.MaxLengths;
 using PostsApp.Domain.Genre;
 using PostsApp.Domain.User;
 using PostsApp.Infrastructure.Data.Migrations;
@@ -25,10 +26,10 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
                 value => BookId.CreateBookId(value));
         
         builder.Property(b => b.Title)
-            .HasMaxLength(255)
+            .HasMaxLength((int)BookMaxLengths.Title)
             .IsRequired();
         builder.Property(b => b.Description)
-            .HasMaxLength(5000)
+            .HasMaxLength((int)BookMaxLengths.Description)
             .IsRequired();
         
         // AutoIncludes

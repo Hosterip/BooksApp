@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Common.Enums.MaxLengths;
 using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Application.Reviews.Commands.UpdateReview;
@@ -10,7 +11,7 @@ public class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewComman
     public UpdateReviewCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(request => request.Body)
-            .MaximumLength(1000)
+            .MaximumLength((int)ReviewMaxLengths.Body)
             .NotEmpty();
         RuleFor(request => request.Rating)
             .GreaterThanOrEqualTo(1)
@@ -25,6 +26,6 @@ public class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewComman
                 if (review is not null)
                     return review.User.Id == UserId.CreateUserId(request.UserId);
                 return true;
-            }).WithMessage("Review is not yours");
+            }).WithMessage(ReviewValidationMessages.NotYours);
     }
 }

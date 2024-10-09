@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostsApp.Domain.Book;
 using PostsApp.Domain.Book.ValueObjects;
+using PostsApp.Domain.Common.Enums.MaxLengths;
 using PostsApp.Domain.Genre;
 using PostsApp.Domain.Genre.ValueObjects;
 using PostsApp.Infrastructure.Data.Migrations;
@@ -13,6 +14,10 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
     public void Configure(EntityTypeBuilder<Genre> builder)
     {
         builder.HasKey(g => g.Id);
+
+        builder.Property(g => g.Name)
+            .HasMaxLength((int)GenreMaxLengths.Name)
+            .IsRequired();
         
         builder.Property(o => o.Id)
             .ValueGeneratedNever()

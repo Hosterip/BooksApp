@@ -20,7 +20,7 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request)
             .Must(request => request.ChangerId != request.UserId)
-            .WithMessage("You can not change your own role")
+            .WithMessage(RoleValidationMessages.CanNotChangeYourOwn)
             .OverridePropertyName("UserId And ChangerId");
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>

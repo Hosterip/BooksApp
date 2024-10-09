@@ -4,6 +4,7 @@ using PostsApp.Application.Common.Constants.ValidationMessages;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Common.Constants;
+using PostsApp.Domain.Common.Enums.MaxLengths;
 using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Application.Books.Commands.UpdateBook;
@@ -12,20 +13,16 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
     public UpdateBookCommandValidator(IUnitOfWork unitOfWork)
     {
-        RuleFor(book => book.Title).Must(title =>
-            title == null || title.Length <= 255)
-            .WithMessage("Title must be under 255 characters.");
+        RuleFor(book => book.Title)
+            .MaximumLength((int)BookMaxLengths.Title);
+        RuleFor(post => post.Description)
+            .MaximumLength((int)BookMaxLengths.Description);
+        
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) => 
                 request.Title == null || !await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
             .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
             .OverridePropertyName("Title");
-        RuleFor(book => book.Description).Must(body =>
-        {
-            if (body is null)
-                return true;
-            return body.Length <= 5000;
-        }).WithMessage("Description must be under 5000 characters.");
         RuleFor(book => book)
             .MustAsync(async (request, cancellationToken) =>
             {
@@ -41,9 +38,9 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
             if (genreIds is null)
                 return false;
             return !unitOfWork.Genres.GetAllByIds(genreIds).Any(genre => genre is null);
-        }).WithMessage("One or more of the genres weren't found.");
+        }).WithMessage(BookValidationMessages.GenresNotFound);
         RuleFor(request => request.GenreIds)
             .Must(genreIds => genreIds is not null && genreIds.Any())
-            .WithMessage("Book must have at least one genre.");
+            .WithMessage(BookValidationMessages.AtLeastOneGenre);
     }
 }

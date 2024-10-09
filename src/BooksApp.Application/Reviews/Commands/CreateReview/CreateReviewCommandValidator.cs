@@ -2,6 +2,7 @@
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Book.ValueObjects;
+using PostsApp.Domain.Common.Enums.MaxLengths;
 using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Application.Reviews.Commands.CreateReview;
@@ -11,7 +12,7 @@ public class CreateReviewCommandValidator : AbstractValidator<CreateReviewComman
     public CreateReviewCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(request => request.Body)
-            .MaximumLength(1000)
+            .MaximumLength((int)ReviewMaxLengths.Body)
             .NotEmpty();
         RuleFor(request => request.Rating)
             .GreaterThanOrEqualTo(1)
@@ -31,6 +32,8 @@ public class CreateReviewCommandValidator : AbstractValidator<CreateReviewComman
                 return !await unitOfWork.Reviews.AnyAsync(review =>
                     review.User.Id == UserId.CreateUserId(request.UserId) 
                     && review.Book.Id == BookId.CreateBookId(request.BookId));
-            }).WithMessage(ReviewValidationMessages.AlreadyHave).OverridePropertyName("BookId and UserId");
+            })
+            .WithMessage(ReviewValidationMessages.AlreadyHave)
+            .OverridePropertyName("BookId and UserId");
     }
 }

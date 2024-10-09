@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PostsApp.Domain.Common.Enums.MaxLengths;
 using PostsApp.Domain.Role;
 using PostsApp.Domain.User;
 using PostsApp.Domain.User.ValueObjects;
@@ -19,11 +20,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(u => u.MiddleName);
         builder.HasIndex(u => u.LastName);
-        builder.Property(u => u.FirstName)
-            .HasMaxLength(255)
-            .IsRequired();
-        builder.HasIndex(u => u.FirstName)
+        builder.HasIndex(u => u.Email)
             .IsUnique();
+        
+        builder.Property(u => u.Email)
+            .HasMaxLength((int)UserMaxLengths.Email);
+        builder.Property(u => u.FirstName)
+            .HasMaxLength((int)UserMaxLengths.FirstName)
+            .IsRequired();
+        builder.Property(u => u.MiddleName)
+            .HasMaxLength((int)UserMaxLengths.MiddleName);
+        builder.Property(u => u.LastName)
+            .HasMaxLength((int)UserMaxLengths.LastName);
+        
         builder.Property(u => u.Hash)
             .IsRequired();
         builder.Property(u => u.Salt)
