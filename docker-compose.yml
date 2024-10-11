@@ -1,0 +1,31 @@
+networks:
+  PlayNetwork:
+    driver: bridge
+services:
+  booksapp.db: 
+    container_name: app-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+        - "1433:1433"
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=password@12345
+    networks: 
+        - PlayNetwork
+  booksapp.api:
+    container_name: app-api
+    image: ${DOCKER_REGISTRY-}booksappapi
+    build:
+      context: .
+      dockerfile: src/BooksApp.API/Dockerfile
+    ports:
+        - "8000:5000"
+    depends_on:
+        - booksapp.db
+    environment:
+        - DB_HOST=booksapp.db
+        - DB_NAME=booksappdb   
+        - DB_SA_PASSWORD=password@12345
+        - ASPNETCORE_URLS=https://*:5000
+    networks: 
+        - PlayNetwork
