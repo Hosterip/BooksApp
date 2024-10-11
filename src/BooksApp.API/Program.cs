@@ -22,7 +22,7 @@ builder.Services.AddApplication();
 // Authentication || Authorization
 
 builder.Services.AddAuth();
-
+builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler("/Error");

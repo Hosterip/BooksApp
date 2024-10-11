@@ -4,8 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-	<DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-	<ProjectGuid>0a8ff3f5-5ef6-49f0-9b5b-ee95d20118c5</ProjectGuid>
+    <ProjectGuid>d61f940f-7278-4ae0-a931-043702a23fbe</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

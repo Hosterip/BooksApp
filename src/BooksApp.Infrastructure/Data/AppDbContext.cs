@@ -30,7 +30,7 @@ public sealed class AppDbContext : DbContext
         var dbName = Environment.GetEnvironmentVariable("DB_NAME");
         var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
         optionsBuilder
-            .UseSqlServer($"Data Source={dbHost};Database={dbName};User Id=sa;Password={dbPassword};Trusted_Connection=True;TrustServerCertificate=True");
+            .UseSqlServer($"Server={dbHost};Database={dbName};User Id=sa;Password={dbPassword};Trusted_Connection=False;TrustServerCertificate=True");
     } 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
