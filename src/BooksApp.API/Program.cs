@@ -32,8 +32,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-
 app.UseCors(corsAllow);
 
 app.UseAuthentication();

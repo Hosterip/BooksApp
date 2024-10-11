@@ -1,5 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using PostsApp.Domain.Book;
 using PostsApp.Domain.Bookshelf;
@@ -11,13 +13,24 @@ using PostsApp.Domain.Role;
 using PostsApp.Domain.User;
 
 namespace PostsApp.Infrastructure.Data;
-
-public class AppDbContext : DbContext
+public sealed class AppDbContext : DbContext
 {
+    public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions)
+    {
+        var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+        if (databaseCreator == null) return;
+        if (!databaseCreator.CanConnect()) databaseCreator.Create();
+        if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
+        Database.GetAppliedMigrations();
+    }
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+        var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+        var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
         optionsBuilder
-            .UseSqlServer("Server=localhost;Database=booksapp;Trusted_Connection=True;TrustServerCertificate=True");
+            .UseSqlServer($"Data Source={dbHost};Database={dbName};User Id=sa;Password={dbPassword};Trusted_Connection=True;TrustServerCertificate=True");
     } 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,4 +1,37 @@
-﻿{
+{
+  "profiles": {
+    "https": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7190"
+    },
+    "http": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:7190"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
+      }
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://*:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -6,36 +39,6 @@
     "iisExpress": {
       "applicationUrl": "http://localhost:47668",
       "sslPort": 44356
-    }
-  },
-  "profiles": {
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7190",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
-      }
-    },
-    "http": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:7190",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
-      }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": false,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
-      }
     }
   }
 }
