@@ -33,7 +33,7 @@ public static class AuthEndpoints
     }
     
     public static async Task<IResult> Register(
-        [FromBodyOrDefault] RegisterRequest request,
+        RegisterRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)
@@ -57,7 +57,7 @@ public static class AuthEndpoints
     }
 
     public static async Task<IResult> Login(
-        [FromBodyOrDefault] LoginRequest request,
+        LoginRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)
@@ -69,7 +69,7 @@ public static class AuthEndpoints
     }
 
     public static async Task<IResult> UpdatePassword(
-        [FromBodyOrDefault] AuthUpdatePasswordRequest request,
+        AuthUpdatePasswordRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)
@@ -85,7 +85,8 @@ public static class AuthEndpoints
         return Results.Ok("Operation succeeded");
     }
 
-    public static IResult Logout(HttpContext httpContext)
+    public static IResult Logout(
+        HttpContext httpContext)
     {
         httpContext.SignOutAsync();
         return Results.Ok("You've been signed out");

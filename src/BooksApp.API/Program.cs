@@ -39,10 +39,6 @@ app.UseCors(corsAllow);
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Registering endpoints
-app.UseMiddleware<ValidateUserMiddleware>();
-app.UseMiddleware<ValidationExceptionMiddleware>();
-
 // Mapping end points
 app.MapAuthEndpoints();
 app.MapBookEndpoints();
@@ -54,6 +50,9 @@ app.MapRoleEndpoints();
 app.MapUserEndpoints();
 
 app.MapErrorEndpoints();
+// Registering endpoints
+app.UseMiddleware<ValidateUserMiddleware>();
+app.UseMiddleware<ValidationExceptionMiddleware>();
 
 // Running the application
 app.Run();

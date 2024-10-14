@@ -47,7 +47,7 @@ public static class ReviewEndpoints
     }
 
     public static async Task<IResult> Create(
-        [FromBodyOrDefault] CreateReviewRequest request,
+        CreateReviewRequest request,
         HttpContext httpContext,
         ISender sender,
         CancellationToken cancellationToken)
@@ -64,7 +64,7 @@ public static class ReviewEndpoints
     }
     
     public static async Task<IResult> Update(
-        [FromBodyOrDefault]UpdateReviewRequest request,
+        UpdateReviewRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)

@@ -34,7 +34,7 @@ public static class BooksEndpoints
     } 
     
     public static async Task<IResult> Create(
-        [FromBodyOrDefault]BookRequest request,
+        BookRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken
@@ -60,7 +60,7 @@ public static class BooksEndpoints
     }
 
     public static async Task<IResult> Update(
-        [FromBodyOrDefault]UpdateBookRequest request,
+        UpdateBookRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)

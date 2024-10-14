@@ -85,7 +85,7 @@ public static class UserEndpoints
     }
 
     public static async Task<IResult> UpdateEmail(
-        [FromBodyOrDefault] UpdateEmail request,
+        UpdateEmail request,
         HttpContext httpContext,
         ISender sender,
         CancellationToken cancellationToken)
@@ -104,7 +104,7 @@ public static class UserEndpoints
     }
 
     public static async Task<IResult> UpdateName(
-        [FromBodyOrDefault] UpdateName request,
+        UpdateName request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)
@@ -123,7 +123,7 @@ public static class UserEndpoints
     }
     
     public static async Task<IResult> UpdateAvatar(
-        [FromBodyOrDefault] InsertAvatarRequest request,
+        InsertAvatarRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)
