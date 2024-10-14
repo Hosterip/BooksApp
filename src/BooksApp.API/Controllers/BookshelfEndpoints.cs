@@ -2,6 +2,7 @@ using MediatR;
 using PostsApp.Application.Bookshelves.Commands.AddBook;
 using PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
+using PostsApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using PostsApp.Application.Bookshelves.Commands.RemoveBook;
 using PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
@@ -32,6 +33,8 @@ public static class BookshelfEndpoints
         bookshelves.MapDelete("removeBook", RemoveBook)
             .RequireAuthorization(Policies.Authorized);
         bookshelves.MapDelete("removeBookFromDefault", RemoveBookFromDefault)
+            .RequireAuthorization(Policies.Authorized);
+        bookshelves.MapDelete("{bookshelfId:guid}", Remove)
             .RequireAuthorization(Policies.Authorized);
     }
     
@@ -142,5 +145,19 @@ public static class BookshelfEndpoints
         await sender.Send(command);
 
         return Results.Ok("Book was deleted successfully!");
+    }
+
+    public static async Task<IResult> Remove(
+        Guid bookshelfId,
+        ISender sender)
+    {
+        var command = new DeleteBookshelfCommand
+        {
+            BookshelfId = bookshelfId
+        };
+
+        await sender.Send(command);
+        
+        return Results.Ok("Bookshelf deleted");
     }
 }
