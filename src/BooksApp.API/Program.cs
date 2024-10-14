@@ -1,5 +1,6 @@
 using PostsApp.Application;
 using PostsApp.Common.Extensions;
+using PostsApp.Controllers;
 using PostsApp.Infrastructure;
 using PostsApp.Middlewares;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
@@ -25,7 +26,7 @@ builder.Services.AddAuth();
 builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-app.UseExceptionHandler("/Error");
+app.UseExceptionHandler("/api/error");
 if (!app.Environment.IsDevelopment())
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -34,11 +35,25 @@ if (!app.Environment.IsDevelopment())
 
 app.UseCors(corsAllow);
 
+// Authorization and authentication
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Registering endpoints
 app.UseMiddleware<ValidateUserMiddleware>();
 app.UseMiddleware<ValidationExceptionMiddleware>();
-app.MapControllers();
 
+// Mapping end points
+app.MapAuthEndpoints();
+app.MapBookEndpoints();
+app.MapBookshelfEndpoints();
+app.MapGenreEndpoints();
+app.MapImageEndpoints();
+app.MapReviewEndpoints();
+app.MapRoleEndpoints();
+app.MapUserEndpoints();
+
+app.MapErrorEndpoints();
+
+// Running the application
 app.Run();
