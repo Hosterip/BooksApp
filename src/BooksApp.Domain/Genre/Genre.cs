@@ -9,7 +9,7 @@ public class Genre : AggregateRoot<GenreId>
     public List<Book.Book> Books { get; set; } = new List<Book.Book?>();
         
     private Genre(GenreId id) : base(id) { }
-    public Genre(GenreId id, string name) : base(id)
+    private Genre(GenreId id, string name) : base(id)
     {
         Name = name;
     }
