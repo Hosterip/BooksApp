@@ -23,18 +23,18 @@ public static class UserEndpoints
     {
         var users = app.MapGroup("api/users");
 
-        users.MapGet("me", GetMe);
-        users.MapGet("", GetMany);
-        users.MapGet("{id:guid}", GetById);
+        users.MapGet(ApiEndpoints.Users.GetMe, GetMe);
+        users.MapGet(ApiEndpoints.Users.GetMany, GetMany);
+        users.MapGet(ApiEndpoints.Users.GetById, GetById);
 
-        users.MapDelete("", Delete)
+        users.MapDelete(ApiEndpoints.Users.Delete, Delete)
             .RequireAuthorization(Policies.Authorized);
 
-        users.MapPut("email", UpdateEmail)
+        users.MapPut(ApiEndpoints.Users.UpdateEmail, UpdateEmail)
             .RequireAuthorization(Policies.Authorized);
-        users.MapPut("name", UpdateName)
+        users.MapPut(ApiEndpoints.Users.UpdateName, UpdateName)
             .RequireAuthorization(Policies.Authorized);
-        users.MapPut("avatar", UpdateAvatar)
+        users.MapPut(ApiEndpoints.Users.UpdateAvatar, UpdateAvatar)
             .RequireAuthorization(Policies.Authorized);
     }
 

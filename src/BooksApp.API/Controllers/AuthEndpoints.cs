@@ -19,16 +19,15 @@ public static class AuthEndpoints
 {
     public static void MapAuthEndpoints(this IEndpointRouteBuilder app)
     {
-        var auth = app.MapGroup("api/auth");
 
-        auth.MapPost("register", Register)
+        app.MapPost(ApiEndpoints.Auth.Register, Register)
             .RequireAuthorization(Policies.NotAuthorized);
-        auth.MapPost("login", Login)
+        app.MapPost(ApiEndpoints.Auth.Login, Login)
             .RequireAuthorization(Policies.NotAuthorized);
-        auth.MapPost("logout", Logout)
+        app.MapPost(ApiEndpoints.Auth.Logout, Logout)
             .RequireAuthorization(Policies.Authorized);
         
-        auth.MapPut("updatePassword", UpdatePassword)
+        app.MapPut(ApiEndpoints.Auth.UpdatePassword, UpdatePassword)
             .RequireAuthorization(Policies.NotAuthorized);
     }
     

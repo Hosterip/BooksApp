@@ -18,23 +18,21 @@ public static class BookshelfEndpoints
 {
     public static void MapBookshelfEndpoints(this IEndpointRouteBuilder app)
     {
-        var bookshelves = app.MapGroup("api/bookshelves");
+        app.MapGet(ApiEndpoints.Bookshelves.GetBookshelves, GetBookshelves);
+        app.MapGet(ApiEndpoints.Bookshelves.GetBooks, GetBooks);
 
-        bookshelves.MapGet("{userId:guid}", GetBookshelves);
-        bookshelves.MapGet("books/{bookshelfId:guid}", GetBooks);
-
-        bookshelves.MapPost("{name}", Create)
+        app.MapPost(ApiEndpoints.Bookshelves.Create, Create)
             .RequireAuthorization(Policies.Authorized);
-        bookshelves.MapPost("addBook", AddBook)
+        app.MapPost(ApiEndpoints.Bookshelves.AddBook, AddBook)
             .RequireAuthorization(Policies.Authorized);
-        bookshelves.MapPost("addBookToDefault", AddBookToDefault)
+        app.MapPost(ApiEndpoints.Bookshelves.AddBookToDefault, AddBookToDefault)
             .RequireAuthorization(Policies.Authorized);
 
-        bookshelves.MapDelete("removeBook", RemoveBook)
+        app.MapDelete(ApiEndpoints.Bookshelves.RemoveBook, RemoveBook)
             .RequireAuthorization(Policies.Authorized);
-        bookshelves.MapDelete("removeBookFromDefault", RemoveBookFromDefault)
+        app.MapDelete(ApiEndpoints.Bookshelves.RemoveBookFromDefault, RemoveBookFromDefault)
             .RequireAuthorization(Policies.Authorized);
-        bookshelves.MapDelete("{bookshelfId:guid}", Remove)
+        app.MapDelete(ApiEndpoints.Bookshelves.Remove, Remove)
             .RequireAuthorization(Policies.Authorized);
     }
     

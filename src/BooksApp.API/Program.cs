@@ -1,4 +1,5 @@
 using PostsApp.Application;
+using PostsApp.Common.Constants;
 using PostsApp.Common.Extensions;
 using PostsApp.Controllers;
 using PostsApp.Infrastructure;
@@ -26,7 +27,7 @@ builder.Services.AddAuth();
 builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-app.UseExceptionHandler("/api/error");
+app.UseExceptionHandler(ApiEndpoints.Error.ErrorHandler);
 if (!app.Environment.IsDevelopment())
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.

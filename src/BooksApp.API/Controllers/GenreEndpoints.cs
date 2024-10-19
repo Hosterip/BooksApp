@@ -11,12 +11,10 @@ public static class GenreEndpoints
 {
     public static void MapGenreEndpoints(this IEndpointRouteBuilder app)
     {
-        var genres = app.MapGroup("api/genres");
-
-        genres.MapPost("{name}", Create)
+        app.MapPost(ApiEndpoints.Genres.Create, Create)
             .RequireAuthorization(Policies.Admin);
 
-        genres.MapGet("", GetAll);
+        app.MapGet(ApiEndpoints.Genres.GetAll, GetAll);
     }
     
     public static async Task<IResult> Create(

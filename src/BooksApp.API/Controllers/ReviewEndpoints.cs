@@ -16,16 +16,15 @@ public static class ReviewEndpoints
 {
     public static void MapReviewEndpoints(this IEndpointRouteBuilder app)
     {
-        var reviews = app.MapGroup("api/reviews");
-        reviews.MapGet("many/{id:guid}", GetMany);
+        app.MapGet(ApiEndpoints.Reviews.GetMany, GetMany);
 
-        reviews.MapPost("", Create)
+        app.MapPost(ApiEndpoints.Reviews.Create, Create)
             .RequireAuthorization(Policies.Authorized);
 
-        reviews.MapPut("", Update)
+        app.MapPut(ApiEndpoints.Reviews.Update, Update)
             .RequireAuthorization(Policies.Authorized);
 
-        reviews.MapDelete("{id:guid}", Delete)
+        app.MapDelete(ApiEndpoints.Reviews.Delete, Delete)
             .RequireAuthorization(Policies.Authorized);
     }
     

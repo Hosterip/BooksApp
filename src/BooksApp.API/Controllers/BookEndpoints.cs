@@ -10,26 +10,23 @@ using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.Book;
 using PostsApp.Common.Extensions;
-using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
-public static class BooksEndpoints
+public static class BookEndpoints
 {
     public static void MapBookEndpoints(this IEndpointRouteBuilder app)
     {
-        var books = app.MapGroup("api/books");
-
-        books.MapGet("many", GetMany);
-        books.MapGet("single/{id:guid}", GetSingle);
+        app.MapGet(ApiEndpoints.Books.GetMany, GetMany);
+        app.MapGet(ApiEndpoints.Books.GetSingle, GetSingle);
         
-        books.MapPost("", Create)
+        app.MapPost(ApiEndpoints.Books.Create, Create)
             .RequireAuthorization(Policies.Author);
         
-        books.MapPut("", Update)
+        app.MapPut(ApiEndpoints.Books.Update, Update)
             .RequireAuthorization(Policies.Authorized);
 
-        books.MapDelete("{id:guid}", Delete)
+        app.MapDelete(ApiEndpoints.Books.Delete, Delete)
             .RequireAuthorization(Policies.Authorized);
     } 
     

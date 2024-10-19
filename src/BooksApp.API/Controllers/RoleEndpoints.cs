@@ -14,11 +14,9 @@ public static class RoleEndpoints
 {
     public static void MapRoleEndpoints(this IEndpointRouteBuilder app)
     {
-        var roles = app.MapGroup("api/roles");
+        app.MapGet(ApiEndpoints.Roles.GetAll, GetAll);
 
-        roles.MapGet("", GetAll);
-
-        roles.MapPut("", UpdateRole)
+        app.MapPut(ApiEndpoints.Roles.UpdateRole, UpdateRole)
             .RequireAuthorization(Policies.Authorized);
     }
     

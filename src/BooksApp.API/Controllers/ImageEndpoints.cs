@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Images.Queries.GetImage;
+using PostsApp.Common.Constants;
 
 namespace PostsApp.Controllers;
 
@@ -8,8 +9,7 @@ public static class ImageEndpoints
 {
     public static void MapImageEndpoints(this IEndpointRouteBuilder app)
     {
-        var images = app.MapGroup("api/images");
-        images.MapGet("{name}", Get);
+        app.MapGet(ApiEndpoints.Images.Get, Get);
     }
     
     public static async Task<IResult> Get(
