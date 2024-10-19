@@ -5,10 +5,15 @@ using PostsApp.Application.Books.Commands.DeleteBook;
 using PostsApp.Application.Books.Commands.UpdateBook;
 using PostsApp.Application.Books.Queries.GetBooks;
 using PostsApp.Application.Books.Queries.GetSingleBook;
+using PostsApp.Application.Bookshelves.Commands.AddBook;
+using PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
+using PostsApp.Application.Bookshelves.Commands.RemoveBook;
+using PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
 using PostsApp.Application.Images.Commands.CreateImage;
 using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.Book;
+using PostsApp.Common.Contracts.Requests.Bookshelf;
 using PostsApp.Common.Extensions;
 
 namespace PostsApp.Controllers;
@@ -27,6 +32,17 @@ public static class BookEndpoints
             .RequireAuthorization(Policies.Authorized);
 
         app.MapDelete(ApiEndpoints.Books.Delete, Delete)
+            .RequireAuthorization(Policies.Authorized);
+        
+        // Bookshelves logic
+        app.MapPost(ApiEndpoints.Books.AddBook, AddBook)
+            .RequireAuthorization(Policies.Authorized);
+        app.MapPost(ApiEndpoints.Books.AddBookToDefault, AddBookToDefault)
+            .RequireAuthorization(Policies.Authorized);
+
+        app.MapDelete(ApiEndpoints.Books.RemoveBook, RemoveBook)
+            .RequireAuthorization(Policies.Authorized);
+        app.MapDelete(ApiEndpoints.Books.RemoveBookFromDefault, RemoveBookFromDefault)
             .RequireAuthorization(Policies.Authorized);
     } 
     
@@ -129,5 +145,71 @@ public static class BookEndpoints
         var query = new GetSingleBookQuery { Id = id };
         var post = await sender.Send(query, cancellationToken);
         return Results.Ok(post);
+    }
+    
+    // Bookshelves logic
+    
+    public static async Task<IResult> AddBook(
+        AddRemoveBookBookshelfRequest request,
+        ISender sender,
+        HttpContext httpContext)
+    {
+        var command = new AddBookCommand
+        {
+            BookshelfId = request.BookshelfId,
+            BookId = request.BookId,
+            UserId = Guid.Parse(httpContext.GetId()!)
+        };
+        await sender.Send(command);
+
+        return Results.Ok("Book was added successfully!");
+    }
+    
+    public static async Task<IResult> AddBookToDefault(
+        AddRemoveBookToDefaultBookshelfRequest request,
+        ISender sender,
+        HttpContext httpContext)
+    {
+        var command = new AddBookToDefaultBookshelfCommand
+        {
+            BookshelfName = request.BookshelfName,
+            BookId = request.BookId,
+            UserId = Guid.Parse(httpContext.GetId()!)
+        };
+        await sender.Send(command);
+
+        return Results.Ok("Book was added successfully!");
+    }
+    
+    public static async Task<IResult> RemoveBook(
+        AddRemoveBookBookshelfRequest request,
+        ISender sender,
+        HttpContext httpContext)
+    {
+        var command = new RemoveBookCommand
+        {
+            BookshelfId = request.BookshelfId,
+            BookId = request.BookId,
+            UserId = Guid.Parse(httpContext.GetId()!)
+        };
+        await sender.Send(command);
+
+        return Results.Ok("Book was deleted successfully!");
+    }
+    
+    public static async Task<IResult> RemoveBookFromDefault(
+        AddRemoveBookToDefaultBookshelfRequest request,
+        ISender sender,
+        HttpContext httpContext)
+    {
+        var command = new RemoveBookFromDefaultBookshelfCommand
+        {
+            BookshelfName = request.BookshelfName,
+            BookId = request.BookId,
+            UserId = Guid.Parse(httpContext.GetId()!)
+        };
+        await sender.Send(command);
+
+        return Results.Ok("Book was deleted successfully!");
     }
 }

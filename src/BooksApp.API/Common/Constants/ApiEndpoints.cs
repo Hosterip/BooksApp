@@ -26,6 +26,12 @@ public static class ApiEndpoints
         public const string Update = $"{Base}";
         
         public const string Delete = $"{Base}/{{id:guid}}";
+        
+        public const string AddBook = $"{Base}/book/bookshelves";
+        public const string AddBookToDefault = $"{Base}/bookshelves/default";
+        
+        public const string RemoveBook = $"{Base}/bookshelves";
+        public const string RemoveBookFromDefault = $"{Base}/bookshelves/default";
     }
     
     public static class Bookshelves
@@ -36,11 +42,6 @@ public static class ApiEndpoints
         public const string GetBooks = $"{Base}/books/{{bookshelfId:guid}}";
         
         public const string Create = $"{Base}/{{name}}";
-        public const string AddBook = $"{Base}/book";
-        public const string AddBookToDefault = $"{Base}/bookToDefault";
-        
-        public const string RemoveBook = $"{Base}/book";
-        public const string RemoveBookFromDefault = $"{Base}/bookFromDefault";
         public const string Remove = $"{Base}/{{bookshelfId:guid}}";
     }
     
@@ -72,14 +73,6 @@ public static class ApiEndpoints
         public const string Delete = $"{Base}/{{id:guid}}";
     }
     
-    public static class Roles
-    {
-        private const string Base = $"{ApiBase}/roles";
-
-        public const string GetAll = $"{Base}";
-        public const string UpdateRole = $"{Base}";
-    }
-    
     public static class Users
     {
         private const string Base = $"{ApiBase}/users";
@@ -91,6 +84,9 @@ public static class ApiEndpoints
         public const string UpdateEmail = $"{Base}/email";
         public const string UpdateName = $"{Base}/name";
         public const string UpdateAvatar = $"{Base}/avatar";
+        
+        public const string GetAll = $"{Base}/roles";
+        public const string UpdateRole = $"{Base}/roles";
     }
 
     public static class Error

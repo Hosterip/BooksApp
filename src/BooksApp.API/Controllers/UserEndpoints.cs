@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Images.Commands.CreateImage;
 using PostsApp.Application.Images.Commands.DeleteImage;
+using PostsApp.Application.Roles.Commands.UpdateRole;
+using PostsApp.Application.Roles.Queries.GetRoles;
 using PostsApp.Application.Users.Commands.DeleteUser;
 using PostsApp.Application.Users.Commands.InsertAvatar;
 using PostsApp.Application.Users.Commands.UpdateEmail;
@@ -11,6 +11,7 @@ using PostsApp.Application.Users.Commands.UpdateName;
 using PostsApp.Application.Users.Queries.GetSingleUser;
 using PostsApp.Application.Users.Queries.GetUsers;
 using PostsApp.Common.Constants;
+using PostsApp.Common.Contracts.Requests.Role;
 using PostsApp.Common.Contracts.Requests.User;
 using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
@@ -35,6 +36,13 @@ public static class UserEndpoints
         users.MapPut(ApiEndpoints.Users.UpdateName, UpdateName)
             .RequireAuthorization(Policies.Authorized);
         users.MapPut(ApiEndpoints.Users.UpdateAvatar, UpdateAvatar)
+            .RequireAuthorization(Policies.Authorized);
+        
+        // Roles 
+        
+        app.MapGet(ApiEndpoints.Users.GetAll, GetAll);
+
+        app.MapPut(ApiEndpoints.Users.UpdateRole, UpdateRole)
             .RequireAuthorization(Policies.Authorized);
     }
 
@@ -160,5 +168,36 @@ public static class UserEndpoints
         var result = await sender.Send(command, cancellationToken);
 
         return Results.Ok(result);
+    }
+    
+    // Roles Logic
+
+    public static async Task<IResult> GetAll(
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        var command = new GetRoleQuery();
+
+        var roles = await sender.Send(command, cancellationToken);
+
+        return Results.Ok(roles);
+    }
+    
+    public static async Task<IResult> UpdateRole(
+        [FromBodyOrDefault]ChangeRoleRequest request,
+        ISender sender,
+        HttpContext httpContext,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateRoleCommand
+        {
+            ChangerId = new Guid(httpContext.GetId()!), 
+            Role = request.Role, 
+            UserId = request.UserId
+        };
+
+        await sender.Send(command, cancellationToken);
+        
+        return Results.Ok("Operation succeeded");
     }
 }

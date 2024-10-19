@@ -47,7 +47,6 @@ app.MapBookshelfEndpoints();
 app.MapGenreEndpoints();
 app.MapImageEndpoints();
 app.MapReviewEndpoints();
-app.MapRoleEndpoints();
 app.MapUserEndpoints();
 
 app.MapErrorEndpoints();

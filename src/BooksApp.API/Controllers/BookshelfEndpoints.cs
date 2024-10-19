@@ -23,15 +23,6 @@ public static class BookshelfEndpoints
 
         app.MapPost(ApiEndpoints.Bookshelves.Create, Create)
             .RequireAuthorization(Policies.Authorized);
-        app.MapPost(ApiEndpoints.Bookshelves.AddBook, AddBook)
-            .RequireAuthorization(Policies.Authorized);
-        app.MapPost(ApiEndpoints.Bookshelves.AddBookToDefault, AddBookToDefault)
-            .RequireAuthorization(Policies.Authorized);
-
-        app.MapDelete(ApiEndpoints.Bookshelves.RemoveBook, RemoveBook)
-            .RequireAuthorization(Policies.Authorized);
-        app.MapDelete(ApiEndpoints.Bookshelves.RemoveBookFromDefault, RemoveBookFromDefault)
-            .RequireAuthorization(Policies.Authorized);
         app.MapDelete(ApiEndpoints.Bookshelves.Remove, Remove)
             .RequireAuthorization(Policies.Authorized);
     }
@@ -79,70 +70,6 @@ public static class BookshelfEndpoints
         var result = await sender.Send(command);
 
         return Results.Ok(result);
-    }
-    
-    public static async Task<IResult> AddBook(
-        AddRemoveBookBookshelfRequest request,
-        ISender sender,
-        HttpContext httpContext)
-    {
-        var command = new AddBookCommand
-        {
-            BookshelfId = request.BookshelfId,
-            BookId = request.BookId,
-            UserId = Guid.Parse(httpContext.GetId()!)
-        };
-        await sender.Send(command);
-
-        return Results.Ok("Book was added successfully!");
-    }
-    
-    public static async Task<IResult> AddBookToDefault(
-        AddRemoveBookToDefaultBookshelfRequest request,
-        ISender sender,
-        HttpContext httpContext)
-    {
-        var command = new AddBookToDefaultBookshelfCommand
-        {
-            BookshelfName = request.BookshelfName,
-            BookId = request.BookId,
-            UserId = Guid.Parse(httpContext.GetId()!)
-        };
-        await sender.Send(command);
-
-        return Results.Ok("Book was added successfully!");
-    }
-    
-    public static async Task<IResult> RemoveBook(
-        AddRemoveBookBookshelfRequest request,
-        ISender sender,
-        HttpContext httpContext)
-    {
-        var command = new RemoveBookCommand
-        {
-            BookshelfId = request.BookshelfId,
-            BookId = request.BookId,
-            UserId = Guid.Parse(httpContext.GetId()!)
-        };
-        await sender.Send(command);
-
-        return Results.Ok("Book was deleted successfully!");
-    }
-    
-    public static async Task<IResult> RemoveBookFromDefault(
-        AddRemoveBookToDefaultBookshelfRequest request,
-        ISender sender,
-        HttpContext httpContext)
-    {
-        var command = new RemoveBookFromDefaultBookshelfCommand
-        {
-            BookshelfName = request.BookshelfName,
-            BookId = request.BookId,
-            UserId = Guid.Parse(httpContext.GetId()!)
-        };
-        await sender.Send(command);
-
-        return Results.Ok("Book was deleted successfully!");
     }
 
     public static async Task<IResult> Remove(
