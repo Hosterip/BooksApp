@@ -150,7 +150,7 @@ public static class BookEndpoints
     // Bookshelves logic
     
     public static async Task<IResult> AddBook(
-        AddRemoveBookBookshelfRequest request,
+        AddBookToBookshelfRequest request,
         ISender sender,
         HttpContext httpContext)
     {
@@ -166,7 +166,7 @@ public static class BookEndpoints
     }
     
     public static async Task<IResult> AddBookToDefault(
-        AddRemoveBookToDefaultBookshelfRequest request,
+        AddBookToDefaultBookshelfRequest request,
         ISender sender,
         HttpContext httpContext)
     {
@@ -182,7 +182,7 @@ public static class BookEndpoints
     }
     
     public static async Task<IResult> RemoveBook(
-        AddRemoveBookBookshelfRequest request,
+        RemoveBookFromBookshelfRequest request,
         ISender sender,
         HttpContext httpContext)
     {
@@ -198,7 +198,7 @@ public static class BookEndpoints
     }
     
     public static async Task<IResult> RemoveBookFromDefault(
-        AddRemoveBookToDefaultBookshelfRequest request,
+        RemoveBookFromDefaultBookshelfRequest request,
         ISender sender,
         HttpContext httpContext)
     {
