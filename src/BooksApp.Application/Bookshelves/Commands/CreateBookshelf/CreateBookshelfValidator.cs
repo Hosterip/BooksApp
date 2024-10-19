@@ -2,6 +2,7 @@
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Constants.ValidationMessages;
 using PostsApp.Application.Common.Interfaces;
+using PostsApp.Domain.Common.Constants;
 using PostsApp.Domain.Common.Enums.MaxLengths;
 
 namespace PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
@@ -20,5 +21,8 @@ public class CreateBookshelfValidator : AbstractValidator<CreateBookshelfCommand
             .WithMessage(BookshelfValidationMessages.AlreadyHaveWithSameName);
         RuleFor(request => request.Name)
             .MaximumLength((int)BookshelfMaxLengths.Name);
+        RuleFor(request => request.Name)
+            .Must(name => !DefaultBookshelvesNames.AllValues.Contains(name))
+            .WithMessage(BookshelfValidationMessages.AlreadyHaveWithSameName);
     }
 }
