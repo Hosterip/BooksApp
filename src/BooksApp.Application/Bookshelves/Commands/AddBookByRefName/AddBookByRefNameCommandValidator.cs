@@ -18,6 +18,11 @@ public class AddBookByRefNameCommandValidator : AbstractValidator<AddBookByRefNa
             .MustAsync(async (bookId, cancellationToken) =>
                 await unitOfWork.Books.AnyById(bookId))
             .WithMessage(BookValidationMessages.NotFound);
+        
+        RuleFor(request => request)
+            .MustAsync(async (request, cancellationToken) =>
+                await unitOfWork.Bookshelves.AnyBookByRefName(request.BookshelfRefName, request.UserId, request.BookId))
+            .WithMessage(BookshelfValidationMessages.AlreadyExists);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {

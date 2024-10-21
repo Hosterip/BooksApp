@@ -13,6 +13,11 @@ public class AddBookCommandValidator : AbstractValidator<AddBookCommand>
             .MustAsync(async (bookshelfId, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyById(bookshelfId))
             .WithMessage(BookshelfValidationMessages.NotFound);
+        
+        RuleFor(request => request)
+            .MustAsync(async (request, cancellationToken) =>
+                await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId ,request.BookId))
+            .WithMessage(BookshelfValidationMessages.AlreadyExists);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
