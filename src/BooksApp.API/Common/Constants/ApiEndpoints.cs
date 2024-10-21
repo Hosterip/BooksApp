@@ -27,11 +27,16 @@ public static class ApiEndpoints
         
         public const string Delete = $"{Base}/{{id:guid}}";
         
-        public const string AddBook = $"{Base}/book/bookshelves";
-        public const string AddBookToDefault = $"{Base}/bookshelves/default";
+        // Bookshelves
         
-        public const string RemoveBook = $"{Base}/bookshelves";
-        public const string RemoveBookFromDefault = $"{Base}/bookshelves/default";
+        public const string AddBook = $"{Base}/{{bookId:guid}}/bookshelves/{{idOrRefName:guid}}";
+        
+        public const string RemoveBook = $"{Base}/{{bookId:guid}}/bookshelves/{{idOrRefName:guid}}";
+        
+        // Reviews 
+        
+        public const string GetReviews = $"{Base}/{{id:guid}}/reviews";
+
     }
     
     public static class Bookshelves
@@ -64,7 +69,6 @@ public static class ApiEndpoints
     {
         private const string Base = $"{ApiBase}/reviews";
 
-        public const string GetMany = $"{Base}/many/{{id:guid}}";
         
         public const string Create = $"{Base}";
         

@@ -16,8 +16,6 @@ public static class ReviewEndpoints
 {
     public static void MapReviewEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet(ApiEndpoints.Reviews.GetMany, GetMany);
-
         app.MapPost(ApiEndpoints.Reviews.Create, Create)
             .RequireAuthorization(Policies.Authorized);
 
@@ -28,22 +26,7 @@ public static class ReviewEndpoints
             .RequireAuthorization(Policies.Authorized);
     }
     
-    public static async Task<IResult> GetMany(
-        Guid id,
-        int? page,
-        int? pageSize,
-        ISender sender,
-        CancellationToken cancellationToken)
-    {
-        var query = new GetReviewsQuery
-        {
-            BookId = id,
-            Page = page ?? 1,
-            PageSize = pageSize ?? 10
-        };
-        var result = await sender.Send(query, cancellationToken);
-        return Results.Ok(result);
-    }
+    
 
     public static async Task<IResult> Create(
         CreateReviewRequest request,

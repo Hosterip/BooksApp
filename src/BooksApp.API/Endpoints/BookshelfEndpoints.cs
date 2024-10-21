@@ -1,16 +1,10 @@
 using MediatR;
-using PostsApp.Application.Bookshelves.Commands.AddBook;
-using PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
 using PostsApp.Application.Bookshelves.Commands.DeleteBookshelf;
-using PostsApp.Application.Bookshelves.Commands.RemoveBook;
-using PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 using PostsApp.Common.Constants;
-using PostsApp.Common.Contracts.Requests.Bookshelf;
 using PostsApp.Common.Extensions;
-using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
