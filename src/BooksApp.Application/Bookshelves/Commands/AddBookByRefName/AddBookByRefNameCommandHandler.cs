@@ -5,25 +5,25 @@ using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
 
-internal sealed class AddBookToDefaultBookshelfCommandHandler : IRequestHandler<AddBookToDefaultBookshelfCommand>
+internal sealed class AddBookByRefNameCommandHandler : IRequestHandler<AddBookByRefNameCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddBookToDefaultBookshelfCommandHandler (IUnitOfWork unitOfWork)
+    public AddBookByRefNameCommandHandler (IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(AddBookToDefaultBookshelfCommand request, CancellationToken cancellationToken)
+    public async Task Handle(AddBookByRefNameCommand request, CancellationToken cancellationToken)
     {
         var bookshelf = await _unitOfWork.Bookshelves.GetSingleWhereAsync(bookshelf => 
-            bookshelf.Name == request.BookshelfName &&
+            bookshelf.Name == request.BookshelfRefName &&
             bookshelf.User != null &&
             bookshelf.User.Id == UserId.CreateUserId(request.UserId));
         if (bookshelf is null)
         {
             var user = await _unitOfWork.Users.GetSingleById(request.UserId);
-            bookshelf = Bookshelf.Create(user!, request.BookshelfName.Trim().ToLowerInvariant());
+            bookshelf = Bookshelf.Create(user!, request.BookshelfRefName);
             await _unitOfWork.Bookshelves.AddAsync(bookshelf);
         }
         var book = await _unitOfWork.Books.GetSingleById(request.BookId);

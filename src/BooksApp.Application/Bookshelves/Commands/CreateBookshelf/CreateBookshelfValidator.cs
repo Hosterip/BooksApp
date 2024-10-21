@@ -17,7 +17,7 @@ public class CreateBookshelfValidator : AbstractValidator<CreateBookshelfCommand
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) => 
-                await unitOfWork.Bookshelves.AnyByRefName(request.UserId, request.Name))
+                await unitOfWork.Bookshelves.AnyByRefName(request.Name, request.UserId))
             .WithMessage(BookshelfValidationMessages.AlreadyHaveWithSameName);
         RuleFor(request => request.Name)
             .MaximumLength((int)BookshelfMaxLengths.Name);
