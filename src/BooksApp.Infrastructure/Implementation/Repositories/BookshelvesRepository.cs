@@ -23,12 +23,12 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId));
     }
 
-    public async Task<bool> AnyByRefName(Guid userId, string name)
+    public async Task<bool> AnyByRefName(string refName, Guid userId)
     {
         return await _dbContext.Bookshelves
             .AnyAsync(bookshelf => bookshelf.User != null &&
                                    bookshelf.User.Id == UserId.CreateUserId(userId) &&
-                                   bookshelf.ReferentialName == name.ConvertToReferencial());
+                                   bookshelf.ReferentialName == refName.ConvertToReferencial());
     }
 
     public async Task<bool> AnyBookById(Guid bookshelfId, Guid bookId)
@@ -39,11 +39,11 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId));
     }
 
-    public async Task<bool> AnyBookById(string bookshelfName, Guid userId, Guid bookId)
+    public async Task<bool> AnyBookByRefName(string refName, Guid userId, Guid bookId)
     {
         return await _dbContext.Bookshelves
             .Where(bookshelf => bookshelf.User != null &&
-                                bookshelf.Name == bookshelfName.Trim().ToLowerInvariant() && 
+                                bookshelf.ReferentialName == refName && 
                                 bookshelf.User.Id == UserId.CreateUserId(userId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
             .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId));
