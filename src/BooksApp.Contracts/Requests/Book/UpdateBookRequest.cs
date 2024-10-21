@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace PostsApp.Common.Contracts.Requests.Book;
 
 public class UpdateBookRequest

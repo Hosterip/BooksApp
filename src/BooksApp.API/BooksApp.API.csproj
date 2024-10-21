@@ -12,6 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BooksApp.Contracts\BooksApp.Contracts.csproj" />
       <ProjectReference Include="..\BooksApp.Application\BooksApp.Application.csproj" />
       <ProjectReference Include="..\BooksApp.Infrastructure\BooksApp.Infrastructure.csproj" />
       <ProjectReference Include="..\BooksApp.Domain\BooksApp.Domain.csproj" />
@@ -26,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Common\Contracts\" />
       <Folder Include="images\" />
     </ItemGroup>
 
