@@ -12,26 +12,12 @@ public static class BookshelfEndpoints
 {
     public static void MapBookshelfEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet(ApiEndpoints.Bookshelves.GetBookshelves, GetBookshelves);
         app.MapGet(ApiEndpoints.Bookshelves.GetBooks, GetBooks);
 
         app.MapPost(ApiEndpoints.Bookshelves.Create, Create)
             .RequireAuthorization(Policies.Authorized);
         app.MapDelete(ApiEndpoints.Bookshelves.Remove, Remove)
             .RequireAuthorization(Policies.Authorized);
-    }
-    
-    public static async Task<IResult> GetBookshelves(
-        Guid userId,
-        ISender sender)
-    {
-        var query = new GetBookshelvesQuery
-        {
-            UserId = userId
-        };
-        var result = await sender.Send(query);
-
-        return Results.Ok(result);
     }
     
     public static async Task<IResult> GetBooks(

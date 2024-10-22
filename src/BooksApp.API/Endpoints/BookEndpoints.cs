@@ -127,11 +127,10 @@ public static class BookEndpoints
         [FromQuery] int? page,
         [FromQuery] int? limit,
         [FromQuery] string? q,
-        [FromQuery] Guid? userId,
         [FromQuery] Guid? genreId
         )
     {
-        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId, GenreId = genreId};
+        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = null, GenreId = genreId};
         var result = await sender.Send(query, cancellationToken);
         return Results.Ok(result);
     }

@@ -42,8 +42,7 @@ public static class ApiEndpoints
     public static class Bookshelves
     {
         private const string Base = $"{ApiBase}/bookshelves";
-
-        public const string GetBookshelves = $"{Base}/{{userId:guid}}";
+        
         public const string GetBooks = $"{Base}/books/{{bookshelfId:guid}}";
         
         public const string Create = $"{Base}/{{name}}";
@@ -89,8 +88,18 @@ public static class ApiEndpoints
         public const string UpdateName = $"{Base}/name";
         public const string UpdateAvatar = $"{Base}/avatar";
         
+        // Roles
+        
         public const string GetAll = $"{Base}/roles";
         public const string UpdateRole = $"{Base}/roles";
+        
+        // Bookshelves 
+        
+        public const string GetBookshelves = $"{Base}/{{userId:guid}}/bookshelves";
+        
+        // Books
+        
+        public const string GetManyBooks = $"{Base}/{{userId:guid}}/books";
     }
 
     public static class Error

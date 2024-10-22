@@ -1,5 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using PostsApp.Application.Books.Queries.GetBooks;
+using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 using PostsApp.Application.Images.Commands.CreateImage;
 using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Application.Roles.Commands.UpdateRole;
@@ -44,6 +47,14 @@ public static class UserEndpoints
 
         app.MapPut(ApiEndpoints.Users.UpdateRole, UpdateRole)
             .RequireAuthorization(Policies.Authorized);
+        
+        // Bookshelves
+        
+        app.MapGet(ApiEndpoints.Users.GetBookshelves, GetBookshelves);
+        
+        // Books 
+        
+        app.MapGet(ApiEndpoints.Users.GetManyBooks, GetManyBooks);
     }
 
     public static async Task<IResult> GetMe(
@@ -199,5 +210,37 @@ public static class UserEndpoints
         await sender.Send(command, cancellationToken);
         
         return Results.Ok("Operation succeeded");
+    }
+    
+    // Bookshelves 
+    
+    public static async Task<IResult> GetBookshelves(
+        Guid userId,
+        ISender sender)
+    {
+        var query = new GetBookshelvesQuery
+        {
+            UserId = userId
+        };
+        var result = await sender.Send(query);
+
+        return Results.Ok(result);
+    }
+    
+    // Books 
+    
+    public static async Task<IResult> GetManyBooks(
+        CancellationToken cancellationToken,
+        ISender sender,
+        [FromRoute] Guid userId,
+        [FromQuery] int? page,
+        [FromQuery] int? limit,
+        [FromQuery] string? q,
+        [FromQuery] Guid? genreId
+    )
+    {
+        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId, GenreId = genreId};
+        var result = await sender.Send(query, cancellationToken);
+        return Results.Ok(result);
     }
 }
