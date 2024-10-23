@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace PostsApp.Domain.Common.Security;
 
-public record HashingResult(string Hash, string Salt);
-
 public static class Hashing
 {
     public static bool IsPasswordValid(string userHash, string salt, string password)
@@ -13,11 +11,11 @@ public static class Hashing
         return hashToValidate == userHash;
     }
 
-    public static HashingResult GenerateHashSalt(string password)
+    public static (string Hash, string Salt) GenerateHashSalt(string password)
     {
         byte[] salt = GenerateSalt();
         string hash = GenerateHash(password, salt);
-        return new HashingResult(hash, Convert.ToHexString(salt));
+        return (hash, Convert.ToHexString(salt));
     }
     
     private static string GenerateHash(string password, byte[] salt)
