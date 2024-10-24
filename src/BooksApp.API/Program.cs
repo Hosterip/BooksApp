@@ -34,7 +34,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 // Swagger
-
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors(corsAllow);
@@ -44,7 +43,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Mapping end points
-app.Services.GetRequiredService<IEndpoint>().MapEndpoint(app);
+app.MapEndpoints();
 
 // Registering endpoints
 app.UseMiddleware<ValidateUserMiddleware>();
