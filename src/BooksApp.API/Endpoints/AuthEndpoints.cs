@@ -12,9 +12,9 @@ using PostsApp.Common.Extensions;
 
 namespace PostsApp.Controllers;
 
-public static class AuthEndpoints 
+public class AuthEndpoints : IEndpoint
 {
-    public static void MapAuthEndpoints(this IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
 
         app.MapPost(ApiEndpoints.Auth.Register, Register)

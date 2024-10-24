@@ -5,9 +5,9 @@ using PostsApp.Common.Constants;
 
 namespace PostsApp.Controllers;
 
-public static class ImageEndpoints 
+public class ImageEndpoints : IEndpoint
 {
-    public static void MapImageEndpoints(this IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapGet(ApiEndpoints.Images.Get, Get);
     }

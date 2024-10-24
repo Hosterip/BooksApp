@@ -21,9 +21,9 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
-public static class UserEndpoints
+public class UserEndpoints : IEndpoint
 {
-    public static void MapUserEndpoints(this IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
         var users = app.MapGroup("api/users");
 

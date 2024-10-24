@@ -18,9 +18,9 @@ using PostsApp.Common.Extensions;
 
 namespace PostsApp.Controllers;
 
-public static class BookEndpoints
+public class BookEndpoints : IEndpoint
 {
-    public static void MapBookEndpoints(this IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapGet(ApiEndpoints.Books.GetMany, GetMany);
         app.MapGet(ApiEndpoints.Books.GetSingle, GetSingle);

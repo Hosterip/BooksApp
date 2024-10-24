@@ -3,9 +3,9 @@ using PostsApp.Common.Constants;
 
 namespace PostsApp.Controllers;
 
-public static class ErrorEndpoints 
+public class ErrorEndpoints : IEndpoint
 {
-    public static void MapErrorEndpoints(this IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapGet(ApiEndpoints.Error.ErrorHandler, ErrorHandler);
     }

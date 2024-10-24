@@ -8,9 +8,9 @@ using PostsApp.Common.Extensions;
 
 namespace PostsApp.Controllers;
 
-public static class BookshelfEndpoints
+public class BookshelfEndpoints : IEndpoint
 {
-    public static void MapBookshelfEndpoints(this IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapGet(ApiEndpoints.Bookshelves.GetBooks, GetBooks);
 

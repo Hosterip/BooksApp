@@ -7,9 +7,9 @@ using PostsApp.Common.Constants;
 
 namespace PostsApp.Controllers;
 
-public static class GenreEndpoints
+public class GenreEndpoints : IEndpoint
 {
-    public static void MapGenreEndpoints(this IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost(ApiEndpoints.Genres.Create, Create)
             .RequireAuthorization(Policies.Admin);

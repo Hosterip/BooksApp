@@ -12,9 +12,9 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
-public static class ReviewEndpoints
+public class ReviewEndpoints : IEndpoint
 {
-    public static void MapReviewEndpoints(this IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost(ApiEndpoints.Reviews.Create, Create)
             .RequireAuthorization(Policies.Authorized);
