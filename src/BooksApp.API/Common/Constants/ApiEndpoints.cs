@@ -104,7 +104,7 @@ public static class ApiEndpoints
 
     public static class Error
     {
-        private const string Base = $"{ApiBase}/error";
+        private const string Base = $"/{ApiBase}/error";
 
         public const string ErrorHandler = $"{Base}";
     }
