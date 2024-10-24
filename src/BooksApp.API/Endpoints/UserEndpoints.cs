@@ -25,20 +25,18 @@ public class UserEndpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var users = app.MapGroup("api/users");
+        app.MapGet(ApiEndpoints.Users.GetMe, GetMe);
+        app.MapGet(ApiEndpoints.Users.GetMany, GetMany);
+        app.MapGet(ApiEndpoints.Users.GetById, GetById);
 
-        users.MapGet(ApiEndpoints.Users.GetMe, GetMe);
-        users.MapGet(ApiEndpoints.Users.GetMany, GetMany);
-        users.MapGet(ApiEndpoints.Users.GetById, GetById);
-
-        users.MapDelete(ApiEndpoints.Users.Delete, Delete)
+        app.MapDelete(ApiEndpoints.Users.Delete, Delete)
             .RequireAuthorization(Policies.Authorized);
 
-        users.MapPut(ApiEndpoints.Users.UpdateEmail, UpdateEmail)
+        app.MapPut(ApiEndpoints.Users.UpdateEmail, UpdateEmail)
             .RequireAuthorization(Policies.Authorized);
-        users.MapPut(ApiEndpoints.Users.UpdateName, UpdateName)
+        app.MapPut(ApiEndpoints.Users.UpdateName, UpdateName)
             .RequireAuthorization(Policies.Authorized);
-        users.MapPut(ApiEndpoints.Users.UpdateAvatar, UpdateAvatar)
+        app.MapPut(ApiEndpoints.Users.UpdateAvatar, UpdateAvatar)
             .RequireAuthorization(Policies.Authorized);
         
         // Roles 
