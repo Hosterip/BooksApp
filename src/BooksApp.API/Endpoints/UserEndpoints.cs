@@ -17,7 +17,6 @@ using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.Role;
 using PostsApp.Common.Contracts.Requests.User;
 using PostsApp.Common.Extensions;
-using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
@@ -171,7 +170,7 @@ public class UserEndpoints : IEndpoint
     }
     
     public static async Task<IResult> UpdateRole(
-        [FromBodyOrDefault]ChangeRoleRequest request,
+        ChangeRoleRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)
