@@ -2,10 +2,8 @@ using System.Reflection;
 using PostsApp.Application;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Extensions;
-using PostsApp.Controllers;
 using PostsApp.Infrastructure;
 using PostsApp.Middlewares;
-using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 
 // Add CORS
@@ -13,7 +11,6 @@ var corsAllow = "CorsAllow";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCorsPolicy(corsAllow);
 
-// Add services to the container.
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
