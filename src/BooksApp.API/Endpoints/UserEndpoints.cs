@@ -37,8 +37,8 @@ public class UserEndpoints : IEndpoint
         app.MapPut(ApiEndpoints.Users.UpdateName, UpdateName)
             .RequireAuthorization(Policies.Authorized);
         app.MapPut(ApiEndpoints.Users.UpdateAvatar, UpdateAvatar)
+            .DisableAntiforgery()
             .RequireAuthorization(Policies.Authorized);
-        
         // Roles 
         
         app.MapGet(ApiEndpoints.Users.GetAll, GetAll);
@@ -140,38 +140,16 @@ public class UserEndpoints : IEndpoint
     }
     
     public static async Task<IResult> UpdateAvatar(
-        InsertAvatarRequest request,
+        [FromForm]InsertAvatarRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)
     {
-        var createImageCommand = new CreateImageCommand
-        {
-            Image = request.Image
-        };
-
-        var imageName = await sender.Send(createImageCommand, cancellationToken);
-
-        var userQuery = new GetSingleUserQuery
-        {
-            Id = new Guid(httpContext.GetId()!)
-        };
-
-        var user = await sender.Send(userQuery, cancellationToken);
-
-        if (user.AvatarName is not null)
-        {
-            var deleteImageCommand = new DeleteImageCommand
-            {
-                ImageName = user.AvatarName
-            };
-            await sender.Send(deleteImageCommand, cancellationToken);
-        }
-
+        
         var command = new InsertAvatarCommand
         {
             Id = new Guid(httpContext.GetId()!),
-            ImageName = imageName
+            Image = request.Image
         };
 
         var result = await sender.Send(command, cancellationToken);

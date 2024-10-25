@@ -26,9 +26,11 @@ public class BookEndpoints : IEndpoint
         app.MapGet(ApiEndpoints.Books.GetSingle, GetSingle);
         
         app.MapPost(ApiEndpoints.Books.Create, Create)
+            .DisableAntiforgery()
             .RequireAuthorization(Policies.Author);
         
         app.MapPut(ApiEndpoints.Books.Update, Update)
+            .DisableAntiforgery()
             .RequireAuthorization(Policies.Authorized);
 
         app.MapDelete(ApiEndpoints.Books.Delete, Delete)
@@ -46,24 +48,18 @@ public class BookEndpoints : IEndpoint
     } 
     
     public static async Task<IResult> Create(
-        BookRequest request,
+        [FromForm]BookRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken
         )
     {
-        var imageCommand = new CreateImageCommand
-        {
-            Image = request.Cover
-        };
-        var fileName = await sender.Send(imageCommand, cancellationToken);
-        
         var createBookCommand = new CreateBookCommand
         {
             UserId = new Guid(httpContext.GetId()!), 
             Title = request.Title,
             Description = request.Description,
-            ImageName = fileName,
+            Image = request.Cover,
             GenreIds = request.GenreIds
         };
         var book = await sender.Send(createBookCommand, cancellationToken);
@@ -72,38 +68,18 @@ public class BookEndpoints : IEndpoint
     }
 
     public static async Task<IResult> Update(
-        UpdateBookRequest request,
+        [FromForm]UpdateBookRequest request,
         ISender sender,
         HttpContext httpContext,
         CancellationToken cancellationToken)
     {
-        string? fileName = null;
-        if (request.Cover is not null)
-        {
-            var bookQuery = new GetSingleBookQuery
-            {
-                Id = request.Id
-            };
-            var book = await sender.Send(bookQuery, cancellationToken);
-            var deleteImageCommand = new DeleteImageCommand
-            {
-                ImageName = book.CoverName
-            };
-            await sender.Send(deleteImageCommand, cancellationToken);
-            var imageCommand = new CreateImageCommand
-            {
-                Image = request.Cover
-            };
-            fileName = await sender.Send(imageCommand, cancellationToken);
-        }
-        
         var updateBookCommand = new UpdateBookCommand
         {
             Id = request.Id, 
             UserId = new Guid(httpContext.GetId()!),
             Title = request.Title, 
             Description = request.Description,
-            ImageName = fileName ?? null,
+            Image = request.Cover,
             GenreIds = request.GenreIds
         };
         var result = await sender.Send(updateBookCommand, cancellationToken);
