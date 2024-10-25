@@ -13,17 +13,23 @@ namespace PostsApp.Application.Books.Commands.CreateBook;
 internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookResult>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IImageFileBuilder _imageFileBuilder;
     private readonly IMapper _mapper;
 
-    public CreateBookCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateBookCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IImageFileBuilder imageFileBuilder)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _imageFileBuilder = imageFileBuilder;
     }
     public async Task<BookResult> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetSingleById(request.UserId);
-        var image = Image.Create(request.ImageName);
+
+        // Images
+        var imageName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
+        var image = Image.Create(imageName);
+        // Book creation
         var book = Book.Create(request.Title, request.Description, image, user!);
         var genres = _unitOfWork.Genres.GetAllByIds(request.GenreIds);
         book.Genres = genres.ToList()!;

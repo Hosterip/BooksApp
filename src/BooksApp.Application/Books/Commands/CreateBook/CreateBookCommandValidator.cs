@@ -9,7 +9,7 @@ namespace PostsApp.Application.Books.Commands.CreateBook;
 
 public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
 {
-    public CreateBookCommandValidator(IUnitOfWork unitOfWork)
+    public CreateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {
         RuleFor(book => book.Title)
             .NotEmpty()
@@ -41,5 +41,13 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         RuleFor(request => request.GenreIds)
             .Must(genreIds => genreIds is not null && genreIds.Any())
             .WithMessage(BookValidationMessages.AtLeastOneGenre);
+        
+        // Images
+        
+        RuleFor(request => request.Image.Length)
+            .LessThan(10000000);
+        RuleFor(request => request.Image.FileName)
+            .Must(fileName => imageFileBuilder.IsValid(fileName))
+            .WithMessage(ImageValidationMessages.WrongFileName);
     }
 }

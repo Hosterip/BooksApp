@@ -1,15 +1,25 @@
 ﻿using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
+using PostsApp.Application.Common.Constants.ValidationMessages;
 using PostsApp.Application.Common.Interfaces;
 
 namespace PostsApp.Application.Users.Commands.InsertAvatar;
 
 public class InsertAvatarCommandValidator : AbstractValidator<InsertAvatarCommand>
 {
-    public InsertAvatarCommandValidator(IUnitOfWork unitOfWork)
+    public InsertAvatarCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {
         RuleFor(user => user.Id)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(UserValidationMessages.NotFound);
+        
+        
+        // Images
+        
+        RuleFor(request => request.Image.Length)
+            .LessThan(10000000);
+        RuleFor(request => request.Image)
+            .Must(file => file == null || imageFileBuilder.IsValid(file.FileName))
+            .WithMessage(ImageValidationMessages.WrongFileName);
     }
 }

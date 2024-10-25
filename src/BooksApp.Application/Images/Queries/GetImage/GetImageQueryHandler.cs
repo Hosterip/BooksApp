@@ -1,18 +1,21 @@
 ﻿using MediatR;
+using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Images.Results;
-using PostsApp.Domain.Common.Constants;
 
 namespace PostsApp.Application.Images.Queries.GetImage;
 
 internal sealed class GetImageQueryHandler : IRequestHandler<GetImageQuery, ImageResult>
 {
+    private readonly IImageFileBuilder _imageFileBuilder;
+
+    public GetImageQueryHandler(IImageFileBuilder imageFileBuilder)
+    {
+        _imageFileBuilder = imageFileBuilder;
+    }
+
     public async Task<ImageResult> Handle(GetImageQuery request, CancellationToken cancellationToken)
     {
-        var uploadPath = 
-            Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images");
-        var filePath = Path.Combine(uploadPath, request.ImageName);
-        var fileInfo = new FileInfo(filePath);
-        var fileStream = new FileStream(filePath, FileMode.Open);
+        var (fileInfo, fileStream) = await _imageFileBuilder.RetrieveImage(request.ImageName, cancellationToken); 
         return new ImageResult
         {
             FileInfo = fileInfo,

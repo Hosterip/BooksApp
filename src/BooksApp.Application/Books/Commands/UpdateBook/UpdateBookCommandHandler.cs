@@ -12,23 +12,28 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IImageFileBuilder _imageFileBuilder;
 
-    public UpdateBookCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateBookCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IImageFileBuilder imageFileBuilder)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _imageFileBuilder = imageFileBuilder;
     }
 
     public async Task<BookResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
         var book = await _unitOfWork.Books.GetSingleById(request.Id);
-        if (request.Title is not null)
+        if (request.Title != null)
             book!.Title = request.Title;
-        if (request.Description is not null)
+        if (request.Description != null)
             book!.Description = request.Description;
-        if (request.ImageName is not null)
+        if (request.Image != null)
         {
-            book!.Cover.ImageName = request.ImageName;
+            await _imageFileBuilder.DeleteImage(book.Cover.ImageName, cancellationToken);
+            var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
+            
+            book!.Cover.ImageName = fileName;
         }
 
         book!.Genres = _unitOfWork.Genres.GetAllByIds(request.GenreIds).ToList()!;

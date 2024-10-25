@@ -11,7 +11,7 @@ namespace PostsApp.Application.Books.Commands.UpdateBook;
 
 public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
-    public UpdateBookCommandValidator(IUnitOfWork unitOfWork)
+    public UpdateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {
         RuleFor(book => book.Title)
             .MaximumLength((int)BookMaxLengths.Title);
@@ -42,5 +42,13 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
         RuleFor(request => request.GenreIds)
             .Must(genreIds => genreIds is not null && genreIds.Any())
             .WithMessage(BookValidationMessages.AtLeastOneGenre);
+        
+        // Images
+        
+        RuleFor(request => request.Image.Length)
+            .LessThan(10000000);
+        RuleFor(request => request.Image)
+            .Must(file => file == null || imageFileBuilder.IsValid(file.FileName))
+            .WithMessage(ImageValidationMessages.WrongFileName);
     }
 }
