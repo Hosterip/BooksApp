@@ -18,7 +18,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         }
     }
 
-    public string ReferentialName { get; private set; }
+    public string ReferentialName { get; set; }
     public User.User? User { get; set; }
     public List<BookshelfBook> BookshelfBooks { get; } 
     private Bookshelf(BookshelfId id) : base(id) { }

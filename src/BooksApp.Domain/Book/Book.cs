@@ -19,14 +19,14 @@ public class Book : AggregateRoot<BookId>
         ReferentialName = Title.GenerateRefName();
     }
 
-    private string title { get; set; }
+    private string _title { get; set; }
     public string Title
     {
         get => Title;
         set
         {
             ReferentialName = value.GenerateRefName();
-            title = value 
+            _title = value 
                 .TrimStart()
                 .TrimEnd();
         } 

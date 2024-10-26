@@ -112,8 +112,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
 
     public async Task<bool> AnyByRefName(Guid userId, string title)
     {
+        var refTitle = title.GenerateRefName();
         return await _dbContext.Books.AnyAsync(book => book.Author.Id == UserId.CreateUserId(userId) &&
-                                                       book.ReferentialName == title.ConvertToReferencial());
+                                                       book.ReferentialName == refTitle);
     }
 
     public RatingStatistics RatingStatistics(Guid bookId)
