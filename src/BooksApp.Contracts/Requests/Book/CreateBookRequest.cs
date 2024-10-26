@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace PostsApp.Common.Contracts.Requests.Book;
 
-public class BookRequest
+public class CreateBookRequest
 {
     public string Title { get; set; }
     public string Description { get; set; }
