@@ -5,24 +5,26 @@ using PostsApp.Common.Constants;
 
 namespace PostsApp.Controllers;
 
-public class ImageEndpoints : IEndpoint
+public class ImagesController : ApiController
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    private readonly ISender _sender;
+
+    public ImagesController(ISender sender)
     {
-        app.MapGet(ApiEndpoints.Images.Get, Get);
+        _sender = sender;
     }
     
-    public static async Task<IResult> Get(
+    [HttpGet(ApiRoutes.Images.Get)]
+    public async Task<IActionResult> Get(
         string name,
-        ISender sender,
         CancellationToken cancellationToken)
     {
         var query = new GetImageQuery
         {
             ImageName = name
         };
-        var result = await sender.Send(query, cancellationToken);
-        return Results.File(
+        var result = await _sender.Send(query, cancellationToken);
+        return File(
             result.FileStream,
             $"image/{result.FileInfo.Extension.Replace(".", "")}"
         );

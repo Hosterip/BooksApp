@@ -1,15 +1,21 @@
-using System.Reflection;
 using PostsApp.Application;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Extensions;
 using PostsApp.Infrastructure;
 using PostsApp.Middlewares;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 
 // Add CORS
 var corsAllow = "CorsAllow";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCorsPolicy(corsAllow);
+
+// Controllers
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.InsertBodyOrDefaultBinding();
+});
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -21,10 +27,11 @@ builder.Services.AddApplication();
 
 // Authentication || Authorization
 builder.Services.AddAuth();
-builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+
+// Building app
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-app.UseExceptionHandler(ApiEndpoints.Error.ErrorHandler);
+app.UseExceptionHandler(ApiRoutes.Error.ErrorHandler);
 if (!app.Environment.IsDevelopment())
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -39,8 +46,8 @@ app.UseCors(corsAllow);
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Mapping end points
-app.MapEndpoints();
+// Mapping Controllers
+app.MapControllers();
 
 // Registering endpoints
 app.UseMiddleware<ValidateUserMiddleware>();

@@ -1,6 +1,6 @@
 namespace PostsApp.Common.Constants;
 
-public static class ApiEndpoints
+public static class ApiRoutes
 {
     private const string ApiBase = "api";
     
@@ -90,7 +90,7 @@ public static class ApiEndpoints
         
         // Roles
         
-        public const string GetAll = $"{Base}/roles";
+        public const string GetRoles = $"{Base}/roles";
         public const string UpdateRole = $"{Base}/roles";
         
         // Bookshelves 
