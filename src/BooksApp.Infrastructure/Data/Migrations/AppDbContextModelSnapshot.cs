@@ -39,7 +39,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("GenresId");
 
-                    b.ToTable("BooksGenres");
+                    b.ToTable("BooksGenres", (string)null);
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Book.Book", b =>
@@ -73,7 +73,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("CoverId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Bookshelf.Bookshelf", b =>
@@ -97,7 +97,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookshelves");
+                    b.ToTable("Bookshelves", (string)null);
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Genre.Genre", b =>
@@ -112,7 +112,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Image.Image", b =>
@@ -126,7 +126,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Review.Review", b =>
@@ -154,7 +154,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("PostsApp.Domain.Role.Role", b =>
@@ -172,7 +172,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -251,7 +251,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("BooksGenres", b =>
@@ -300,7 +300,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.OwnsMany("PostsApp.Domain.Bookshelf.Entities.BookshelfBook", "BookshelfBooks", b1 =>
+                    b.OwnsMany("PostsApp.Domain.Bookshelf.Bookshelf.BookshelfBooks#PostsApp.Domain.Bookshelf.Entities.BookshelfBook", "BookshelfBooks", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier");
@@ -317,7 +317,7 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
                             b1.HasIndex("BookshelfId");
 
-                            b1.ToTable("BookshelfBooks");
+                            b1.ToTable("BookshelfBooks", (string)null);
 
                             b1.HasOne("PostsApp.Domain.Book.Book", "Book")
                                 .WithMany()
