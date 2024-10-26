@@ -16,11 +16,23 @@ public class Book : AggregateRoot<BookId>
         Description = description;
         Cover = cover;
         Author = author;
-        ReferentialName = title.ConvertToReferencial();
+        ReferentialName = Title.GenerateRefName();
     }
-    public string Title { get; set; }
+
+    private string title { get; set; }
+    public string Title
+    {
+        get => Title;
+        set
+        {
+            ReferentialName = value.GenerateRefName();
+            title = value 
+                .TrimStart()
+                .TrimEnd();
+        } 
+    }
     public string Description { get; set; }
-    public string ReferentialName { get; set; }
+    public string ReferentialName { get; private set; }
     public Image.Image Cover { get; set; }
     public User.User Author { get; }
     public List<Genre.Genre> Genres { get; set; }

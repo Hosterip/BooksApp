@@ -7,8 +7,18 @@ namespace PostsApp.Domain.Bookshelf;
 
 public class Bookshelf : AggregateRoot<BookshelfId>
 {
-    public string Name { get; set; }
-    public string ReferentialName { get; set; }
+    private string _name;
+    public string Name
+    {
+        get => _name;
+        set
+        {
+            _name = value;
+            ReferentialName = _name.GenerateRefName();
+        }
+    }
+
+    public string ReferentialName { get; private set; }
     public User.User? User { get; set; }
     public List<BookshelfBook> BookshelfBooks { get; } 
     private Bookshelf(BookshelfId id) : base(id) { }
@@ -18,7 +28,6 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         User = user;
         BookshelfBooks = new List<BookshelfBook>();
         Name = name;
-        ReferentialName = name.ConvertToReferencial();
     }
 
     public static Bookshelf Create(User.User user, string name)
