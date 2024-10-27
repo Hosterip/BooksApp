@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Books.Queries.GetBooks;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
-using PostsApp.Application.Images.Commands.CreateImage;
-using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Application.Roles.Commands.UpdateRole;
 using PostsApp.Application.Roles.Queries.GetRoles;
 using PostsApp.Application.Users.Commands.DeleteUser;

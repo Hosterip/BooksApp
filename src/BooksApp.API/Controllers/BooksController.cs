@@ -10,8 +10,6 @@ using PostsApp.Application.Bookshelves.Commands.AddBook;
 using PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Commands.RemoveBook;
 using PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
-using PostsApp.Application.Images.Commands.CreateImage;
-using PostsApp.Application.Images.Commands.DeleteImage;
 using PostsApp.Application.Reviews.Queries.GetReviews;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.Book;
@@ -109,10 +107,10 @@ public class BooksController : ApiController
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> AddBook(
         [FromRoute] Guid bookId,
-        [FromRoute] string idOrRefName)
+        [FromRoute] string idOrName)
     {
         var userId = Guid.Parse(HttpContext.GetId()!);
-        Guid.TryParse(idOrRefName, out var bookshelfId);
+        Guid.TryParse(idOrName, out var bookshelfId);
         await _sender.Send(bookshelfId != null
             ? new AddBookCommand
             {
@@ -122,7 +120,7 @@ public class BooksController : ApiController
             }
             : new AddBookByNameCommand
             {
-                BookshelfRefName = idOrRefName,
+                BookshelfRefName = idOrName,
                 BookId = bookId,
                 UserId = userId
             }
@@ -135,10 +133,10 @@ public class BooksController : ApiController
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> RemoveBook(
         [FromRoute] Guid bookId,
-        [FromRoute] string idOrRefName)
+        [FromRoute] string idOrName)
     {
         var userId = Guid.Parse(HttpContext.GetId()!);
-        Guid.TryParse(idOrRefName, out var bookshelfId);
+        Guid.TryParse(idOrName, out var bookshelfId);
         await _sender.Send(bookshelfId != null
             ?
             new RemoveBookCommand
@@ -150,7 +148,7 @@ public class BooksController : ApiController
             :
             new RemoveBookByNameCommand
             {
-                BookshelfRefName = idOrRefName,
+                BookshelfRefName = idOrName,
                 BookId = bookId,
                 UserId = userId
             }

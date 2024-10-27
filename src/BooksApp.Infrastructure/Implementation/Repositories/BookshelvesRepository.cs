@@ -23,7 +23,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId));
     }
 
-    public async Task<bool> AnyByRefName(string name, Guid userId)
+    public async Task<bool> AnyByName(string name, Guid userId)
     {
         var refName = name.GenerateRefName();
         return await _dbContext.Bookshelves
@@ -40,7 +40,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId));
     }
 
-    public async Task<bool> AnyBookByRefName(string name, Guid userId, Guid bookId)
+    public async Task<bool> AnyBookByName(string name, Guid userId, Guid bookId)
     {
         var refName = name.GenerateRefName();
         return await _dbContext.Bookshelves
@@ -56,6 +56,4 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
         return await _dbContext.Bookshelves
             .SingleOrDefaultAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId));
     }
-
-    
 }

@@ -29,9 +29,9 @@ public static class ApiRoutes
         
         // Bookshelves
         
-        public const string AddBook = $"{Base}/{{bookId:guid}}/bookshelves/{{idOrRefName:guid}}";
+        public const string AddBook = $"{Base}/{{bookId:guid}}/bookshelves/{{idOrName}}";
         
-        public const string RemoveBook = $"{Base}/{{bookId:guid}}/bookshelves/{{idOrRefName:guid}}";
+        public const string RemoveBook = $"{Base}/{{bookId:guid}}/bookshelves/{{idOrName}}";
         
         // Reviews 
         
