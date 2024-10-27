@@ -16,8 +16,8 @@ public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveB
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfRefName, request.UserId, request.BookId))
+                await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfName, request.UserId, request.BookId))
             .WithMessage(BookshelfValidationMessages.NoBookToRemove)
-            .OverridePropertyName(nameof(RemoveBookByNameCommand.BookshelfRefName));
+            .OverridePropertyName(nameof(RemoveBookByNameCommand.BookshelfName));
     }
 }

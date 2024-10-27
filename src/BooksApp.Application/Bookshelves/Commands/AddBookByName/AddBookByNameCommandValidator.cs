@@ -20,17 +20,17 @@ public class AddBookByNameCommandValidator : AbstractValidator<AddBookByNameComm
 
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfRefName, request.UserId, request.BookId))
+                await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfName, request.UserId, request.BookId))
             .WithMessage(BookshelfValidationMessages.AlreadyExists);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                if (!await unitOfWork.Bookshelves.AnyByName(request.BookshelfRefName, request.UserId)) return true;
+                if (!await unitOfWork.Bookshelves.AnyByName(request.BookshelfName, request.UserId)) return true;
 
-                return !await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfRefName, request.UserId,
+                return !await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfName, request.UserId,
                     request.BookId);
             })
             .WithMessage(BookshelfValidationMessages.NoBookToRemove)
-            .OverridePropertyName(nameof(AddBookByNameCommand.BookshelfRefName));
+            .OverridePropertyName(nameof(AddBookByNameCommand.BookshelfName));
     }
 }

@@ -17,13 +17,13 @@ internal sealed class RemoveBookByNameCommandHandler : IRequestHandler<RemoveBoo
     public async Task Handle(RemoveBookByNameCommand request, CancellationToken cancellationToken)
     {
         var bookshelf = await _unitOfWork.Bookshelves.GetSingleWhereAsync(bookshelf =>
-            bookshelf.Name == request.BookshelfRefName &&
+            bookshelf.Name == request.BookshelfName &&
             bookshelf.User != null &&
             bookshelf.User.Id == UserId.CreateUserId(request.UserId));
         if (bookshelf is null)
         {
             var user = await _unitOfWork.Users.GetSingleById(request.UserId);
-            bookshelf = Bookshelf.Create(user!, request.BookshelfRefName);
+            bookshelf = Bookshelf.Create(user!, request.BookshelfName);
             await _unitOfWork.Bookshelves.AddAsync(bookshelf);
         }
 

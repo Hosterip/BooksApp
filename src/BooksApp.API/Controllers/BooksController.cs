@@ -120,7 +120,7 @@ public class BooksController : ApiController
             }
             : new AddBookByNameCommand
             {
-                BookshelfRefName = idOrName,
+                BookshelfName = idOrName,
                 BookId = bookId,
                 UserId = userId
             }
@@ -146,7 +146,7 @@ public class BooksController : ApiController
             }
             : new RemoveBookByNameCommand
             {
-                BookshelfRefName = idOrName,
+                BookshelfName = idOrName,
                 BookId = bookId,
                 UserId = userId
             }
