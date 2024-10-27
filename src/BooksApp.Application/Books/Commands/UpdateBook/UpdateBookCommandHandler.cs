@@ -2,17 +2,14 @@ using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Common.Results;
-using PostsApp.Application.Genres;
-using PostsApp.Application.Users.Results;
 
 namespace PostsApp.Application.Books.Commands.UpdateBook;
 
 internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, BookResult>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
     private readonly IImageFileBuilder _imageFileBuilder;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
     public UpdateBookCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IImageFileBuilder imageFileBuilder)
     {
@@ -32,7 +29,7 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
         {
             await _imageFileBuilder.DeleteImage(book.Cover.ImageName, cancellationToken);
             var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
-            
+
             book!.Cover.ImageName = fileName;
         }
 

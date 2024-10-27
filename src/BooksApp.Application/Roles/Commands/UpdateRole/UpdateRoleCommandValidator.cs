@@ -13,8 +13,8 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
             .MustAsync(async (roleName, cancellationToken) =>
             {
                 return await unitOfWork.Roles.AnyAsync(role => role.Name == roleName);
-            }).WithMessage(RoleValidationMessages.NotFound);    
-        
+            }).WithMessage(RoleValidationMessages.NotFound);
+
         RuleFor(user => user.UserId)
             .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
             .WithMessage(UserValidationMessages.NotFound);
@@ -29,7 +29,7 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
                 var changerUser = await unitOfWork.Users.GetSingleById(request.ChangerId);
                 if (changerUser is null || targetUser is null) return false;
                 return RolePermissions.UpdateRole(
-                    changerUser.Role.Name, 
+                    changerUser.Role.Name,
                     targetUser.Role.Name,
                     request.Role);
             }).WithMessage(UserValidationMessages.Permission);

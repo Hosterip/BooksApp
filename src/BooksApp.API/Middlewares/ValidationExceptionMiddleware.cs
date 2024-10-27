@@ -29,12 +29,8 @@ public class ValidationExceptionMiddleware
             };
 
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            if (exception.Errors is not null)
-            {
-                problemDetails.Extensions["errors"] = exception.Errors;
-            }
+            if (exception.Errors is not null) problemDetails.Extensions["errors"] = exception.Errors;
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
-
     }
 }

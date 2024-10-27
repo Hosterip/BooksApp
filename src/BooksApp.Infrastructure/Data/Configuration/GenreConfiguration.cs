@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostsApp.Domain.Book;
-using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Common.Enums.MaxLengths;
 using PostsApp.Domain.Genre;
 using PostsApp.Domain.Genre.ValueObjects;
-using PostsApp.Infrastructure.Data.Migrations;
 
 namespace PostsApp.Infrastructure.Data.Configuration;
 
@@ -18,7 +16,7 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
         builder.Property(g => g.Name)
             .HasMaxLength((int)GenreMaxLengths.Name)
             .IsRequired();
-        
+
         builder.Property(o => o.Id)
             .ValueGeneratedNever()
             .HasConversion(
@@ -26,7 +24,7 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
                 value => GenreId.CreateGenreId(value));
 
         builder
-            .HasMany<Book>(genre => genre.Books)
+            .HasMany(genre => genre.Books)
             .WithMany(book => book.Genres)
             .UsingEntity<Dictionary<string, object>>(
                 "BooksGenres",

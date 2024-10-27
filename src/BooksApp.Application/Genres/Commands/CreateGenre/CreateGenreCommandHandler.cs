@@ -12,6 +12,7 @@ public class CreateGenreCommandHandler : IRequestHandler<CreateGenreCommand, Gen
     {
         _unitOfWork = unitOfWork;
     }
+
     public async Task<GenreResult> Handle(CreateGenreCommand request, CancellationToken cancellationToken)
     {
         var genre = Genre.Create(request.Name);

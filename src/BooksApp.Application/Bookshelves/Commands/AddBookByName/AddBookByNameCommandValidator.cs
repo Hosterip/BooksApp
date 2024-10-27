@@ -2,7 +2,6 @@ using FluentValidation;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Constants.ValidationMessages;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Constants;
 
 namespace PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
 
@@ -18,7 +17,7 @@ public class AddBookByNameCommandValidator : AbstractValidator<AddBookByNameComm
             .MustAsync(async (bookId, cancellationToken) =>
                 await unitOfWork.Books.AnyById(bookId))
             .WithMessage(BookValidationMessages.NotFound);
-        
+
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfRefName, request.UserId, request.BookId))

@@ -1,17 +1,15 @@
 ﻿using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Common.Results;
 using PostsApp.Application.Reviews.Results;
-using PostsApp.Application.Users.Results;
 using PostsApp.Domain.Review;
 
 namespace PostsApp.Application.Reviews.Commands.CreateReview;
 
 internal sealed class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, ReviewResult>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreateReviewCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
@@ -27,7 +25,7 @@ internal sealed class CreateReviewCommandHandler : IRequestHandler<CreateReviewC
 
         await _unitOfWork.Reviews.AddAsync(review);
         await _unitOfWork.SaveAsync(cancellationToken);
-        
+
         return _mapper.Map<ReviewResult>(review);
     }
 }

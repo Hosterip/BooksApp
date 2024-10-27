@@ -15,11 +15,11 @@ public class GenresController : ApiController
     {
         _sender = sender;
     }
-    
+
     [HttpPost(ApiRoutes.Genres.Create)]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Create(
-        string name, 
+        string name,
         CancellationToken cancellationToken)
     {
         var createGenreCommand = new CreateGenreCommand

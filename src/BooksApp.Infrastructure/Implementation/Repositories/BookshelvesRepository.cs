@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PostsApp.Application.Books.Results;
 using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Application.Common.Results;
 using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Bookshelf;
 using PostsApp.Domain.Bookshelf.ValueObjects;
@@ -45,7 +43,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
         var refName = name.GenerateRefName();
         return await _dbContext.Bookshelves
             .Where(bookshelf => bookshelf.User != null &&
-                                bookshelf.ReferentialName == refName && 
+                                bookshelf.ReferentialName == refName &&
                                 bookshelf.User.Id == UserId.CreateUserId(userId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
             .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId));

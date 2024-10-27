@@ -83,7 +83,7 @@ public class UsersController : ApiController
         var command = new UpdateEmailCommand
         {
             Id = new Guid(HttpContext.GetId()!),
-            Email = request.Email,
+            Email = request.Email
         };
 
         await _sender.Send(command, cancellationToken);
@@ -104,21 +104,20 @@ public class UsersController : ApiController
             UserId = new Guid(HttpContext.GetId()!),
             FirstName = request.FirstName,
             MiddleName = request.MiddleName,
-            LastName = request.LastName,
+            LastName = request.LastName
         };
 
         await _sender.Send(command, cancellationToken);
 
         return Ok("Name was updated");
     }
-    
+
     [HttpPut(ApiRoutes.Users.UpdateAvatar)]
     [Authorize(Policies.Authorized)]
     public async Task<IActionResult> UpdateAvatar(
         [FromBodyOrDefault] InsertAvatarRequest request,
         CancellationToken cancellationToken)
     {
-        
         var command = new InsertAvatarCommand
         {
             Id = new Guid(HttpContext.GetId()!),
@@ -129,7 +128,7 @@ public class UsersController : ApiController
 
         return Ok(result);
     }
-    
+
     // Roles Logic
     [HttpPut(ApiRoutes.Users.UpdateRole)]
     [Authorize(Policies.Authorized)]
@@ -139,16 +138,16 @@ public class UsersController : ApiController
     {
         var command = new UpdateRoleCommand
         {
-            ChangerId = new Guid(HttpContext.GetId()!), 
-            Role = request.Role, 
+            ChangerId = new Guid(HttpContext.GetId()!),
+            Role = request.Role,
             UserId = request.UserId
         };
 
         await _sender.Send(command, cancellationToken);
-        
+
         return Ok("Operation succeeded");
     }
-    
+
 
     [HttpGet(ApiRoutes.Users.GetRoles)]
     public async Task<IActionResult> GetRoles(
@@ -160,9 +159,9 @@ public class UsersController : ApiController
 
         return Ok(roles);
     }
-    
+
     // Bookshelves 
-    
+
     [HttpGet(ApiRoutes.Users.GetBookshelves)]
     public async Task<IActionResult> GetBookshelves(
         Guid userId)
@@ -175,9 +174,9 @@ public class UsersController : ApiController
 
         return Ok(result);
     }
-    
+
     // Books 
-    
+
     [HttpGet(ApiRoutes.Users.GetManyBooks)]
     public async Task<IActionResult> GetManyBooks(
         CancellationToken cancellationToken,
@@ -188,7 +187,7 @@ public class UsersController : ApiController
         [FromQuery] Guid? genreId
     )
     {
-        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId, GenreId = genreId};
+        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId, GenreId = genreId };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }

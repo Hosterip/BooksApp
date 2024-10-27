@@ -10,10 +10,7 @@ public class ImageFileBuilder : IImageFileBuilder
     public async Task<string?> CreateImage(IFormFile file, CancellationToken token = default)
     {
         var path = Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images");
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
         var fileName = $"{DateTime.Now:ddMMyymm}_{Guid.NewGuid()}";
         var filePath = Path.Combine(path, $"{fileName}");
@@ -34,9 +31,10 @@ public class ImageFileBuilder : IImageFileBuilder
         return exists;
     }
 
-    public async Task<(FileInfo fileInfo, FileStream fileStream)> RetrieveImage(string fileName, CancellationToken token = default)
+    public async Task<(FileInfo fileInfo, FileStream fileStream)> RetrieveImage(string fileName,
+        CancellationToken token = default)
     {
-        var uploadPath = 
+        var uploadPath =
             Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images");
         var filePath = Path.Combine(uploadPath, fileName);
         var fileInfo = new FileInfo(filePath);

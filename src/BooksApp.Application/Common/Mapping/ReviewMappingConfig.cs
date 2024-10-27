@@ -5,7 +5,7 @@ using PostsApp.Domain.Review;
 
 namespace PostsApp.Application.Common.Mapping;
 
-public class ReviewMappingConfig: IRegister
+public class ReviewMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

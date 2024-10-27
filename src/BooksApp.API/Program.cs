@@ -12,10 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCorsPolicy(corsAllow);
 
 // Controllers
-builder.Services.AddControllers(options =>
-{
-    options.ModelBinderProviders.InsertBodyOrDefaultBinding();
-});
+builder.Services.AddControllers(options => { options.ModelBinderProviders.InsertBodyOrDefaultBinding(); });
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -33,10 +30,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler(ApiRoutes.Error.ErrorHandler);
 if (!app.Environment.IsDevelopment())
-{
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-}
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI();

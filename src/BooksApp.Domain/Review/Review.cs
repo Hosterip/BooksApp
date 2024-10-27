@@ -1,13 +1,13 @@
-﻿using PostsApp.Domain.Book.ValueObjects;
-using PostsApp.Domain.Common.Models;
+﻿using PostsApp.Domain.Common.Models;
 using PostsApp.Domain.Review.ValueObjects;
-using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Domain.Review;
 
 public class Review : Entity<ReviewId>
 {
-    private Review(ReviewId id) : base(id) { }
+    private Review(ReviewId id) : base(id)
+    {
+    }
 
     private Review(
         ReviewId id,
@@ -22,6 +22,7 @@ public class Review : Entity<ReviewId>
         User = user;
         Book = book;
     }
+
     public int Rating { get; set; }
     public string Body { get; set; }
     public User.User User { get; }
@@ -32,9 +33,9 @@ public class Review : Entity<ReviewId>
         string body,
         User.User user,
         Book.Book book
-        )
+    )
     {
-        return new(
+        return new Review(
             ReviewId.CreateReviewId(),
             rating,
             body,

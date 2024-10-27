@@ -19,13 +19,13 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
             .NotEmpty()
             .MaximumLength((int)BookMaxLengths.Description);
         RuleFor(request => request)
-            .MustAsync(async (request, cancellationToken) => 
+            .MustAsync(async (request, cancellationToken) =>
                 !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title))
             .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
             .OverridePropertyName(nameof(CreateBookCommand.Title));
-        
+
         // User Validation
-        
+
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
             {
@@ -36,9 +36,9 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         RuleFor(book => book.UserId)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(UserValidationMessages.NotFound);
-        
+
         // Genres Validation
-        
+
         RuleFor(request => request.GenreIds).Must(genreIds =>
         {
             if (genreIds is null)
@@ -48,9 +48,9 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         RuleFor(request => request.GenreIds)
             .Must(genreIds => genreIds is not null && genreIds.Any())
             .WithMessage(BookValidationMessages.AtLeastOneGenre);
-        
+
         // Images
-        
+
         RuleFor(request => request.Image.Length)
             .LessThan(10000000);
         RuleFor(request => request.Image.FileName)

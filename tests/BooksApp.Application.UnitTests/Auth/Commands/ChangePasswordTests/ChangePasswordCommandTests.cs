@@ -10,13 +10,13 @@ namespace Application.UnitTest.Auth.Commands.ChangePasswordTests;
 
 public class ChangePasswordCommandTests
 {
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly Mock<IMapper> _mapper;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public ChangePasswordCommandTests()
     {
-        _unitOfWorkMock = new();
-        _mapper = new();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _mapper = new Mock<IMapper>();
     }
 
     [Fact]
@@ -26,14 +26,14 @@ public class ChangePasswordCommandTests
         var command = AuthCommandsUtils.ChangePasswordCommandCorrect;
         var handler = new ChangePasswordCommandHandler(_unitOfWorkMock.Object, _mapper.Object);
         AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
-        
+
         // Act
         var exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
-        
+
         // Assert
         exception.Should().BeNull();
     }
-    
+
     [Fact]
     public async Task Handle_IncorrectPassword_ReturnVoid()
     {
@@ -41,10 +41,10 @@ public class ChangePasswordCommandTests
         var command = AuthCommandsUtils.ChangePasswordCommandIncorrect;
         var handler = new ChangePasswordCommandHandler(_unitOfWorkMock.Object, _mapper.Object);
         AuthTestUtils.SetupUsersGetSingleWhereAsync(_unitOfWorkMock);
-        
+
         // Act
         var exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
-        
+
         // Assert
         exception.Should().NotBeNull();
     }

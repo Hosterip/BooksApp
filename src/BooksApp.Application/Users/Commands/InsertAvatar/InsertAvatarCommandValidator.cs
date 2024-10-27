@@ -12,10 +12,10 @@ public class InsertAvatarCommandValidator : AbstractValidator<InsertAvatarComman
         RuleFor(user => user.Id)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(UserValidationMessages.NotFound);
-        
-        
+
+
         // Images
-        
+
         RuleFor(request => request.Image.Length)
             .LessThan(10000000);
         RuleFor(request => request.Image)

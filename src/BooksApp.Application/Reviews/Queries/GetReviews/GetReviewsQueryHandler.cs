@@ -17,6 +17,7 @@ public class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, Paginated
     public async Task<PaginatedArray<ReviewResult>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
     {
         return
-            await _unitOfWork.Reviews.GetPaginated(request.BookId, request.Page, request.PageSize);;
+            await _unitOfWork.Reviews.GetPaginated(request.BookId, request.Page, request.PageSize);
+        ;
     }
 }

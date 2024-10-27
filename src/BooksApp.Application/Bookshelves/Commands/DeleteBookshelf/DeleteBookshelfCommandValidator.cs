@@ -1,6 +1,5 @@
 using FluentValidation;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Bookshelf.ValueObjects;
 using PostsApp.Domain.Common.Constants;
 
 namespace PostsApp.Application.Bookshelves.Commands.DeleteBookshelf;

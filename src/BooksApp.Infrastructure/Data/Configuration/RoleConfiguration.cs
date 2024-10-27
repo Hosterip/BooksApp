@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.Image.ValueObjects;
 using PostsApp.Domain.Role;
 using PostsApp.Domain.Role.ValueObjects;
 
@@ -19,7 +18,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.Property(r => r.Name)
             .HasMaxLength((int)RoleMaxLengths.Name)
             .IsRequired();
-        
+
         builder.Property(o => o.Id)
             .ValueGeneratedNever()
             .HasConversion(

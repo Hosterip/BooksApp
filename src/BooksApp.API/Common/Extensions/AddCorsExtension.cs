@@ -6,7 +6,7 @@ public static class AddCorsExtension
     {
         services.AddCors(options =>
         {
-            options.AddPolicy(name: policyName, policyBuilder =>
+            options.AddPolicy(policyName, policyBuilder =>
                 policyBuilder
                     .AllowAnyHeader()
                     .AllowAnyMethod()

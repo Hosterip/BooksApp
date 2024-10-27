@@ -7,8 +7,8 @@ namespace PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
 
 public class CreateBookshelfCommandHandler : IRequestHandler<CreateBookshelfCommand, BookshelfResult>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreateBookshelfCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {

@@ -4,18 +4,18 @@ namespace PostsApp.Domain.Role.ValueObjects;
 
 public class RoleId : ValueObject
 {
-    public Guid Value { get; }
-
     public RoleId(Guid value)
     {
         Value = value;
     }
 
+    public Guid Value { get; }
+
     public static RoleId CreateRoleId(Guid? value = null)
     {
-        return new(value ?? Guid.NewGuid());
+        return new RoleId(value ?? Guid.NewGuid());
     }
-    
+
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

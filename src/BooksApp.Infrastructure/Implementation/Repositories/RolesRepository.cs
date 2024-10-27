@@ -6,5 +6,7 @@ namespace PostsApp.Infrastructure.Implementation.Repositories;
 
 public class RolesRepository : GenericRepository<Role>, IRolesRepository
 {
-    public RolesRepository(AppDbContext dbContext) : base(dbContext) { }
+    public RolesRepository(AppDbContext dbContext) : base(dbContext)
+    {
+    }
 }

@@ -23,7 +23,7 @@ public class AuthController : ApiController
     {
         _sender = sender;
     }
-    
+
     [HttpPost(ApiRoutes.Auth.Register)]
     public async Task<IActionResult> Register(
         [FromBodyOrDefault] RegisterRequest request,
@@ -35,7 +35,7 @@ public class AuthController : ApiController
             FirstName = request.FirstName,
             MiddleName = request.MiddleName,
             LastName = request.LastName,
-            Password = request.Password,
+            Password = request.Password
         };
         var user = await _sender.Send(command, cancellationToken);
         var createDefaultBookshelves = new CreateDefaultBookshelvesCommand

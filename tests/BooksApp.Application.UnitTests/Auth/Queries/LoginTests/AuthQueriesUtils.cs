@@ -5,14 +5,15 @@ namespace Application.UnitTest.Auth.Queries.LoginTests;
 
 public class AuthQueriesUtils
 {
-    public static LoginUserQuery LoginUserQueryCorrect => 
-        new LoginUserQuery
+    public static LoginUserQuery LoginUserQueryCorrect =>
+        new()
         {
-            Email = "mock", 
+            Email = "mock",
             Password = PasswordConstants.CorrectPassword
         };
-    public static LoginUserQuery LoginUserQueryIncorrect => 
-        new LoginUserQuery
+
+    public static LoginUserQuery LoginUserQueryIncorrect =>
+        new()
         {
             Email = "mock",
             Password = PasswordConstants.IncorrectPassword

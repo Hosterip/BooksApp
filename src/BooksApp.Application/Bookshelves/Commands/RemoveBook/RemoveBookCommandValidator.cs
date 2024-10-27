@@ -14,7 +14,7 @@ public class RemoveBookCommandValidator : AbstractValidator<RemoveBookCommand>
             .MustAsync(async (bookshelfId, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyById(bookshelfId))
             .WithMessage(BookshelfValidationMessages.NotFound);
-        
+
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
@@ -28,12 +28,12 @@ public class RemoveBookCommandValidator : AbstractValidator<RemoveBookCommand>
                 await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId, request.BookId))
             .WithMessage(BookshelfValidationMessages.NoBookToRemove)
             .OverridePropertyName(nameof(RemoveBookCommand.BookId));
-        
+
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) =>
                 await unitOfWork.Books.AnyById(bookId))
             .WithMessage(BookValidationMessages.NotFound);
-        
+
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId))

@@ -138,15 +138,13 @@ public class BooksController : ApiController
         var userId = Guid.Parse(HttpContext.GetId()!);
         Guid.TryParse(idOrName, out var bookshelfId);
         await _sender.Send(bookshelfId != null
-            ?
-            new RemoveBookCommand
+            ? new RemoveBookCommand
             {
                 BookshelfId = bookshelfId,
                 BookId = bookId,
                 UserId = userId
             }
-            :
-            new RemoveBookByNameCommand
+            : new RemoveBookByNameCommand
             {
                 BookshelfRefName = idOrName,
                 BookId = bookId,

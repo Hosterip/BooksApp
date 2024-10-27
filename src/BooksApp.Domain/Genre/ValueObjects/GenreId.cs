@@ -4,16 +4,16 @@ namespace PostsApp.Domain.Genre.ValueObjects;
 
 public class GenreId : ValueObject
 {
-    public Guid Value { get; }
-
     private GenreId(Guid value)
     {
         Value = value;
     }
 
+    public Guid Value { get; }
+
     public static GenreId CreateGenreId(Guid? value = null)
     {
-        return new(value ?? Guid.NewGuid());
+        return new GenreId(value ?? Guid.NewGuid());
     }
 
     public override IEnumerable<object> GetEqualityComponents()

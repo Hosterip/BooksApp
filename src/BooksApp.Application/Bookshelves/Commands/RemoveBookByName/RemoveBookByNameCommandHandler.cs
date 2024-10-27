@@ -16,7 +16,7 @@ internal sealed class RemoveBookByNameCommandHandler : IRequestHandler<RemoveBoo
 
     public async Task Handle(RemoveBookByNameCommand request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetSingleWhereAsync(bookshelf => 
+        var bookshelf = await _unitOfWork.Bookshelves.GetSingleWhereAsync(bookshelf =>
             bookshelf.Name == request.BookshelfRefName &&
             bookshelf.User != null &&
             bookshelf.User.Id == UserId.CreateUserId(request.UserId));
@@ -26,6 +26,7 @@ internal sealed class RemoveBookByNameCommandHandler : IRequestHandler<RemoveBoo
             bookshelf = Bookshelf.Create(user!, request.BookshelfRefName);
             await _unitOfWork.Bookshelves.AddAsync(bookshelf);
         }
+
         bookshelf!.RemoveBook(request.BookId);
     }
 }

@@ -9,13 +9,16 @@ public static class MockUser
     public static User GetUser(
         string role = RoleNames.Member,
         string? hash = null,
-        string? salt = null) => User.Create(
-        "Hello world",
-        "Hello world",
-        "Hello world",
-        "Hello world",
-        MockRole.GetRole(role ?? RoleNames.Member),
-        hash ?? "Hello world",
-        salt ?? "Hello world",
-        Image.Create("hello world"));
+        string? salt = null)
+    {
+        return User.Create(
+            "Hello world",
+            "Hello world",
+            "Hello world",
+            "Hello world",
+            MockRole.GetRole(role ?? RoleNames.Member),
+            hash ?? "Hello world",
+            salt ?? "Hello world",
+            Image.Create("hello world"));
+    }
 }

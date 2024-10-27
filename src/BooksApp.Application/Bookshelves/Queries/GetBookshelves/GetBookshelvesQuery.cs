@@ -1,5 +1,4 @@
 using MediatR;
-using PostsApp.Domain.Bookshelf;
 
 namespace PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 

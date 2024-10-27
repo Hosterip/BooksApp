@@ -1,5 +1,4 @@
 using MediatR;
-using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Users.Results;
@@ -19,9 +18,9 @@ internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Pagi
         GetUsersQuery request,
         CancellationToken cancellationToken)
     {
-        string query = request.Query ?? "";
-        int limit = request.Limit ?? 10;
-        int page = request.Page ?? 1;
+        var query = request.Query ?? "";
+        var limit = request.Limit ?? 10;
+        var page = request.Page ?? 1;
 
         var result = await _unitOfWork.Users.GetPaginated(page, limit, query);
         return result;

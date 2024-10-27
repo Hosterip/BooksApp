@@ -21,7 +21,7 @@ public static class RolePermissions
         // Admin can change someone's role
         return changerUserRoleName == RoleNames.Admin;
     }
-    
+
     public static bool UpdateOrDeleteBook(string changerUserRoleName)
     {
         // Only Admin, Moderator or Author of that book can change it. 
@@ -29,6 +29,7 @@ public static class RolePermissions
                || changerUserRoleName == RoleNames.Moderator
                || changerUserRoleName == RoleNames.Author;
     }
+
     public static bool CreateBook(string userRoleName)
     {
         // Only Authors can create a book. 

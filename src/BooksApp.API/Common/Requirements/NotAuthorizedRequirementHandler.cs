@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PostsApp.Common.Requirements;
 
-public class NotAuthorizedRequirement : IAuthorizationRequirement {}
+public class NotAuthorizedRequirement : IAuthorizationRequirement
+{
+}
 
 public class NotAuthorizedRequirementHandler : AuthorizationHandler<NotAuthorizedRequirement>
 {

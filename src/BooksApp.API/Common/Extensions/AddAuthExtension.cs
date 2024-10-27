@@ -28,17 +28,18 @@ public static class AddAuthExtension
         serviceCollection.AddAuthorization(options =>
         {
             options.AddPolicy(Policies.Admin, policy => policy.RequireRole([RoleNames.Admin]));
-            
+
             options.AddPolicy(Policies.Moderator, policy => policy.RequireRole([RoleNames.Moderator]));
-            
-            options.AddPolicy(Policies.AdminOrModerator, policy => policy.RequireRole([RoleNames.Admin, RoleNames.Moderator]));
-            
+
+            options.AddPolicy(Policies.AdminOrModerator,
+                policy => policy.RequireRole([RoleNames.Admin, RoleNames.Moderator]));
+
             options.AddPolicy(Policies.Author, policy => policy.RequireRole([RoleNames.Author]));
-            
+
             options.AddPolicy(Policies.Authorized, policy =>
                 policy.Requirements.Add(AuthRequirements.Authorized));
-            
-            options.AddPolicy(Policies.NotAuthorized, policy => 
+
+            options.AddPolicy(Policies.NotAuthorized, policy =>
                 policy.Requirements.Add(AuthRequirements.NotAuthorized));
         });
     }

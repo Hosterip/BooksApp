@@ -1,16 +1,14 @@
 using MapsterMapper;
 using MediatR;
 using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Common.Results;
 using PostsApp.Application.Users.Results;
-using PostsApp.Domain.User.ValueObjects;
 
 namespace PostsApp.Application.Users.Queries.GetSingleUser;
 
 internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, UserResult>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
     public GetSingleUserQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {

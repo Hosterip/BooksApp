@@ -1,5 +1,4 @@
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Common.Security;
@@ -18,9 +17,9 @@ public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
             .MustAsync(async (request, cancellationToken) =>
             {
                 var user = await unitOfWork.Users.GetSingleWhereAsync(user => user.Email == request.Email);
-                
+
                 if (user is null) return false;
-                
+
                 return Hashing.IsPasswordValid(user.Hash, user.Salt, request.Password);
             })
             .WithMessage(AuthValidationMessages.EmailOrPassword)

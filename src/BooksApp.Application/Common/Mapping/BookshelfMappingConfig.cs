@@ -4,7 +4,7 @@ using PostsApp.Domain.Bookshelf;
 
 namespace PostsApp.Application.Common.Mapping;
 
-public class BookshelfMappingConfig: IRegister
+public class BookshelfMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

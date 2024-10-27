@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Extensions;
-using PostsApp.Application.Common.Interfaces;
 using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
 using PostsApp.Application.Users.Results;
@@ -14,11 +12,13 @@ namespace PostsApp.Infrastructure.Implementation.Repositories;
 
 public class UsersRepository : GenericRepository<User>, IUsersRepository
 {
-    public UsersRepository(AppDbContext dbContext) : base(dbContext) { }
+    public UsersRepository(AppDbContext dbContext) : base(dbContext)
+    {
+    }
 
     public async Task<PaginatedArray<UserResult>> GetPaginated(int page, int limit, string query)
     {
-        return await 
+        return await
             (
                 from user in _dbContext.Users
                 where query == null || user.FirstName.Contains(query)

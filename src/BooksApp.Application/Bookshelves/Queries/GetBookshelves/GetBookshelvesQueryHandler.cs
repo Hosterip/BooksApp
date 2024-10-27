@@ -7,8 +7,8 @@ namespace PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 
 internal sealed class GetBookshelvesQueryHandler : IRequestHandler<GetBookshelvesQuery, List<BookshelfResult>>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
     public GetBookshelvesQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {

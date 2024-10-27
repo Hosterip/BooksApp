@@ -4,7 +4,9 @@ using PostsApp.Infrastructure.Data;
 
 namespace PostsApp.Infrastructure.Implementation.Repositories;
 
-public class ImagesRepository :  GenericRepository<Image>, IImagesRepository
+public class ImagesRepository : GenericRepository<Image>, IImagesRepository
 {
-    public ImagesRepository(AppDbContext dbContext) : base(dbContext) { }
+    public ImagesRepository(AppDbContext dbContext) : base(dbContext)
+    {
+    }
 }

@@ -17,7 +17,7 @@ public class UpdateRoleCommandValidatorTests
 
     public UpdateRoleCommandValidatorTests()
     {
-        _unitOfWorkMock = new();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
         _validator = new UpdateRoleCommandValidator(_unitOfWorkMock.Object);
     }
 
@@ -26,59 +26,63 @@ public class UpdateRoleCommandValidatorTests
     {
         // Arrange
         ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
-        var command = new UpdateRoleCommand { UserId = new Guid("1"), ChangerId = new Guid("1"), Role = RoleNames.Admin};
+        var command = new UpdateRoleCommand
+            { UserId = new Guid("1"), ChangerId = new Guid("1"), Role = RoleNames.Admin };
 
         // Act
         var result = await _validator.ValidateAsync(command);
-        
+
         // Assert
         result.IsValid.Should().BeFalse();
     }
-    
+
     [Fact]
     public async Task Constructor_WhenRoleRuleNotSatisfied_ReturnFailureResult()
     {
         // Arrange
-        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Member));
-        var command = new UpdateRoleCommand { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin };
+        ArrangeAllMethodsForValidator(true, true, MockUser.GetUser());
+        var command = new UpdateRoleCommand
+            { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin };
 
         // Act
         var result = await _validator.ValidateAsync(command);
-        
+
         // Assert
         result.IsValid.Should().BeFalse();
     }
-    
+
     [Fact]
     public async Task Constructor_WhenRoleRuleSatisfied_ReturnSuccessfulResult()
     {
         // Arrange
         ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
-        var command = new UpdateRoleCommand { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin };
+        var command = new UpdateRoleCommand
+            { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin };
 
         // Act
         var result = await _validator.ValidateAsync(command);
-        
+
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task Constructor_WhenAllTheRulesSatisfied_ReturnSuccessfulResult()
     {
         // Arrange
         ArrangeAllMethodsForValidator(true, true, MockUser.GetUser(RoleNames.Admin));
-        var command = new UpdateRoleCommand { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin};
+        var command = new UpdateRoleCommand
+            { UserId = new Guid("1"), ChangerId = new Guid("2"), Role = RoleNames.Admin };
 
         // Act
         var result = await _validator.ValidateAsync(command);
-        
+
         // Assert
         result.IsValid.Should().BeTrue();
     }
 
     private void ArrangeAllMethodsForValidator(
-        bool roleAnyAsync, 
+        bool roleAnyAsync,
         bool usersAnyAsync,
         User? usersGetSingle)
     {
@@ -92,5 +96,4 @@ public class UpdateRoleCommandValidatorTests
                 It.IsAny<Expression<Func<User, bool>>>()))
             .ReturnsAsync(usersGetSingle);
     }
-    
 }

@@ -1,5 +1,4 @@
 using FluentValidation;
-using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 using PostsApp.Application.Common.Constants.ValidationMessages;
 using PostsApp.Application.Common.Interfaces;
 
@@ -10,7 +9,7 @@ public class GetBookshelfBooksQueryValidator : AbstractValidator<GetBookshelfBoo
     public GetBookshelfBooksQueryValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(request => request.BookshelfId)
-            .MustAsync(async (bookshelfId, cancellationToken) => 
+            .MustAsync(async (bookshelfId, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyById(bookshelfId))
             .WithMessage(BookshelfValidationMessages.NotFound);
     }

@@ -13,7 +13,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IImageFileBuilder, ImageFileBuilder>();
-        
+
         return services;
     }
 }

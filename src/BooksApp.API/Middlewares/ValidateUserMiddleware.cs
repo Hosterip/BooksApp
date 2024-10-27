@@ -26,7 +26,7 @@ public class ValidateUserMiddleware
                 UserId = Guid.Parse(id)
             };
             var result = await sender.Send(query);
-            if (result is null || result.SecurityStamp.ToString() != securityStamp)
+            if (result is null || result.SecurityStamp != securityStamp)
                 await context.SignOutAsync();
             else if (result.Role.Name != role)
                 context.ChangeRole(result.Role.Name);

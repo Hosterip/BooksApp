@@ -20,9 +20,9 @@ internal sealed class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, Pagi
 
     public async Task<PaginatedArray<BookResult>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        string query = request.Query ?? "";
-        int limit = request.Limit ?? 10;
-        int page = request.Page ?? 1;
+        var query = request.Query ?? "";
+        var limit = request.Limit ?? 10;
+        var page = request.Page ?? 1;
 
         var result = await _unitOfWork.Books
             .GetPaginated(limit, page, BookExpression(query, request.UserId, request.GenreId));

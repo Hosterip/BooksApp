@@ -7,27 +7,27 @@
         <RootNamespace>PostsApp.Infrastructure</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\BooksApp.Domain\BooksApp.Domain.csproj" />
-        <ProjectReference Include="..\BooksApp.Application\BooksApp.Application.csproj" />
+        <ProjectReference Include="..\BooksApp.Domain\BooksApp.Domain.csproj"/>
+        <ProjectReference Include="..\BooksApp.Application\BooksApp.Application.csproj"/>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Mapster" Version="7.4.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Mapster" Version="7.4.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0"/>
     </ItemGroup>
     <ItemGroup>
-      <Content Update="appsettings.json">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
+        <Content Update="appsettings.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Data\Migrations\" />
+        <Folder Include="Data\Migrations\"/>
     </ItemGroup>
 </Project>

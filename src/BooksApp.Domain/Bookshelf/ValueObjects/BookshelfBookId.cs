@@ -4,20 +4,20 @@ namespace PostsApp.Domain.Bookshelf.ValueObjects;
 
 public class BookshelfBookId : ValueObject
 {
+    public BookshelfBookId(Guid value)
+    {
+        Value = value;
+    }
+
     public Guid Value { get; }
 
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
     }
-    
-    public BookshelfBookId(Guid value)
-    {
-        Value = value;
-    }
 
     public static BookshelfBookId CreateBookshelfBookId(Guid? value = null)
     {
-        return new(value ?? Guid.NewGuid());
+        return new BookshelfBookId(value ?? Guid.NewGuid());
     }
 }

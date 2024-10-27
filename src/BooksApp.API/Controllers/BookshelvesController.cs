@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
 using PostsApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
-using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Extensions;
 
@@ -18,7 +17,7 @@ public class BookshelvesController : ApiController
     {
         _sender = sender;
     }
-    
+
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
     public async Task<IActionResult> GetBooks(
         Guid bookshelfId,
@@ -35,7 +34,7 @@ public class BookshelvesController : ApiController
 
         return Ok(result);
     }
-    
+
     [HttpPost(ApiRoutes.Bookshelves.Create)]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Create(
@@ -62,7 +61,7 @@ public class BookshelvesController : ApiController
         };
 
         await _sender.Send(command);
-        
+
         return Ok("Bookshelf deleted");
     }
 }

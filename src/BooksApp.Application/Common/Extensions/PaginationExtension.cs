@@ -9,5 +9,4 @@ public static class PaginationExtension
     {
         return PaginatedArray<T>.CreateAsync(queryable, page, pageSize);
     }
-    
 }

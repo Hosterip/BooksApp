@@ -8,7 +8,6 @@ namespace PostsApp.Application.Auth.Commands.ChangePassword;
 
 public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
-
     public ChangePasswordCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(request => request)

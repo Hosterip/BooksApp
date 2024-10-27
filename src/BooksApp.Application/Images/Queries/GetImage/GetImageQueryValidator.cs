@@ -10,11 +10,11 @@ public class GetImageQueryValidator : AbstractValidator<GetImageQuery>
         RuleFor(request => request.ImageName)
             .Must(imageName =>
             {
-                var imagePath = 
+                var imagePath =
                     Path.Combine(
                         Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images",
                         imageName
-                        );
+                    );
                 var fileInfo = new FileInfo(imagePath);
                 return fileInfo.Exists;
             });

@@ -9,5 +9,4 @@ public class UpdateBookRequest
     public string? Description { get; set; }
     public IFormFile? Cover { get; set; }
     public List<Guid> GenreIds { get; set; }
-
 }

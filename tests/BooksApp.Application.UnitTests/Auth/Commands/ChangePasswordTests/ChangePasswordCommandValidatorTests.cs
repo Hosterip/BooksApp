@@ -9,12 +9,12 @@ namespace Application.UnitTest.Auth.Commands.ChangePasswordTests;
 
 public class ChangePasswordCommandValidatorTests
 {
-    private readonly ChangePasswordCommandValidator _validator;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly ChangePasswordCommandValidator _validator;
 
     public ChangePasswordCommandValidatorTests()
     {
-        _mockUnitOfWork = new();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
         _validator = new ChangePasswordCommandValidator(_mockUnitOfWork.Object);
     }
 
@@ -31,7 +31,7 @@ public class ChangePasswordCommandValidatorTests
         // Assert
         result.IsValid.Should().BeFalse();
     }
-    
+
     [Fact]
     public async Task Handle_WhenRulesMatched_ReturnFailureResult()
     {

@@ -5,19 +5,19 @@ namespace Application.UnitTest.Auth.Commands.TestUtils;
 
 public static class AuthCommandsUtils
 {
-    public static ChangePasswordCommand ChangePasswordCommandCorrect => 
-        new ChangePasswordCommand
+    public static ChangePasswordCommand ChangePasswordCommandCorrect =>
+        new()
         {
             Id = new Guid("1"),
             NewPassword = PasswordConstants.MockPassword,
             OldPassword = PasswordConstants.CorrectPassword
         };
-    public static ChangePasswordCommand ChangePasswordCommandIncorrect => 
-        new ChangePasswordCommand
+
+    public static ChangePasswordCommand ChangePasswordCommandIncorrect =>
+        new()
         {
             Id = new Guid("1"),
             NewPassword = PasswordConstants.MockPassword,
             OldPassword = PasswordConstants.IncorrectPassword
         };
-    
 }

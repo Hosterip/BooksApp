@@ -7,7 +7,7 @@ public static partial class GenerateRefNameExtension
     public static string GenerateRefName(this string name)
     {
         var refName = RefNameRegex()
-            .Replace(name, String.Empty)
+            .Replace(name, string.Empty)
             .Replace(" ", "-")
             .ToLower();
         return $"{refName}";

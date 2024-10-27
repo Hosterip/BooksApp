@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PostsApp.Application.Common.Extensions;
 using PostsApp.Application.Common.Interfaces.Repositories;
 using PostsApp.Application.Common.Results;
@@ -12,13 +11,15 @@ using PostsApp.Infrastructure.Data;
 
 namespace PostsApp.Infrastructure.Implementation.Repositories;
 
-public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository 
+public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
 {
-    public ReviewsRepository(AppDbContext dbContext) : base(dbContext) { }
-    
+    public ReviewsRepository(AppDbContext dbContext) : base(dbContext)
+    {
+    }
+
     public async Task<PaginatedArray<ReviewResult>> GetPaginated(Guid bookId, int page, int limit)
     {
-        return await 
+        return await
             (
                 from review in _dbContext.Reviews
                 where review.Book.Id == BookId.CreateBookId(bookId)
@@ -38,7 +39,7 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
                     BookId = review.Book.Id.Value.ToString(),
                     User = user,
                     Rating = review.Rating,
-                    Body = review.Body, 
+                    Body = review.Body
                 }
             )
             .PaginationAsync(page, limit);

@@ -13,7 +13,7 @@ public class ImagesController : ApiController
     {
         _sender = sender;
     }
-    
+
     [HttpGet(ApiRoutes.Images.Get)]
     public async Task<IActionResult> Get(
         string name,

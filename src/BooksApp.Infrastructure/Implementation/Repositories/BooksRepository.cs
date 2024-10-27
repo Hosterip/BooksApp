@@ -10,7 +10,6 @@ using PostsApp.Domain.Book;
 using PostsApp.Domain.Book.ValueObjects;
 using PostsApp.Domain.Bookshelf.ValueObjects;
 using PostsApp.Domain.Common.Utils;
-using PostsApp.Domain.Genre;
 using PostsApp.Domain.User.ValueObjects;
 using PostsApp.Infrastructure.Data;
 
@@ -123,13 +122,11 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             .Include(review => review.Book)
             .Where(review => review.Book.Id == BookId.CreateBookId(bookId));
         if (reviews.Any())
-        {
             return new RatingStatistics
             {
                 AverageRating = reviews.Average(review => review.Rating),
                 Ratings = reviews.Count()
             };
-        }
 
         return new RatingStatistics
         {

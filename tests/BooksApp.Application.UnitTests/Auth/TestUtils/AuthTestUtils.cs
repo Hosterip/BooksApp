@@ -15,7 +15,7 @@ public static class AuthTestUtils
                 It.IsAny<Expression<Func<User, bool>>>()))
             .ReturnsAsync(user);
     }
-    
+
     public static void SetupUsersGetSingleWhereAsync(Mock<IUnitOfWork> mockUnitOfWork)
     {
         mockUnitOfWork.Setup(x => x.Users.GetSingleWhereAsync(
