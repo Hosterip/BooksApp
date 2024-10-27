@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PostsApp.Application.Books.Commands.CreateBook;
 using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Book.ValueObjects;
@@ -34,6 +35,6 @@ public class CreateReviewCommandValidator : AbstractValidator<CreateReviewComman
                     && review.Book.Id == BookId.CreateBookId(request.BookId));
             })
             .WithMessage(ReviewValidationMessages.AlreadyHave)
-            .OverridePropertyName("BookId and UserId");
+            .OverridePropertyName(nameof(CreateReviewCommand.BookId));
     }
 }

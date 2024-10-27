@@ -20,6 +20,6 @@ public class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewComman
                            .AnyAsync(review => review.User.Id == UserId.CreateUserId(request.UserId) && review.Id == ReviewId.CreateReviewId(request.ReviewId));
             })
             .WithMessage(UserValidationMessages.Permission)
-            .OverridePropertyName("UserId");
+            .OverridePropertyName(nameof(DeleteReviewCommand.UserId));
     }
 }

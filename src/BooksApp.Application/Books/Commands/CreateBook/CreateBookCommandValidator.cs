@@ -11,12 +11,21 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
 {
     public CreateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {
+        // Books validation
         RuleFor(book => book.Title)
             .NotEmpty()
             .MaximumLength((int)BookMaxLengths.Title);
-        RuleFor(post => post.Description)
+        RuleFor(book => book.Description)
             .NotEmpty()
             .MaximumLength((int)BookMaxLengths.Description);
+        RuleFor(request => request)
+            .MustAsync(async (request, cancellationToken) => 
+                !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title))
+            .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
+            .OverridePropertyName(nameof(CreateBookCommand.Title));
+        
+        // User Validation
+        
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
             {
@@ -24,14 +33,12 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
                 return user is not null && RolePermissions.CreateBook(user.Role.Name);
             })
             .WithMessage(BookValidationMessages.MustBeAnAuthor);
-        RuleFor(request => request)
-            .MustAsync(async (request, cancellationToken) => 
-                !await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
-            .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
-            .OverridePropertyName("Title");
         RuleFor(book => book.UserId)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(UserValidationMessages.NotFound);
+        
+        // Genres Validation
+        
         RuleFor(request => request.GenreIds).Must(genreIds =>
         {
             if (genreIds is null)

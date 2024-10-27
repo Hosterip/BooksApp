@@ -20,7 +20,7 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
                 return Hashing.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword);
             })
             .WithMessage(AuthValidationMessages.Password)
-            .OverridePropertyName("OldPassword");
+            .OverridePropertyName(nameof(ChangePasswordCommand.OldPassword));
         RuleFor(request => request.NewPassword)
             .MaximumLength((int)UserMaxLengths.Password);
     }

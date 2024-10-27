@@ -12,6 +12,6 @@ public interface IBooksRepository : IGenericRepository<Book>
     
     Task<Book?> GetSingleById(Guid guid);
     Task<bool> AnyById(Guid guid);
-    Task<bool> AnyByRefName(Guid userId, string title);
+    Task<bool> AnyByTitle(Guid userId, string title);
     RatingStatistics RatingStatistics(Guid bookId);
 }

@@ -17,6 +17,10 @@
     <ItemGroup>
         <InternalsVisibleTo Include="BooksApp.Application.UnitTests" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Images\Commands\" />
+    </ItemGroup>
     
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>

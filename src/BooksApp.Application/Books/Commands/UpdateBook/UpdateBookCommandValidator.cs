@@ -13,6 +13,7 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
     public UpdateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {
+        // Books
         RuleFor(book => book.Title)
             .MaximumLength((int)BookMaxLengths.Title);
         RuleFor(post => post.Description)
@@ -20,9 +21,9 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
         
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) => 
-                request.Title == null || !await unitOfWork.Books.AnyByRefName(request.UserId, request.Title))
+                request.Title == null || !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title))
             .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
-            .OverridePropertyName("Title");
+            .OverridePropertyName(nameof(UpdateBookCommand.Title));
         RuleFor(book => book)
             .MustAsync(async (request, cancellationToken) =>
             {
@@ -33,6 +34,9 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                     book.Id == BookId.CreateBookId(request.Id) &&
                     (book.Author.Id == UserId.CreateUserId(request.UserId) || canUpdate));
             }).WithMessage(BookValidationMessages.BookNotYour);
+        
+        // Genres
+        
         RuleFor(request => request.GenreIds).Must(genreIds =>
         {
             if (genreIds is null)

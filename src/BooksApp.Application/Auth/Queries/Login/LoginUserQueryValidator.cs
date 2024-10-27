@@ -24,6 +24,6 @@ public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
                 return Hashing.IsPasswordValid(user.Hash, user.Salt, request.Password);
             })
             .WithMessage(AuthValidationMessages.EmailOrPassword)
-            .OverridePropertyName("Email or Password");
+            .OverridePropertyName($"{nameof(LoginUserQuery.Email)} and/or {nameof(LoginUserQuery.Password)}");
     }
 }

@@ -17,7 +17,7 @@ public class CreateBookshelfValidator : AbstractValidator<CreateBookshelfCommand
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                !await unitOfWork.Bookshelves.AnyByRefName(request.Name, request.UserId))
+                !await unitOfWork.Bookshelves.AnyByName(request.Name, request.UserId))
             .WithMessage(BookshelfValidationMessages.AlreadyHaveWithSameName)
             .OverridePropertyName(nameof(CreateBookshelfCommand.Name));
         RuleFor(request => request.Name)

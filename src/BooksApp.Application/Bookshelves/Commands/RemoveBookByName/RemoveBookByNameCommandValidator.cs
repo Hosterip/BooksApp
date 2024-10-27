@@ -6,9 +6,9 @@ using PostsApp.Domain.Common.Constants;
 
 namespace PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
 
-public sealed class RemoveBookByRefNameCommandValidator : AbstractValidator<RemoveBookByRefNameCommand>
+public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveBookByNameCommand>
 {
-    public RemoveBookByRefNameCommandValidator(IUnitOfWork unitOfWork)
+    public RemoveBookByNameCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) => 
@@ -16,7 +16,7 @@ public sealed class RemoveBookByRefNameCommandValidator : AbstractValidator<Remo
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                await unitOfWork.Bookshelves.AnyBookByRefName(request.BookshelfRefName, request.UserId, request.BookId))
+                await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfRefName, request.UserId, request.BookId))
             .WithMessage(BookshelfValidationMessages.NoBookToRemove)
             .OverridePropertyName("RefName");
     }
