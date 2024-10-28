@@ -1,5 +1,8 @@
+using FluentValidation;
+using FluentValidation.Results;
 using MapsterMapper;
 using MediatR;
+using PostsApp.Application.Common.Constants.Exceptions;
 using PostsApp.Application.Common.Interfaces;
 using PostsApp.Domain.Common.Security;
 
@@ -21,6 +24,13 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
         var user = await _unitOfWork.Users
             .GetSingleById(request.Id);
 
+        if (Hashing.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword))
+            throw new ValidationException([
+                new ValidationFailure(
+                    nameof(ChangePasswordCommand.OldPassword),
+                    AuthValidationMessages.Password)
+            ]);
+        
         var hashSalt = Hashing.GenerateHashSalt(request.NewPassword);
         user!.Hash = hashSalt.Hash;
         user.Salt = hashSalt.Salt;

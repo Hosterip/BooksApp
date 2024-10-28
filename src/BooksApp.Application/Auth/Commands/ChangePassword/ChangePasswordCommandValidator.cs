@@ -10,16 +10,9 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
 {
     public ChangePasswordCommandValidator(IUnitOfWork unitOfWork)
     {
-        RuleFor(request => request)
-            .MustAsync(async (request, cancellationToken) =>
-            {
-                var user = await unitOfWork.Users.GetSingleById(request.Id);
-                if (user is null)
-                    return false;
-                return Hashing.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword);
-            })
-            .WithMessage(AuthValidationMessages.Password)
-            .OverridePropertyName(nameof(ChangePasswordCommand.OldPassword));
+        RuleFor(request => request.Id)
+            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
+            .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request.NewPassword)
             .MaximumLength((int)UserMaxLengths.Password);
     }
