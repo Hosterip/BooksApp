@@ -1,3 +1,4 @@
+using Contractss.Requests.Bookshelves;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Extensions;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace PostsApp.Controllers;
 
@@ -43,11 +45,11 @@ public class BookshelvesController : ApiController
     [HttpPost(ApiRoutes.Bookshelves.Create)]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Create(
-        string name)
+        [FromBodyOrDefault] CreateBookshelfRequest request)
     {
         var command = new CreateBookshelfCommand
         {
-            Name = name,
+            Name = request.Name,
             UserId = Guid.Parse(HttpContext.GetId()!)
         };
         var result = await _sender.Send(command);
