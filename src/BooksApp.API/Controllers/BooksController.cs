@@ -6,11 +6,6 @@ using PostsApp.Application.Books.Commands.DeleteBook;
 using PostsApp.Application.Books.Commands.UpdateBook;
 using PostsApp.Application.Books.Queries.GetBooks;
 using PostsApp.Application.Books.Queries.GetSingleBook;
-using PostsApp.Application.Bookshelves.Commands.AddBook;
-using PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
-using PostsApp.Application.Bookshelves.Commands.RemoveBook;
-using PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
-using PostsApp.Application.Reviews.Queries.GetReviews;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.Book;
 using PostsApp.Common.Extensions;
@@ -100,75 +95,20 @@ public class BooksController : ApiController
         await _sender.Send(command, cancellationToken);
         return Ok();
     }
-
-    // Bookshelves logic
-
-    [HttpPost(ApiRoutes.Books.AddBook)]
-    [Authorize(Policy = Policies.Authorized)]
-    public async Task<IActionResult> AddBook(
-        [FromRoute] Guid bookId,
-        [FromRoute] string idOrName)
+    
+    // Users endpoints
+    
+    [HttpGet(ApiRoutes.Users.GetManyBooks)]
+    public async Task<IActionResult> GetManyByUserId(
+        CancellationToken cancellationToken,
+        [FromRoute] Guid userId,
+        [FromQuery] int? page,
+        [FromQuery] int? limit,
+        [FromQuery] string? q,
+        [FromQuery] Guid? genreId
+    )
     {
-        var userId = Guid.Parse(HttpContext.GetId()!);
-        Guid.TryParse(idOrName, out var bookshelfId);
-        await _sender.Send(bookshelfId != null
-            ? new AddBookCommand
-            {
-                BookshelfId = bookshelfId,
-                BookId = bookId,
-                UserId = userId
-            }
-            : new AddBookByNameCommand
-            {
-                BookshelfName = idOrName,
-                BookId = bookId,
-                UserId = userId
-            }
-        );
-
-        return Ok("Book was added successfully!");
-    }
-
-    [HttpDelete(ApiRoutes.Books.RemoveBook)]
-    [Authorize(Policy = Policies.Authorized)]
-    public async Task<IActionResult> RemoveBook(
-        [FromRoute] Guid bookId,
-        [FromRoute] string idOrName)
-    {
-        var userId = Guid.Parse(HttpContext.GetId()!);
-        Guid.TryParse(idOrName, out var bookshelfId);
-        await _sender.Send(bookshelfId != null
-            ? new RemoveBookCommand
-            {
-                BookshelfId = bookshelfId,
-                BookId = bookId,
-                UserId = userId
-            }
-            : new RemoveBookByNameCommand
-            {
-                BookshelfName = idOrName,
-                BookId = bookId,
-                UserId = userId
-            }
-        );
-        return Ok("Book was deleted successfully!");
-    }
-
-    // Reviews
-
-    [HttpGet(ApiRoutes.Books.GetReviews)]
-    public async Task<IActionResult> GetReviews(
-        Guid id,
-        int? page,
-        int? pageSize,
-        CancellationToken cancellationToken)
-    {
-        var query = new GetReviewsQuery
-        {
-            BookId = id,
-            Page = page ?? 1,
-            PageSize = pageSize ?? 10
-        };
+        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId, GenreId = genreId };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PostsApp.Application.Reviews.Commands.CreateReview;
 using PostsApp.Application.Reviews.Commands.DeleteReview;
 using PostsApp.Application.Reviews.Commands.UpdateReview;
+using PostsApp.Application.Reviews.Queries.GetReviews;
 using PostsApp.Common.Constants;
 using PostsApp.Common.Contracts.Requests.Review;
 using PostsApp.Common.Extensions;
@@ -67,5 +68,24 @@ public class ReviewsController : ApiController
         };
         await _sender.Send(command, cancellationToken);
         return Ok("Review was successfully deleted");
+    }
+    
+    // Books
+
+    [HttpGet(ApiRoutes.Books.GetReviews)]
+    public async Task<IActionResult> GetReviews(
+        Guid id,
+        int? page,
+        int? pageSize,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetReviewsQuery
+        {
+            BookId = id,
+            Page = page ?? 1,
+            PageSize = pageSize ?? 10
+        };
+        var result = await _sender.Send(query, cancellationToken);
+        return Ok(result);
     }
 }

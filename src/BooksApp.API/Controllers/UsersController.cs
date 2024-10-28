@@ -2,10 +2,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Books.Queries.GetBooks;
-using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
-using PostsApp.Application.Roles.Commands.UpdateRole;
-using PostsApp.Application.Roles.Queries.GetRoles;
 using PostsApp.Application.Users.Commands.DeleteUser;
 using PostsApp.Application.Users.Commands.InsertAvatar;
 using PostsApp.Application.Users.Commands.UpdateEmail;
@@ -13,7 +9,6 @@ using PostsApp.Application.Users.Commands.UpdateName;
 using PostsApp.Application.Users.Queries.GetSingleUser;
 using PostsApp.Application.Users.Queries.GetUsers;
 using PostsApp.Common.Constants;
-using PostsApp.Common.Contracts.Requests.Role;
 using PostsApp.Common.Contracts.Requests.User;
 using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
@@ -126,69 +121,6 @@ public class UsersController : ApiController
 
         var result = await _sender.Send(command, cancellationToken);
 
-        return Ok(result);
-    }
-
-    // Roles Logic
-    [HttpPut(ApiRoutes.Users.UpdateRole)]
-    [Authorize(Policies.Authorized)]
-    public async Task<IActionResult> UpdateRole(
-        [FromBodyOrDefault] ChangeRoleRequest request,
-        CancellationToken cancellationToken)
-    {
-        var command = new UpdateRoleCommand
-        {
-            ChangerId = new Guid(HttpContext.GetId()!),
-            Role = request.Role,
-            UserId = request.UserId
-        };
-
-        await _sender.Send(command, cancellationToken);
-
-        return Ok("Operation succeeded");
-    }
-
-
-    [HttpGet(ApiRoutes.Users.GetRoles)]
-    public async Task<IActionResult> GetRoles(
-        CancellationToken cancellationToken)
-    {
-        var command = new GetRoleQuery();
-
-        var roles = await _sender.Send(command, cancellationToken);
-
-        return Ok(roles);
-    }
-
-    // Bookshelves 
-
-    [HttpGet(ApiRoutes.Users.GetBookshelves)]
-    public async Task<IActionResult> GetBookshelves(
-        Guid userId)
-    {
-        var query = new GetBookshelvesQuery
-        {
-            UserId = userId
-        };
-        var result = await _sender.Send(query);
-
-        return Ok(result);
-    }
-
-    // Books 
-
-    [HttpGet(ApiRoutes.Users.GetManyBooks)]
-    public async Task<IActionResult> GetManyBooks(
-        CancellationToken cancellationToken,
-        [FromRoute] Guid userId,
-        [FromQuery] int? page,
-        [FromQuery] int? limit,
-        [FromQuery] string? q,
-        [FromQuery] Guid? genreId
-    )
-    {
-        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId, GenreId = genreId };
-        var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }
 }
