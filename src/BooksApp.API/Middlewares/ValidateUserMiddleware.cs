@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication;
-using PostsApp.Application.Auth.Queries.GetFullUser;
+using PostsApp.Application.Auth.Queries.ValidateUser;
 using PostsApp.Common.Extensions;
 
 namespace PostsApp.Middlewares;
@@ -21,15 +21,16 @@ public class ValidateUserMiddleware
         var role = context.GetRole();
         if (id != null && securityStamp != null)
         {
-            var query = new GetFullUserQuery
+            var query = new ValidateUserQuery
             {
-                UserId = Guid.Parse(id)
+                UserId = Guid.Parse(id),
+                SecurityStamp = securityStamp
             };
-            var result = await sender.Send(query);
-            if (result is null || result.SecurityStamp != securityStamp)
+            var userRole = await sender.Send(query);
+            if (userRole is null)
                 await context.SignOutAsync();
-            else if (result.Role.Name != role)
-                context.ChangeRole(result.Role.Name);
+            else if (userRole != role)
+                context.ChangeRole(userRole);
         }
 
         await _next(context);
