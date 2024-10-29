@@ -69,7 +69,7 @@ public class BookshelvesController : ApiController
 
         await _sender.Send(command);
 
-        return Ok("Bookshelf deleted");
+        return Ok();
     }
     
     // Books endpoints
@@ -97,7 +97,7 @@ public class BookshelvesController : ApiController
             }
         );
 
-        return Ok("Book was added successfully!");
+        return Ok();
     }
 
     [HttpDelete(ApiRoutes.Books.RemoveBook)]
@@ -122,7 +122,7 @@ public class BookshelvesController : ApiController
                 UserId = userId
             }
         );
-        return Ok("Book was deleted successfully!");
+        return Ok();
     }
 
     // Users endpoints 

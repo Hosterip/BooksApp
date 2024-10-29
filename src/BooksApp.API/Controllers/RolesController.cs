@@ -35,7 +35,7 @@ public class RolesController : ApiController
 
         await _sender.Send(command, cancellationToken);
 
-        return Ok("Operation succeeded");
+        return Ok();
     }
 
 

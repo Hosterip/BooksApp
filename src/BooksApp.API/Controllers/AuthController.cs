@@ -72,7 +72,7 @@ public class AuthController : ApiController
         };
         var result = await _sender.Send(command, cancellationToken);
         HttpContext.ChangeSecurityStamp(result.SecurityStamp);
-        return Ok("Operation succeeded");
+        return Ok();
     }
 
     [HttpPost(ApiRoutes.Auth.Logout)]
@@ -81,6 +81,6 @@ public class AuthController : ApiController
         HttpContext httpContext)
     {
         httpContext.SignOutAsync();
-        return Ok("You've been signed out");
+        return Ok();
     }
 }

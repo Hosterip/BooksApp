@@ -67,7 +67,7 @@ public class ReviewsController : ApiController
             UserId = new Guid(HttpContext.GetId()!)
         };
         await _sender.Send(command, cancellationToken);
-        return Ok("Review was successfully deleted");
+        return Ok();
     }
     
     // Books

@@ -70,7 +70,7 @@ public class UsersController : ApiController
 
         await HttpContext.SignOutAsync();
 
-        return Ok("User was deleted");
+        return Ok();
     }
 
     [HttpPut(ApiRoutes.Users.UpdateEmail)]
@@ -89,7 +89,7 @@ public class UsersController : ApiController
 
         HttpContext.ChangeEmail(request.Email);
 
-        return Ok("Email was updated");
+        return Ok();
     }
 
     [HttpPut(ApiRoutes.Users.UpdateName)]
@@ -108,7 +108,7 @@ public class UsersController : ApiController
 
         await _sender.Send(command, cancellationToken);
 
-        return Ok("Name was updated");
+        return Ok();
     }
 
     [HttpPut(ApiRoutes.Users.UpdateAvatar)]
