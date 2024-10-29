@@ -5,6 +5,7 @@ using BooksApp.Application.Books.Commands.DeleteBook;
 using BooksApp.Application.Books.Commands.UpdateBook;
 using BooksApp.Application.Books.Queries.GetBooks;
 using BooksApp.Application.Books.Queries.GetSingleBook;
+using BooksApp.Application.Books.Results;
 using BooksApp.Contracts.Requests.Books;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -52,7 +53,7 @@ public class BooksController : ApiController
 
     [HttpPost(ApiRoutes.Books.Create)]
     [Authorize]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<BookResult>> Create(
         [FromBodyOrDefault] CreateBookRequest request,
         CancellationToken cancellationToken
     )
@@ -67,12 +68,14 @@ public class BooksController : ApiController
         };
         var book = await _sender.Send(createBookCommand, cancellationToken);
 
-        return Ok(book);
+        return CreatedAtAction(
+            nameof(GetSingle),
+            new {id = book.Id}, book);
     }
 
     [HttpPut(ApiRoutes.Books.Update)]
     [Authorize]
-    public async Task<IActionResult> Update(
+    public async Task<ActionResult<BookResult>> Update(
         [FromBodyOrDefault] UpdateBookRequest request,
         CancellationToken cancellationToken)
     {
@@ -86,7 +89,9 @@ public class BooksController : ApiController
             GenreIds = request.GenreIds
         };
         var result = await _sender.Send(updateBookCommand, cancellationToken);
-        return Ok(result);
+        return CreatedAtAction(
+            nameof(GetSingle),
+            new {id = result.Id}, result);
     }
 
     [HttpDelete(ApiRoutes.Books.Delete)]

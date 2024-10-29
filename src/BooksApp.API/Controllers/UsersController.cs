@@ -124,6 +124,6 @@ public class UsersController : ApiController
 
         var result = await _sender.Send(command, cancellationToken);
 
-        return Ok(result);
+        return CreatedAtAction(nameof(GetById),new { id = result.Id }, result);
     }
 }

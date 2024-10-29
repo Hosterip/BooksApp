@@ -26,7 +26,7 @@ public class AuthController : ApiController
 
     [HttpPost(ApiRoutes.Auth.Register)]
     [Authorize(Policies.NotAuthorized)]
-    public async Task<IActionResult> Register(
+    public async Task<ActionResult<UserResponse>> Register(
         [FromBodyOrDefault] RegisterRequest request,
         CancellationToken cancellationToken)
     {
@@ -45,19 +45,23 @@ public class AuthController : ApiController
         };
         await _sender.Send(createDefaultBookshelves, cancellationToken);
         await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
-        return Ok(user.Adapt<UserResponse>());
+        return CreatedAtAction(
+            nameof(UsersController.GetById), 
+            "Users",
+            new { id = user.Id },
+            user.Adapt<UserResponse>());
     }
 
     [HttpPost(ApiRoutes.Auth.Login)]
     [Authorize(Policies.NotAuthorized)]
-    public async Task<IActionResult> Login(
+    public async Task<ActionResult<UserResponse>> Login(
         [FromBodyOrDefault] LoginRequest request,
         CancellationToken cancellationToken)
     {
         var command = new LoginUserQuery { Email = request.Email, Password = request.Password };
         var user = await _sender.Send(command, cancellationToken);
         await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
-        return Ok(user.Adapt<UserResponse>());
+        return Ok(); 
     }
 
     [HttpPut(ApiRoutes.Auth.UpdatePassword)]
@@ -74,7 +78,11 @@ public class AuthController : ApiController
         };
         var result = await _sender.Send(command, cancellationToken);
         HttpContext.ChangeSecurityStamp(result.SecurityStamp);
-        return Ok();
+        return CreatedAtAction(
+            nameof(UsersController.GetById), 
+            "Users",
+            new { id = result.Id },
+            result.Adapt<UserResponse>());
     }
 
     [HttpPost(ApiRoutes.Auth.Logout)]

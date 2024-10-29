@@ -95,6 +95,7 @@ public static class ApiRoutes
         // Bookshelves 
 
         public const string GetBookshelves = $"{Base}/{{userId:guid}}/bookshelves";
+        public const string GetBookshelf = $"{Base}/{{userId:guid}}/bookshelves/{{nameOrGuid}}";
 
         // Books
 
