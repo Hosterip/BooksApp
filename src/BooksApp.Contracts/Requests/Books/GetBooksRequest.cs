@@ -2,8 +2,8 @@ namespace BooksApp.Contracts.Requests.Books;
 
 public class GetBooksRequest
 {
-    public required int? Limit { get; set; }
-    public required int? Page { get; set; }
-    public required string? Q { get; set; }
-    public required Guid? GenreId { get; set; }
+    public required int? Limit { get; init; }
+    public required int? Page { get; init; }
+    public required string? Q { get; init; }
+    public required Guid? GenreId { get; init; }
 }

@@ -4,8 +4,8 @@ namespace BooksApp.Contracts.Requests.Books;
 
 public class CreateBookRequest
 {
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public List<Guid> GenreIds { get; set; }
-    public IFormFile Cover { get; set; }
+    public required string Title { get; init; }
+    public required string Description { get; init; }
+    public required List<Guid> GenreIds { get; init; }
+    public required IFormFile Cover { get; init; }
 }

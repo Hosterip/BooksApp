@@ -4,9 +4,9 @@ namespace BooksApp.Contracts.Requests.Books;
 
 public class UpdateBookRequest
 {
-    public Guid Id { get; set; }
-    public string? Title { get; set; }
-    public string? Description { get; set; }
-    public IFormFile? Cover { get; set; }
-    public List<Guid> GenreIds { get; set; }
+    public required Guid Id { get; init; }
+    public required string? Title { get; init; }
+    public required string? Description { get; init; }
+    public required IFormFile? Cover { get; init; }
+    public required List<Guid> GenreIds { get; init; }
 }

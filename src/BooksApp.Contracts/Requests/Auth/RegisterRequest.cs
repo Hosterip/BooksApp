@@ -2,9 +2,9 @@ namespace BooksApp.Contracts.Requests.Auth;
 
 public class RegisterRequest
 {
-    public string Email { get; set; }
-    public string FirstName { get; set; }
-    public string? MiddleName { get; set; }
-    public string? LastName { get; set; }
-    public string Password { get; set; }
+    public required string Email { get; init; }
+    public required string FirstName { get; init; }
+    public required string? MiddleName { get; init; }
+    public required string? LastName { get; init; }
+    public required string Password { get; init; }
 }

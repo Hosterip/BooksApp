@@ -4,5 +4,5 @@ namespace BooksApp.Contracts.Requests.Users;
 
 public class InsertAvatarRequest
 {
-    public IFormFile Image { get; set; }
+    public required IFormFile Image { get; init; }
 }

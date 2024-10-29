@@ -2,7 +2,7 @@
 
 public class CreateReviewRequest
 {
-    public Guid BookId { get; set; }
-    public int Rating { get; set; }
-    public string Body { get; set; }
+    public required Guid BookId { get; init; }
+    public required int Rating { get; init; }
+    public required string Body { get; init; }
 }

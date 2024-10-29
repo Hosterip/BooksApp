@@ -2,6 +2,6 @@ namespace BooksApp.Contracts.Requests.Roles;
 
 public class ChangeRoleRequest
 {
-    public Guid UserId { get; set; }
-    public string Role { get; set; }
+    public required Guid UserId { get; init; }
+    public required string Role { get; init; }
 }

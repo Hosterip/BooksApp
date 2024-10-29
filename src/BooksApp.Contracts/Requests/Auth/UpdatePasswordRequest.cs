@@ -2,6 +2,6 @@ namespace BooksApp.Contracts.Requests.Auth;
 
 public class UpdatePasswordRequest
 {
-    public string OldPassword { get; set; }
-    public string NewPassword { get; set; }
+    public required string OldPassword { get; init; }
+    public required string NewPassword { get; init; }
 }
