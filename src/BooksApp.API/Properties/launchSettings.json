@@ -4,19 +4,13 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
+        "ASPNETCORE_IMAGES_SAVE_PATH": "images",
+        "DB_HOST": "localhost,1433",
+        "DB_NAME": "booksappdb",
+        "DB_SA_PASSWORD": "password@12345"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7190"
-    },
-    "http": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:7190"
+      "applicationUrl": "https://localhost:8081"
     },
     "IIS Express": {
       "commandName": "IISExpress",

@@ -2,6 +2,7 @@ using System.Reflection;
 using BooksApp.Domain.Book;
 using BooksApp.Domain.Bookshelf;
 using BooksApp.Domain.Bookshelf.Entities;
+using BooksApp.Domain.Common.Constants;
 using BooksApp.Domain.Genre;
 using BooksApp.Domain.Image;
 using BooksApp.Domain.Review;
@@ -35,9 +36,9 @@ public sealed class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-        var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-        var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+        var dbHost = Environment.GetEnvironmentVariable(EnvironmentNames.DbHost);
+        var dbName = Environment.GetEnvironmentVariable(EnvironmentNames.DbName);
+        var dbPassword = Environment.GetEnvironmentVariable(EnvironmentNames.DbPassword);
         optionsBuilder
             .UseSqlServer(
                 $"Server={dbHost};Database={dbName};User Id=sa;Password={dbPassword};Trusted_Connection=False;TrustServerCertificate=True");

@@ -24,7 +24,7 @@ services:
     depends_on:
       - booksapp.db
     environment:
-      - DB_HOST=booksapp.db
+      - DB_HOST=localhost,1433
       - DB_NAME=booksappdb
       - DB_SA_PASSWORD=password@12345
       - ASPNETCORE_URLS=http://+:8080;https://+:8081
