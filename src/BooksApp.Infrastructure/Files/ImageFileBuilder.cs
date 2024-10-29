@@ -12,7 +12,7 @@ public class ImageFileBuilder : IImageFileBuilder
         var path = Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images");
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
-        var fileName = $"{DateTime.Now:ddMMyymm}_{Guid.NewGuid()}";
+        var fileName = $"{DateTime.Now:ddMMyy-HHmmss}_{file.FileName}";
         var filePath = Path.Combine(path, $"{fileName}");
         await using var fileStream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(fileStream, token);
@@ -55,10 +55,8 @@ public class ImageFileBuilder : IImageFileBuilder
 
     public bool IsValid(string fileName, CancellationToken token = default)
     {
-        var path = Path.Combine(
-            Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images",
-            fileName
-        );
+        var path = Path.Combine(fileName);
+        if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) > 0) return false;
         var fileInfo = new FileInfo(path);
         var extension = fileInfo.Extension.Replace(".", "");
         return AppConstants.AllowedExtensions.Contains(extension);
