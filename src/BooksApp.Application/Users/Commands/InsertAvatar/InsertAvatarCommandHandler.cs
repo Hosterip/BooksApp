@@ -23,9 +23,9 @@ public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, U
     {
         var user =
             await _unitOfWork.Users.GetSingleById(request.Id);
+        var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
         if (user?.Avatar is null)
         {
-            var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
             var image = Image.Create(fileName);
             user!.Avatar = image;
             await _unitOfWork.Images.AddAsync(image);
@@ -33,7 +33,6 @@ public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, U
         else
         {
             await _imageFileBuilder.DeleteImage(user.Avatar.ImageName, cancellationToken);
-            var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
             user.Avatar.ImageName = fileName;
         }
 
