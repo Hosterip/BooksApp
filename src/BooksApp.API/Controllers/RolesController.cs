@@ -28,7 +28,7 @@ public class RolesController : ApiController
     {
         var command = new UpdateRoleCommand
         {
-            ChangerId = new Guid(HttpContext.GetId()!),
+            ChangerId = HttpContext.GetId()!.Value,
             Role = request.Role,
             UserId = request.UserId
         };

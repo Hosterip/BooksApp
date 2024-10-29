@@ -18,7 +18,7 @@ public class AuthorizedRequirementHandler : AuthorizationHandler<AuthorizedRequi
         }
         else
         {
-            var reason = new AuthorizationFailureReason(this, "You are already authorized");
+            var reason = new AuthorizationFailureReason(this, "You are not already authorized");
             context.Fail(reason);
         }
 

@@ -49,7 +49,7 @@ public class BookshelvesController : ApiController
         var command = new CreateBookshelfCommand
         {
             Name = request.Name,
-            UserId = Guid.Parse(HttpContext.GetId()!)
+            UserId = HttpContext.GetId()!.Value
         };
         var result = await _sender.Send(command);
 
@@ -79,7 +79,7 @@ public class BookshelvesController : ApiController
         [FromRoute] Guid bookId,
         [FromRoute] string idOrName)
     {
-        var userId = Guid.Parse(HttpContext.GetId()!);
+        var userId = HttpContext.GetId()!.Value;
         Guid.TryParse(idOrName, out var bookshelfId);
         await _sender.Send(bookshelfId != null
             ? new AddBookCommand
@@ -105,7 +105,7 @@ public class BookshelvesController : ApiController
         [FromRoute] Guid bookId,
         [FromRoute] string idOrName)
     {
-        var userId = Guid.Parse(HttpContext.GetId()!);
+        var userId = HttpContext.GetId()!.Value;
         Guid.TryParse(idOrName, out var bookshelfId);
         await _sender.Send(bookshelfId != null
             ? new RemoveBookCommand

@@ -68,7 +68,7 @@ public class AuthController : ApiController
         {
             NewPassword = request.NewPassword,
             OldPassword = request.OldPassword,
-            Id = new Guid(HttpContext.GetId()!)
+            Id = HttpContext.GetId()!.Value
         };
         var result = await _sender.Send(command, cancellationToken);
         HttpContext.ChangeSecurityStamp(result.SecurityStamp);

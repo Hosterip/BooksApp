@@ -30,7 +30,7 @@ public class ReviewsController : ApiController
         var command = new CreateReviewCommand
         {
             BookId = request.BookId,
-            UserId = new Guid(HttpContext.GetId()!),
+            UserId = HttpContext.GetId()!.Value,
             Body = request.Body,
             Rating = request.Rating
         };
@@ -47,7 +47,7 @@ public class ReviewsController : ApiController
         var command = new UpdateReviewCommand
         {
             ReviewId = request.ReviewId,
-            UserId = new Guid(HttpContext.GetId()!),
+            UserId = HttpContext.GetId()!.Value,
             Body = request.Body,
             Rating = request.Rating
         };
@@ -64,7 +64,7 @@ public class ReviewsController : ApiController
         var command = new DeleteReviewCommand
         {
             ReviewId = id,
-            UserId = new Guid(HttpContext.GetId()!)
+            UserId = HttpContext.GetId()!.Value
         };
         await _sender.Send(command, cancellationToken);
         return Ok();

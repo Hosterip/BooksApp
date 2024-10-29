@@ -59,7 +59,7 @@ public class BooksController : ApiController
     {
         var createBookCommand = new CreateBookCommand
         {
-            UserId = new Guid(HttpContext.GetId()!),
+            UserId = HttpContext.GetId()!.Value,
             Title = request.Title,
             Description = request.Description,
             Image = request.Cover,
@@ -79,7 +79,7 @@ public class BooksController : ApiController
         var updateBookCommand = new UpdateBookCommand
         {
             Id = request.Id,
-            UserId = new Guid(HttpContext.GetId()!),
+            UserId = HttpContext.GetId()!.Value,
             Title = request.Title,
             Description = request.Description,
             Image = request.Cover,
@@ -95,7 +95,7 @@ public class BooksController : ApiController
         Guid id,
         CancellationToken cancellationToken)
     {
-        var command = new DeleteBookCommand { Id = id, UserId = new Guid(HttpContext.GetId()!) };
+        var command = new DeleteBookCommand { Id = id, UserId = HttpContext.GetId()!.Value };
         await _sender.Send(command, cancellationToken);
         return Ok();
     }
