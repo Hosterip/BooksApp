@@ -8,5 +8,5 @@ public class GetReviewsQuery : IRequest<PaginatedArray<ReviewResult>>
 {
     public required Guid BookId { get; init; }
     public required int Page { get; init; }
-    public required int PageSize { get; init; }
+    public required int Limit { get; init; }
 }

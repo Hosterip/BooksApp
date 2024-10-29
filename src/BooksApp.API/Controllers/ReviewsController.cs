@@ -58,7 +58,7 @@ public class ReviewsController : ApiController
     [HttpDelete(ApiRoutes.Reviews.Delete)]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Delete(
-        Guid id,
+        [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
         var command = new DeleteReviewCommand
@@ -75,15 +75,14 @@ public class ReviewsController : ApiController
     [HttpGet(ApiRoutes.Books.GetReviews)]
     public async Task<IActionResult> GetReviews(
         Guid id,
-        int? page,
-        int? pageSize,
+        [FromQuery] GetReviewsQuery request,
         CancellationToken cancellationToken)
     {
         var query = new GetReviewsQuery
         {
             BookId = id,
-            Page = page ?? 1,
-            PageSize = pageSize ?? 10
+            Page = request.Page,
+            Limit = request.Limit
         };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);

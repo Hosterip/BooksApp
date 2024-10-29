@@ -19,7 +19,7 @@ public class GenresController : ApiController
     [HttpPost(ApiRoutes.Genres.Create)]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Create(
-        string name,
+        [FromRoute] string name,
         CancellationToken cancellationToken)
     {
         var createGenreCommand = new CreateGenreCommand

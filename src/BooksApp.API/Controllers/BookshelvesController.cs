@@ -1,4 +1,4 @@
-using Contractss.Requests.Bookshelves;
+using Contracts.Requests.Bookshelves;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,7 @@ using PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
 using PostsApp.Common.Constants;
+using PostsApp.Common.Contracts.Requests.Book;
 using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
@@ -28,14 +29,13 @@ public class BookshelvesController : ApiController
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
     public async Task<IActionResult> GetBooks(
         Guid bookshelfId,
-        int? limit,
-        int? page)
+        [FromQuery] GetBookshelfBooksRequest request)
     {
         var query = new GetBookshelfBooksQuery
         {
             BookshelfId = bookshelfId,
-            Limit = limit,
-            Page = page
+            Limit = request.Limit,
+            Page = request.Page
         };
         var result = await _sender.Send(query);
 
@@ -60,7 +60,7 @@ public class BookshelvesController : ApiController
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> Remove(
-        Guid bookshelfId)
+        [FromRoute] Guid bookshelfId)
     {
         var command = new DeleteBookshelfCommand
         {

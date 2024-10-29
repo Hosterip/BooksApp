@@ -25,13 +25,17 @@ public class BooksController : ApiController
     [HttpGet(ApiRoutes.Books.GetMany)]
     public async Task<IActionResult> GetMany(
         CancellationToken cancellationToken,
-        [FromQuery] int? page,
-        [FromQuery] int? limit,
-        [FromQuery] string? q,
-        [FromQuery] Guid? genreId
+        [FromQuery] GetBooksRequest request
     )
     {
-        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = null, GenreId = genreId };
+        var query = new GetBooksQuery
+        {
+            Query = request.Q,
+            Limit = request.Limit,
+            Page = request.Page,
+            GenreId = request.GenreId,
+            UserId = null,
+        };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }
@@ -102,13 +106,17 @@ public class BooksController : ApiController
     public async Task<IActionResult> GetManyByUserId(
         CancellationToken cancellationToken,
         [FromRoute] Guid userId,
-        [FromQuery] int? page,
-        [FromQuery] int? limit,
-        [FromQuery] string? q,
-        [FromQuery] Guid? genreId
+        [FromQuery] GetUserBooksRequest request
     )
     {
-        var query = new GetBooksQuery { Query = q, Limit = limit, Page = page, UserId = userId, GenreId = genreId };
+        var query = new GetBooksQuery
+        {
+            Query = request.Q,
+            Limit = request.Limit,
+            Page = request.Page,
+            GenreId = request.GenreId,
+            UserId = userId,
+        };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }

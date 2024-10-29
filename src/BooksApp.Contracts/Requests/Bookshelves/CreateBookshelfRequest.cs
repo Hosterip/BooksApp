@@ -1,4 +1,4 @@
-namespace Contractss.Requests.Bookshelves;
+namespace Contracts.Requests.Bookshelves;
 
 public class CreateBookshelfRequest
 {

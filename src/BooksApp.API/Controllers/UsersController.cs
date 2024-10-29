@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Contracts.Requests.Users;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,19 +37,22 @@ public class UsersController : ApiController
 
     [HttpGet(ApiRoutes.Users.GetMany)]
     public async Task<IActionResult> GetMany(
-        int? page,
-        int? limit,
-        string? q,
+        [FromQuery] GetUsersRequest request,
         CancellationToken cancellationToken)
     {
-        var query = new GetUsersQuery { Query = q, Page = page, Limit = limit };
+        var query = new GetUsersQuery
+        {
+            Query = request.Q,
+            Page = request.Page,
+            Limit = request.Limit
+        };
         var users = await _sender.Send(query, cancellationToken);
         return Ok(users);
     }
 
     [HttpGet(ApiRoutes.Users.GetById)]
     public async Task<IActionResult> GetById(
-        Guid id,
+        [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
         var query = new GetSingleUserQuery { Id = id };

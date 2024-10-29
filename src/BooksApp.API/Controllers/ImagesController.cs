@@ -16,7 +16,7 @@ public class ImagesController : ApiController
 
     [HttpGet(ApiRoutes.Images.Get)]
     public async Task<IActionResult> Get(
-        string name,
+        [FromRoute] string name,
         CancellationToken cancellationToken)
     {
         var query = new GetImageQuery

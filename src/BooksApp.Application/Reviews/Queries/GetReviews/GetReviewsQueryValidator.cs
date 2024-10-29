@@ -8,7 +8,7 @@ public class GetReviewsQueryValidator : AbstractValidator<GetReviewsQuery>
     {
         RuleFor(request => request.Page)
             .GreaterThanOrEqualTo(1);
-        RuleFor(request => request.PageSize)
+        RuleFor(request => request.Limit)
             .GreaterThanOrEqualTo(1)
             .LessThanOrEqualTo(100);
     }
