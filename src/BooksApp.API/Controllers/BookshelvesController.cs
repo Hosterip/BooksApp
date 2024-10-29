@@ -42,7 +42,7 @@ public class BookshelvesController : ApiController
     }
 
     [HttpPost(ApiRoutes.Bookshelves.Create)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Create(
         [FromBodyOrDefault] CreateBookshelfRequest request)
     {
@@ -57,7 +57,7 @@ public class BookshelvesController : ApiController
     }
 
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Remove(
         [FromRoute] Guid bookshelfId)
     {
@@ -74,7 +74,7 @@ public class BookshelvesController : ApiController
     // Books endpoints
 
     [HttpPost(ApiRoutes.Books.AddBook)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> AddBook(
         [FromRoute] Guid bookId,
         [FromRoute] string idOrName)
@@ -100,7 +100,7 @@ public class BookshelvesController : ApiController
     }
 
     [HttpDelete(ApiRoutes.Books.RemoveBook)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> RemoveBook(
         [FromRoute] Guid bookId,
         [FromRoute] string idOrName)

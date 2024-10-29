@@ -17,7 +17,7 @@ public class GenresController : ApiController
     }
 
     [HttpPost(ApiRoutes.Genres.Create)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Create(
         [FromRoute] string name,
         CancellationToken cancellationToken)

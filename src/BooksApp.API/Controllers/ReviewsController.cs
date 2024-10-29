@@ -22,7 +22,7 @@ public class ReviewsController : ApiController
     }
 
     [HttpPost(ApiRoutes.Reviews.Create)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Create(
         [FromBodyOrDefault] CreateReviewRequest request,
         CancellationToken cancellationToken)
@@ -39,7 +39,7 @@ public class ReviewsController : ApiController
     }
 
     [HttpPut(ApiRoutes.Reviews.Update)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Update(
         [FromBodyOrDefault] UpdateReviewRequest request,
         CancellationToken cancellationToken)
@@ -56,7 +56,7 @@ public class ReviewsController : ApiController
     }
 
     [HttpDelete(ApiRoutes.Reviews.Delete)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Delete(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)

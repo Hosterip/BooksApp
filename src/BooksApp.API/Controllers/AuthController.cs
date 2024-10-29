@@ -25,6 +25,7 @@ public class AuthController : ApiController
     }
 
     [HttpPost(ApiRoutes.Auth.Register)]
+    [Authorize(Policies.NotAuthorized)]
     public async Task<IActionResult> Register(
         [FromBodyOrDefault] RegisterRequest request,
         CancellationToken cancellationToken)
@@ -48,6 +49,7 @@ public class AuthController : ApiController
     }
 
     [HttpPost(ApiRoutes.Auth.Login)]
+    [Authorize(Policies.NotAuthorized)]
     public async Task<IActionResult> Login(
         [FromBodyOrDefault] LoginRequest request,
         CancellationToken cancellationToken)
@@ -59,7 +61,7 @@ public class AuthController : ApiController
     }
 
     [HttpPut(ApiRoutes.Auth.UpdatePassword)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> UpdatePassword(
         [FromBodyOrDefault] UpdatePasswordRequest request,
         CancellationToken cancellationToken)
@@ -76,11 +78,10 @@ public class AuthController : ApiController
     }
 
     [HttpPost(ApiRoutes.Auth.Logout)]
-    [Authorize(Policy = Policies.NotAuthorized)]
-    public IActionResult Logout(
-        HttpContext httpContext)
+    [Authorize]
+    public IActionResult Logout()
     {
-        httpContext.SignOutAsync();
+        HttpContext.SignOutAsync();
         return Ok();
     }
 }

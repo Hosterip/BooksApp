@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Requirements;
 using BooksApp.API.Middlewares;
@@ -13,7 +14,6 @@ public static class AddAuthExtension
     {
         // Overriding default AuthorizationMiddlewareResultHandler
         serviceCollection.AddSingleton<IAuthorizationMiddlewareResultHandler, MyAuthorizationMiddlewareResultHandler>();
-        serviceCollection.AddSingleton<IAuthorizationHandler, AuthorizedRequirementHandler>();
         serviceCollection.AddSingleton<IAuthorizationHandler, NotAuthorizedRequirementHandler>();
         // Adding a cookie for auth
         serviceCollection.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -29,15 +29,12 @@ public static class AddAuthExtension
         {
             options.AddPolicy(Policies.Admin, policy => policy.RequireRole([RoleNames.Admin]));
 
-            options.AddPolicy(Policies.Moderator, policy => policy.RequireRole([RoleNames.Moderator]));
-
-            options.AddPolicy(Policies.AdminOrModerator,
-                policy => policy.RequireRole([RoleNames.Admin, RoleNames.Moderator]));
+            options.AddPolicy(Policies.Moderator, policy => policy.RequireAssertion(x =>
+                x.User.HasClaim(ClaimTypes.Role, RoleNames.Admin) ||
+                x.User.HasClaim(ClaimTypes.Role, RoleNames.Moderator)
+            ));
 
             options.AddPolicy(Policies.Author, policy => policy.RequireRole([RoleNames.Author]));
-
-            options.AddPolicy(Policies.Authorized, policy =>
-                policy.Requirements.Add(AuthRequirements.Authorized));
 
             options.AddPolicy(Policies.NotAuthorized, policy =>
                 policy.Requirements.Add(AuthRequirements.NotAuthorized));

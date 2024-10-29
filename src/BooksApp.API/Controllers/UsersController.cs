@@ -60,7 +60,7 @@ public class UsersController : ApiController
     }
 
     [HttpDelete(ApiRoutes.Users.Delete)]
-    [Authorize(Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Delete(
         CancellationToken cancellationToken)
     {
@@ -73,7 +73,7 @@ public class UsersController : ApiController
     }
 
     [HttpPut(ApiRoutes.Users.UpdateEmail)]
-    [Authorize(Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> UpdateEmail(
         [FromBodyOrDefault] UpdateEmailRequest request,
         CancellationToken cancellationToken)
@@ -92,7 +92,7 @@ public class UsersController : ApiController
     }
 
     [HttpPut(ApiRoutes.Users.UpdateName)]
-    [Authorize(Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> UpdateName(
         [FromBodyOrDefault] UpdateNameRequest request,
         CancellationToken cancellationToken)
@@ -111,7 +111,7 @@ public class UsersController : ApiController
     }
 
     [HttpPut(ApiRoutes.Users.UpdateAvatar)]
-    [Authorize(Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> UpdateAvatar(
         [FromBodyOrDefault] InsertAvatarRequest request,
         CancellationToken cancellationToken)

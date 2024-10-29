@@ -51,7 +51,7 @@ public class BooksController : ApiController
     }
 
     [HttpPost(ApiRoutes.Books.Create)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Create(
         [FromBodyOrDefault] CreateBookRequest request,
         CancellationToken cancellationToken
@@ -71,7 +71,7 @@ public class BooksController : ApiController
     }
 
     [HttpPut(ApiRoutes.Books.Update)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Update(
         [FromBodyOrDefault] UpdateBookRequest request,
         CancellationToken cancellationToken)
@@ -90,7 +90,7 @@ public class BooksController : ApiController
     }
 
     [HttpDelete(ApiRoutes.Books.Delete)]
-    [Authorize(Policy = Policies.Authorized)]
+    [Authorize]
     public async Task<IActionResult> Delete(
         Guid id,
         CancellationToken cancellationToken)
