@@ -18,9 +18,12 @@ public static class HttpContextUserExtension
     }
 
     // You must be already sure that user is exists before using it 
-    public static string? GetId(this HttpContext httpContext)
+    public static Guid? GetId(this HttpContext httpContext)
     {
-        return httpContext.User.Claims.SingleOrDefault(claim => claim.Type == AdditionalClaimTypes.Id)?.Value;
+        var claim = httpContext.User.Claims.SingleOrDefault(claim => claim.Type == AdditionalClaimTypes.Id);
+        if (Guid.TryParse(claim?.Value, out var userId))
+            return userId;
+        return null;
     }
 
     public static string? GetSecurityStamp(this HttpContext httpContext)

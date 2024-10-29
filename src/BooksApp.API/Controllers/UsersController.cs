@@ -28,7 +28,7 @@ public class UsersController : ApiController
     public async Task<IActionResult> GetMe(
         CancellationToken cancellationToken)
     {
-        var id = new Guid(HttpContext.GetId()!);
+        var id = HttpContext.GetId()!.Value;
         var query = new GetSingleUserQuery { Id = id };
         var user = await _sender.Send(query, cancellationToken);
         return Ok(user);
@@ -61,7 +61,7 @@ public class UsersController : ApiController
     public async Task<IActionResult> Delete(
         CancellationToken cancellationToken)
     {
-        var command = new DeleteUserCommand { Id = new Guid(HttpContext.GetId()!) };
+        var command = new DeleteUserCommand { Id = HttpContext.GetId()!.Value };
         await _sender.Send(command, cancellationToken);
 
         await HttpContext.SignOutAsync();
@@ -77,7 +77,7 @@ public class UsersController : ApiController
     {
         var command = new UpdateEmailCommand
         {
-            Id = new Guid(HttpContext.GetId()!),
+            Id = HttpContext.GetId()!.Value,
             Email = request.Email
         };
 
@@ -96,7 +96,7 @@ public class UsersController : ApiController
     {
         var command = new UpdateNameCommand
         {
-            UserId = new Guid(HttpContext.GetId()!),
+            UserId = HttpContext.GetId()!.Value,
             FirstName = request.FirstName,
             MiddleName = request.MiddleName,
             LastName = request.LastName
@@ -115,7 +115,7 @@ public class UsersController : ApiController
     {
         var command = new InsertAvatarCommand
         {
-            Id = new Guid(HttpContext.GetId()!),
+            Id = HttpContext.GetId()!.Value,
             Image = request.Image
         };
 

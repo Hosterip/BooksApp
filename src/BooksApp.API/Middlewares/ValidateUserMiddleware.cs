@@ -23,7 +23,7 @@ public class ValidateUserMiddleware
         {
             var query = new ValidateUserQuery
             {
-                UserId = Guid.Parse(id),
+                UserId = id.Value,
                 SecurityStamp = securityStamp
             };
             var userRole = await sender.Send(query);
