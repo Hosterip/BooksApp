@@ -58,7 +58,7 @@ public class AuthController : ApiController
         return Ok(user.Adapt<UserResponse>());
     }
 
-    [HttpPost(ApiRoutes.Auth.UpdatePassword)]
+    [HttpPut(ApiRoutes.Auth.UpdatePassword)]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> UpdatePassword(
         [FromBodyOrDefault] UpdatePasswordRequest request,

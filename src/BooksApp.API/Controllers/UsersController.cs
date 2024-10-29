@@ -75,7 +75,7 @@ public class UsersController : ApiController
     [HttpPut(ApiRoutes.Users.UpdateEmail)]
     [Authorize(Policies.Authorized)]
     public async Task<IActionResult> UpdateEmail(
-        [FromBodyOrDefault] UpdateEmail request,
+        [FromBodyOrDefault] UpdateEmailRequest request,
         CancellationToken cancellationToken)
     {
         var command = new UpdateEmailCommand
@@ -94,7 +94,7 @@ public class UsersController : ApiController
     [HttpPut(ApiRoutes.Users.UpdateName)]
     [Authorize(Policies.Authorized)]
     public async Task<IActionResult> UpdateName(
-        [FromBodyOrDefault] UpdateName request,
+        [FromBodyOrDefault] UpdateNameRequest request,
         CancellationToken cancellationToken)
     {
         var command = new UpdateNameCommand
