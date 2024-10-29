@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.AddBookByName;
 
 public sealed class AddBookByNameCommand : IRequest
 {

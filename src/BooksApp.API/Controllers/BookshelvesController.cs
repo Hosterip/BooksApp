@@ -1,21 +1,20 @@
-using Contracts.Requests.Bookshelves;
+using BooksApp.API.Common.Constants;
+using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Bookshelves.Commands.AddBook;
+using BooksApp.Application.Bookshelves.Commands.AddBookByName;
+using BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
+using BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
+using BooksApp.Application.Bookshelves.Commands.RemoveBook;
+using BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
+using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
+using BooksApp.Application.Bookshelves.Queries.GetBookshelves;
+using BooksApp.Contracts.Requests.Bookshelves;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Bookshelves.Commands.AddBook;
-using PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
-using PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
-using PostsApp.Application.Bookshelves.Commands.DeleteBookshelf;
-using PostsApp.Application.Bookshelves.Commands.RemoveBook;
-using PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
-using PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
-using PostsApp.Application.Bookshelves.Queries.GetBookshelves;
-using PostsApp.Common.Constants;
-using PostsApp.Common.Contracts.Requests.Book;
-using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 public class BookshelvesController : ApiController
 {
@@ -71,9 +70,9 @@ public class BookshelvesController : ApiController
 
         return Ok();
     }
-    
+
     // Books endpoints
-    
+
     [HttpPost(ApiRoutes.Books.AddBook)]
     [Authorize(Policy = Policies.Authorized)]
     public async Task<IActionResult> AddBook(

@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Domain.Book.ValueObjects;
-using PostsApp.Domain.Bookshelf;
-using PostsApp.Domain.Bookshelf.ValueObjects;
-using PostsApp.Domain.Common.Utils;
-using PostsApp.Domain.User.ValueObjects;
-using PostsApp.Infrastructure.Data;
+﻿using BooksApp.Application.Common.Interfaces.Repositories;
+using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.Bookshelf;
+using BooksApp.Domain.Bookshelf.ValueObjects;
+using BooksApp.Domain.Common.Utils;
+using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace PostsApp.Infrastructure.Implementation.Repositories;
+namespace BooksApp.Infrastructure.Implementation.Repositories;
 
 public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesRepository
 {

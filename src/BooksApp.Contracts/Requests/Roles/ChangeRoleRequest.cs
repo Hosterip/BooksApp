@@ -1,4 +1,4 @@
-namespace PostsApp.Common.Contracts.Requests.Role;
+namespace BooksApp.Contracts.Requests.Roles;
 
 public class ChangeRoleRequest
 {

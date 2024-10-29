@@ -1,11 +1,11 @@
-﻿using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Security;
-using PostsApp.Domain.Review.ValueObjects;
-using PostsApp.Domain.User.ValueObjects;
+﻿using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Security;
+using BooksApp.Domain.Review.ValueObjects;
+using BooksApp.Domain.User.ValueObjects;
+using FluentValidation;
 
-namespace PostsApp.Application.Reviews.Commands.DeleteReview;
+namespace BooksApp.Application.Reviews.Commands.DeleteReview;
 
 public class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewCommand>
 {

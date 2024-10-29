@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Bookshelves.Commands.AddBook;
+namespace BooksApp.Application.Bookshelves.Commands.AddBook;
 
 public sealed class AddBookCommand : IRequest
 {

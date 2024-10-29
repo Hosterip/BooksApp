@@ -1,4 +1,4 @@
-﻿using PostsApp.Domain.Role;
+﻿using BooksApp.Domain.Role;
 
 namespace Application.UnitTest.TestUtils.MockData;
 

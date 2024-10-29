@@ -1,4 +1,4 @@
-namespace PostsApp.Application.Books.Results;
+namespace BooksApp.Application.Books.Results;
 
 public class RatingStatistics
 {

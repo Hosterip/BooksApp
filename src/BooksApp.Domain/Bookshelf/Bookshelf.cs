@@ -1,9 +1,9 @@
-﻿using PostsApp.Domain.Bookshelf.Entities;
-using PostsApp.Domain.Bookshelf.ValueObjects;
-using PostsApp.Domain.Common.Models;
-using PostsApp.Domain.Common.Utils;
+﻿using BooksApp.Domain.Bookshelf.Entities;
+using BooksApp.Domain.Bookshelf.ValueObjects;
+using BooksApp.Domain.Common.Models;
+using BooksApp.Domain.Common.Utils;
 
-namespace PostsApp.Domain.Bookshelf;
+namespace BooksApp.Domain.Bookshelf;
 
 public class Bookshelf : AggregateRoot<BookshelfId>
 {

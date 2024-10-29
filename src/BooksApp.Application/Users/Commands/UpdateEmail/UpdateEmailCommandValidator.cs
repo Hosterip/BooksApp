@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Enums.MaxLengths;
 using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Users.Commands.UpdateEmail;
-using PostsApp.Domain.Common.Enums.MaxLengths;
 
-namespace PostsApp.Application.Users.Commands.UpdateUsername;
+namespace BooksApp.Application.Users.Commands.UpdateEmail;
 
 public class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailCommand>
 {

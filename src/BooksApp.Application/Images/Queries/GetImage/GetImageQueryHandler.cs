@@ -1,8 +1,8 @@
-﻿using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Images.Results;
+﻿using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Images.Results;
+using MediatR;
 
-namespace PostsApp.Application.Images.Queries.GetImage;
+namespace BooksApp.Application.Images.Queries.GetImage;
 
 internal sealed class GetImageQueryHandler : IRequestHandler<GetImageQuery, ImageResult>
 {

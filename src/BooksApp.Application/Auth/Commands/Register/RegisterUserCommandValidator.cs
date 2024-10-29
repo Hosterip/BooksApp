@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Enums.MaxLengths;
 using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Enums.MaxLengths;
 
-namespace PostsApp.Application.Auth.Commands.Register;
+namespace BooksApp.Application.Auth.Commands.Register;
 
 public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {

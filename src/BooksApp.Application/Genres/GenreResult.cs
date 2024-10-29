@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Application.Genres;
+﻿namespace BooksApp.Application.Genres;
 
 public sealed class GenreResult
 {

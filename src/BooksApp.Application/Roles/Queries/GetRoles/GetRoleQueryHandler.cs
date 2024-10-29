@@ -1,7 +1,7 @@
+using BooksApp.Application.Common.Interfaces;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Roles.Queries.GetRoles;
+namespace BooksApp.Application.Roles.Queries.GetRoles;
 
 public class GetRoleQueryHandler : IRequestHandler<GetRoleQuery, RoleResult[]>
 {

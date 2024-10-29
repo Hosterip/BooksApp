@@ -1,8 +1,8 @@
+using BooksApp.Application.Books.Results;
+using BooksApp.Application.Common.Results;
 using MediatR;
-using PostsApp.Application.Books.Results;
-using PostsApp.Application.Common.Results;
 
-namespace PostsApp.Application.Books.Queries.GetBooks;
+namespace BooksApp.Application.Books.Queries.GetBooks;
 
 public class GetBooksQuery : IRequest<PaginatedArray<BookResult>>
 {

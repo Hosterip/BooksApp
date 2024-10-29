@@ -1,4 +1,4 @@
-namespace Contracts.Requests.Users;
+namespace BooksApp.Contracts.Requests.Users;
 
 public class GetUsersRequest
 {

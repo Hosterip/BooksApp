@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace PostsApp.Application.Reviews.Commands.DeleteReview;
+namespace BooksApp.Application.Reviews.Commands.DeleteReview;
 
 public sealed class DeleteReviewCommand : IRequest
 {

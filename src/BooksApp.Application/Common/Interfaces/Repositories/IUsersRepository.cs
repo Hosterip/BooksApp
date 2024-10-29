@@ -1,8 +1,8 @@
-using PostsApp.Application.Common.Results;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.User;
+using BooksApp.Application.Common.Results;
+using BooksApp.Application.Users.Results;
+using BooksApp.Domain.User;
 
-namespace PostsApp.Application.Common.Interfaces.Repositories;
+namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IUsersRepository : IGenericRepository<User>
 {

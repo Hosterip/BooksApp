@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace PostsApp.Application.Common.Results;
+namespace BooksApp.Application.Common.Results;
 
 public class PaginatedArray<T>
 {

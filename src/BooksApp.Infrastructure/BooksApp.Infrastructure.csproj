@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>PostsApp.Infrastructure</RootNamespace>
+        <RootNamespace>BooksApp.Infrastructure</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\BooksApp.Domain\BooksApp.Domain.csproj"/>

@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Common.Extensions;
+﻿namespace BooksApp.API.Common.Extensions;
 
 public static class AddCorsExtension
 {

@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Bookshelves.Queries.GetBookshelves;
+namespace BooksApp.Application.Bookshelves.Queries.GetBookshelves;
 
 public sealed class GetBookshelvesQuery : IRequest<List<BookshelfResult>>
 {

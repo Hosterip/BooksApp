@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace PostsApp.Domain.Common.Utils;
+namespace BooksApp.Domain.Common.Utils;
 
 public static partial class GenerateRefNameExtension
 {

@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using BooksApp.Application.Users.Results;
+using MediatR;
 using Microsoft.AspNetCore.Http;
-using PostsApp.Application.Users.Results;
 
-namespace PostsApp.Application.Users.Commands.InsertAvatar;
+namespace BooksApp.Application.Users.Commands.InsertAvatar;
 
 public class InsertAvatarCommand : IRequest<UserResult>
 {

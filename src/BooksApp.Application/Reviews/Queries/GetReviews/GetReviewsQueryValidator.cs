@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace PostsApp.Application.Reviews.Queries.GetReviews;
+namespace BooksApp.Application.Reviews.Queries.GetReviews;
 
 public class GetReviewsQueryValidator : AbstractValidator<GetReviewsQuery>
 {

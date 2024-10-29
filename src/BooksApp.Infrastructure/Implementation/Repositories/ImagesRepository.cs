@@ -1,8 +1,8 @@
-﻿using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Domain.Image;
-using PostsApp.Infrastructure.Data;
+﻿using BooksApp.Application.Common.Interfaces.Repositories;
+using BooksApp.Domain.Image;
+using BooksApp.Infrastructure.Data;
 
-namespace PostsApp.Infrastructure.Implementation.Repositories;
+namespace BooksApp.Infrastructure.Implementation.Repositories;
 
 public class ImagesRepository : GenericRepository<Image>, IImagesRepository
 {

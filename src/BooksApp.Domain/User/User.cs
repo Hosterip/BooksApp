@@ -1,7 +1,7 @@
-﻿using PostsApp.Domain.Common.Models;
-using PostsApp.Domain.User.ValueObjects;
+﻿using BooksApp.Domain.Common.Models;
+using BooksApp.Domain.User.ValueObjects;
 
-namespace PostsApp.Domain.User;
+namespace BooksApp.Domain.User;
 
 public class User : AggregateRoot<UserId>
 {

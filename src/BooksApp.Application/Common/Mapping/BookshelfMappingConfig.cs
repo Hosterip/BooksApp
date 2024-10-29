@@ -1,8 +1,8 @@
-﻿using Mapster;
-using PostsApp.Application.Bookshelves;
-using PostsApp.Domain.Bookshelf;
+﻿using BooksApp.Application.Bookshelves;
+using BooksApp.Domain.Bookshelf;
+using Mapster;
 
-namespace PostsApp.Application.Common.Mapping;
+namespace BooksApp.Application.Common.Mapping;
 
 public class BookshelfMappingConfig : IRegister
 {

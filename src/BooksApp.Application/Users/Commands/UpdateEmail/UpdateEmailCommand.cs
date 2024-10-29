@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Users.Commands.UpdateEmail;
+namespace BooksApp.Application.Users.Commands.UpdateEmail;
 
 public class UpdateEmailCommand : IRequest
 {

@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Bookshelf;
+using BooksApp.Domain.User.ValueObjects;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Bookshelf;
-using PostsApp.Domain.User.ValueObjects;
 
-namespace PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.AddBookByName;
 
 internal sealed class AddBookByNameCommandHandler : IRequestHandler<AddBookByNameCommand>
 {

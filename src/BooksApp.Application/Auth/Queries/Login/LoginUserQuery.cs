@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Auth.Queries.Login;
+namespace BooksApp.Application.Auth.Queries.Login;
 
 public class LoginUserQuery : IRequest<AuthResult>
 {

@@ -1,4 +1,4 @@
-namespace PostsApp.Application.Common.Constants.ValidationMessages;
+namespace BooksApp.Application.Common.Constants.ValidationMessages;
 
 public class BookshelfValidationMessages
 {

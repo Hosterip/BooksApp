@@ -1,9 +1,9 @@
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Infrastructure.Data;
-using PostsApp.Infrastructure.Implementation.Repositories;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Common.Interfaces.Repositories;
+using BooksApp.Infrastructure.Data;
+using BooksApp.Infrastructure.Implementation.Repositories;
 
-namespace PostsApp.Infrastructure.Implementation;
+namespace BooksApp.Infrastructure.Implementation;
 
 public class UnitOfWork : IUnitOfWork
 {

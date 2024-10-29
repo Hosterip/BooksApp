@@ -1,9 +1,8 @@
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
 using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Constants.ValidationMessages;
-using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Bookshelves.Commands.AddBookToDefaultBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.AddBookByName;
 
 public class AddBookByNameCommandValidator : AbstractValidator<AddBookByNameCommand>
 {

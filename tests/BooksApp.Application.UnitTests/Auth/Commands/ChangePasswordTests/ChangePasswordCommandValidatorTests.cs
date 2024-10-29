@@ -1,9 +1,9 @@
 ﻿using Application.UnitTest.Auth.Commands.TestUtils;
 using Application.UnitTest.Auth.TestUtils;
+using BooksApp.Application.Auth.Commands.ChangePassword;
+using BooksApp.Application.Common.Interfaces;
 using FluentAssertions;
 using Moq;
-using PostsApp.Application.Auth.Commands.ChangePassword;
-using PostsApp.Application.Common.Interfaces;
 
 namespace Application.UnitTest.Auth.Commands.ChangePasswordTests;
 

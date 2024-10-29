@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Auth.Queries.ValidateUser;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
-using PostsApp.Application.Auth.Queries.ValidateUser;
-using PostsApp.Common.Extensions;
 
-namespace PostsApp.Middlewares;
+namespace BooksApp.API.Middlewares;
 
 public class ValidateUserMiddleware
 {

@@ -1,7 +1,7 @@
-﻿using PostsApp.Domain.Common.Models;
-using PostsApp.Domain.Genre.ValueObjects;
+﻿using BooksApp.Domain.Common.Models;
+using BooksApp.Domain.Genre.ValueObjects;
 
-namespace PostsApp.Domain.Genre;
+namespace BooksApp.Domain.Genre;
 
 public class Genre : AggregateRoot<GenreId>
 {

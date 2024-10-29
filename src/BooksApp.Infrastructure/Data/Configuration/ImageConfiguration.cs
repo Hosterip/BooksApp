@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BooksApp.Domain.Image;
+using BooksApp.Domain.Image.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PostsApp.Domain.Image;
-using PostsApp.Domain.Image.ValueObjects;
 
-namespace PostsApp.Infrastructure.Data.Configuration;
+namespace BooksApp.Infrastructure.Data.Configuration;
 
 public class ImageConfiguration : IEntityTypeConfiguration<Image>
 {

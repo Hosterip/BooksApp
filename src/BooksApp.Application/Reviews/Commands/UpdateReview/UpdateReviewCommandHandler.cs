@@ -1,9 +1,9 @@
-﻿using MapsterMapper;
+﻿using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Reviews.Results;
+using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Reviews.Results;
 
-namespace PostsApp.Application.Reviews.Commands.UpdateReview;
+namespace BooksApp.Application.Reviews.Commands.UpdateReview;
 
 internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, ReviewResult>
 {

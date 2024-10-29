@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PostsApp.Common.Constants;
+﻿using BooksApp.API.Common.Constants;
+using Microsoft.AspNetCore.Mvc;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 public class ErrorsController : ApiController
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace PostsApp.Application.Common.Interfaces;
+namespace BooksApp.Application.Common.Interfaces;
 
 public interface IImageFileBuilder
 {

@@ -1,4 +1,4 @@
-namespace PostsApp.Common.Contracts.Requests.Auth;
+namespace BooksApp.Contracts.Requests.Auth;
 
 public class UpdatePasswordRequest
 {

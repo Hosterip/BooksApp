@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Common.Constants;
-using PostsApp.Domain.Image;
-using PostsApp.Domain.User;
+﻿using BooksApp.Domain.Common.Constants;
+using BooksApp.Domain.Image;
+using BooksApp.Domain.User;
 
 namespace Application.UnitTest.TestUtils.MockData;
 

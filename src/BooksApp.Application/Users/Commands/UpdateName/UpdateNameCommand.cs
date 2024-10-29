@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Users.Commands.UpdateName;
+namespace BooksApp.Application.Users.Commands.UpdateName;
 
 public class UpdateNameCommand : IRequest
 {

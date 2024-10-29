@@ -1,8 +1,8 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Enums.MaxLengths;
 using FluentValidation;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Enums.MaxLengths;
 
-namespace PostsApp.Application.Users.Commands.UpdateName;
+namespace BooksApp.Application.Users.Commands.UpdateName;
 
 public class UpdateNameCommandValidator : AbstractValidator<UpdateNameCommand>
 {

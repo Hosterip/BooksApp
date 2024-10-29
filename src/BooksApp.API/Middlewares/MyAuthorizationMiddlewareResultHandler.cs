@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 
-namespace PostsApp.Middlewares;
+namespace BooksApp.API.Middlewares;
 
 public class MyAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
 {

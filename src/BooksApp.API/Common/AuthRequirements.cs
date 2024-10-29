@@ -1,6 +1,6 @@
-﻿using PostsApp.Common.Requirements;
+﻿using BooksApp.API.Common.Requirements;
 
-namespace PostsApp.Common;
+namespace BooksApp.API.Common;
 
 public static class AuthRequirements
 {

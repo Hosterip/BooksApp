@@ -1,7 +1,7 @@
+using BooksApp.Application.Common.Interfaces;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Bookshelves.Commands.AddBook;
+namespace BooksApp.Application.Bookshelves.Commands.AddBook;
 
 internal sealed class AddBookCommandHandler : IRequestHandler<AddBookCommand>
 {

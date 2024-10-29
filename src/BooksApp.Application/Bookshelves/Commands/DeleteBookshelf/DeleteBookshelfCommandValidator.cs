@@ -1,8 +1,8 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Constants;
 using FluentValidation;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Constants;
 
-namespace PostsApp.Application.Bookshelves.Commands.DeleteBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 
 public class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBookshelfCommand>
 {

@@ -1,10 +1,10 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Infrastructure.Data;
+using BooksApp.Infrastructure.Files;
+using BooksApp.Infrastructure.Implementation;
 using Microsoft.Extensions.DependencyInjection;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Infrastructure.Data;
-using PostsApp.Infrastructure.Files;
-using PostsApp.Infrastructure.Implementation;
 
-namespace PostsApp.Infrastructure;
+namespace BooksApp.Infrastructure;
 
 public static class DependencyInjection
 {

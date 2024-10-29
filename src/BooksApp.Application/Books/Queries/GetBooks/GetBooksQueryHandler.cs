@@ -1,13 +1,13 @@
 using System.Linq.Expressions;
+using BooksApp.Application.Books.Results;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Common.Results;
+using BooksApp.Domain.Book;
+using BooksApp.Domain.Genre.ValueObjects;
+using BooksApp.Domain.User.ValueObjects;
 using MediatR;
-using PostsApp.Application.Books.Results;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Common.Results;
-using PostsApp.Domain.Book;
-using PostsApp.Domain.Genre.ValueObjects;
-using PostsApp.Domain.User.ValueObjects;
 
-namespace PostsApp.Application.Books.Queries.GetBooks;
+namespace BooksApp.Application.Books.Queries.GetBooks;
 
 internal sealed class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, PaginatedArray<BookResult>>
 {

@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PostsApp.Middlewares;
+namespace BooksApp.API.Middlewares;
 
 public class ValidationExceptionMiddleware
 {

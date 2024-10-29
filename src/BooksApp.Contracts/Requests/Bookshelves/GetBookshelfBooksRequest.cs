@@ -1,4 +1,4 @@
-namespace PostsApp.Common.Contracts.Requests.Book;
+namespace BooksApp.Contracts.Requests.Bookshelves;
 
 public class GetBookshelfBooksRequest
 {

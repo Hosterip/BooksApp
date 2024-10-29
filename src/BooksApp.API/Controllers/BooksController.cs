@@ -1,17 +1,17 @@
+using BooksApp.API.Common.Constants;
+using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Books.Commands.CreateBook;
+using BooksApp.Application.Books.Commands.DeleteBook;
+using BooksApp.Application.Books.Commands.UpdateBook;
+using BooksApp.Application.Books.Queries.GetBooks;
+using BooksApp.Application.Books.Queries.GetSingleBook;
+using BooksApp.Contracts.Requests.Books;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Books.Commands.CreateBook;
-using PostsApp.Application.Books.Commands.DeleteBook;
-using PostsApp.Application.Books.Commands.UpdateBook;
-using PostsApp.Application.Books.Queries.GetBooks;
-using PostsApp.Application.Books.Queries.GetSingleBook;
-using PostsApp.Common.Constants;
-using PostsApp.Common.Contracts.Requests.Book;
-using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 public class BooksController : ApiController
 {
@@ -34,7 +34,7 @@ public class BooksController : ApiController
             Limit = request.Limit,
             Page = request.Page,
             GenreId = request.GenreId,
-            UserId = null,
+            UserId = null
         };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
@@ -99,9 +99,9 @@ public class BooksController : ApiController
         await _sender.Send(command, cancellationToken);
         return Ok();
     }
-    
+
     // Users endpoints
-    
+
     [HttpGet(ApiRoutes.Users.GetManyBooks)]
     public async Task<IActionResult> GetManyByUserId(
         CancellationToken cancellationToken,
@@ -115,7 +115,7 @@ public class BooksController : ApiController
             Limit = request.Limit,
             Page = request.Page,
             GenreId = request.GenreId,
-            UserId = userId,
+            UserId = userId
         };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);

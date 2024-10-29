@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
+using BooksApp.API.Common.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using PostsApp.Common.Constants;
 
-namespace PostsApp.Common.Extensions;
+namespace BooksApp.API.Common.Extensions;
 
 public static class HttpContextUserExtension
 {

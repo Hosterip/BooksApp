@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Users.Results;
 using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Users.Results;
 
-namespace PostsApp.Application.Roles.Commands.UpdateRole;
+namespace BooksApp.Application.Roles.Commands.UpdateRole;
 
 internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, UserResult>
 {

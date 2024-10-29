@@ -1,7 +1,7 @@
-﻿using MediatR;
-using PostsApp.Application.Common.Interfaces;
+﻿using BooksApp.Application.Common.Interfaces;
+using MediatR;
 
-namespace PostsApp.Application.Reviews.Commands.DeleteReview;
+namespace BooksApp.Application.Reviews.Commands.DeleteReview;
 
 internal sealed class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
 {

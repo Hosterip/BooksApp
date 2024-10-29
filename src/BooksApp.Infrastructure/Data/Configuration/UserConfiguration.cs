@@ -1,10 +1,10 @@
+using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.User;
+using BooksApp.Domain.User.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.User;
-using PostsApp.Domain.User.ValueObjects;
 
-namespace PostsApp.Infrastructure.Data.Configuration;
+namespace BooksApp.Infrastructure.Data.Configuration;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

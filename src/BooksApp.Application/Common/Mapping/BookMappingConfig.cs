@@ -1,10 +1,10 @@
-﻿using Mapster;
-using PostsApp.Application.Books.Results;
-using PostsApp.Application.Genres;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.Book;
+﻿using BooksApp.Application.Books.Results;
+using BooksApp.Application.Genres;
+using BooksApp.Application.Users.Results;
+using BooksApp.Domain.Book;
+using Mapster;
 
-namespace PostsApp.Application.Common.Mapping;
+namespace BooksApp.Application.Common.Mapping;
 
 public class BookMappingConfig : IRegister
 {

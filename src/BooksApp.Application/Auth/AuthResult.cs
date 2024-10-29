@@ -1,6 +1,6 @@
-﻿using PostsApp.Application.Users.Results;
+﻿using BooksApp.Application.Users.Results;
 
-namespace PostsApp.Application.Auth;
+namespace BooksApp.Application.Auth;
 
 public class AuthResult : UserResult
 {

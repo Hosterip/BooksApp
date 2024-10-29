@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Role;
+using BooksApp.Domain.Role.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.Role;
-using PostsApp.Domain.Role.ValueObjects;
 
-namespace PostsApp.Infrastructure.Data.Configuration;
+namespace BooksApp.Infrastructure.Data.Configuration;
 
 public class RoleConfiguration : IEntityTypeConfiguration<Role>
 {

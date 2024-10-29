@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace PostsApp.Application.Genres.Commands.CreateGenre;
+namespace BooksApp.Application.Genres.Commands.CreateGenre;
 
 public class CreateGenreCommand : IRequest<GenreResult>
 {

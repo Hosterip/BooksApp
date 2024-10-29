@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Bookshelf;
+using BooksApp.Domain.User.ValueObjects;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Bookshelf;
-using PostsApp.Domain.User.ValueObjects;
 
-namespace PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
 
 internal sealed class RemoveBookByNameCommandHandler : IRequestHandler<RemoveBookByNameCommand>
 {

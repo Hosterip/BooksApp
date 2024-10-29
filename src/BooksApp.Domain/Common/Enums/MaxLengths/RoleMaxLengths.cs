@@ -1,4 +1,4 @@
-namespace PostsApp.Domain.Common.Enums.MaxLengths;
+namespace BooksApp.Domain.Common.Enums.MaxLengths;
 
 public enum RoleMaxLengths
 {

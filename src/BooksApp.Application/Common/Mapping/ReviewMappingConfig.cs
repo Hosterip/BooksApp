@@ -1,9 +1,9 @@
-﻿using Mapster;
-using PostsApp.Application.Reviews.Results;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.Review;
+﻿using BooksApp.Application.Reviews.Results;
+using BooksApp.Application.Users.Results;
+using BooksApp.Domain.Review;
+using Mapster;
 
-namespace PostsApp.Application.Common.Mapping;
+namespace BooksApp.Application.Common.Mapping;
 
 public class ReviewMappingConfig : IRegister
 {

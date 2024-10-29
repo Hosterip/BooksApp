@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Common.Models;
 
-namespace PostsApp.Domain.User.ValueObjects;
+namespace BooksApp.Domain.User.ValueObjects;
 
 public sealed class UserId : ValueObject
 {

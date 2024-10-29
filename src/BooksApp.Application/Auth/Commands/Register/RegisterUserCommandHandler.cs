@@ -1,11 +1,11 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Constants;
+using BooksApp.Domain.Common.Security;
+using BooksApp.Domain.User;
 using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Constants;
-using PostsApp.Domain.Common.Security;
-using PostsApp.Domain.User;
 
-namespace PostsApp.Application.Auth.Commands.Register;
+namespace BooksApp.Application.Auth.Commands.Register;
 
 internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthResult>
 {

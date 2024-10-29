@@ -1,11 +1,11 @@
 using System.Reflection;
+using BooksApp.Application.Common.Behavior;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
-using PostsApp.Application.Common.Behavior;
 
-namespace PostsApp.Application;
+namespace BooksApp.Application;
 
 public static class DependencyInjection
 {

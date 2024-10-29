@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Application.Images.Results;
+﻿namespace BooksApp.Application.Images.Results;
 
 public class ImageResult
 {

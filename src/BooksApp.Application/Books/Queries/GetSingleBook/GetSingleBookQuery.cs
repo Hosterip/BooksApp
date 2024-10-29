@@ -1,7 +1,7 @@
+using BooksApp.Application.Books.Results;
 using MediatR;
-using PostsApp.Application.Books.Results;
 
-namespace PostsApp.Application.Books.Queries.GetSingleBook;
+namespace BooksApp.Application.Books.Queries.GetSingleBook;
 
 public class GetSingleBookQuery : IRequest<BookResult>
 {

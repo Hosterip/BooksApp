@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Common.Results;
+using BooksApp.Application.Users.Results;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Common.Results;
-using PostsApp.Application.Users.Results;
 
-namespace PostsApp.Application.Users.Queries.GetUsers;
+namespace BooksApp.Application.Users.Queries.GetUsers;
 
 internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, PaginatedArray<UserResult>>
 {

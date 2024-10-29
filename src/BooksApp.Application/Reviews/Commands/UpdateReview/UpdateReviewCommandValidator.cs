@@ -1,10 +1,10 @@
-﻿using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.User.ValueObjects;
+﻿using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.User.ValueObjects;
+using FluentValidation;
 
-namespace PostsApp.Application.Reviews.Commands.UpdateReview;
+namespace BooksApp.Application.Reviews.Commands.UpdateReview;
 
 public class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewCommand>
 {

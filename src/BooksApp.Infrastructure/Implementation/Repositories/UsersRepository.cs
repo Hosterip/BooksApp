@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using BooksApp.Application.Common.Extensions;
+using BooksApp.Application.Common.Interfaces.Repositories;
+using BooksApp.Application.Common.Results;
+using BooksApp.Application.Users.Results;
+using BooksApp.Domain.User;
+using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using PostsApp.Application.Common.Extensions;
-using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Application.Common.Results;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.User;
-using PostsApp.Domain.User.ValueObjects;
-using PostsApp.Infrastructure.Data;
 
-namespace PostsApp.Infrastructure.Implementation.Repositories;
+namespace BooksApp.Infrastructure.Implementation.Repositories;
 
 public class UsersRepository : GenericRepository<User>, IUsersRepository
 {

@@ -1,9 +1,9 @@
-﻿using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Domain.Genre;
-using PostsApp.Domain.Genre.ValueObjects;
-using PostsApp.Infrastructure.Data;
+﻿using BooksApp.Application.Common.Interfaces.Repositories;
+using BooksApp.Domain.Genre;
+using BooksApp.Domain.Genre.ValueObjects;
+using BooksApp.Infrastructure.Data;
 
-namespace PostsApp.Infrastructure.Implementation.Repositories;
+namespace BooksApp.Infrastructure.Implementation.Repositories;
 
 public class GenresRepository : GenericRepository<Genre>, IGenresRepository
 {

@@ -1,4 +1,4 @@
-namespace PostsApp.Domain.Common.Constants;
+namespace BooksApp.Domain.Common.Constants;
 
 public static class DefaultBookshelvesNames
 {

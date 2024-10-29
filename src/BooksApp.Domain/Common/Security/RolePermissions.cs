@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Common.Constants;
+﻿using BooksApp.Domain.Common.Constants;
 
-namespace PostsApp.Domain.Common.Security;
+namespace BooksApp.Domain.Common.Security;
 
 public static class RolePermissions
 {

@@ -1,16 +1,16 @@
-﻿using MediatR;
+﻿using BooksApp.API.Common.Constants;
+using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Reviews.Commands.CreateReview;
+using BooksApp.Application.Reviews.Commands.DeleteReview;
+using BooksApp.Application.Reviews.Commands.UpdateReview;
+using BooksApp.Application.Reviews.Queries.GetReviews;
+using BooksApp.Contracts.Requests.Reviews;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Reviews.Commands.CreateReview;
-using PostsApp.Application.Reviews.Commands.DeleteReview;
-using PostsApp.Application.Reviews.Commands.UpdateReview;
-using PostsApp.Application.Reviews.Queries.GetReviews;
-using PostsApp.Common.Constants;
-using PostsApp.Common.Contracts.Requests.Review;
-using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 public class ReviewsController : ApiController
 {
@@ -69,7 +69,7 @@ public class ReviewsController : ApiController
         await _sender.Send(command, cancellationToken);
         return Ok();
     }
-    
+
     // Books
 
     [HttpGet(ApiRoutes.Books.GetReviews)]

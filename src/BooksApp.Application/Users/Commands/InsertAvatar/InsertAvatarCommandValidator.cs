@@ -1,9 +1,8 @@
-﻿using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Constants.ValidationMessages;
-using PostsApp.Application.Common.Interfaces;
+﻿using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using FluentValidation;
 
-namespace PostsApp.Application.Users.Commands.InsertAvatar;
+namespace BooksApp.Application.Users.Commands.InsertAvatar;
 
 public class InsertAvatarCommandValidator : AbstractValidator<InsertAvatarCommand>
 {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace PostsApp.Application.Auth.Queries.ValidateUser;
+namespace BooksApp.Application.Auth.Queries.ValidateUser;
 
 // Returns Role
 public class ValidateUserQuery : IRequest<string?>

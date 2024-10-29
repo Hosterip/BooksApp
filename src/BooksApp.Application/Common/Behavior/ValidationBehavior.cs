@@ -2,7 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
-namespace PostsApp.Application.Common.Behavior;
+namespace BooksApp.Application.Common.Behavior;
 
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull

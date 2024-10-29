@@ -1,5 +1,5 @@
 ﻿using Application.UnitTest.Auth.TestUtils.Constants;
-using PostsApp.Application.Auth.Queries.Login;
+using BooksApp.Application.Auth.Queries.Login;
 
 namespace Application.UnitTest.Auth.Queries.LoginTests;
 

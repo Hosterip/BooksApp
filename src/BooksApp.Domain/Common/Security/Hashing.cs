@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace PostsApp.Domain.Common.Security;
+namespace BooksApp.Domain.Common.Security;
 
 public static class Hashing
 {

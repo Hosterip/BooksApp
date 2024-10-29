@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Common.Models;
 
-namespace PostsApp.Domain.Image.ValueObjects;
+namespace BooksApp.Domain.Image.ValueObjects;
 
 public class ImageId : ValueObject
 {

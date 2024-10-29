@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Application.UnitTest.Auth.TestUtils.Constants;
 using Application.UnitTest.TestUtils.MockData;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.User;
 using Moq;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.User;
 
 namespace Application.UnitTest.Auth.TestUtils;
 

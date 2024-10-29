@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Constants;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Constants;
 using Microsoft.AspNetCore.Http;
-using PostsApp.Application.Common.Constants;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Constants;
 
-namespace PostsApp.Infrastructure.Files;
+namespace BooksApp.Infrastructure.Files;
 
 public class ImageFileBuilder : IImageFileBuilder
 {

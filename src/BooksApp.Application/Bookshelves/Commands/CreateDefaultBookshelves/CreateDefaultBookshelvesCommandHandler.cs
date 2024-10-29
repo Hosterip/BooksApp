@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Bookshelf;
+using BooksApp.Domain.Common.Constants;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Bookshelf;
-using PostsApp.Domain.Common.Constants;
 
-namespace PostsApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
+namespace BooksApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
 
 internal sealed class CreateDefaultBookshelvesCommandHandler : IRequestHandler<CreateDefaultBookshelvesCommand>
 {

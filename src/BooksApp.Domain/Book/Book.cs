@@ -1,8 +1,8 @@
-﻿using PostsApp.Domain.Book.ValueObjects;
-using PostsApp.Domain.Common.Models;
-using PostsApp.Domain.Common.Utils;
+﻿using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.Common.Models;
+using BooksApp.Domain.Common.Utils;
 
-namespace PostsApp.Domain.Book;
+namespace BooksApp.Domain.Book;
 
 public class Book : AggregateRoot<BookId>
 {

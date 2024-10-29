@@ -1,8 +1,8 @@
-﻿using PostsApp.Application.Common.Results;
-using PostsApp.Application.Reviews.Results;
-using PostsApp.Domain.Review;
+﻿using BooksApp.Application.Common.Results;
+using BooksApp.Application.Reviews.Results;
+using BooksApp.Domain.Review;
 
-namespace PostsApp.Application.Common.Interfaces.Repositories;
+namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IReviewsRepository : IGenericRepository<Review>
 {

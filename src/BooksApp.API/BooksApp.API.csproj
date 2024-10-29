@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>PostsApp</RootNamespace>
+        <RootNamespace>BooksApp.API</RootNamespace>
         <UserSecretsId>389ab5d6-eb18-4f28-853a-fad3efe43c32</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>

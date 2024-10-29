@@ -1,5 +1,5 @@
 ﻿using Application.UnitTest.Auth.TestUtils.Constants;
-using PostsApp.Application.Auth.Commands.ChangePassword;
+using BooksApp.Application.Auth.Commands.ChangePassword;
 
 namespace Application.UnitTest.Auth.Commands.TestUtils;
 

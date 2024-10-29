@@ -1,8 +1,8 @@
-﻿using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
+﻿using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using FluentValidation;
 
-namespace PostsApp.Application.Users.Queries.GetSingleUser;
+namespace BooksApp.Application.Users.Queries.GetSingleUser;
 
 public class GetSingleUserQueryValidator : AbstractValidator<GetSingleUserQuery>
 {

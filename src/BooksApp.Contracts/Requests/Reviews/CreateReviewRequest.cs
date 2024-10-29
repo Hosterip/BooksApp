@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Common.Contracts.Requests.Review;
+﻿namespace BooksApp.Contracts.Requests.Reviews;
 
 public class CreateReviewRequest
 {

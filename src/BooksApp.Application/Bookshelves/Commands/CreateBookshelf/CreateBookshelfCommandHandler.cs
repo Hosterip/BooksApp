@@ -1,9 +1,9 @@
-﻿using MapsterMapper;
+﻿using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Bookshelf;
+using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Bookshelf;
 
-namespace PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 
 public class CreateBookshelfCommandHandler : IRequestHandler<CreateBookshelfCommand, BookshelfResult>
 {

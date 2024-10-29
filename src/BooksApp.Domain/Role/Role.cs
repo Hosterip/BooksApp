@@ -1,8 +1,8 @@
-using PostsApp.Domain.Common.Constants;
-using PostsApp.Domain.Common.Models;
-using PostsApp.Domain.Role.ValueObjects;
+using BooksApp.Domain.Common.Constants;
+using BooksApp.Domain.Common.Models;
+using BooksApp.Domain.Role.ValueObjects;
 
-namespace PostsApp.Domain.Role;
+namespace BooksApp.Domain.Role;
 
 public class Role : AggregateRoot<RoleId>
 {

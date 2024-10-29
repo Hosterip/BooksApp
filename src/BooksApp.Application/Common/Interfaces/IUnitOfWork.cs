@@ -1,6 +1,6 @@
-using PostsApp.Application.Common.Interfaces.Repositories;
+using BooksApp.Application.Common.Interfaces.Repositories;
 
-namespace PostsApp.Application.Common.Interfaces;
+namespace BooksApp.Application.Common.Interfaces;
 
 public interface IUnitOfWork
 {

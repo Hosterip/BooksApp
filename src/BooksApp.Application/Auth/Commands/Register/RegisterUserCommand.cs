@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Auth.Commands.Register;
+namespace BooksApp.Application.Auth.Commands.Register;
 
 public sealed class RegisterUserCommand : IRequest<AuthResult>
 {

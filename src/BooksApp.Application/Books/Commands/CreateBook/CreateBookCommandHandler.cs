@@ -1,11 +1,11 @@
+using BooksApp.Application.Books.Results;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Book;
+using BooksApp.Domain.Image;
 using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Books.Results;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Book;
-using PostsApp.Domain.Image;
 
-namespace PostsApp.Application.Books.Commands.CreateBook;
+namespace BooksApp.Application.Books.Commands.CreateBook;
 
 internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookResult>
 {

@@ -1,7 +1,7 @@
-﻿using MediatR;
-using PostsApp.Application.Images.Results;
+﻿using BooksApp.Application.Images.Results;
+using MediatR;
 
-namespace PostsApp.Application.Images.Queries.GetImage;
+namespace BooksApp.Application.Images.Queries.GetImage;
 
 public sealed class GetImageQuery : IRequest<ImageResult>
 {

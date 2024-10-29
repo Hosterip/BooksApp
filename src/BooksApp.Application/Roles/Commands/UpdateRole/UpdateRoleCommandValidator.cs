@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Security;
 using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Security;
 
-namespace PostsApp.Application.Roles.Commands.UpdateRole;
+namespace BooksApp.Application.Roles.Commands.UpdateRole;
 
 public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
 {

@@ -1,15 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PostsApp.Application.Common.Extensions;
-using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Application.Common.Results;
-using PostsApp.Application.Reviews.Results;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.Book.ValueObjects;
-using PostsApp.Domain.Review;
-using PostsApp.Domain.Review.ValueObjects;
-using PostsApp.Infrastructure.Data;
+﻿using BooksApp.Application.Common.Extensions;
+using BooksApp.Application.Common.Interfaces.Repositories;
+using BooksApp.Application.Common.Results;
+using BooksApp.Application.Reviews.Results;
+using BooksApp.Application.Users.Results;
+using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.Review;
+using BooksApp.Domain.Review.ValueObjects;
+using BooksApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace PostsApp.Infrastructure.Implementation.Repositories;
+namespace BooksApp.Infrastructure.Implementation.Repositories;
 
 public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
 {

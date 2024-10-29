@@ -1,19 +1,19 @@
 using System.Linq.Expressions;
+using BooksApp.Application.Books.Results;
+using BooksApp.Application.Common.Extensions;
+using BooksApp.Application.Common.Interfaces.Repositories;
+using BooksApp.Application.Common.Results;
+using BooksApp.Application.Genres;
+using BooksApp.Application.Users.Results;
+using BooksApp.Domain.Book;
+using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.Bookshelf.ValueObjects;
+using BooksApp.Domain.Common.Utils;
+using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using PostsApp.Application.Books.Results;
-using PostsApp.Application.Common.Extensions;
-using PostsApp.Application.Common.Interfaces.Repositories;
-using PostsApp.Application.Common.Results;
-using PostsApp.Application.Genres;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.Book;
-using PostsApp.Domain.Book.ValueObjects;
-using PostsApp.Domain.Bookshelf.ValueObjects;
-using PostsApp.Domain.Common.Utils;
-using PostsApp.Domain.User.ValueObjects;
-using PostsApp.Infrastructure.Data;
 
-namespace PostsApp.Infrastructure.Implementation.Repositories;
+namespace BooksApp.Infrastructure.Implementation.Repositories;
 
 public class BooksRepository : GenericRepository<Book>, IBooksRepository
 {

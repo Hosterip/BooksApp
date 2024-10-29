@@ -1,10 +1,10 @@
-﻿using MapsterMapper;
+﻿using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Reviews.Results;
+using BooksApp.Domain.Review;
+using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Reviews.Results;
-using PostsApp.Domain.Review;
 
-namespace PostsApp.Application.Reviews.Commands.CreateReview;
+namespace BooksApp.Application.Reviews.Commands.CreateReview;
 
 internal sealed class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, ReviewResult>
 {

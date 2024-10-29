@@ -1,7 +1,7 @@
-﻿using MediatR;
-using PostsApp.Application.Reviews.Results;
+﻿using BooksApp.Application.Reviews.Results;
+using MediatR;
 
-namespace PostsApp.Application.Reviews.Commands.UpdateReview;
+namespace BooksApp.Application.Reviews.Commands.UpdateReview;
 
 public class UpdateReviewCommand : IRequest<ReviewResult>
 {

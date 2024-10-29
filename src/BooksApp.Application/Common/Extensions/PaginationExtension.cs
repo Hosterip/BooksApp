@@ -1,6 +1,6 @@
-using PostsApp.Application.Common.Results;
+using BooksApp.Application.Common.Results;
 
-namespace PostsApp.Application.Common.Extensions;
+namespace BooksApp.Application.Common.Extensions;
 
 public static class PaginationExtension
 {

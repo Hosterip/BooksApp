@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.User.ValueObjects;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Book.ValueObjects;
-using PostsApp.Domain.User.ValueObjects;
 
-namespace PostsApp.Application.Books.Commands.DeleteBook;
+namespace BooksApp.Application.Books.Commands.DeleteBook;
 
 internal sealed class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand>
 {

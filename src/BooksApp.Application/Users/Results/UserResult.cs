@@ -1,4 +1,4 @@
-namespace PostsApp.Application.Users.Results;
+namespace BooksApp.Application.Users.Results;
 
 public class UserResult
 {

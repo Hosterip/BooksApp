@@ -1,11 +1,10 @@
-﻿using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Constants.ValidationMessages;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Constants;
-using PostsApp.Domain.Common.Enums.MaxLengths;
+﻿using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Constants;
+using BooksApp.Domain.Common.Enums.MaxLengths;
+using FluentValidation;
 
-namespace PostsApp.Application.Bookshelves.Commands.CreateBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 
 public class CreateBookshelfValidator : AbstractValidator<CreateBookshelfCommand>
 {

@@ -1,9 +1,9 @@
 ﻿using Application.UnitTest.Auth.TestUtils;
+using BooksApp.Application.Auth.Queries.Login;
+using BooksApp.Application.Common.Interfaces;
 using FluentAssertions;
 using FluentValidation.Results;
 using Moq;
-using PostsApp.Application.Auth.Queries.Login;
-using PostsApp.Application.Common.Interfaces;
 
 namespace Application.UnitTest.Auth.Queries.LoginTests;
 

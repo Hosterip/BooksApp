@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Books.Commands.DeleteBook;
+namespace BooksApp.Application.Books.Commands.DeleteBook;
 
 public class DeleteBookCommand : IRequest
 {

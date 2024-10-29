@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using BooksApp.API.Common.Constants;
+using BooksApp.Application.Images.Queries.GetImage;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Images.Queries.GetImage;
-using PostsApp.Common.Constants;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 public class ImagesController : ApiController
 {

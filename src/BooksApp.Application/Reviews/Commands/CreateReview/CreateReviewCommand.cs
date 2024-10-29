@@ -1,7 +1,7 @@
-﻿using MediatR;
-using PostsApp.Application.Reviews.Results;
+﻿using BooksApp.Application.Reviews.Results;
+using MediatR;
 
-namespace PostsApp.Application.Reviews.Commands.CreateReview;
+namespace BooksApp.Application.Reviews.Commands.CreateReview;
 
 public class CreateReviewCommand : IRequest<ReviewResult>
 {

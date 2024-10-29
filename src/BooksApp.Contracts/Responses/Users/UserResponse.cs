@@ -1,4 +1,4 @@
-namespace PostsApp.Common.Contracts.Responses.User;
+namespace BooksApp.Contracts.Responses.Users;
 
 public class UserResponse
 {

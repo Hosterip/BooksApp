@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace PostsApp.Common.Contracts.Requests.User;
+namespace BooksApp.Contracts.Requests.Users;
 
 public class InsertAvatarRequest
 {

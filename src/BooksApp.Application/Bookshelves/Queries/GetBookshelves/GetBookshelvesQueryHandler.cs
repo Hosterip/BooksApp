@@ -1,9 +1,9 @@
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.User.ValueObjects;
 using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.User.ValueObjects;
 
-namespace PostsApp.Application.Bookshelves.Queries.GetBookshelves;
+namespace BooksApp.Application.Bookshelves.Queries.GetBookshelves;
 
 internal sealed class GetBookshelvesQueryHandler : IRequestHandler<GetBookshelvesQuery, List<BookshelfResult>>
 {

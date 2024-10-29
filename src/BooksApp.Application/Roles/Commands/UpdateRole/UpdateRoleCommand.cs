@@ -1,7 +1,7 @@
+using BooksApp.Application.Users.Results;
 using MediatR;
-using PostsApp.Application.Users.Results;
 
-namespace PostsApp.Application.Roles.Commands.UpdateRole;
+namespace BooksApp.Application.Roles.Commands.UpdateRole;
 
 public sealed class UpdateRoleCommand : IRequest<UserResult>
 {

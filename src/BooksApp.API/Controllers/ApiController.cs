@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 [ApiController]
 public class ApiController : ControllerBase

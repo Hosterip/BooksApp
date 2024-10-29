@@ -1,7 +1,7 @@
-﻿using PostsApp.Domain.Common.Models;
-using PostsApp.Domain.Review.ValueObjects;
+﻿using BooksApp.Domain.Common.Models;
+using BooksApp.Domain.Review.ValueObjects;
 
-namespace PostsApp.Domain.Review;
+namespace BooksApp.Domain.Review;
 
 public class Review : Entity<ReviewId>
 {

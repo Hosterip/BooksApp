@@ -1,7 +1,7 @@
-﻿using MediatR;
-using PostsApp.Application.Common.Interfaces;
+﻿using BooksApp.Application.Common.Interfaces;
+using MediatR;
 
-namespace PostsApp.Application.Auth.Queries.ValidateUser;
+namespace BooksApp.Application.Auth.Queries.ValidateUser;
 
 internal sealed class ValidateUserQueryHandler : IRequestHandler<ValidateUserQuery, string?>
 {

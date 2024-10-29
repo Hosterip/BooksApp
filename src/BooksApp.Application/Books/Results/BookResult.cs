@@ -1,7 +1,7 @@
-using PostsApp.Application.Genres;
-using PostsApp.Application.Users.Results;
+using BooksApp.Application.Genres;
+using BooksApp.Application.Users.Results;
 
-namespace PostsApp.Application.Books.Results;
+namespace BooksApp.Application.Books.Results;
 
 public class BookResult : RatingStatistics
 {

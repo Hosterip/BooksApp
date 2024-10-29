@@ -1,11 +1,10 @@
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Security;
 using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Constants.ValidationMessages;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.Common.Security;
 
-namespace PostsApp.Application.Books.Commands.CreateBook;
+namespace BooksApp.Application.Books.Commands.CreateBook;
 
 public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
 {

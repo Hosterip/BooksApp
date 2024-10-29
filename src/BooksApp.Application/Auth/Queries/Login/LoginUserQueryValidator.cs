@@ -1,9 +1,8 @@
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
 using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Security;
 
-namespace PostsApp.Application.Auth.Queries.Login;
+namespace BooksApp.Application.Auth.Queries.Login;
 
 public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
 {

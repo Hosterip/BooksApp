@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Common.Models;
 
-namespace PostsApp.Domain.Genre.ValueObjects;
+namespace BooksApp.Domain.Genre.ValueObjects;
 
 public class GenreId : ValueObject
 {

@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Review;
+using BooksApp.Domain.Review.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.Review;
-using PostsApp.Domain.Review.ValueObjects;
 
-namespace PostsApp.Infrastructure.Data.Configuration;
+namespace BooksApp.Infrastructure.Data.Configuration;
 
 public class ReviewConfiguration : IEntityTypeConfiguration<Review>
 {

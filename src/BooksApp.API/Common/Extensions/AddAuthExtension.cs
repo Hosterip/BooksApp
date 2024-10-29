@@ -1,11 +1,11 @@
+using BooksApp.API.Common.Constants;
+using BooksApp.API.Common.Requirements;
+using BooksApp.API.Middlewares;
+using BooksApp.Domain.Common.Constants;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using PostsApp.Common.Constants;
-using PostsApp.Common.Requirements;
-using PostsApp.Domain.Common.Constants;
-using PostsApp.Middlewares;
 
-namespace PostsApp.Common.Extensions;
+namespace BooksApp.API.Common.Extensions;
 
 public static class AddAuthExtension
 {

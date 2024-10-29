@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Users.Commands.DeleteUser;
+namespace BooksApp.Application.Users.Commands.DeleteUser;
 
 public class DeleteUserCommand : IRequest
 {

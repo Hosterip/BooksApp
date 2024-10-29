@@ -1,9 +1,9 @@
+using BooksApp.Application.Books.Results;
+using BooksApp.Application.Common.Interfaces;
 using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Books.Results;
-using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Books.Queries.GetSingleBook;
+namespace BooksApp.Application.Books.Queries.GetSingleBook;
 
 internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQuery, BookResult>
 {

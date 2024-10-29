@@ -1,4 +1,4 @@
-namespace PostsApp.Application.Common.Constants.Exceptions;
+namespace BooksApp.Application.Common.Constants.ValidationMessages;
 
 public static class AuthValidationMessages
 {

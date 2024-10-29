@@ -1,4 +1,4 @@
-namespace PostsApp.Application.Roles;
+namespace BooksApp.Application.Roles;
 
 public class RoleResult
 {

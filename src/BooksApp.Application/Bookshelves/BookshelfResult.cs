@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Application.Bookshelves;
+﻿namespace BooksApp.Application.Bookshelves;
 
 public class BookshelfResult
 {

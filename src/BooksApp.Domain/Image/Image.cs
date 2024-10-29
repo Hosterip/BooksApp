@@ -1,7 +1,7 @@
-﻿using PostsApp.Domain.Common.Models;
-using PostsApp.Domain.Image.ValueObjects;
+﻿using BooksApp.Domain.Common.Models;
+using BooksApp.Domain.Image.ValueObjects;
 
-namespace PostsApp.Domain.Image;
+namespace BooksApp.Domain.Image;
 
 public class Image : AggregateRoot<ImageId>
 {

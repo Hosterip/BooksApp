@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using PostsApp.Domain.Common.Constants;
+﻿using BooksApp.Domain.Common.Constants;
+using FluentValidation;
 
-namespace PostsApp.Application.Images.Queries.GetImage;
+namespace BooksApp.Application.Images.Queries.GetImage;
 
 public class GetImageQueryValidator : AbstractValidator<GetImageQuery>
 {

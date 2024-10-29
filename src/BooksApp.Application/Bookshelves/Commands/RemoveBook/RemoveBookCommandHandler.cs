@@ -1,7 +1,7 @@
+using BooksApp.Application.Common.Interfaces;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Bookshelves.Commands.RemoveBook;
+namespace BooksApp.Application.Bookshelves.Commands.RemoveBook;
 
 public class RemoveBookCommandHandler : IRequestHandler<RemoveBookCommand>
 {

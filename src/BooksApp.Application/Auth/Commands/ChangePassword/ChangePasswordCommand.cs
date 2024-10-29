@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Auth.Commands.ChangePassword;
+namespace BooksApp.Application.Auth.Commands.ChangePassword;
 
 public class ChangePasswordCommand : IRequest<AuthResult>
 {

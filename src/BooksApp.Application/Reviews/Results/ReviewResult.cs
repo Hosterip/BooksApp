@@ -1,6 +1,6 @@
-﻿using PostsApp.Application.Users.Results;
+﻿using BooksApp.Application.Users.Results;
 
-namespace PostsApp.Application.Reviews.Results;
+namespace BooksApp.Application.Reviews.Results;
 
 public class ReviewResult
 {

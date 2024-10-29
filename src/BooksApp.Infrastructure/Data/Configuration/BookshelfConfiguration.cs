@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BooksApp.Domain.Book;
+using BooksApp.Domain.Bookshelf;
+using BooksApp.Domain.Bookshelf.ValueObjects;
+using BooksApp.Domain.Common.Enums.MaxLengths;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PostsApp.Domain.Book;
-using PostsApp.Domain.Bookshelf;
-using PostsApp.Domain.Bookshelf.ValueObjects;
-using PostsApp.Domain.Common.Enums.MaxLengths;
 
-namespace PostsApp.Infrastructure.Data.Configuration;
+namespace BooksApp.Infrastructure.Data.Configuration;
 
 public class BookshelfConfiguration : IEntityTypeConfiguration<Bookshelf>
 {

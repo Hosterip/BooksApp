@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Common.Constants;
+﻿namespace BooksApp.API.Common.Constants;
 
 public static class Policies
 {

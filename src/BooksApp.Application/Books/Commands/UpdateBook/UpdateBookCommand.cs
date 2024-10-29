@@ -1,8 +1,8 @@
+using BooksApp.Application.Books.Results;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using PostsApp.Application.Books.Results;
 
-namespace PostsApp.Application.Books.Commands.UpdateBook;
+namespace BooksApp.Application.Books.Commands.UpdateBook;
 
 public class UpdateBookCommand : IRequest<BookResult>
 {

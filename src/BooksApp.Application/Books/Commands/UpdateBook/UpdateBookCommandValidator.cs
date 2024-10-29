@@ -1,12 +1,12 @@
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.Common.Constants;
+using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
-using PostsApp.Application.Common.Constants.ValidationMessages;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Book.ValueObjects;
-using PostsApp.Domain.Common.Constants;
-using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.User.ValueObjects;
 
-namespace PostsApp.Application.Books.Commands.UpdateBook;
+namespace BooksApp.Application.Books.Commands.UpdateBook;
 
 public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {

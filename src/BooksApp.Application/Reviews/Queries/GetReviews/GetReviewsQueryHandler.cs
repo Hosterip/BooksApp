@@ -1,9 +1,9 @@
-﻿using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Common.Results;
-using PostsApp.Application.Reviews.Results;
+﻿using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Common.Results;
+using BooksApp.Application.Reviews.Results;
+using MediatR;
 
-namespace PostsApp.Application.Reviews.Queries.GetReviews;
+namespace BooksApp.Application.Reviews.Queries.GetReviews;
 
 public class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, PaginatedArray<ReviewResult>>
 {

@@ -1,7 +1,7 @@
-﻿using PostsApp.Domain.Bookshelf.ValueObjects;
-using PostsApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Bookshelf.ValueObjects;
+using BooksApp.Domain.Common.Models;
 
-namespace PostsApp.Domain.Bookshelf.Entities;
+namespace BooksApp.Domain.Bookshelf.Entities;
 
 public class BookshelfBook : Entity<BookshelfBookId>
 {

@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Domain.Common.Models;
+﻿namespace BooksApp.Domain.Common.Models;
 
 public abstract class Entity<TId> : IEquatable<Entity<TId>>
     where TId : notnull

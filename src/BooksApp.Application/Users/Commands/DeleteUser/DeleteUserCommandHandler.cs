@@ -1,7 +1,7 @@
+using BooksApp.Application.Common.Interfaces;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Users.Commands.DeleteUser;
+namespace BooksApp.Application.Users.Commands.DeleteUser;
 
 internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {

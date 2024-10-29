@@ -1,10 +1,10 @@
-﻿using MapsterMapper;
+﻿using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Users.Results;
+using BooksApp.Domain.Image;
+using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.Image;
 
-namespace PostsApp.Application.Users.Commands.InsertAvatar;
+namespace BooksApp.Application.Users.Commands.InsertAvatar;
 
 public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, UserResult>
 {

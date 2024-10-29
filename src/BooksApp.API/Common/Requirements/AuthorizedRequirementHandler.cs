@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
-namespace PostsApp.Common.Requirements;
+namespace BooksApp.API.Common.Requirements;
 
 public class AuthorizedRequirement : IAuthorizationRequirement
 {

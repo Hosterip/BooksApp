@@ -1,8 +1,8 @@
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
 using FluentValidation;
-using PostsApp.Application.Common.Constants.ValidationMessages;
-using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Bookshelves.Queries.GetBookshelfBooks;
+namespace BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 
 public class GetBookshelfBooksQueryValidator : AbstractValidator<GetBookshelfBooksQuery>
 {

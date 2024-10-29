@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Image;
+﻿using BooksApp.Domain.Image;
 
-namespace PostsApp.Application.Common.Interfaces.Repositories;
+namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IImagesRepository : IGenericRepository<Image>
 {

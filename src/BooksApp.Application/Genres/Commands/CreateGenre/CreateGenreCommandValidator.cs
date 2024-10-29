@@ -1,8 +1,8 @@
-﻿using FluentValidation;
-using PostsApp.Application.Common.Constants.ValidationMessages;
-using PostsApp.Application.Common.Interfaces;
+﻿using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using FluentValidation;
 
-namespace PostsApp.Application.Genres.Commands.CreateGenre;
+namespace BooksApp.Application.Genres.Commands.CreateGenre;
 
 public class CreateGenreCommandValidator : AbstractValidator<CreateGenreCommand>
 {

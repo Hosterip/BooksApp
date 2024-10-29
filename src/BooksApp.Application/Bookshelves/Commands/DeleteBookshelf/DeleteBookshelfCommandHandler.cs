@@ -1,4 +1,4 @@
-namespace PostsApp.Application.Bookshelves.Commands.DeleteBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 
 public class DeleteBookshelfCommandHandler
 {

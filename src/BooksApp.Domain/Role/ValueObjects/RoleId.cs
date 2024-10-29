@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Common.Models;
 
-namespace PostsApp.Domain.Role.ValueObjects;
+namespace BooksApp.Domain.Role.ValueObjects;
 
 public class RoleId : ValueObject
 {

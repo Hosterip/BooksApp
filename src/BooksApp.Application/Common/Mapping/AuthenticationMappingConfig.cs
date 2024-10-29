@@ -1,8 +1,8 @@
-﻿using Mapster;
-using PostsApp.Application.Auth;
-using PostsApp.Domain.User;
+﻿using BooksApp.Application.Auth;
+using BooksApp.Domain.User;
+using Mapster;
 
-namespace PostsApp.Application.Common.Mapping;
+namespace BooksApp.Application.Common.Mapping;
 
 public class AuthenticationMappingConfig : IRegister
 {

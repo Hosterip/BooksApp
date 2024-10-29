@@ -1,10 +1,10 @@
 ﻿using Application.UnitTest.Auth.TestUtils;
+using BooksApp.Application.Auth.Queries.Login;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Users.Results;
 using FluentAssertions;
 using MapsterMapper;
 using Moq;
-using PostsApp.Application.Auth.Queries.Login;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Users.Results;
 
 namespace Application.UnitTest.Auth.Queries.LoginTests;
 

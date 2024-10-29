@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Common.Models;
 
-namespace PostsApp.Domain.Bookshelf.ValueObjects;
+namespace BooksApp.Domain.Bookshelf.ValueObjects;
 
 public class BookshelfBookId : ValueObject
 {

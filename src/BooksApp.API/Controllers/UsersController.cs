@@ -1,20 +1,19 @@
-﻿using Contracts.Requests.Users;
+﻿using BooksApp.API.Common.Constants;
+using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Users.Commands.DeleteUser;
+using BooksApp.Application.Users.Commands.InsertAvatar;
+using BooksApp.Application.Users.Commands.UpdateEmail;
+using BooksApp.Application.Users.Commands.UpdateName;
+using BooksApp.Application.Users.Queries.GetSingleUser;
+using BooksApp.Application.Users.Queries.GetUsers;
+using BooksApp.Contracts.Requests.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Users.Commands.DeleteUser;
-using PostsApp.Application.Users.Commands.InsertAvatar;
-using PostsApp.Application.Users.Commands.UpdateEmail;
-using PostsApp.Application.Users.Commands.UpdateName;
-using PostsApp.Application.Users.Queries.GetSingleUser;
-using PostsApp.Application.Users.Queries.GetUsers;
-using PostsApp.Common.Constants;
-using PostsApp.Common.Contracts.Requests.User;
-using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 public class UsersController : ApiController
 {

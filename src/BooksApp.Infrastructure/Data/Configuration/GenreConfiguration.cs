@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BooksApp.Domain.Book;
+using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Genre;
+using BooksApp.Domain.Genre.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PostsApp.Domain.Book;
-using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.Genre;
-using PostsApp.Domain.Genre.ValueObjects;
 
-namespace PostsApp.Infrastructure.Data.Configuration;
+namespace BooksApp.Infrastructure.Data.Configuration;
 
 public class GenreConfiguration : IEntityTypeConfiguration<Genre>
 {

@@ -1,12 +1,12 @@
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Security;
 using FluentValidation;
 using FluentValidation.Results;
 using MapsterMapper;
 using MediatR;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Common.Security;
 
-namespace PostsApp.Application.Auth.Commands.ChangePassword;
+namespace BooksApp.Application.Auth.Commands.ChangePassword;
 
 internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, AuthResult>
 {
@@ -30,7 +30,7 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
                     nameof(ChangePasswordCommand.OldPassword),
                     AuthValidationMessages.Password)
             ]);
-        
+
         var hashSalt = Hashing.GenerateHashSalt(request.NewPassword);
         user!.Hash = hashSalt.Hash;
         user.Salt = hashSalt.Salt;

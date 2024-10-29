@@ -1,12 +1,12 @@
 ﻿using System.Linq.Expressions;
 using Application.UnitTest.TestUtils.MockData;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Application.Roles.Commands.UpdateRole;
+using BooksApp.Domain.Common.Constants;
+using BooksApp.Domain.Role;
+using BooksApp.Domain.User;
 using FluentAssertions;
 using Moq;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Roles.Commands.UpdateRole;
-using PostsApp.Domain.Common.Constants;
-using PostsApp.Domain.Role;
-using PostsApp.Domain.User;
 
 namespace Application.UnitTest.Roles.Commands.UpdateRoleTests;
 

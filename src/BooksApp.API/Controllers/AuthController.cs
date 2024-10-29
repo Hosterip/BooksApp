@@ -1,19 +1,19 @@
-﻿using Mapster;
+﻿using BooksApp.API.Common.Constants;
+using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Auth.Commands.ChangePassword;
+using BooksApp.Application.Auth.Commands.Register;
+using BooksApp.Application.Auth.Queries.Login;
+using BooksApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
+using BooksApp.Contracts.Requests.Auth;
+using BooksApp.Contracts.Responses.Users;
+using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Auth.Commands.ChangePassword;
-using PostsApp.Application.Auth.Commands.Register;
-using PostsApp.Application.Auth.Queries.Login;
-using PostsApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
-using PostsApp.Common.Constants;
-using PostsApp.Common.Contracts.Requests.Auth;
-using PostsApp.Common.Contracts.Responses.User;
-using PostsApp.Common.Extensions;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 public class AuthController : ApiController
 {

@@ -1,6 +1,6 @@
-using PostsApp.Domain.Role;
+using BooksApp.Domain.Role;
 
-namespace PostsApp.Application.Common.Interfaces.Repositories;
+namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IRolesRepository : IGenericRepository<Role>
 {

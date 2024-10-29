@@ -1,17 +1,17 @@
 using System.Reflection;
+using BooksApp.Domain.Book;
+using BooksApp.Domain.Bookshelf;
+using BooksApp.Domain.Bookshelf.Entities;
+using BooksApp.Domain.Genre;
+using BooksApp.Domain.Image;
+using BooksApp.Domain.Review;
+using BooksApp.Domain.Role;
+using BooksApp.Domain.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using PostsApp.Domain.Book;
-using PostsApp.Domain.Bookshelf;
-using PostsApp.Domain.Bookshelf.Entities;
-using PostsApp.Domain.Genre;
-using PostsApp.Domain.Image;
-using PostsApp.Domain.Review;
-using PostsApp.Domain.Role;
-using PostsApp.Domain.User;
 
-namespace PostsApp.Infrastructure.Data;
+namespace BooksApp.Infrastructure.Data;
 
 public sealed class AppDbContext : DbContext
 {

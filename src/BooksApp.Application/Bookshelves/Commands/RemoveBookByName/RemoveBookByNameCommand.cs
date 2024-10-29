@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace PostsApp.Application.Bookshelves.Commands.RemoveBookFromDefaultBookshelf;
+namespace BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
 
 public sealed class RemoveBookByNameCommand : IRequest
 {

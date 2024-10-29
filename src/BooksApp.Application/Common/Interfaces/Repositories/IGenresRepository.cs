@@ -1,6 +1,6 @@
-﻿using PostsApp.Domain.Genre;
+﻿using BooksApp.Domain.Genre;
 
-namespace PostsApp.Application.Common.Interfaces.Repositories;
+namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IGenresRepository : IGenericRepository<Genre>
 {

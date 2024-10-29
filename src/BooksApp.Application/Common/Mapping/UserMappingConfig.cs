@@ -1,8 +1,8 @@
-﻿using Mapster;
-using PostsApp.Application.Users.Results;
-using PostsApp.Domain.User;
+﻿using BooksApp.Application.Users.Results;
+using BooksApp.Domain.User;
+using Mapster;
 
-namespace PostsApp.Application.Common.Mapping;
+namespace BooksApp.Application.Common.Mapping;
 
 public class UserMappingConfig : IRegister
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace PostsApp.Common.Contracts.Requests.Book;
+namespace BooksApp.Contracts.Requests.Books;
 
 public class CreateBookRequest
 {

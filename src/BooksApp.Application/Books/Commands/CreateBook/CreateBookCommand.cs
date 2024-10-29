@@ -1,8 +1,8 @@
+using BooksApp.Application.Books.Results;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using PostsApp.Application.Books.Results;
 
-namespace PostsApp.Application.Books.Commands.CreateBook;
+namespace BooksApp.Application.Books.Commands.CreateBook;
 
 public sealed class CreateBookCommand : IRequest<BookResult>
 {

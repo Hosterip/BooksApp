@@ -1,11 +1,11 @@
-﻿using MediatR;
+﻿using BooksApp.API.Common.Constants;
+using BooksApp.Application.Genres.Commands.CreateGenre;
+using BooksApp.Application.Genres.Queries.GetAllGenres;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostsApp.Application.Genres.Commands.CreateGenre;
-using PostsApp.Application.Genres.Queries.GetAllGenres;
-using PostsApp.Common.Constants;
 
-namespace PostsApp.Controllers;
+namespace BooksApp.API.Controllers;
 
 public class GenresController : ApiController
 {

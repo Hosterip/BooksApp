@@ -1,8 +1,7 @@
+using BooksApp.Application.Common.Interfaces;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Application.Users.Commands.UpdateEmail;
 
-namespace PostsApp.Application.Users.Commands.UpdateUsername;
+namespace BooksApp.Application.Users.Commands.UpdateEmail;
 
 internal sealed class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand>
 {

@@ -1,9 +1,9 @@
 using System.Linq.Expressions;
-using PostsApp.Application.Books.Results;
-using PostsApp.Application.Common.Results;
-using PostsApp.Domain.Book;
+using BooksApp.Application.Books.Results;
+using BooksApp.Application.Common.Results;
+using BooksApp.Domain.Book;
 
-namespace PostsApp.Application.Common.Interfaces.Repositories;
+namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IBooksRepository : IGenericRepository<Book>
 {

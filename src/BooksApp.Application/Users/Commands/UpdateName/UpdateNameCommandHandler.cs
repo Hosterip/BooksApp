@@ -1,7 +1,7 @@
+using BooksApp.Application.Common.Interfaces;
 using MediatR;
-using PostsApp.Application.Common.Interfaces;
 
-namespace PostsApp.Application.Users.Commands.UpdateName;
+namespace BooksApp.Application.Users.Commands.UpdateName;
 
 public class UpdateNameCommandHandler : IRequestHandler<UpdateNameCommand>
 {

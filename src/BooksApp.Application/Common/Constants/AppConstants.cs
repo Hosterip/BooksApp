@@ -1,4 +1,4 @@
-﻿namespace PostsApp.Application.Common.Constants;
+﻿namespace BooksApp.Application.Common.Constants;
 
 public static class AppConstants
 {

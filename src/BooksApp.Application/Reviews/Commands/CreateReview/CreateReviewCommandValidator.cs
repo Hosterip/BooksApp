@@ -1,11 +1,11 @@
-﻿using FluentValidation;
-using PostsApp.Application.Common.Constants.Exceptions;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Book.ValueObjects;
-using PostsApp.Domain.Common.Enums.MaxLengths;
-using PostsApp.Domain.User.ValueObjects;
+﻿using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.User.ValueObjects;
+using FluentValidation;
 
-namespace PostsApp.Application.Reviews.Commands.CreateReview;
+namespace BooksApp.Application.Reviews.Commands.CreateReview;
 
 public class CreateReviewCommandValidator : AbstractValidator<CreateReviewCommand>
 {

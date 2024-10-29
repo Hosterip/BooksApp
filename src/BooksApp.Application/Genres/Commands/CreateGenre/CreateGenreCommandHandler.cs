@@ -1,8 +1,8 @@
-﻿using MediatR;
-using PostsApp.Application.Common.Interfaces;
-using PostsApp.Domain.Genre;
+﻿using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Genre;
+using MediatR;
 
-namespace PostsApp.Application.Genres.Commands.CreateGenre;
+namespace BooksApp.Application.Genres.Commands.CreateGenre;
 
 public class CreateGenreCommandHandler : IRequestHandler<CreateGenreCommand, GenreResult>
 {

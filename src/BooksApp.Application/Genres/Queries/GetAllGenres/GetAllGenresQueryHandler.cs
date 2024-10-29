@@ -1,7 +1,7 @@
-﻿using MediatR;
-using PostsApp.Application.Common.Interfaces;
+﻿using BooksApp.Application.Common.Interfaces;
+using MediatR;
 
-namespace PostsApp.Application.Genres.Queries.GetAllGenres;
+namespace BooksApp.Application.Genres.Queries.GetAllGenres;
 
 public class GetAllGenresQueryHandler : IRequestHandler<GetAllGenresQuery, List<GenreResult>>
 {
