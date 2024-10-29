@@ -6,6 +6,8 @@ using BooksApp.Application.Books.Commands.UpdateBook;
 using BooksApp.Application.Books.Queries.GetBooks;
 using BooksApp.Application.Books.Queries.GetSingleBook;
 using BooksApp.Application.Books.Results;
+using BooksApp.Application.Bookshelves;
+using BooksApp.Application.Common.Results;
 using BooksApp.Contracts.Requests.Books;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +26,7 @@ public class BooksController : ApiController
     }
 
     [HttpGet(ApiRoutes.Books.GetMany)]
-    public async Task<IActionResult> GetMany(
+    public async Task<ActionResult<PaginatedArray<BookshelfResult>>> GetMany(
         CancellationToken cancellationToken,
         [FromQuery] GetBooksRequest request
     )
@@ -42,7 +44,7 @@ public class BooksController : ApiController
     }
 
     [HttpGet(ApiRoutes.Books.GetSingle)]
-    public async Task<IActionResult> GetSingle(
+    public async Task<ActionResult<BookResult>> GetSingle(
         Guid id,
         CancellationToken cancellationToken)
     {
@@ -108,7 +110,7 @@ public class BooksController : ApiController
     // Users endpoints
 
     [HttpGet(ApiRoutes.Users.GetManyBooks)]
-    public async Task<IActionResult> GetManyByUserId(
+    public async Task<ActionResult<PaginatedArray<BookResult>>> GetManyByUserId(
         CancellationToken cancellationToken,
         [FromRoute] Guid userId,
         [FromQuery] GetUserBooksRequest request

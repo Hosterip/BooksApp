@@ -66,7 +66,7 @@ public class AuthController : ApiController
 
     [HttpPut(ApiRoutes.Auth.UpdatePassword)]
     [Authorize]
-    public async Task<IActionResult> UpdatePassword(
+    public async Task<ActionResult<UserResponse>> UpdatePassword(
         [FromBodyOrDefault] UpdatePasswordRequest request,
         CancellationToken cancellationToken)
     {

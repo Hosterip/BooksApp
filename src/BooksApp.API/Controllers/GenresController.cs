@@ -1,4 +1,5 @@
 ﻿using BooksApp.API.Common.Constants;
+using BooksApp.Application.Genres;
 using BooksApp.Application.Genres.Commands.CreateGenre;
 using BooksApp.Application.Genres.Queries.GetAllGenres;
 using MediatR;
@@ -18,7 +19,7 @@ public class GenresController : ApiController
 
     [HttpPost(ApiRoutes.Genres.Create)]
     [Authorize]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<GenreResult>> Create(
         [FromRoute] string name,
         CancellationToken cancellationToken)
     {
@@ -32,7 +33,7 @@ public class GenresController : ApiController
     }
 
     [HttpGet(ApiRoutes.Genres.GetAll)]
-    public async Task<IActionResult> GetAll(
+    public async Task<ActionResult<List<GenreResult>>> GetAll(
         CancellationToken cancellationToken)
     {
         var getAllGenreQuery = new GetAllGenresQuery();

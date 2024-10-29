@@ -1,5 +1,6 @@
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Books.Results;
 using BooksApp.Application.Bookshelves;
 using BooksApp.Application.Bookshelves.Commands.AddBook;
 using BooksApp.Application.Bookshelves.Commands.AddBookByName;
@@ -11,6 +12,7 @@ using BooksApp.Application.Bookshelves.Queries.BookshelfById;
 using BooksApp.Application.Bookshelves.Queries.BookshelfByRefName;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelves;
+using BooksApp.Application.Common.Results;
 using BooksApp.Contracts.Requests.Bookshelves;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -50,7 +52,7 @@ public class BookshelvesController : ApiController
     }
 
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
-    public async Task<IActionResult> GetBooks(
+    public async Task<ActionResult<PaginatedArray<BookResult>>> GetBooks(
         [FromRoute] Guid bookshelfId,
         [FromQuery] GetBookshelfBooksRequest request)
     {
@@ -155,7 +157,7 @@ public class BookshelvesController : ApiController
     // Users endpoints 
 
     [HttpGet(ApiRoutes.Users.GetBookshelves)]
-    public async Task<IActionResult> GetBookshelves(
+    public async Task<ActionResult<List<BookshelfResult>>> GetBookshelves(
         Guid userId)
     {
         var query = new GetBookshelvesQuery

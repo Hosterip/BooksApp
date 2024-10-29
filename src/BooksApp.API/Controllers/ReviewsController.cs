@@ -1,9 +1,11 @@
 ﻿using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Common.Results;
 using BooksApp.Application.Reviews.Commands.CreateReview;
 using BooksApp.Application.Reviews.Commands.DeleteReview;
 using BooksApp.Application.Reviews.Commands.UpdateReview;
 using BooksApp.Application.Reviews.Queries.GetReviews;
+using BooksApp.Application.Reviews.Results;
 using BooksApp.Contracts.Requests.Reviews;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +25,7 @@ public class ReviewsController : ApiController
 
     [HttpPost(ApiRoutes.Reviews.Create)]
     [Authorize]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<ReviewResult>> Create(
         [FromBodyOrDefault] CreateReviewRequest request,
         CancellationToken cancellationToken)
     {
@@ -40,7 +42,7 @@ public class ReviewsController : ApiController
 
     [HttpPut(ApiRoutes.Reviews.Update)]
     [Authorize]
-    public async Task<IActionResult> Update(
+    public async Task<ActionResult<ReviewResult>> Update(
         [FromBodyOrDefault] UpdateReviewRequest request,
         CancellationToken cancellationToken)
     {
@@ -73,7 +75,7 @@ public class ReviewsController : ApiController
     // Books
 
     [HttpGet(ApiRoutes.Books.GetReviews)]
-    public async Task<IActionResult> GetReviews(
+    public async Task<ActionResult<PaginatedArray<ReviewResult>>> GetReviews(
         Guid id,
         [FromQuery] GetReviewsQuery request,
         CancellationToken cancellationToken)

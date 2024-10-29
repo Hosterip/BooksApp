@@ -1,5 +1,6 @@
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Roles;
 using BooksApp.Application.Roles.Commands.UpdateRole;
 using BooksApp.Application.Roles.Queries.GetRoles;
 using BooksApp.Contracts.Requests.Roles;
@@ -40,7 +41,7 @@ public class RolesController : ApiController
 
 
     [HttpGet(ApiRoutes.Users.GetRoles)]
-    public async Task<IActionResult> GetRoles(
+    public async Task<ActionResult<RoleResult[]>> GetRoles(
         CancellationToken cancellationToken)
     {
         var command = new GetRoleQuery();

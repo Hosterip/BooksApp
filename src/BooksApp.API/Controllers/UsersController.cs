@@ -1,11 +1,13 @@
 ﻿using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Common.Results;
 using BooksApp.Application.Users.Commands.DeleteUser;
 using BooksApp.Application.Users.Commands.InsertAvatar;
 using BooksApp.Application.Users.Commands.UpdateEmail;
 using BooksApp.Application.Users.Commands.UpdateName;
 using BooksApp.Application.Users.Queries.GetSingleUser;
 using BooksApp.Application.Users.Queries.GetUsers;
+using BooksApp.Application.Users.Results;
 using BooksApp.Contracts.Requests.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -25,7 +27,7 @@ public class UsersController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetMe)]
-    public async Task<IActionResult> GetMe(
+    public async Task<ActionResult<UserResult>> GetMe(
         CancellationToken cancellationToken)
     {
         var id = HttpContext.GetId()!.Value;
@@ -35,7 +37,7 @@ public class UsersController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetMany)]
-    public async Task<IActionResult> GetMany(
+    public async Task<ActionResult<PaginatedArray<UserResult>>> GetMany(
         [FromQuery] GetUsersRequest request,
         CancellationToken cancellationToken)
     {
@@ -50,7 +52,7 @@ public class UsersController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetById)]
-    public async Task<IActionResult> GetById(
+    public async Task<ActionResult<UserResult>> GetById(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
@@ -112,7 +114,7 @@ public class UsersController : ApiController
 
     [HttpPut(ApiRoutes.Users.UpdateAvatar)]
     [Authorize]
-    public async Task<IActionResult> UpdateAvatar(
+    public async Task<ActionResult<UserResult>> UpdateAvatar(
         [FromBodyOrDefault] InsertAvatarRequest request,
         CancellationToken cancellationToken)
     {
