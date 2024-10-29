@@ -49,6 +49,16 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId));
     }
 
+    public async Task<Bookshelf?> GetBookshelfByName(string name, Guid userId)
+    {
+        var refName = name.GenerateRefName();
+        return await _dbContext.Bookshelves
+            .SingleOrDefaultAsync(bookshelf => bookshelf.User != null &&
+                                   bookshelf.User.Id == UserId.CreateUserId(userId) &&
+                                   bookshelf.ReferentialName == refName);
+        
+    }
+
     public async Task<Bookshelf?> GetSingleById(Guid bookshelfId)
     {
         return await _dbContext.Bookshelves

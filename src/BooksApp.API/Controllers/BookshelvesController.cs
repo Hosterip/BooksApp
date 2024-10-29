@@ -1,11 +1,14 @@
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Bookshelves;
 using BooksApp.Application.Bookshelves.Commands.AddBook;
 using BooksApp.Application.Bookshelves.Commands.AddBookByName;
 using BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 using BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using BooksApp.Application.Bookshelves.Commands.RemoveBook;
 using BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
+using BooksApp.Application.Bookshelves.Queries.BookshelfById;
+using BooksApp.Application.Bookshelves.Queries.BookshelfByRefName;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelves;
 using BooksApp.Contracts.Requests.Bookshelves;
@@ -25,9 +28,30 @@ public class BookshelvesController : ApiController
         _sender = sender;
     }
 
+    [HttpGet(ApiRoutes.Users.GetBookshelf)]
+    public async Task<ActionResult<BookshelfResult>> GetBookshelf(
+        [FromRoute] string nameOrGuid,
+        [FromRoute] Guid userId
+    )
+    {
+        var success = Guid.TryParse(nameOrGuid, out var bookshelfId);
+        var result = await _sender.Send(success
+            ? new BookshelfByIdQuery
+            {
+                BookshelfId = bookshelfId
+            }
+            : new BookshelfByNameQuery
+            {
+                UserId = userId,
+                Name = nameOrGuid
+            }
+        );
+        return Ok(result);
+    }
+
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
     public async Task<IActionResult> GetBooks(
-        Guid bookshelfId,
+        [FromRoute] Guid bookshelfId,
         [FromQuery] GetBookshelfBooksRequest request)
     {
         var query = new GetBookshelfBooksQuery
@@ -43,17 +67,21 @@ public class BookshelvesController : ApiController
 
     [HttpPost(ApiRoutes.Bookshelves.Create)]
     [Authorize]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<BookshelfResult>> Create(
         [FromBodyOrDefault] CreateBookshelfRequest request)
     {
+        var userId = HttpContext.GetId()!.Value;
         var command = new CreateBookshelfCommand
         {
             Name = request.Name,
-            UserId = HttpContext.GetId()!.Value
+            UserId = userId
         };
         var result = await _sender.Send(command);
 
-        return Ok(result);
+        return CreatedAtAction(
+            nameof(GetBookshelf),
+            new {nameOrGuid = result.Id, userId },
+            result);
     }
 
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
@@ -80,8 +108,8 @@ public class BookshelvesController : ApiController
         [FromRoute] string idOrName)
     {
         var userId = HttpContext.GetId()!.Value;
-        Guid.TryParse(idOrName, out var bookshelfId);
-        await _sender.Send(bookshelfId != null
+        var success = Guid.TryParse(idOrName, out var bookshelfId);
+        await _sender.Send(success
             ? new AddBookCommand
             {
                 BookshelfId = bookshelfId,
@@ -106,8 +134,8 @@ public class BookshelvesController : ApiController
         [FromRoute] string idOrName)
     {
         var userId = HttpContext.GetId()!.Value;
-        Guid.TryParse(idOrName, out var bookshelfId);
-        await _sender.Send(bookshelfId != null
+        var success = Guid.TryParse(idOrName, out var bookshelfId);
+        await _sender.Send(success 
             ? new RemoveBookCommand
             {
                 BookshelfId = bookshelfId,
