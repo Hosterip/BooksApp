@@ -1,6 +1,5 @@
 ﻿using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Common.Security;
 using BooksApp.Domain.Review.ValueObjects;
 using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
@@ -14,7 +13,6 @@ internal sealed class DeleteReviewCommandValidator : AbstractValidator<DeleteRev
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleById(request.UserId);
                 return await unitOfWork.Reviews
                            .AnyAsync(review =>
                                review.User.Id == UserId.CreateUserId(request.UserId) &&
