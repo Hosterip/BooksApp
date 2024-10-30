@@ -91,9 +91,11 @@ public class BookshelvesController : ApiController
     public async Task<IActionResult> Remove(
         [FromRoute] Guid bookshelfId)
     {
+        var userId = HttpContext.GetId();
         var command = new DeleteBookshelfCommand
         {
-            BookshelfId = bookshelfId
+            BookshelfId = bookshelfId,
+            UserId = userId!.Value
         };
 
         await _sender.Send(command);

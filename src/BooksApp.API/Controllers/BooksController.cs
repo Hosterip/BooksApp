@@ -54,7 +54,7 @@ public class BooksController : ApiController
     }
 
     [HttpPost(ApiRoutes.Books.Create)]
-    [Authorize]
+    [Authorize(Policies.Author)]
     public async Task<ActionResult<BookResult>> Create(
         [FromBodyOrDefault] CreateBookRequest request,
         CancellationToken cancellationToken

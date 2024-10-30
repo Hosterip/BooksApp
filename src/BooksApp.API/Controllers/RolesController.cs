@@ -22,7 +22,7 @@ public class RolesController : ApiController
 
     // Users endpoints
     [HttpPut(ApiRoutes.Users.UpdateRole)]
-    [Authorize]
+    [Authorize(Policies.Admin)]
     public async Task<IActionResult> UpdateRole(
         [FromBodyOrDefault] ChangeRoleRequest request,
         CancellationToken cancellationToken)
