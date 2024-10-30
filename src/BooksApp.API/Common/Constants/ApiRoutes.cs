@@ -3,6 +3,7 @@ namespace BooksApp.API.Common.Constants;
 public static class ApiRoutes
 {
     private const string ApiBase = "api";
+    private const string ApiPrivilegedBase = "api/privileged";
 
     public static class Auth
     {
@@ -17,7 +18,8 @@ public static class ApiRoutes
     public static class Books
     {
         private const string Base = $"{ApiBase}/books";
-
+        private const string PrivilegedBase = $"{ApiPrivilegedBase}/books";
+        
         public const string GetMany = $"{Base}";
         public const string GetSingle = $"{Base}/{{id:guid}}";
 
@@ -26,6 +28,7 @@ public static class ApiRoutes
         public const string Update = $"{Base}";
 
         public const string Delete = $"{Base}/{{id:guid}}";
+        public const string PrivilegedDelete = $"{PrivilegedBase}/{{id:guid}}";
 
         // Bookshelves
 
@@ -42,7 +45,7 @@ public static class ApiRoutes
     {
         private const string Base = $"{ApiBase}/bookshelves";
 
-        public const string GetBooks = $"{Base}/books/{{bookshelfId:guid}}";
+        public const string GetBooks = $"{Base}/{{bookshelfId:guid}}/books/";
 
         public const string Create = $"{Base}";
         public const string Remove = $"{Base}/{{bookshelfId:guid}}";
@@ -66,13 +69,14 @@ public static class ApiRoutes
     public static class Reviews
     {
         private const string Base = $"{ApiBase}/reviews";
-
+        private const string PrivilegedBase = $"{ApiPrivilegedBase}"; 
 
         public const string Create = $"{Base}";
 
         public const string Update = $"{Base}";
 
         public const string Delete = $"{Base}/{{id:guid}}";
+        public const string PrivilegedDelete = $"{PrivilegedBase}/{{id:guid}}";
     }
 
     public static class Users

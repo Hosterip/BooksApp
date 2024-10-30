@@ -2,6 +2,7 @@ using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
 using BooksApp.Application.Books.Commands.CreateBook;
 using BooksApp.Application.Books.Commands.DeleteBook;
+using BooksApp.Application.Books.Commands.PrivilegedDeleteBook;
 using BooksApp.Application.Books.Commands.UpdateBook;
 using BooksApp.Application.Books.Queries.GetBooks;
 using BooksApp.Application.Books.Queries.GetSingleBook;
@@ -107,6 +108,21 @@ public class BooksController : ApiController
         return Ok();
     }
 
+    [HttpDelete(ApiRoutes.Books.PrivilegedDelete)]
+    [Authorize(Policies.Admin)]
+    public async Task<IActionResult> PrivilegedDelete(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var command = new PrivilegedDeleteBookCommand
+        {
+            Id = id,
+            UserId = HttpContext.GetId()!.Value
+        };
+        await _sender.Send(command, cancellationToken);
+        return Ok();
+    }
+    
     // Users endpoints
 
     [HttpGet(ApiRoutes.Users.GetManyBooks)]
