@@ -8,7 +8,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Books.Commands.UpdateBook;
 
-public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
+internal class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
     public UpdateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {
@@ -23,16 +23,12 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 request.Title == null || !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title))
             .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
             .OverridePropertyName(nameof(UpdateBookCommand.Title));
-        RuleFor(book => book)
+        RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-            {
-                var canUpdate = await unitOfWork.Users
-                    .AnyAsync(user => user.Id == UserId.CreateUserId(request.UserId) &&
-                                      (user.Role.Name == RoleNames.Admin || user.Role.Name == RoleNames.Moderator));
-                return await unitOfWork.Books.AnyAsync(book =>
-                    book.Id == BookId.CreateBookId(request.Id) &&
-                    (book.Author.Id == UserId.CreateUserId(request.UserId) || canUpdate));
-            }).WithMessage(BookValidationMessages.BookNotYour);
+                await unitOfWork.Books
+                    .AnyAsync(book => book.Id == BookId.CreateBookId(request.Id) && 
+                                      book.Author.Id == UserId.CreateUserId(request.UserId))
+            ).WithMessage(BookValidationMessages.BookNotYour);
 
         // Genres
 

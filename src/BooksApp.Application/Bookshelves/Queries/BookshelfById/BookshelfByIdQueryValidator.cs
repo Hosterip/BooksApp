@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Queries.BookshelfById;
 
-public class BookshelfByNameQueryValidator : AbstractValidator<BookshelfByIdQuery>
+internal sealed class BookshelfByNameQueryValidator : AbstractValidator<BookshelfByIdQuery>
 {
     public BookshelfByNameQueryValidator(IUnitOfWork unitOfWork)
     {

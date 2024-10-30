@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.RemoveBook;
 
-public class RemoveBookCommandHandler : IRequestHandler<RemoveBookCommand>
+internal sealed class RemoveBookCommandHandler : IRequestHandler<RemoveBookCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 

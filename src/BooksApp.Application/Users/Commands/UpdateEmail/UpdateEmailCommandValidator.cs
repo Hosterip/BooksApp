@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Users.Commands.UpdateEmail;
 
-public class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailCommand>
+internal sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailCommand>
 {
     public UpdateEmailCommandValidator(IUnitOfWork unitOfWork)
     {

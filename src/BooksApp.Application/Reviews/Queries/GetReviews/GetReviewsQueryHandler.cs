@@ -5,7 +5,7 @@ using MediatR;
 
 namespace BooksApp.Application.Reviews.Queries.GetReviews;
 
-public class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, PaginatedArray<ReviewResult>>
+internal sealed class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, PaginatedArray<ReviewResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 

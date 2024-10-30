@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Reviews.Commands.CreateReview;
 
-public class CreateReviewCommandValidator : AbstractValidator<CreateReviewCommand>
+internal sealed class CreateReviewCommandValidator : AbstractValidator<CreateReviewCommand>
 {
     public CreateReviewCommandValidator(IUnitOfWork unitOfWork)
     {

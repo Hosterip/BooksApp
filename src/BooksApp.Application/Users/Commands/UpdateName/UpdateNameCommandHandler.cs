@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BooksApp.Application.Users.Commands.UpdateName;
 
-public class UpdateNameCommandHandler : IRequestHandler<UpdateNameCommand>
+internal sealed class UpdateNameCommandHandler : IRequestHandler<UpdateNameCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 

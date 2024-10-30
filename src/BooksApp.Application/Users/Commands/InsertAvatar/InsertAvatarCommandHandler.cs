@@ -6,7 +6,7 @@ using MediatR;
 
 namespace BooksApp.Application.Users.Commands.InsertAvatar;
 
-public class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, UserResult>
+internal sealed  class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarCommand, UserResult>
 {
     private readonly IImageFileBuilder _imageFileBuilder;
     private readonly IMapper _mapper;

@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Images.Queries.GetImage;
 
-public class GetImageQueryValidator : AbstractValidator<GetImageQuery>
+internal sealed class GetImageQueryValidator : AbstractValidator<GetImageQuery>
 {
     public GetImageQueryValidator()
     {

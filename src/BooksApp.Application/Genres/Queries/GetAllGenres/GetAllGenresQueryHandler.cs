@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BooksApp.Application.Genres.Queries.GetAllGenres;
 
-public class GetAllGenresQueryHandler : IRequestHandler<GetAllGenresQuery, List<GenreResult>>
+internal class GetAllGenresQueryHandler : IRequestHandler<GetAllGenresQuery, List<GenreResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 

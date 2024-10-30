@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Auth.Commands.ChangePassword;
 
-public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
+internal sealed class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
     public ChangePasswordCommandValidator(IUnitOfWork unitOfWork)
     {

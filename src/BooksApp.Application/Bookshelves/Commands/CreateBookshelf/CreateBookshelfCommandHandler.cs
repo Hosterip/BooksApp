@@ -5,7 +5,7 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 
-public class CreateBookshelfCommandHandler : IRequestHandler<CreateBookshelfCommand, BookshelfResult>
+internal sealed class CreateBookshelfCommandHandler : IRequestHandler<CreateBookshelfCommand, BookshelfResult>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;

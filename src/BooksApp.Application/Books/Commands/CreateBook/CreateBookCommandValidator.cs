@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Books.Commands.CreateBook;
 
-public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
+internal class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
 {
     public CreateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {
@@ -26,11 +26,7 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         // User Validation
 
         RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) =>
-            {
-                var user = await unitOfWork.Users.GetSingleById(userId);
-                return user is not null && RolePermissions.CreateBook(user.Role.Name);
-            })
+            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
             .WithMessage(BookValidationMessages.MustBeAnAuthor);
         RuleFor(book => book.UserId)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))

@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Roles.Commands.UpdateRole;
 
-public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
+internal sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
 {
     public UpdateRoleCommandValidator(IUnitOfWork unitOfWork)
     {
@@ -22,16 +22,11 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
             .Must(request => request.ChangerId != request.UserId)
             .WithMessage(RoleValidationMessages.CanNotChangeYourOwn)
             .OverridePropertyName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(UpdateRoleCommand.ChangerId)}");
-        RuleFor(request => request)
-            .MustAsync(async (request, cancellationToken) =>
-            {
-                var targetUser = await unitOfWork.Users.GetSingleById(request.UserId);
-                var changerUser = await unitOfWork.Users.GetSingleById(request.ChangerId);
-                if (changerUser is null || targetUser is null) return false;
-                return RolePermissions.UpdateRole(
-                    changerUser.Role.Name,
-                    targetUser.Role.Name,
-                    request.Role);
-            }).WithMessage(UserValidationMessages.Permission);
+        RuleFor(request => request.ChangerId)
+            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
+            .WithMessage(UserValidationMessages.NotFound);
+        RuleFor(request => request.UserId)
+            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
+            .WithMessage(UserValidationMessages.NotFound);
     }
 }

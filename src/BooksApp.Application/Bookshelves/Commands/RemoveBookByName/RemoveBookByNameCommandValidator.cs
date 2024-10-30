@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
 
-public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveBookByNameCommand>
+internal sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveBookByNameCommand>
 {
     public RemoveBookByNameCommandValidator(IUnitOfWork unitOfWork)
     {

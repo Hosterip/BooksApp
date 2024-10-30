@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 
-public class CreateBookshelfValidator : AbstractValidator<CreateBookshelfCommand>
+internal sealed class CreateBookshelfValidator : AbstractValidator<CreateBookshelfCommand>
 {
     public CreateBookshelfValidator(IUnitOfWork unitOfWork)
     {

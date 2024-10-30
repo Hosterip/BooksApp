@@ -4,18 +4,18 @@ using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 
-public class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBookshelfCommand>
+internal sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBookshelfCommand>
 {
     public DeleteBookshelfCommandValidator(IUnitOfWork unitOfWork)
     {
-        RuleFor(request => request.BookshelfId)
-            .MustAsync(async (bookshelfId, cancellationToken) =>
+        RuleFor(request => request)
+            .MustAsync(async (request, cancellationToken) =>
             {
-                var bookshelf = await unitOfWork.Bookshelves.GetSingleById(bookshelfId);
+                var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId);
 
-                if (bookshelf is null) return false;
-                if (DefaultBookshelvesNames.AllValues.Contains(bookshelf.ReferentialName)) return false;
-                return true;
-            });
+                if (bookshelf is null &&
+                    bookshelf?.User?.Id.Value == request.UserId) return false;
+                return !DefaultBookshelvesNames.AllValues.Contains(bookshelf.ReferentialName);
+            }).OverridePropertyName(nameof(DeleteBookshelfCommand.BookshelfId));
     }
 }

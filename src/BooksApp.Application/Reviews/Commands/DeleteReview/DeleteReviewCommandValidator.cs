@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Reviews.Commands.DeleteReview;
 
-public class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewCommand>
+internal sealed class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewCommand>
 {
     public DeleteReviewCommandValidator(IUnitOfWork unitOfWork)
     {
@@ -15,8 +15,7 @@ public class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewComman
             .MustAsync(async (request, cancellationToken) =>
             {
                 var user = await unitOfWork.Users.GetSingleById(request.UserId);
-                return RolePermissions.DeleteReview(user!.Role.Name) ||
-                       await unitOfWork.Reviews
+                return await unitOfWork.Reviews
                            .AnyAsync(review =>
                                review.User.Id == UserId.CreateUserId(request.UserId) &&
                                review.Id == ReviewId.CreateReviewId(request.ReviewId));

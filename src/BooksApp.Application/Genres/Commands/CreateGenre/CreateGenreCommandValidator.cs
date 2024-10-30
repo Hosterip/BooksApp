@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Genres.Commands.CreateGenre;
 
-public class CreateGenreCommandValidator : AbstractValidator<CreateGenreCommand>
+internal sealed class CreateGenreCommandValidator : AbstractValidator<CreateGenreCommand>
 {
     public CreateGenreCommandValidator(IUnitOfWork unitOfWork)
     {

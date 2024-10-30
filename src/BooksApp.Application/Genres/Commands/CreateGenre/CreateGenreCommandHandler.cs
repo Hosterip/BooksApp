@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BooksApp.Application.Genres.Commands.CreateGenre;
 
-public class CreateGenreCommandHandler : IRequestHandler<CreateGenreCommand, GenreResult>
+internal sealed class CreateGenreCommandHandler : IRequestHandler<CreateGenreCommand, GenreResult>
 {
     private readonly IUnitOfWork _unitOfWork;
 

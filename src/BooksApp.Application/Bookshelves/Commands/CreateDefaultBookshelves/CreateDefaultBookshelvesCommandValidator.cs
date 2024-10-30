@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
 
-public class CreateDefaultBookshelvesCommandValidator : AbstractValidator<CreateDefaultBookshelvesCommand>
+internal class CreateDefaultBookshelvesCommandValidator : AbstractValidator<CreateDefaultBookshelvesCommand>
 {
     public CreateDefaultBookshelvesCommandValidator(IUnitOfWork unitOfWork)
     {

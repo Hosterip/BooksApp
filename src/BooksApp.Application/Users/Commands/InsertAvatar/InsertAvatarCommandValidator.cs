@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Users.Commands.InsertAvatar;
 
-public class InsertAvatarCommandValidator : AbstractValidator<InsertAvatarCommand>
+internal sealed class InsertAvatarCommandValidator : AbstractValidator<InsertAvatarCommand>
 {
     public InsertAvatarCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {

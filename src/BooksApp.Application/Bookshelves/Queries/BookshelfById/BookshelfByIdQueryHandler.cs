@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Queries.BookshelfById;
 
-public class BookshelfByNameQueryHandler : IRequestHandler<BookshelfByIdQuery, BookshelfResult>
+internal sealed class BookshelfByNameQueryHandler : IRequestHandler<BookshelfByIdQuery, BookshelfResult>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapster;
