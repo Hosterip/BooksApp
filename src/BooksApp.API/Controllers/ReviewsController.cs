@@ -3,6 +3,7 @@ using BooksApp.API.Common.Extensions;
 using BooksApp.Application.Common.Results;
 using BooksApp.Application.Reviews.Commands.CreateReview;
 using BooksApp.Application.Reviews.Commands.DeleteReview;
+using BooksApp.Application.Reviews.Commands.PrivilegedDeleteReview;
 using BooksApp.Application.Reviews.Commands.UpdateReview;
 using BooksApp.Application.Reviews.Queries.GetReviews;
 using BooksApp.Application.Reviews.Results;
@@ -64,6 +65,21 @@ public class ReviewsController : ApiController
         CancellationToken cancellationToken)
     {
         var command = new DeleteReviewCommand
+        {
+            ReviewId = id,
+            UserId = HttpContext.GetId()!.Value
+        };
+        await _sender.Send(command, cancellationToken);
+        return Ok();
+    }
+    
+    [HttpDelete(ApiRoutes.Reviews.Delete)]
+    [Authorize(Policies.Moderator)]
+    public async Task<IActionResult> PrivilegedDelete(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        var command = new PrivilegedDeleteReviewCommand
         {
             ReviewId = id,
             UserId = HttpContext.GetId()!.Value
