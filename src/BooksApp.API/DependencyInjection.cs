@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using BooksApp.API.Common;
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Requirements;
 using BooksApp.API.Middlewares;
@@ -6,17 +7,25 @@ using BooksApp.Domain.Common.Constants;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
-namespace BooksApp.API.Common.Extensions;
+namespace BooksApp.API;
 
-public static class AddAuthExtension
+public static class DependencyInjection
 {
-    public static void AddAuth(this IServiceCollection serviceCollection)
+    public static IServiceCollection AddApi(this IServiceCollection services, string corsPolicy)
+    {
+        services
+            .AddCorsPolicy(corsPolicy)
+            .AddAuth();
+        return services;
+    }
+    
+    private static IServiceCollection AddAuth(this IServiceCollection services)
     {
         // Overriding default AuthorizationMiddlewareResultHandler
-        serviceCollection.AddSingleton<IAuthorizationMiddlewareResultHandler, MyAuthorizationMiddlewareResultHandler>();
-        serviceCollection.AddSingleton<IAuthorizationHandler, NotAuthorizedRequirementHandler>();
+        services.AddSingleton<IAuthorizationMiddlewareResultHandler, MyAuthorizationMiddlewareResultHandler>();
+        services.AddSingleton<IAuthorizationHandler, NotAuthorizedRequirementHandler>();
         // Adding a cookie for auth
-        serviceCollection.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
@@ -25,7 +34,7 @@ public static class AddAuthExtension
                 options.Cookie.SameSite = SameSiteMode.Strict;
             });
         // Adding policies
-        serviceCollection.AddAuthorization(options =>
+        services.AddAuthorization(options =>
         {
             options.AddPolicy(Policies.Admin, policy => policy.RequireRole([RoleNames.Admin]));
 
@@ -39,5 +48,20 @@ public static class AddAuthExtension
             options.AddPolicy(Policies.NotAuthorized, policy =>
                 policy.Requirements.Add(AuthRequirements.NotAuthorized));
         });
+        return services;
+    }
+    
+    private static IServiceCollection AddCorsPolicy(this IServiceCollection services, string policyName)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(policyName, policyBuilder =>
+                policyBuilder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed(hostName => true));
+        });
+        return services;
     }
 }

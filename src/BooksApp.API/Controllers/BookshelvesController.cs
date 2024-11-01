@@ -59,7 +59,7 @@ public class BookshelvesController : ApiController
         var query = new GetBookshelfBooksQuery
         {
             BookshelfId = bookshelfId,
-            Limit = request.Limit,
+            Limit = request.PageSize,
             Page = request.Page
         };
         var result = await _sender.Send(query);

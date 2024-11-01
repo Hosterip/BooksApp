@@ -1,3 +1,4 @@
+using BooksApp.API;
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
 using BooksApp.API.Middlewares;
@@ -7,9 +8,10 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 
 // Add CORS
-var corsAllow = "CorsAllow";
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddCorsPolicy(corsAllow);
+var config = builder.Configuration;
+
+var corsPolicy = config["Cors"];
 
 // Controllers
 builder.Services.AddControllers(options => { options.ModelBinderProviders.InsertBodyOrDefaultBinding(); });
@@ -19,23 +21,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Adding Dependency Injectable 
-builder.Services.AddInfrastructure();
+builder.Services.AddApi(corsPolicy!);
 builder.Services.AddApplication();
-
-// Authentication || Authorization
-builder.Services.AddAuth();
+builder.Services.AddInfrastructure();
 
 // Building app
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+// Route for exceptions
 app.UseExceptionHandler(ApiRoutes.Error.ErrorHandler);
 if (!app.Environment.IsDevelopment())
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseCors(corsAllow);
+app.UseCors(corsPolicy!);
 
 // Authorization and authentication
 app.UseAuthentication();
