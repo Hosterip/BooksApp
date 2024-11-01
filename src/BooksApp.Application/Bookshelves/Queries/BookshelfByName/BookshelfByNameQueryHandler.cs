@@ -2,13 +2,13 @@ using BooksApp.Application.Common.Interfaces;
 using MapsterMapper;
 using MediatR;
 
-namespace BooksApp.Application.Bookshelves.Queries.BookshelfByRefName;
+namespace BooksApp.Application.Bookshelves.Queries.BookshelfByName;
 
 internal sealed class BookshelfByNameQueryHandler : IRequestHandler<BookshelfByNameQuery, BookshelfResult>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapster;
-    
+    private readonly IUnitOfWork _unitOfWork;
+
     public BookshelfByNameQueryHandler(IUnitOfWork unitOfWork, IMapper mapster)
     {
         _unitOfWork = unitOfWork;

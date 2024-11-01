@@ -72,7 +72,7 @@ public class ReviewsController : ApiController
         await _sender.Send(command, cancellationToken);
         return Ok();
     }
-    
+
     [HttpDelete(ApiRoutes.Reviews.Delete)]
     [Authorize(Policies.Moderator)]
     public async Task<IActionResult> PrivilegedDelete(

@@ -19,7 +19,7 @@ public static class ApiRoutes
     {
         private const string Base = $"{ApiBase}/books";
         private const string PrivilegedBase = $"{ApiPrivilegedBase}/books";
-        
+
         public const string GetMany = $"{Base}";
         public const string GetSingle = $"{Base}/{{id:guid}}";
 
@@ -69,7 +69,7 @@ public static class ApiRoutes
     public static class Reviews
     {
         private const string Base = $"{ApiBase}/reviews";
-        private const string PrivilegedBase = $"{ApiPrivilegedBase}"; 
+        private const string PrivilegedBase = $"{ApiPrivilegedBase}";
 
         public const string Create = $"{Base}";
 

@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace BooksApp.Application.Bookshelves.Queries.BookshelfByRefName;
+namespace BooksApp.Application.Bookshelves.Queries.BookshelfByName;
 
 public class BookshelfByNameQuery : IRequest<BookshelfResult>
 {

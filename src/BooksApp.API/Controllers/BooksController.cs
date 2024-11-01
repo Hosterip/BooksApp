@@ -73,7 +73,7 @@ public class BooksController : ApiController
 
         return CreatedAtAction(
             nameof(GetSingle),
-            new {id = book.Id}, book);
+            new { id = book.Id }, book);
     }
 
     [HttpPut(ApiRoutes.Books.Update)]
@@ -94,7 +94,7 @@ public class BooksController : ApiController
         var result = await _sender.Send(updateBookCommand, cancellationToken);
         return CreatedAtAction(
             nameof(GetSingle),
-            new {id = result.Id}, result);
+            new { id = result.Id }, result);
     }
 
     [HttpDelete(ApiRoutes.Books.Delete)]
@@ -122,7 +122,7 @@ public class BooksController : ApiController
         await _sender.Send(command, cancellationToken);
         return Ok();
     }
-    
+
     // Users endpoints
 
     [HttpGet(ApiRoutes.Users.GetManyBooks)]

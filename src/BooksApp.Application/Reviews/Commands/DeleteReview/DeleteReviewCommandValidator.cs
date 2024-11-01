@@ -14,9 +14,9 @@ internal sealed class DeleteReviewCommandValidator : AbstractValidator<DeleteRev
             .MustAsync(async (request, cancellationToken) =>
             {
                 return await unitOfWork.Reviews
-                           .AnyAsync(review =>
-                               review.User.Id == UserId.CreateUserId(request.UserId) &&
-                               review.Id == ReviewId.CreateReviewId(request.ReviewId));
+                    .AnyAsync(review =>
+                        review.User.Id == UserId.CreateUserId(request.UserId) &&
+                        review.Id == ReviewId.CreateReviewId(request.ReviewId));
             })
             .WithMessage(UserValidationMessages.Permission)
             .OverridePropertyName(nameof(DeleteReviewCommand.UserId));

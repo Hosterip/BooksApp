@@ -1,7 +1,6 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Enums.MaxLengths;
-using BooksApp.Domain.Common.Security;
 using FluentValidation;
 
 namespace BooksApp.Application.Books.Commands.CreateBook;

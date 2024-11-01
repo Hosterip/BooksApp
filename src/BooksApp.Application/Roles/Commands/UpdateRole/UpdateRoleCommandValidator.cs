@@ -1,7 +1,6 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
-using BooksApp.Domain.Common.Security;
 using FluentValidation;
 
 namespace BooksApp.Application.Roles.Commands.UpdateRole;
@@ -24,16 +23,16 @@ internal sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleC
                 return user?.Role.Name is RoleNames.Admin;
             })
             .WithMessage(UserValidationMessages.Permission);
-        
+
         RuleFor(request => request)
             .Must(request => request.ChangerId != request.UserId)
             .WithMessage(RoleValidationMessages.CanNotChangeYourOwn)
             .OverridePropertyName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(UpdateRoleCommand.ChangerId)}");
-        
+
         RuleFor(request => request.ChangerId)
             .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
             .WithMessage(UserValidationMessages.NotFound);
-        
+
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
             .WithMessage(UserValidationMessages.NotFound);

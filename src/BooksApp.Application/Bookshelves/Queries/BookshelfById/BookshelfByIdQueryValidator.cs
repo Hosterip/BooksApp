@@ -9,7 +9,7 @@ internal sealed class BookshelfByNameQueryValidator : AbstractValidator<Bookshel
     public BookshelfByNameQueryValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(x => x.BookshelfId)
-            .MustAsync(async (bookshelfId, cancellationToken) => 
+            .MustAsync(async (bookshelfId, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyById(bookshelfId))
             .WithMessage(BookshelfValidationMessages.NotFound);
     }

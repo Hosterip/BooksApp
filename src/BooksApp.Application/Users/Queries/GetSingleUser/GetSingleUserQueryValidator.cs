@@ -9,7 +9,7 @@ internal sealed class GetSingleUserQueryValidator : AbstractValidator<GetSingleU
     public GetSingleUserQueryValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(request => request.Id)
-            .MustAsync(async (id, cancellationToken) => { return await unitOfWork.Users.AnyById(id); })
+            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(UserValidationMessages.NotFound);
     }
 }

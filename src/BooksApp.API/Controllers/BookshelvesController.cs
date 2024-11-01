@@ -9,7 +9,7 @@ using BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using BooksApp.Application.Bookshelves.Commands.RemoveBook;
 using BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
 using BooksApp.Application.Bookshelves.Queries.BookshelfById;
-using BooksApp.Application.Bookshelves.Queries.BookshelfByRefName;
+using BooksApp.Application.Bookshelves.Queries.BookshelfByName;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelves;
 using BooksApp.Application.Common.Results;
@@ -82,7 +82,7 @@ public class BookshelvesController : ApiController
 
         return CreatedAtAction(
             nameof(GetBookshelf),
-            new {nameOrGuid = result.Id, userId },
+            new { nameOrGuid = result.Id, userId },
             result);
     }
 
@@ -139,7 +139,7 @@ public class BookshelvesController : ApiController
     {
         var userId = HttpContext.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
-        await _sender.Send(success 
+        await _sender.Send(success
             ? new RemoveBookCommand
             {
                 BookshelfId = bookshelfId,

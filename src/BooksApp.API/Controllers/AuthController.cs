@@ -46,7 +46,7 @@ public class AuthController : ApiController
         await _sender.Send(createDefaultBookshelves, cancellationToken);
         await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return CreatedAtAction(
-            nameof(UsersController.GetById), 
+            nameof(UsersController.GetById),
             "Users",
             new { id = user.Id },
             user.Adapt<UserResponse>());
@@ -61,7 +61,7 @@ public class AuthController : ApiController
         var command = new LoginUserQuery { Email = request.Email, Password = request.Password };
         var user = await _sender.Send(command, cancellationToken);
         await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
-        return Ok(); 
+        return Ok();
     }
 
     [HttpPut(ApiRoutes.Auth.UpdatePassword)]
@@ -79,7 +79,7 @@ public class AuthController : ApiController
         var result = await _sender.Send(command, cancellationToken);
         HttpContext.ChangeSecurityStamp(result.SecurityStamp);
         return CreatedAtAction(
-            nameof(UsersController.GetById), 
+            nameof(UsersController.GetById),
             "Users",
             new { id = result.Id },
             result.Adapt<UserResponse>());

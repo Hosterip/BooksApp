@@ -6,9 +6,9 @@ namespace BooksApp.Application.Bookshelves.Queries.BookshelfById;
 
 internal sealed class BookshelfByNameQueryHandler : IRequestHandler<BookshelfByIdQuery, BookshelfResult>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapster;
-    
+    private readonly IUnitOfWork _unitOfWork;
+
     public BookshelfByNameQueryHandler(IUnitOfWork unitOfWork, IMapper mapster)
     {
         _unitOfWork = unitOfWork;

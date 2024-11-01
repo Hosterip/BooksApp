@@ -11,7 +11,7 @@ internal sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmai
     public UpdateEmailCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Id)
-            .MustAsync(async (id, cancellationToken) => { return await unitOfWork.Users.AnyById(id); })
+            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(user => user.Email)
             .Length(0, 255)

@@ -25,7 +25,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         Expression<Func<Book, bool>> expression)
     {
         var result = await
-            _dbContext.Books.Where(expression).Select(book => new BookResult
+            _dbContext.Books
+                .Where(expression)
+                .Select(book => new BookResult
                 {
                     Id = book.Id.Value.ToString(),
                     Title = book.Title,
@@ -41,7 +43,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                         Role = book.Author.Role.Name,
                         AvatarName = book.Author.Avatar.ImageName
                     },
-                    AverageRating = -1,
+                    AverageRating = 0,
                     Ratings = 0,
                     CoverName = book.Cover.ImageName,
                     Genres = book.Genres

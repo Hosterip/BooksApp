@@ -3,7 +3,6 @@ using BooksApp.API.Common.Extensions;
 using BooksApp.API.Middlewares;
 using BooksApp.Application;
 using BooksApp.Infrastructure;
-using PostsApp.Infrastructure;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 
