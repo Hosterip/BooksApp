@@ -1,24 +1,25 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
+using BooksApp.Domain.Common.Interfaces;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace BooksApp.Domain.Common.Security;
+namespace BooksApp.Infrastructure.Authentication;
 
-public static class Hashing
+public sealed class PasswordHasher : IPasswordHasher
 {
-    public static bool IsPasswordValid(string userHash, string salt, string password)
+    public bool IsPasswordValid(string userHash, string salt, string password)
     {
         var hashToValidate = GenerateHash(password, StringToByteArray(salt));
         return hashToValidate == userHash;
     }
 
-    public static (string Hash, string Salt) GenerateHashSalt(string password)
+    public (string Hash, string Salt) GenerateHashSalt(string password)
     {
         var salt = GenerateSalt();
         var hash = GenerateHash(password, salt);
         return (hash, Convert.ToHexString(salt));
     }
 
-    private static string GenerateHash(string password, byte[] salt)
+    private string GenerateHash(string password, byte[] salt)
     {
         var hash = Convert.ToHexString(KeyDerivation.Pbkdf2(
             password,
@@ -29,7 +30,7 @@ public static class Hashing
         return hash;
     }
 
-    private static byte[] StringToByteArray(string hex)
+    private byte[] StringToByteArray(string hex)
     {
         return Enumerable.Range(0, hex.Length)
             .Where(x => x % 2 == 0)
@@ -37,7 +38,7 @@ public static class Hashing
             .ToArray();
     }
 
-    private static byte[] GenerateSalt()
+    private byte[] GenerateSalt()
     {
         return RandomNumberGenerator.GetBytes(32);
     }

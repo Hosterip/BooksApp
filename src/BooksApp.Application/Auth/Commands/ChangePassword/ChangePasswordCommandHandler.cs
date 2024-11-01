@@ -1,6 +1,6 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Common.Security;
+using BooksApp.Domain.Common.Interfaces;
 using FluentValidation;
 using FluentValidation.Results;
 using MapsterMapper;
@@ -12,11 +12,13 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public ChangePasswordCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public ChangePasswordCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher passwordHasher)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<AuthResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
@@ -24,16 +26,15 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
         var user = await _unitOfWork.Users
             .GetSingleById(request.Id);
 
-        if (Hashing.IsPasswordValid(user!.Hash, user.Salt, request.OldPassword))
+        if (!user!.IsPasswordValid(_passwordHasher, request.OldPassword))
             throw new ValidationException([
                 new ValidationFailure(
                     nameof(ChangePasswordCommand.OldPassword),
                     AuthValidationMessages.Password)
             ]);
 
-        var hashSalt = Hashing.GenerateHashSalt(request.NewPassword);
-        user!.Hash = hashSalt.Hash;
-        user.Salt = hashSalt.Salt;
+        user.ChangePassword(_passwordHasher, request.NewPassword);
+        
         user.SecurityStamp = Guid.NewGuid().ToString();
 
         await _unitOfWork.SaveAsync(cancellationToken);

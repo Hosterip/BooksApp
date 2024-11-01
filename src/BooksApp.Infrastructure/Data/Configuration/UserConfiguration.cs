@@ -32,9 +32,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.LastName)
             .HasMaxLength((int)UserMaxLengths.LastName);
 
-        builder.Property(u => u.Hash)
+        builder.Property("Hash")
             .IsRequired();
-        builder.Property(u => u.Salt)
+        builder.Property("Salt")
             .IsRequired();
         // AutoIncludes
         builder
