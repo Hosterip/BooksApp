@@ -9,7 +9,6 @@ internal sealed class GetReviewsQueryValidator : AbstractValidator<GetReviewsQue
         RuleFor(request => request.Page)
             .GreaterThanOrEqualTo(1);
         RuleFor(request => request.Limit)
-            .GreaterThanOrEqualTo(1)
-            .LessThanOrEqualTo(100);
+            .InclusiveBetween(1, 50);
     }
 }
