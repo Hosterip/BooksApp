@@ -1,8 +1,6 @@
 namespace BooksApp.Contracts.Requests.Users;
 
-public class GetUsersRequest
+public class GetUsersRequest : PagedRequest
 {
-    public int? Limit { get; init; }
-    public int? Page { get; init; }
     public string? Q { get; init; }
 }

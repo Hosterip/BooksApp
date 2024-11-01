@@ -45,7 +45,7 @@ public class UsersController : ApiController
         {
             Query = request.Q,
             Page = request.Page,
-            Limit = request.Limit
+            Limit = request.PageSize
         };
         var users = await _sender.Send(query, cancellationToken);
         return Ok(users);

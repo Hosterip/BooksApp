@@ -35,7 +35,7 @@ public class BooksController : ApiController
         var query = new GetBooksQuery
         {
             Query = request.Q,
-            Limit = request.Limit,
+            Limit = request.PageSize,
             Page = request.Page,
             GenreId = request.GenreId,
             UserId = null
@@ -135,7 +135,7 @@ public class BooksController : ApiController
         var query = new GetBooksQuery
         {
             Query = request.Q,
-            Limit = request.Limit,
+            Limit = request.PageSize,
             Page = request.Page,
             GenreId = request.GenreId,
             UserId = userId
