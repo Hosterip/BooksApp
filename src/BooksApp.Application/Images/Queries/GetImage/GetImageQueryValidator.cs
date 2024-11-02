@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Images.Queries.GetImage;
 
-internal sealed class GetImageQueryValidator : AbstractValidator<GetImageQuery>
+public sealed class GetImageQueryValidator : AbstractValidator<GetImageQuery>
 {
     public GetImageQueryValidator(IImageFileBuilder fileBuilder)
     {

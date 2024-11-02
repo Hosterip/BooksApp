@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.AddBookByName;
 
-internal class AddBookByNameCommandValidator : AbstractValidator<AddBookByNameCommand>
+public class AddBookByNameCommandValidator : AbstractValidator<AddBookByNameCommand>
 {
     public AddBookByNameCommandValidator(IUnitOfWork unitOfWork)
     {

@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Books.Queries.GetBooks;
 
-internal sealed class GetBooksQueryValidator : AbstractValidator<GetBooksQuery>
+public sealed class GetBooksQueryValidator : AbstractValidator<GetBooksQuery>
 {
     public GetBooksQueryValidator()
     {

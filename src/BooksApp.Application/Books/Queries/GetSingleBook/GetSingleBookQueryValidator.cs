@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Books.Queries.GetSingleBook;
 
-internal class GetSingleBookQueryValidator : AbstractValidator<GetSingleBookQuery>
+public sealed class GetSingleBookQueryValidator : AbstractValidator<GetSingleBookQuery>
 {
     public GetSingleBookQueryValidator(IUnitOfWork unitOfWork)
     {

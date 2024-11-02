@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Users.Queries.GetUsers;
 
-internal sealed class GetUsersQueryValidator : AbstractValidator<GetUsersQuery>
+public sealed class GetUsersQueryValidator : AbstractValidator<GetUsersQuery>
 {
     public GetUsersQueryValidator()
     {

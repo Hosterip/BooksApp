@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Reviews.Commands.UpdateReview;
 
-internal sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewCommand>
+public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewCommand>
 {
     public UpdateReviewCommandValidator(IUnitOfWork unitOfWork)
     {

@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Books.Commands.CreateBook;
 
-internal class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
+public sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
 {
     public CreateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {

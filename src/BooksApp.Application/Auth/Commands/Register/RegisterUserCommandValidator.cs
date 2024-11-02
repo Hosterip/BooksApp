@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Auth.Commands.Register;
 
-public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
     public RegisterUserCommandValidator(IUnitOfWork unitOfWork)
     {

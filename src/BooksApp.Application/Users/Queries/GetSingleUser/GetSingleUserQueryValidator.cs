@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Users.Queries.GetSingleUser;
 
-internal sealed class GetSingleUserQueryValidator : AbstractValidator<GetSingleUserQuery>
+public sealed class GetSingleUserQueryValidator : AbstractValidator<GetSingleUserQuery>
 {
     public GetSingleUserQueryValidator(IUnitOfWork unitOfWork)
     {

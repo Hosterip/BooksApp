@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Books.Commands.PrivilegedDeleteBook;
 
-internal class PrivilegedDeleteBookCommandValidator : AbstractValidator<PrivilegedDeleteBookCommand>
+public sealed class PrivilegedDeleteBookCommandValidator : AbstractValidator<PrivilegedDeleteBookCommand>
 {
     public PrivilegedDeleteBookCommandValidator(IUnitOfWork unitOfWork)
     {

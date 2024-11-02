@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Books.Commands.UpdateBook;
 
-internal class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
+public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
     public UpdateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {

@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Users.Commands.DeleteUser;
 
-internal sealed class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
+public sealed class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
 {
     public DeleteUserCommandValidator(IUnitOfWork unitOfWork)
     {

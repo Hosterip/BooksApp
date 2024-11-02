@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Roles.Commands.UpdateRole;
 
-internal sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
+public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
 {
     public UpdateRoleCommandValidator(IUnitOfWork unitOfWork)
     {

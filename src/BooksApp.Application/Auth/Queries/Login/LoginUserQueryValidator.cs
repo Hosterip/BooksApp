@@ -3,13 +3,14 @@ using BooksApp.Application.Common.Interfaces;
 using FluentValidation;
 
 namespace BooksApp.Application.Auth.Queries.Login;
-
-public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
+ 
+public sealed class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
 {
     public LoginUserQueryValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Email)
-            .NotEmpty().Length(0, 255);
+            .NotEmpty()
+            .Length(0, 255);
         RuleFor(user => user.Password)
             .NotEmpty();
         RuleFor(request => request.Email)

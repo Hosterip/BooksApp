@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Reviews.Commands.DeleteReview;
 
-internal sealed class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewCommand>
+public sealed class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewCommand>
 {
     public DeleteReviewCommandValidator(IUnitOfWork unitOfWork)
     {

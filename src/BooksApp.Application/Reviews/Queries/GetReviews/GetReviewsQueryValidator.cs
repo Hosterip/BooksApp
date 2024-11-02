@@ -2,7 +2,7 @@
 
 namespace BooksApp.Application.Reviews.Queries.GetReviews;
 
-internal sealed class GetReviewsQueryValidator : AbstractValidator<GetReviewsQuery>
+public sealed class GetReviewsQueryValidator : AbstractValidator<GetReviewsQuery>
 {
     public GetReviewsQueryValidator()
     {

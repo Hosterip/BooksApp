@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Users.Commands.UpdateName;
 
-internal sealed class UpdateNameCommandValidator : AbstractValidator<UpdateNameCommand>
+public sealed class UpdateNameCommandValidator : AbstractValidator<UpdateNameCommand>
 {
     public UpdateNameCommandValidator(IUnitOfWork unitOfWork)
     {
