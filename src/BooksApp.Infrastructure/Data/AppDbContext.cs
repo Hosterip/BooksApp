@@ -25,23 +25,14 @@ public sealed class AppDbContext : DbContext
         Database.GetAppliedMigrations();
     }
 
-    public DbSet<User> Users { get; set; }
-    public DbSet<Book> Books { get; set; }
-    public DbSet<Role> Roles { get; set; }
-    public DbSet<Review> Reviews { get; set; }
-    public DbSet<Image> Images { get; set; }
-    public DbSet<Genre> Genres { get; set; }
-    public DbSet<Bookshelf> Bookshelves { get; set; }
-    public DbSet<BookshelfBook> BookshelfBooks { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var dbName = Environment.GetEnvironmentVariable(EnvironmentNames.DbName);
-        var dbPassword = Environment.GetEnvironmentVariable(EnvironmentNames.DbPassword);
-        optionsBuilder
-            .UseSqlServer(
-                );
-    }
+    public DbSet<User> Users { get; init; }
+    public DbSet<Book> Books { get; init; }
+    public DbSet<Role> Roles { get; init; }
+    public DbSet<Review> Reviews { get; init; }
+    public DbSet<Image> Images { get; init; }
+    public DbSet<Genre> Genres { get; init; }
+    public DbSet<Bookshelf> Bookshelves { get; init; }
+    public DbSet<BookshelfBook> BookshelfBooks { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
