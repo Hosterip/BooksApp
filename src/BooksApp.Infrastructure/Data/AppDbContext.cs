@@ -36,12 +36,11 @@ public sealed class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var dbHost = Environment.GetEnvironmentVariable(EnvironmentNames.DbHost);
         var dbName = Environment.GetEnvironmentVariable(EnvironmentNames.DbName);
         var dbPassword = Environment.GetEnvironmentVariable(EnvironmentNames.DbPassword);
         optionsBuilder
             .UseSqlServer(
-                $"Server={dbHost};Database={dbName};User Id=sa;Password={dbPassword};Trusted_Connection=False;TrustServerCertificate=True");
+                );
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

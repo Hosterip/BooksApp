@@ -10,8 +10,6 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
-var corsPolicy = config["CorsAllow"];
-var imagesPath = config["ImagesPath"];
 
 // Controllers
 builder.Services.AddControllers(options => { options.ModelBinderProviders.InsertBodyOrDefaultBinding(); });
@@ -21,9 +19,22 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Adding Dependency Injectable 
+//  Api
+var corsPolicy = config["CorsAllow"];
 builder.Services.AddApi(corsPolicy!);
+//  Application
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(imagesPath!);
+//  Infra
+var imagesPath = config["ImagesPath"];
+var dbHost = config["Database:Host"];
+var dbName = config["Database:Name"];
+var dbPassword = config["Database:Password"];
+builder.Services.AddInfrastructure(
+    imagesPath: imagesPath!,
+    dbHost: dbHost!,
+    dbName: dbName!,
+    dbPassword: dbPassword!
+    );
 
 // Building app
 var app = builder.Build();
