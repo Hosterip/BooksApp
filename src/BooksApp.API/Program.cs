@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 
 // Adding Dependency Injectable 
 //  Api
-var corsPolicy = config["CorsAllow"];
+var corsPolicy = config["CorsPolicy"];
 builder.Services.AddApi(corsPolicy!);
 //  Application
 builder.Services.AddApplication();
