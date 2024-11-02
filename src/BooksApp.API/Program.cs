@@ -10,10 +10,6 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
-
-// Controllers
-builder.Services.AddControllers(options => { options.ModelBinderProviders.InsertBodyOrDefaultBinding(); });
-
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

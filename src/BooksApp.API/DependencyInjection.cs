@@ -6,6 +6,7 @@ using BooksApp.API.Middlewares;
 using BooksApp.Domain.Common.Constants;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API;
 
@@ -14,8 +15,18 @@ public static class DependencyInjection
     public static IServiceCollection AddApi(this IServiceCollection services, string corsPolicy)
     {
         services
+            .AddMyControllers()
             .AddCorsPolicy(corsPolicy)
             .AddAuth();
+        return services;
+    }
+
+    private static IServiceCollection AddMyControllers(this IServiceCollection services)
+    {
+        services.AddControllers(options =>
+        {
+            options.ModelBinderProviders.InsertBodyOrDefaultBinding();
+        });
         return services;
     }
     
