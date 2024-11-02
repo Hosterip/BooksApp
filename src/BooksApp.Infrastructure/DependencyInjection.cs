@@ -10,12 +10,12 @@ namespace BooksApp.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string imagePath)
     {
         services.AddDbContext<AppDbContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IImageFileBuilder, ImageFileBuilder>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<IImageFileBuilder>(new ImageFileBuilder(imagePath));
 
         return services;
     }

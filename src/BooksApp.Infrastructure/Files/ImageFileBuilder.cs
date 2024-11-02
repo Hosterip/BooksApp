@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Http;
 
 namespace BooksApp.Infrastructure.Files;
 
-public class ImageFileBuilder : IImageFileBuilder
+public class ImageFileBuilder(string path) : IImageFileBuilder
 {
     public async Task<string?> CreateImage(IFormFile file, CancellationToken token = default)
     {
-        var path = Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images");
-        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+        var savePath = Path.Combine(path);
+        if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
 
-        var fileName = $"{DateTime.Now:ddMMyy-HHmmss}_{file.FileName}";
-        var filePath = Path.Combine(path, $"{fileName}");
+        var fileName = $"{Guid.NewGuid()}_{file.FileName}";
+        var filePath = Path.Combine(savePath, $"{fileName}");
         await using var fileStream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(fileStream, token);
         return fileName;
@@ -22,7 +22,7 @@ public class ImageFileBuilder : IImageFileBuilder
     public async Task<bool> DeleteImage(string fileName, CancellationToken token = default)
     {
         var fileInfo = new FileInfo(
-            Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images",
+            Path.Combine(path,
                 fileName
             )
         );
@@ -35,7 +35,7 @@ public class ImageFileBuilder : IImageFileBuilder
         CancellationToken token = default)
     {
         var uploadPath =
-            Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images");
+            Path.Combine(path);
         var filePath = Path.Combine(uploadPath, fileName);
         var fileInfo = new FileInfo(filePath);
         var fileStream = new FileStream(filePath, FileMode.Open);
@@ -46,7 +46,7 @@ public class ImageFileBuilder : IImageFileBuilder
     public bool AnyImage(string fileName, CancellationToken token = default)
     {
         var fileInfo = new FileInfo(
-            Path.Combine(Environment.GetEnvironmentVariable(EnvironmentNames.ImageFolderPath) ?? "images",
+            Path.Combine(path,
                 fileName
             )
         );

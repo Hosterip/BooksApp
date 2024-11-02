@@ -1,6 +1,5 @@
 using BooksApp.API;
 using BooksApp.API.Common.Constants;
-using BooksApp.API.Common.Extensions;
 using BooksApp.API.Middlewares;
 using BooksApp.Application;
 using BooksApp.Infrastructure;
@@ -11,7 +10,8 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
-var corsPolicy = config["Cors"];
+var corsPolicy = config["CorsAllow"];
+var imagesPath = config["ImagesPath"];
 
 // Controllers
 builder.Services.AddControllers(options => { options.ModelBinderProviders.InsertBodyOrDefaultBinding(); });
@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen();
 // Adding Dependency Injectable 
 builder.Services.AddApi(corsPolicy!);
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(imagesPath!);
 
 // Building app
 var app = builder.Build();

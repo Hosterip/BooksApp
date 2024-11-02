@@ -4,7 +4,6 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "images",
         "DB_HOST": "localhost,1433",
         "DB_NAME": "booksappdb",
         "DB_SA_PASSWORD": "password@12345"
@@ -15,18 +14,14 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://*:{ServicePort}",
       "publishAllPorts": true,
-      "useSSL": true,
-      "environmentVariables": {
-        "ASPNETCORE_IMAGES_SAVE_PATH": "images"
-      }
+      "useSSL": true
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
