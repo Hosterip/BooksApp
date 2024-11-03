@@ -1,5 +1,5 @@
+using BooksApp.Contracts.Responses.Errors;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApp.API.Middlewares;
 
@@ -20,17 +20,18 @@ public class ValidationExceptionMiddleware
         }
         catch (ValidationException exception)
         {
-            var problemDetails = new ProblemDetails
+            var errors = exception.Errors.Select(x => new ValidationError
             {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "ValidationFailure",
-                Title = "Validation error",
-                Detail = "One or more validation errors has occurred"
+                ErrorMessage = x.ErrorMessage,
+                PropertyName = x.PropertyName
+            });
+            var response = new ValidationFailureResponse
+            {
+                Errors = errors
             };
 
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            if (exception.Errors is not null) problemDetails.Extensions["errors"] = exception.Errors;
-            await context.Response.WriteAsJsonAsync(problemDetails);
+            await context.Response.WriteAsJsonAsync(response);
         }
     }
 }
