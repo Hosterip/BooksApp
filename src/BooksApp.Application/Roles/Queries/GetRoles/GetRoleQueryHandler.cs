@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BooksApp.Application.Roles.Queries.GetRoles;
 
-internal sealed class GetRoleQueryHandler : IRequestHandler<GetRoleQuery, RoleResult[]>
+internal sealed class GetRoleQueryHandler : IRequestHandler<GetRoleQuery, IEnumerable<RoleResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -12,7 +12,7 @@ internal sealed class GetRoleQueryHandler : IRequestHandler<GetRoleQuery, RoleRe
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<RoleResult[]> Handle(GetRoleQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<RoleResult>> Handle(GetRoleQuery request, CancellationToken cancellationToken)
     {
         var roles =
         (

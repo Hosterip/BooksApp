@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BooksApp.Application.Genres.Queries.GetAllGenres;
 
-internal class GetAllGenresQueryHandler : IRequestHandler<GetAllGenresQuery, List<GenreResult>>
+internal class GetAllGenresQueryHandler : IRequestHandler<GetAllGenresQuery, IEnumerable<GenreResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -12,7 +12,7 @@ internal class GetAllGenresQueryHandler : IRequestHandler<GetAllGenresQuery, Lis
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<GenreResult>> Handle(GetAllGenresQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<GenreResult>> Handle(GetAllGenresQuery request, CancellationToken cancellationToken)
     {
         var rawGenres = await _unitOfWork.Genres.GetAllAsync();
         var genres = rawGenres

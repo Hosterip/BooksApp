@@ -2,6 +2,6 @@
 
 namespace BooksApp.Application.Genres.Queries.GetAllGenres;
 
-public class GetAllGenresQuery : IRequest<List<GenreResult>>
+public class GetAllGenresQuery : IRequest<IEnumerable<GenreResult>>
 {
 }

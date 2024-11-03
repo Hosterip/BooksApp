@@ -5,7 +5,7 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Queries.GetBookshelves;
 
-internal sealed class GetBookshelvesQueryHandler : IRequestHandler<GetBookshelvesQuery, List<BookshelfResult>>
+internal sealed class GetBookshelvesQueryHandler : IRequestHandler<GetBookshelvesQuery, IEnumerable<BookshelfResult>>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -16,7 +16,7 @@ internal sealed class GetBookshelvesQueryHandler : IRequestHandler<GetBookshelve
         _mapper = mapper;
     }
 
-    public async Task<List<BookshelfResult>> Handle(GetBookshelvesQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<BookshelfResult>> Handle(GetBookshelvesQuery request, CancellationToken cancellationToken)
     {
         var rawBookshelves = await _unitOfWork.Bookshelves
             .GetAllWhereAsync(bookshelf =>
