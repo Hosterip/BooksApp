@@ -1,5 +1,6 @@
 using BooksApp.Domain.Common.Enums.MaxLengths;
 using BooksApp.Domain.User;
+using BooksApp.Domain.User.Entities;
 using BooksApp.Domain.User.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -32,6 +33,31 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.LastName)
             .HasMaxLength((int)UserMaxLengths.LastName);
 
+        builder.OwnsMany<Relationship>(u => u.Followers, f =>
+        {
+            f.Property(o => o.Id)
+                .ValueGeneratedNever()
+                .HasConversion(
+                    id => id.Value,
+                    value => FollowerId.Create(value));
+            
+            
+            f.Property(o => o.FollowerId)
+                .ValueGeneratedNever()
+                .HasConversion(
+                    id => id.Value,
+                    value => UserId.CreateUserId(value));
+            
+            
+            f.Property(o => o.UserId)
+                .ValueGeneratedNever()
+                .HasConversion(
+                    id => id.Value,
+                    value => UserId.CreateUserId(value));
+            
+            f.HasKey(x => x.Id);
+        });
+        
         builder.Property("Hash")
             .IsRequired();
         builder.Property("Salt")

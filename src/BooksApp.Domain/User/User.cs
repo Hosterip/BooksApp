@@ -1,5 +1,6 @@
 ﻿using BooksApp.Domain.Common.Interfaces;
 using BooksApp.Domain.Common.Models;
+using BooksApp.Domain.User.Entities;
 using BooksApp.Domain.User.ValueObjects;
 
 namespace BooksApp.Domain.User;
@@ -33,6 +34,7 @@ public class User : AggregateRoot<UserId>
     private string Salt { get; set; }
     public string SecurityStamp { get; set; }
     public Image.Image? Avatar { get; set; }
+    public List<Relationship> Followers { get; set; } = [];
 
     public static User Create(string email, string firstName, string? middleName, string? lastName, Role.Role role,
         string hash, string salt, Image.Image? avatar)
@@ -52,5 +54,15 @@ public class User : AggregateRoot<UserId>
 
         Hash = hash;
         Salt = salt;
+    }
+
+    public bool AddFollower(User follower)
+    {
+        if (follower.Id == Id)
+            return false;
+
+        var item = Relationship.Create(this, follower);
+        Followers.Add(item);
+        return true;
     }
 }

@@ -8,6 +8,7 @@ using BooksApp.Domain.Image;
 using BooksApp.Domain.Review;
 using BooksApp.Domain.Role;
 using BooksApp.Domain.User;
+using BooksApp.Domain.User.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -23,9 +24,10 @@ public sealed class AppDbContext : DbContext
         if (!databaseCreator.CanConnect()) databaseCreator.Create();
         if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
         Database.GetAppliedMigrations();
-    }
-
+    }    
+    
     public DbSet<User> Users { get; init; }
+    public DbSet<Relationship> Relationships { get; init; }
     public DbSet<Book> Books { get; init; }
     public DbSet<Role> Roles { get; init; }
     public DbSet<Review> Reviews { get; init; }
