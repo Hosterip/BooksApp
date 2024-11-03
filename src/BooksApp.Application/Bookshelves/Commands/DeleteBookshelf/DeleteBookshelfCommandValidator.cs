@@ -1,3 +1,4 @@
+using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
 using FluentValidation;
@@ -15,7 +16,9 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
 
                 if (bookshelf is null &&
                     bookshelf?.User?.Id.Value == request.UserId) return false;
-                return !DefaultBookshelvesNames.AllValues.Contains(bookshelf.ReferentialName);
-            }).OverridePropertyName(nameof(DeleteBookshelfCommand.BookshelfId));
+                return bookshelf != null && !DefaultBookshelvesNames.AllValues.Contains(bookshelf.ReferentialName);
+            })
+            .OverridePropertyName(nameof(DeleteBookshelfCommand.BookshelfId))
+            .WithMessage(BookshelfValidationMessages.CannotDeleteDefault);
     }
 }
