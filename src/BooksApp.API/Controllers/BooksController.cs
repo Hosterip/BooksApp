@@ -10,6 +10,7 @@ using BooksApp.Application.Books.Results;
 using BooksApp.Application.Bookshelves;
 using BooksApp.Application.Common.Results;
 using BooksApp.Contracts.Requests.Books;
+using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,8 @@ public class BooksController : ApiController
     }
 
     [HttpGet(ApiRoutes.Books.GetMany)]
+    [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<BookshelfResult>>> GetMany(
         CancellationToken cancellationToken,
         [FromQuery] GetBooksRequest request
@@ -44,7 +47,9 @@ public class BooksController : ApiController
         return Ok(result);
     }
 
-    [HttpGet(ApiRoutes.Books.GetSingle)]
+    [HttpGet(ApiRoutes.Books.GetSingle)]  
+    [ProducesResponseType(typeof(BookResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookResult>> GetSingle(
         Guid id,
         CancellationToken cancellationToken)
@@ -56,6 +61,8 @@ public class BooksController : ApiController
 
     [HttpPost(ApiRoutes.Books.Create)]
     [Authorize(Policies.Author)]
+    [ProducesResponseType(typeof(BookResult), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookResult>> Create(
         [FromBodyOrDefault] CreateBookRequest request,
         CancellationToken cancellationToken
@@ -78,6 +85,8 @@ public class BooksController : ApiController
 
     [HttpPut(ApiRoutes.Books.Update)]
     [Authorize]
+    [ProducesResponseType(typeof(BookResult), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookResult>> Update(
         [FromBodyOrDefault] UpdateBookRequest request,
         CancellationToken cancellationToken)
@@ -99,6 +108,8 @@ public class BooksController : ApiController
 
     [HttpDelete(ApiRoutes.Books.Delete)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(
         Guid id,
         CancellationToken cancellationToken)
@@ -110,6 +121,8 @@ public class BooksController : ApiController
 
     [HttpDelete(ApiRoutes.Books.PrivilegedDelete)]
     [Authorize(Policies.Admin)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PrivilegedDelete(
         Guid id,
         CancellationToken cancellationToken)
@@ -126,6 +139,8 @@ public class BooksController : ApiController
     // Users endpoints
 
     [HttpGet(ApiRoutes.Users.GetManyBooks)]
+    [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<BookResult>>> GetManyByUserId(
         CancellationToken cancellationToken,
         [FromRoute] Guid userId,

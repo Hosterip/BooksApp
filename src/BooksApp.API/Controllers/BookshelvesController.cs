@@ -14,6 +14,7 @@ using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelves;
 using BooksApp.Application.Common.Results;
 using BooksApp.Contracts.Requests.Bookshelves;
+using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,8 @@ public class BookshelvesController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetBookshelf)]
+    [ProducesResponseType(typeof(BookshelfResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookshelfResult>> GetBookshelf(
         [FromRoute] string nameOrGuid,
         [FromRoute] Guid userId
@@ -52,6 +55,8 @@ public class BookshelvesController : ApiController
     }
 
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
+    [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<BookResult>>> GetBooks(
         [FromRoute] Guid bookshelfId,
         [FromQuery] GetBookshelfBooksRequest request)
@@ -69,6 +74,8 @@ public class BookshelvesController : ApiController
 
     [HttpPost(ApiRoutes.Bookshelves.Create)]
     [Authorize]
+    [ProducesResponseType(typeof(BookshelfResult), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookshelfResult>> Create(
         [FromBodyOrDefault] CreateBookshelfRequest request)
     {
@@ -88,6 +95,8 @@ public class BookshelvesController : ApiController
 
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Remove(
         [FromRoute] Guid bookshelfId)
     {
@@ -107,6 +116,8 @@ public class BookshelvesController : ApiController
 
     [HttpPost(ApiRoutes.Books.AddBook)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddBook(
         [FromRoute] Guid bookId,
         [FromRoute] string idOrName)
@@ -133,6 +144,8 @@ public class BookshelvesController : ApiController
 
     [HttpDelete(ApiRoutes.Books.RemoveBook)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveBook(
         [FromRoute] Guid bookId,
         [FromRoute] string idOrName)
@@ -159,7 +172,9 @@ public class BookshelvesController : ApiController
     // Users endpoints 
 
     [HttpGet(ApiRoutes.Users.GetBookshelves)]
-    public async Task<ActionResult<List<BookshelfResult>>> GetBookshelves(
+    [ProducesResponseType(typeof(IEnumerable<BookshelfResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<BookshelfResult>>> GetBookshelves(
         Guid userId)
     {
         var query = new GetBookshelvesQuery

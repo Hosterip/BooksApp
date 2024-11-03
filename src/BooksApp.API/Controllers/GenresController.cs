@@ -2,6 +2,7 @@
 using BooksApp.Application.Genres;
 using BooksApp.Application.Genres.Commands.CreateGenre;
 using BooksApp.Application.Genres.Queries.GetAllGenres;
+using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,8 @@ public class GenresController : ApiController
 
     [HttpPost(ApiRoutes.Genres.Create)]
     [Authorize]
+    [ProducesResponseType(typeof(GenreResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<GenreResult>> Create(
         [FromRoute] string name,
         CancellationToken cancellationToken)
@@ -33,7 +36,8 @@ public class GenresController : ApiController
     }
 
     [HttpGet(ApiRoutes.Genres.GetAll)]
-    public async Task<ActionResult<List<GenreResult>>> GetAll(
+    [ProducesResponseType(typeof(IEnumerable<GenreResult>),StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<GenreResult>>> GetAll(
         CancellationToken cancellationToken)
     {
         var getAllGenreQuery = new GetAllGenresQuery();

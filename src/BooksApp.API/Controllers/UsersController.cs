@@ -9,6 +9,7 @@ using BooksApp.Application.Users.Queries.GetSingleUser;
 using BooksApp.Application.Users.Queries.GetUsers;
 using BooksApp.Application.Users.Results;
 using BooksApp.Contracts.Requests.Users;
+using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -27,6 +28,8 @@ public class UsersController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetMe)]
+    [Authorize]
+    [ProducesResponseType(typeof(UserResult), StatusCodes.Status200OK)]
     public async Task<ActionResult<UserResult>> GetMe(
         CancellationToken cancellationToken)
     {
@@ -37,6 +40,8 @@ public class UsersController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetMany)]
+    [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<UserResult>>> GetMany(
         [FromQuery] GetUsersRequest request,
         CancellationToken cancellationToken)
@@ -52,6 +57,8 @@ public class UsersController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetById)]
+    [ProducesResponseType(typeof(UserResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserResult>> GetById(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
@@ -63,6 +70,8 @@ public class UsersController : ApiController
 
     [HttpDelete(ApiRoutes.Users.Delete)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(
         CancellationToken cancellationToken)
     {
@@ -76,6 +85,8 @@ public class UsersController : ApiController
 
     [HttpPut(ApiRoutes.Users.UpdateEmail)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateEmail(
         [FromBodyOrDefault] UpdateEmailRequest request,
         CancellationToken cancellationToken)
@@ -95,6 +106,8 @@ public class UsersController : ApiController
 
     [HttpPut(ApiRoutes.Users.UpdateName)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateName(
         [FromBodyOrDefault] UpdateNameRequest request,
         CancellationToken cancellationToken)
@@ -114,6 +127,8 @@ public class UsersController : ApiController
 
     [HttpPut(ApiRoutes.Users.UpdateAvatar)]
     [Authorize]
+    [ProducesResponseType(typeof(UserResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserResult>> UpdateAvatar(
         [FromBodyOrDefault] InsertAvatarRequest request,
         CancellationToken cancellationToken)

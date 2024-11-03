@@ -1,5 +1,6 @@
 ﻿using BooksApp.API.Common.Constants;
 using BooksApp.Application.Images.Queries.GetImage;
+using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,8 @@ public class ImagesController : ApiController
     }
 
     [HttpGet(ApiRoutes.Images.Get)]
+    [ProducesResponseType(typeof(FileStream), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get(
         [FromRoute] string name,
         CancellationToken cancellationToken)
@@ -26,7 +29,7 @@ public class ImagesController : ApiController
         var result = await _sender.Send(query, cancellationToken);
         return File(
             result.FileStream,
-            $"image/{result.FileInfo.Extension.Replace(".", "")}"
+            $"image/{result.FileInfo.Extension.Trim('.')}"
         );
     }
 }

@@ -4,6 +4,7 @@ using BooksApp.Application.Roles;
 using BooksApp.Application.Roles.Commands.UpdateRole;
 using BooksApp.Application.Roles.Queries.GetRoles;
 using BooksApp.Contracts.Requests.Roles;
+using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,8 @@ public class RolesController : ApiController
     // Users endpoints
     [HttpPut(ApiRoutes.Users.UpdateRole)]
     [Authorize(Policies.Admin)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateRole(
         [FromBodyOrDefault] ChangeRoleRequest request,
         CancellationToken cancellationToken)
@@ -41,7 +44,8 @@ public class RolesController : ApiController
 
 
     [HttpGet(ApiRoutes.Users.GetRoles)]
-    public async Task<ActionResult<RoleResult[]>> GetRoles(
+    [ProducesResponseType(typeof(IEnumerable<RoleResult>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<RoleResult>>> GetRoles(
         CancellationToken cancellationToken)
     {
         var command = new GetRoleQuery();

@@ -1,10 +1,12 @@
 ﻿using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
+using BooksApp.Application.Auth;
 using BooksApp.Application.Auth.Commands.ChangePassword;
 using BooksApp.Application.Auth.Commands.Register;
 using BooksApp.Application.Auth.Queries.Login;
 using BooksApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
 using BooksApp.Contracts.Requests.Auth;
+using BooksApp.Contracts.Responses.Errors;
 using BooksApp.Contracts.Responses.Users;
 using Mapster;
 using MediatR;
@@ -26,6 +28,8 @@ public class AuthController : ApiController
 
     [HttpPost(ApiRoutes.Auth.Register)]
     [Authorize(Policies.NotAuthorized)]
+    [ProducesResponseType(typeof(AuthResult), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserResponse>> Register(
         [FromBodyOrDefault] RegisterRequest request,
         CancellationToken cancellationToken)
@@ -54,6 +58,8 @@ public class AuthController : ApiController
 
     [HttpPost(ApiRoutes.Auth.Login)]
     [Authorize(Policies.NotAuthorized)]
+    [ProducesResponseType(typeof(AuthResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserResponse>> Login(
         [FromBodyOrDefault] LoginRequest request,
         CancellationToken cancellationToken)
@@ -66,6 +72,8 @@ public class AuthController : ApiController
 
     [HttpPut(ApiRoutes.Auth.UpdatePassword)]
     [Authorize]
+    [ProducesResponseType(typeof(AuthResult), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse),StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserResponse>> UpdatePassword(
         [FromBodyOrDefault] UpdatePasswordRequest request,
         CancellationToken cancellationToken)
@@ -87,6 +95,7 @@ public class AuthController : ApiController
 
     [HttpPost(ApiRoutes.Auth.Logout)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Logout()
     {
         HttpContext.SignOutAsync();

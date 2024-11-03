@@ -8,6 +8,7 @@ using BooksApp.Application.Reviews.Commands.UpdateReview;
 using BooksApp.Application.Reviews.Queries.GetReviews;
 using BooksApp.Application.Reviews.Results;
 using BooksApp.Contracts.Requests.Reviews;
+using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,8 @@ public class ReviewsController : ApiController
 
     [HttpPost(ApiRoutes.Reviews.Create)]
     [Authorize]
+    [ProducesResponseType(typeof(ReviewResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ReviewResult>> Create(
         [FromBodyOrDefault] CreateReviewRequest request,
         CancellationToken cancellationToken)
@@ -43,6 +46,8 @@ public class ReviewsController : ApiController
 
     [HttpPut(ApiRoutes.Reviews.Update)]
     [Authorize]
+    [ProducesResponseType(typeof(ReviewResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ReviewResult>> Update(
         [FromBodyOrDefault] UpdateReviewRequest request,
         CancellationToken cancellationToken)
@@ -60,6 +65,8 @@ public class ReviewsController : ApiController
 
     [HttpDelete(ApiRoutes.Reviews.Delete)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
@@ -75,6 +82,8 @@ public class ReviewsController : ApiController
 
     [HttpDelete(ApiRoutes.Reviews.Delete)]
     [Authorize(Policies.Moderator)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PrivilegedDelete(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
@@ -91,6 +100,8 @@ public class ReviewsController : ApiController
     // Books
 
     [HttpGet(ApiRoutes.Books.GetReviews)]
+    [ProducesResponseType(typeof(PaginatedArray<ReviewResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<ReviewResult>>> GetReviews(
         Guid id,
         [FromQuery] GetReviewsQuery request,
