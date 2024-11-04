@@ -46,8 +46,28 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     }
 
     public async Task<bool> AnyByEmail(string email)
-    {
+    {   
         if (new EmailAddressAttribute().IsValid(email) != true) return false;
-        return await _dbContext.Users.AnyAsync(user => user.Email == email.ToLower());
+        var parsedEmail = email.Trim().ToLower();
+        return await _dbContext.Users.AnyAsync(user => user.Email == parsedEmail);
+    }
+
+    public async Task<bool> AnyFollower(Guid userId, Guid followerId)
+    {
+        return
+            await _dbContext.Users
+                .Take(1)
+                .Where(u => u.Id == UserId.CreateUserId(userId))
+                .SelectMany(u => u.Followers)
+                .AnyAsync(f => f.FollowerId == UserId.CreateUserId(followerId));
+
+    }
+
+    public async Task AddFollower(Guid userId, Guid followerId)
+    {
+        var user = await GetSingleById(userId);
+        var follower = await GetSingleById(followerId);
+        if (user != null && follower != null)
+            user.AddFollower(follower);
     }
 }

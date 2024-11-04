@@ -1,6 +1,7 @@
 ﻿using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
 using BooksApp.Application.Common.Results;
+using BooksApp.Application.Users.Commands.AddFollower;
 using BooksApp.Application.Users.Commands.DeleteUser;
 using BooksApp.Application.Users.Commands.InsertAvatar;
 using BooksApp.Application.Users.Commands.UpdateEmail;
@@ -142,5 +143,26 @@ public class UsersController : ApiController
         var result = await _sender.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+    
+    // Followers
+    
+    [HttpPost(ApiRoutes.Users.AddFollower)]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddFollower(
+        [FromRoute] Guid followingId,
+        CancellationToken cancellationToken)
+    {
+        var command = new AddFollowerCommand
+        {
+            UserId = followingId,
+            FollowerId = HttpContext.GetId()!.Value
+        };
+
+        await _sender.Send(command, cancellationToken);
+
+        return Ok();
     }
 }

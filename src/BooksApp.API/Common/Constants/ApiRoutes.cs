@@ -104,6 +104,10 @@ public static class ApiRoutes
         // Books
 
         public const string GetManyBooks = $"{Base}/{{userId:guid}}/books";
+        
+        // Followers
+
+        public const string AddFollower = $"{Base}/{{followingId:guid}}/follow";
     }
 
     public static class Error

@@ -10,4 +10,6 @@ public interface IUsersRepository : IGenericRepository<User>
     Task<User?> GetSingleById(Guid guid);
     Task<bool> AnyById(Guid guid);
     Task<bool> AnyByEmail(string email);
+    Task<bool> AnyFollower(Guid userId, Guid followerId);
+    Task AddFollower(Guid userId, Guid followerId);
 }

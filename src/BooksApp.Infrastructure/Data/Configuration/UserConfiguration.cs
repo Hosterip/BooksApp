@@ -67,6 +67,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .Navigation(u => u.Avatar)
             .AutoInclude();
         builder
+            .Navigation(u => u.Followers)
+            .AutoInclude();
+        builder
             .Navigation(u => u.Role)
             .AutoInclude();
     }
