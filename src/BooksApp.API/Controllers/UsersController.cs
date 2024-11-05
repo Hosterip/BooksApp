@@ -47,11 +47,13 @@ public class UsersController : ApiController
         [FromQuery] GetUsersRequest request,
         CancellationToken cancellationToken)
     {
+        var userId = HttpContext.GetId();
         var query = new GetUsersQuery
         {
             Query = request.Q,
             Page = request.Page,
-            Limit = request.PageSize
+            Limit = request.PageSize,
+            UserId = userId ?? null
         };
         var users = await _sender.Send(query, cancellationToken);
         return Ok(users);

@@ -6,7 +6,8 @@ namespace BooksApp.Application.Users.Queries.GetUsers;
 
 public class GetUsersQuery : IRequest<PaginatedArray<UserResult>>
 {
-    public string? Query { get; set; }
-    public int? Page { get; set; }
-    public int? Limit { get; set; }
+    public string? Query { get; init; }
+    public int? Page { get; init; }
+    public int? Limit { get; init; }
+    public required Guid? UserId { get; init; } = default;
 }

@@ -16,11 +16,21 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
     }
 
-    public async Task<PaginatedArray<UserResult>> GetPaginated(int page, int limit, string query)
+    public async Task<PaginatedArray<UserResult>> GetPaginated(int page, int limit, string query,
+        Guid currentUserId = default)
     {
+        var parsedCurrentUserId = UserId.CreateUserId(currentUserId);
+        var followers = _dbContext.Users
+            .AsNoTracking()
+            .Include(x => x.Followers)
+            .Where(x => x.Id == parsedCurrentUserId)
+            .Take(1)
+            .SelectMany(x => x.Followers);
         return await
             (
                 from user in _dbContext.Users
+                    .AsNoTracking()
+                    .Include(x => x.Followers)
                 where query == null || user.FirstName.Contains(query)
                 select new UserResult
                 {
@@ -30,7 +40,17 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     MiddleName = user.MiddleName,
                     LastName = user.LastName,
                     Role = user.Role.Name,
-                    AvatarName = user.Avatar.ImageName ?? null
+                    AvatarName = user.Avatar.ImageName ?? null,
+                    ViewerRelationship = new ViewerRelationship
+                    {
+                        IsFollowing =
+                            user.Followers.Any(f => f.FollowerId == parsedCurrentUserId),
+                        IsFriend =
+                            user.Id != parsedCurrentUserId &&
+                            user.Followers.Any(f => f.FollowerId == parsedCurrentUserId) &&
+                            followers.Any(f => f.FollowerId == user.Id),
+                        IsMe = user.Id == parsedCurrentUserId
+                    }
                 })
             .PaginationAsync(page, limit);
     }
@@ -46,7 +66,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     }
 
     public async Task<bool> AnyByEmail(string email)
-    {   
+    {
         if (new EmailAddressAttribute().IsValid(email) != true) return false;
         var parsedEmail = email.Trim().ToLower();
         return await _dbContext.Users.AnyAsync(user => user.Email == parsedEmail);
@@ -60,7 +80,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                 .Where(u => u.Id == UserId.CreateUserId(userId))
                 .SelectMany(u => u.Followers)
                 .AnyAsync(f => f.FollowerId == UserId.CreateUserId(followerId));
-
     }
 
     public async Task AddFollower(Guid userId, Guid followerId)
