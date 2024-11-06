@@ -22,7 +22,7 @@ internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Pagi
         var limit = request.Limit ?? 10;
         var page = request.Page ?? 1;
 
-        var result = await _unitOfWork.Users.GetPaginated(page, limit, query, request.UserId);
+        var result = await _unitOfWork.Users.GetPaginated(request.UserId, page, limit, query);
         return result;
     }
 }
