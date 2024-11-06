@@ -107,8 +107,10 @@ public class ReviewsController : ApiController
         [FromQuery] GetReviewsQuery request,
         CancellationToken cancellationToken)
     {
+        var userId = HttpContext.GetId();
         var query = new GetReviewsQuery
         {
+            CurrentUserId = userId,
             BookId = id,
             Page = request.Page,
             Limit = request.Limit

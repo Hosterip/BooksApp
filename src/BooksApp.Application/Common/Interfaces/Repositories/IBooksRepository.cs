@@ -7,8 +7,8 @@ namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IBooksRepository : IGenericRepository<Book>
 {
-    Task<PaginatedArray<BookResult>> GetPaginated(int limit, int page, Expression<Func<Book, bool>> expression);
-    Task<PaginatedArray<BookResult>?>? GetPaginatedBookshelfBooks(Guid bookshelfId, int limit, int page);
+    Task<PaginatedArray<BookResult>> GetPaginated(Guid? currentUserId, int limit, int page, Expression<Func<Book, bool>> expression);
+    Task<PaginatedArray<BookResult>?>? GetPaginatedBookshelfBooks(Guid? currentUserId, Guid bookshelfId, int limit, int page);
 
     Task<Book?> GetSingleById(Guid guid);
     Task<bool> AnyById(Guid guid);

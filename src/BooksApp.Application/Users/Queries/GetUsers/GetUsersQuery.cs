@@ -9,5 +9,5 @@ public class GetUsersQuery : IRequest<PaginatedArray<UserResult>>
     public string? Query { get; init; }
     public int? Page { get; init; }
     public int? Limit { get; init; }
-    public required Guid? UserId { get; init; } = default;
+    public required Guid? UserId { get; init; }
 }

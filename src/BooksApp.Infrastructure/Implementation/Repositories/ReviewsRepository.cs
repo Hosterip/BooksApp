@@ -17,12 +17,15 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
     {
     }
 
-    public async Task<PaginatedArray<ReviewResult>> GetPaginated(Guid bookId, int page, int limit)
+    public async Task<PaginatedArray<ReviewResult>> GetPaginated(Guid? currentUserId, Guid bookId, int page, int limit)
     {
         return await
             (
                 from review in _dbContext.Reviews
+                    .Include(r => r.User.Followers)
+                    .Include(r => r.User.Following)
                 where review.Book.Id == BookId.CreateBookId(bookId)
+                let viewerRelationship = review.User.ViewerRelationship(currentUserId)
                 let user = new UserResult
                 {
                     Id = review.User.Id.Value.ToString(),
@@ -31,7 +34,13 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
                     MiddleName = review.User.MiddleName,
                     LastName = review.User.LastName,
                     Role = review.User.Role.Name,
-                    AvatarName = review.User.Avatar.ImageName
+                    AvatarName = review.User.Avatar.ImageName,
+                    ViewerRelationship = new ViewerRelationship
+                    {
+                        IsFollowing = viewerRelationship.IsFollowing,
+                        IsFriend = viewerRelationship.IsFriend,
+                        IsMe = viewerRelationship.IsMe
+                    }
                 }
                 select new ReviewResult
                 {

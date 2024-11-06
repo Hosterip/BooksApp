@@ -33,30 +33,17 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.LastName)
             .HasMaxLength((int)UserMaxLengths.LastName);
 
-        builder.OwnsMany<Relationship>(u => u.Followers, f =>
-        {
-            f.Property(o => o.Id)
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => FollowerId.Create(value));
-            
-            
-            f.Property(o => o.FollowerId)
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => UserId.CreateUserId(value));
-            
-            
-            f.Property(o => o.UserId)
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => UserId.CreateUserId(value));
-            
-            f.HasKey(x => x.Id);
-        });
+
+
+        builder.HasMany<Relationship>(u => u.Followers)
+            .WithOne()
+            .HasForeignKey(f => f.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+        
+        builder.HasMany<Relationship>(u => u.Following)
+            .WithOne()
+            .HasForeignKey(f => f.FollowerId)
+            .OnDelete(DeleteBehavior.SetNull);
         
         builder.Property("Hash")
             .IsRequired();

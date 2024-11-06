@@ -16,23 +16,19 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
     }
 
-    public async Task<PaginatedArray<UserResult>> GetPaginated(int page, int limit, string query,
-        Guid currentUserId = default)
+    public async Task<PaginatedArray<UserResult>> GetPaginated(
+        Guid? currentUserId, 
+        int page,
+        int limit,
+        string query)
     {
-        var parsedCurrentUserId = UserId.CreateUserId(currentUserId);
-        var followers = _dbContext.Users
-            .AsNoTracking()
-            .Include(x => x.Followers)
-            .Where(x => x.Id == parsedCurrentUserId)
-            .Take(1)
-            .SelectMany(x => x.Followers);
-        return await
-            (
-                from user in _dbContext.Users
-                    .AsNoTracking()
-                    .Include(x => x.Followers)
-                where query == null || user.FirstName.Contains(query)
-                select new UserResult
+        return await (
+            from user in _dbContext.Users
+                .AsNoTracking()
+                .Include(x => x.Followers)
+            where query == null || user.FirstName.Contains(query)
+            let viewerRelationship = user.ViewerRelationship(currentUserId)
+            select new UserResult
                 {
                     Id = user.Id.Value.ToString(),
                     Email = user.Email,
@@ -43,13 +39,9 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     AvatarName = user.Avatar.ImageName ?? null,
                     ViewerRelationship = new ViewerRelationship
                     {
-                        IsFollowing =
-                            user.Followers.Any(f => f.FollowerId == parsedCurrentUserId),
-                        IsFriend =
-                            user.Id != parsedCurrentUserId &&
-                            user.Followers.Any(f => f.FollowerId == parsedCurrentUserId) &&
-                            followers.Any(f => f.FollowerId == user.Id),
-                        IsMe = user.Id == parsedCurrentUserId
+                        IsFollowing = viewerRelationship.IsFollowing,
+                        IsFriend = viewerRelationship.IsFriend,
+                        IsMe = viewerRelationship.IsMe
                     }
                 })
             .PaginationAsync(page, limit);
@@ -57,7 +49,10 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 
     public async Task<User?> GetSingleById(Guid guid)
     {
-        return await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == UserId.CreateUserId(guid));
+        return await _dbContext.Users
+            .Include(x => x.Followers)
+            .Include(x => x.Following)
+            .SingleOrDefaultAsync(user => user.Id == UserId.CreateUserId(guid));
     }
 
     public async Task<bool> AnyById(Guid guid)

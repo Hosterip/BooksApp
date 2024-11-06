@@ -19,7 +19,7 @@ internal sealed class
         CancellationToken cancellationToken)
     {
         var books = await _unitOfWork.Books
-            .GetPaginatedBookshelfBooks(request.BookshelfId, request.Limit ?? 10, request.Page ?? 1)!;
+            .GetPaginatedBookshelfBooks(request.CurrentUserId, request.BookshelfId, request.Limit ?? 10, request.Page ?? 1)!;
         return books!;
     }
 }

@@ -17,7 +17,7 @@ internal sealed class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, 
     public async Task<PaginatedArray<ReviewResult>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
     {
         return
-            await _unitOfWork.Reviews.GetPaginated(request.BookId, request.Page, request.Limit);
+            await _unitOfWork.Reviews.GetPaginated(request.CurrentUserId, request.BookId, request.Page, request.Limit);
         ;
     }
 }

@@ -34,7 +34,8 @@ public class User : AggregateRoot<UserId>
     private string Salt { get; set; }
     public string SecurityStamp { get; set; }
     public Image.Image? Avatar { get; set; }
-    public List<Relationship> Followers { get; set; } = [];
+    public List<Relationship> Followers { get; private set; } = [];
+    public List<Relationship> Following { get; private set; } = [];
 
     public static User Create(string email, string firstName, string? middleName, string? lastName, Role.Role role,
         string hash, string salt, Image.Image? avatar)
@@ -64,5 +65,26 @@ public class User : AggregateRoot<UserId>
         var item = Relationship.Create(this, follower);
         Followers.Add(item);
         return true;
+    }
+    
+    public bool RemoveFollower(User follower)
+    {
+        if (follower.Id == Id)
+            return false;
+
+        if (Followers.All(f => f.FollowerId != follower.Id))
+            return false;
+        Followers.RemoveAll(x => x.FollowerId == follower.Id);
+        return true;
+    }
+
+    public (bool IsFollowing, bool IsFriend, bool IsMe) ViewerRelationship(Guid? followerId)
+    {
+        if (followerId == null) return (false, false, false);
+        var userId = UserId.CreateUserId(followerId);
+        var isMe = Id == userId;
+        var isFollowing = !isMe && Followers.Any(x => x.FollowerId == userId);
+        var isFriend = !isMe && isFollowing && Following.Any(x => x.UserId == userId);
+        return (isFollowing, isFriend, isMe);
     }
 }

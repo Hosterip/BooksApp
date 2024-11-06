@@ -21,13 +21,19 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
     }
 
-    public async Task<PaginatedArray<BookResult>> GetPaginated(int limit, int page,
+    public async Task<PaginatedArray<BookResult>> GetPaginated(
+        Guid? currentUserId,
+        int limit,
+        int page,
         Expression<Func<Book, bool>> expression)
     {
-        var result = await
-            _dbContext.Books
-                .Where(expression)
-                .Select(book => new BookResult
+        var result = await (
+                from book in _dbContext.Books
+                    .Include(b => b.Author.Followers)
+                    .Include(b => b.Author.Following)
+                    .Where(expression)
+                let viewerRelationship = book.Author.ViewerRelationship(currentUserId)
+                select new BookResult
                 {
                     Id = book.Id.Value.ToString(),
                     Title = book.Title,
@@ -41,7 +47,13 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                         MiddleName = book.Author.MiddleName,
                         LastName = book.Author.LastName,
                         Role = book.Author.Role.Name,
-                        AvatarName = book.Author.Avatar.ImageName
+                        AvatarName = book.Author.Avatar.ImageName,
+                        ViewerRelationship = new ViewerRelationship
+                        {
+                            IsFollowing = viewerRelationship.IsFollowing,
+                            IsFriend = viewerRelationship.IsFriend,
+                            IsMe = viewerRelationship.IsMe
+                        }
                     },
                     AverageRating = 0,
                     Ratings = 0,
@@ -49,7 +61,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                     Genres = book.Genres
                         .Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name }).ToList()
                 })
-                .PaginationAsync(page, limit);
+            .PaginationAsync(page, limit);
         result.Items = result.Items.Select(book =>
         {
             var bookStats = RatingStatistics(new Guid(book.Id));
@@ -60,37 +72,50 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         return result;
     }
 
-    public async Task<PaginatedArray<BookResult>?>? GetPaginatedBookshelfBooks(Guid bookshelfId, int limit, int page)
+    public async Task<PaginatedArray<BookResult>?>? GetPaginatedBookshelfBooks(
+        Guid? currentUserId,
+        Guid bookshelfId,
+        int limit,
+        int page)
     {
         if (!await _dbContext.Bookshelves
                 .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))) return null;
-        var result = await _dbContext.Bookshelves
-            .Include(bookshelf => bookshelf.BookshelfBooks)
-            .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
-            .SelectMany(bookshelf => bookshelf.BookshelfBooks)
-            .Select(bb => new BookResult
+        var result = await
+        (
+            from bb in _dbContext.Bookshelves
+                .Include(bookshelf => bookshelf.BookshelfBooks)
+                .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
+                .SelectMany(bookshelf => bookshelf.BookshelfBooks)
+            let book = bb.Book
+            let viewerRelationship = book.Author.ViewerRelationship(currentUserId)
+            select new BookResult
+            {
+                Id = book.Id.Value.ToString(),
+                Title = book.Title,
+                ReferentialName = book.ReferentialName,
+                Description = book.Description,
+                Author = new UserResult
                 {
-                    Id = bb.Book.Id.Value.ToString(),
-                    Title = bb.Book.Title,
-                    ReferentialName = bb.Book.ReferentialName,
-                    Description = bb.Book.Description,
-                    Author = new UserResult
+                    Id = book.Author.Id.Value.ToString(),
+                    Email = book.Author.Email,
+                    FirstName = book.Author.FirstName,
+                    MiddleName = book.Author.MiddleName,
+                    LastName = book.Author.LastName,
+                    AvatarName = book.Author.Avatar == null ? null : book.Author.Avatar.ImageName,
+                    Role = book.Author.Role.Name,
+                    ViewerRelationship = new ViewerRelationship
                     {
-                        Id = bb.Book.Author.Id.Value.ToString(),
-                        Email = bb.Book.Author.Email,
-                        FirstName = bb.Book.Author.FirstName,
-                        MiddleName = bb.Book.Author.MiddleName,
-                        LastName = bb.Book.Author.LastName,
-                        AvatarName = bb.Book.Author.Avatar == null ? null : bb.Book.Author.Avatar.ImageName,
-                        Role = bb.Book.Author.Role.Name
-                    },
-                    AverageRating = -1,
-                    Ratings = 0,
-                    CoverName = bb.Book.Cover.ImageName,
-                    Genres = bb.Book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
-                        .ToList()
-                }
-            ).PaginationAsync(page, limit);
+                        IsFollowing = viewerRelationship.IsFollowing,
+                        IsFriend = viewerRelationship.IsFriend,
+                        IsMe = viewerRelationship.IsMe
+                    }
+                },
+                AverageRating = -1,
+                Ratings = 0,
+                CoverName = book.Cover.ImageName,
+                Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
+                    .ToList()
+            }).PaginationAsync(page, limit);
         result.Items = result.Items.Select(book =>
         {
             var bookStats = RatingStatistics(new Guid(book.Id));

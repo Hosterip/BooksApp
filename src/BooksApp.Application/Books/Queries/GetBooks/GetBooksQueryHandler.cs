@@ -25,7 +25,7 @@ internal sealed class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, Pagi
         var page = request.Page ?? 1;
 
         var result = await _unitOfWork.Books
-            .GetPaginated(limit, page, BookExpression(query, request.UserId, request.GenreId));
+            .GetPaginated(request.CurrentUserId, limit, page, BookExpression(query, request.UserId, request.GenreId));
 
 
         return result;

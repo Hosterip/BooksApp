@@ -61,8 +61,10 @@ public class BookshelvesController : ApiController
         [FromRoute] Guid bookshelfId,
         [FromQuery] GetBookshelfBooksRequest request)
     {
+        var userId = HttpContext.GetId();
         var query = new GetBookshelfBooksQuery
         {
+            CurrentUserId = userId,
             BookshelfId = bookshelfId,
             Limit = request.PageSize,
             Page = request.Page
