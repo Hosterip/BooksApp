@@ -33,7 +33,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.LastName)
             .HasMaxLength((int)UserMaxLengths.LastName);
 
-
+        builder.HasOne(u => u.Role);
 
         builder.HasMany<Relationship>(u => u.Followers)
             .WithOne()

@@ -12,6 +12,9 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
     {
         builder.HasKey(r => r.Id);
 
+        builder.HasOne(r => r.User);
+        builder.HasOne(r => r.Book);
+        
         builder.Property(o => o.Id)
             .ValueGeneratedNever()
             .HasConversion(

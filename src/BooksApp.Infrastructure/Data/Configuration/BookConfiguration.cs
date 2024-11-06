@@ -12,6 +12,9 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
     {
         builder.HasKey(b => b.Id);
 
+        builder.HasOne(b => b.Author);
+        builder.HasOne(b => b.Cover);
+        
         builder
             .HasMany(b => b.Genres)
             .WithMany(g => g.Books);
