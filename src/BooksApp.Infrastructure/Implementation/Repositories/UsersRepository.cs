@@ -17,18 +17,18 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     }
 
     public async Task<PaginatedArray<UserResult>> GetPaginated(
-        Guid? currentUserId, 
+        Guid? currentUserId,
         int page,
         int limit,
         string query)
     {
         return await (
-            from user in _dbContext.Users
-                .AsNoTracking()
-                .Include(x => x.Followers)
-            where query == null || user.FirstName.Contains(query)
-            let viewerRelationship = user.ViewerRelationship(currentUserId)
-            select new UserResult
+                from user in _dbContext.Users
+                    .AsNoTracking()
+                    .Include(x => x.Followers)
+                where query == null || user.FirstName.Contains(query)
+                let viewerRelationship = user.ViewerRelationship(currentUserId)
+                select new UserResult
                 {
                     Id = user.Id.Value.ToString(),
                     Email = user.Email,
@@ -54,17 +54,13 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         int limit,
         string query)
     {
-        
         return await (
-                from relationship in _dbContext.Relationships
+                from relationship in _dbContext.Users
                     .AsNoTracking()
-                    .Where(x => x.UserId == UserId.CreateUserId(userId))
-                    .Include(x => x.UserId)
-                    .Include(x => x.FollowerId)
-                join user in _dbContext.Users
-                        .Include(x => x.Followers)
-                        .Include(x => x.Following)
-                    on relationship.FollowerId equals user.Id  
+                    .Include(x => x.Followers)
+                    .SelectMany(x => x.Followers)
+                join user in _dbContext.Users 
+                    on relationship.FollowerId equals user.Id
                 where query == null || user.FirstName.Contains(query)
                 let viewerRelationship = user.ViewerRelationship(currentUserId)
                 select new UserResult
