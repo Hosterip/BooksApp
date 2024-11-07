@@ -7,6 +7,7 @@ using BooksApp.Application.Users.Commands.InsertAvatar;
 using BooksApp.Application.Users.Commands.UpdateEmail;
 using BooksApp.Application.Users.Commands.UpdateName;
 using BooksApp.Application.Users.Queries.GetSingleUser;
+using BooksApp.Application.Users.Queries.GetUserFollowers;
 using BooksApp.Application.Users.Queries.GetUsers;
 using BooksApp.Application.Users.Results;
 using BooksApp.Contracts.Requests.Users;
@@ -166,5 +167,26 @@ public class UsersController : ApiController
         await _sender.Send(command, cancellationToken);
 
         return Ok();
+    }
+    
+    [HttpGet(ApiRoutes.Users.GetFollowers)]
+    [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedArray<UserResult>>> GetMany(
+        [FromQuery] GetUsersRequest request,
+        [FromRoute] Guid userId,
+        CancellationToken cancellationToken)
+    {
+        var currentUser = HttpContext.GetId();
+        var query = new GetUserFollowersQuery
+        {
+            Query = request.Q,
+            Page = request.Page,
+            Limit = request.PageSize,
+            CurrentUserId = currentUser,
+            UserId = userId
+        };
+        var users = await _sender.Send(query, cancellationToken);
+        return Ok(users);
     }
 }
