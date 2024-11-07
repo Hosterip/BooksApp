@@ -1,7 +1,7 @@
 ﻿using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
 using BooksApp.Application.Common.Results;
-using BooksApp.Application.Users.Commands.AddFollower;
+using BooksApp.Application.Users.Commands.AddRemoveFollower;
 using BooksApp.Application.Users.Commands.DeleteUser;
 using BooksApp.Application.Users.Commands.InsertAvatar;
 using BooksApp.Application.Users.Commands.UpdateEmail;
@@ -149,15 +149,15 @@ public class UsersController : ApiController
     
     // Followers
     
-    [HttpPost(ApiRoutes.Users.AddFollower)]
+    [HttpPut(ApiRoutes.Users.AddFollower)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddFollower(
+    public async Task<IActionResult> AddRemoveFollower(
         [FromRoute] Guid followingId,
         CancellationToken cancellationToken)
     {
-        var command = new AddFollowerCommand
+        var command = new AddRemoveFollowerCommand
         {
             UserId = followingId,
             FollowerId = HttpContext.GetId()!.Value
