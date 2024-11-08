@@ -80,7 +80,7 @@ public static class HttpContextUserExtension
             claims.Add(new Claim(typeOfClaim, valueOfClaim));
             var identity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
+            await httpContext.SignOutAsync();
             await httpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
