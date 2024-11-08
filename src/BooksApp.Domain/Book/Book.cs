@@ -23,7 +23,7 @@ public class Book : AggregateRoot<BookId>
 
     public string Title
     {
-        get => Title;
+        get => _title;
         set
         {
             ReferentialName = value.GenerateRefName();
