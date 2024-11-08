@@ -8,6 +8,7 @@ public interface IUsersRepository : IGenericRepository<User>
 {
     Task<PaginatedArray<UserResult>> GetPaginated(Guid? currentUserId, int page, int limit, string query);
     Task<PaginatedArray<UserResult>> GetPaginatedFollowers(Guid? currentUserId, Guid userId, int page, int limit, string query);
+    Task<PaginatedArray<UserResult>> GetPaginatedFollowing(Guid? currentUserId, Guid userId, int page, int limit, string query);
     Task<User?> GetSingleById(Guid guid);
     Task<bool> AnyById(Guid guid);
     Task<bool> AnyByEmail(string email);

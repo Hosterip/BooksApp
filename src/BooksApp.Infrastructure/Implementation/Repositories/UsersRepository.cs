@@ -82,6 +82,42 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             .PaginationAsync(page, limit);
     }
 
+    public async Task<PaginatedArray<UserResult>> GetPaginatedFollowing(
+        Guid? currentUserId,
+        Guid userId,
+        int page,
+        int limit,
+        string query)
+    {
+        
+        return await (
+                from relationship in _dbContext.Users
+                    .AsNoTracking()
+                    .Include(x => x.Following)
+                    .SelectMany(x => x.Following)
+                join user in _dbContext.Users 
+                    on relationship.FollowerId equals user.Id
+                where query == null || user.FirstName.Contains(query)
+                let viewerRelationship = user.ViewerRelationship(currentUserId)
+                select new UserResult
+                {
+                    Id = user.Id.Value.ToString(),
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    MiddleName = user.MiddleName,
+                    LastName = user.LastName,
+                    Role = user.Role.Name,
+                    AvatarName = user.Avatar.ImageName ?? null,
+                    ViewerRelationship = new ViewerRelationship
+                    {
+                        IsFollowing = viewerRelationship.IsFollowing,
+                        IsFriend = viewerRelationship.IsFriend,
+                        IsMe = viewerRelationship.IsMe
+                    }
+                })
+            .PaginationAsync(page, limit);
+    }
+
     public async Task<User?> GetSingleById(Guid guid)
     {
         return await _dbContext.Users
