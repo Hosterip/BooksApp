@@ -7,7 +7,7 @@ using BooksApp.Application.Users.Commands.InsertAvatar;
 using BooksApp.Application.Users.Commands.UpdateEmail;
 using BooksApp.Application.Users.Commands.UpdateName;
 using BooksApp.Application.Users.Queries.GetSingleUser;
-using BooksApp.Application.Users.Queries.GetUserFollowers;
+using BooksApp.Application.Users.Queries.GetUserRelationships;
 using BooksApp.Application.Users.Queries.GetUsers;
 using BooksApp.Application.Users.Results;
 using BooksApp.Contracts.Requests.Users;
@@ -172,19 +172,42 @@ public class UsersController : ApiController
     [HttpGet(ApiRoutes.Users.GetFollowers)]
     [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedArray<UserResult>>> GetMany(
+    public async Task<ActionResult<PaginatedArray<UserResult>>> GetFollowers(
         [FromQuery] GetUsersRequest request,
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
         var currentUser = HttpContext.GetId();
-        var query = new GetUserFollowersQuery
+        var query = new GetUserRelationshipsQuery
         {
             Query = request.Q,
             Page = request.Page,
             Limit = request.PageSize,
             CurrentUserId = currentUser,
-            UserId = userId
+            UserId = userId,
+            RelationshipType = RelationshipType.Followers
+        };
+        var users = await _sender.Send(query, cancellationToken);
+        return Ok(users);
+    }
+    
+    [HttpGet(ApiRoutes.Users.GetFollowing)]
+    [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedArray<UserResult>>> GetFollowing(
+        [FromQuery] GetUsersRequest request,
+        [FromRoute] Guid userId,
+        CancellationToken cancellationToken)
+    {
+        var currentUser = HttpContext.GetId();
+        var query = new GetUserRelationshipsQuery
+        {
+            Query = request.Q,
+            Page = request.Page,
+            Limit = request.PageSize,
+            CurrentUserId = currentUser,
+            UserId = userId,
+            RelationshipType = RelationshipType.Following
         };
         var users = await _sender.Send(query, cancellationToken);
         return Ok(users);
