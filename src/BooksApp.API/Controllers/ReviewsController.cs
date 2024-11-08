@@ -80,7 +80,7 @@ public class ReviewsController : ApiController
         return Ok();
     }
 
-    [HttpDelete(ApiRoutes.Reviews.Delete)]
+    [HttpDelete(ApiRoutes.Reviews.PrivilegedDelete)]
     [Authorize(Policies.Moderator)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
