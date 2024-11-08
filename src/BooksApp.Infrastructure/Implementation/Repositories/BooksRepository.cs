@@ -9,6 +9,7 @@ using BooksApp.Domain.Book;
 using BooksApp.Domain.Book.ValueObjects;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common.Utils;
+using BooksApp.Domain.Review;
 using BooksApp.Domain.User.ValueObjects;
 using BooksApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,12 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                     .Include(b => b.Author.Followers)
                     .Include(b => b.Author.Following)
                     .Where(expression)
+                join review in _dbContext.Reviews
+                        .Include(x => x.Book)
+                        .Select(x => new { x.Book, x.Rating })
+                    on book.Id equals review.Book.Id into reviews
                 let viewerRelationship = book.Author.ViewerRelationship(currentUserId)
+                let ratingStatistics = RatingsStatistics(reviews.Select(x => x.Rating))
                 select new BookResult
                 {
                     Id = book.Id.Value.ToString(),
@@ -46,8 +52,8 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                         FirstName = book.Author.FirstName,
                         MiddleName = book.Author.MiddleName,
                         LastName = book.Author.LastName,
+                        AvatarName = book.Author.Avatar == null ? null : book.Author.Avatar.ImageName,
                         Role = book.Author.Role.Name,
-                        AvatarName = book.Author.Avatar.ImageName,
                         ViewerRelationship = new ViewerRelationship
                         {
                             IsFollowing = viewerRelationship.IsFollowing,
@@ -55,20 +61,13 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                             IsMe = viewerRelationship.IsMe
                         }
                     },
-                    AverageRating = 0,
-                    Ratings = 0,
+                    AverageRating = ratingStatistics.AverageRating,
+                    Ratings = ratingStatistics.Ratings,
                     CoverName = book.Cover.ImageName,
-                    Genres = book.Genres
-                        .Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name }).ToList()
+                    Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
+                        .ToList()
                 })
             .PaginationAsync(page, limit);
-        result.Items = result.Items.Select(book =>
-        {
-            var bookStats = RatingStatistics(new Guid(book.Id));
-            book.Ratings = bookStats.Ratings;
-            book.AverageRating = bookStats.AverageRating;
-            return book;
-        }).ToArray();
         return result;
     }
 
@@ -80,14 +79,18 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
         if (!await _dbContext.Bookshelves
                 .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))) return null;
-        var result = await
-        (
-            from bb in _dbContext.Bookshelves
+        var result = await (
+            from book in _dbContext.Bookshelves
                 .Include(bookshelf => bookshelf.BookshelfBooks)
                 .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
                 .SelectMany(bookshelf => bookshelf.BookshelfBooks)
-            let book = bb.Book
+                .Select(bb => bb.Book)
+            join review in _dbContext.Reviews
+                    .Include(x => x.Book)
+                    .Select(x => new { x.Book, x.Rating })
+                on book.Id equals review.Book.Id into reviews
             let viewerRelationship = book.Author.ViewerRelationship(currentUserId)
+            let ratingStatistics = RatingsStatistics(reviews.Select(x => x.Rating))
             select new BookResult
             {
                 Id = book.Id.Value.ToString(),
@@ -110,19 +113,12 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                         IsMe = viewerRelationship.IsMe
                     }
                 },
-                AverageRating = -1,
-                Ratings = 0,
+                AverageRating = ratingStatistics.AverageRating,
+                Ratings = ratingStatistics.Ratings,
                 CoverName = book.Cover.ImageName,
                 Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
                     .ToList()
             }).PaginationAsync(page, limit);
-        result.Items = result.Items.Select(book =>
-        {
-            var bookStats = RatingStatistics(new Guid(book.Id));
-            book.Ratings = bookStats.Ratings;
-            book.AverageRating = bookStats.AverageRating;
-            return book;
-        }).ToArray();
         return result;
     }
 
@@ -153,6 +149,23 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             {
                 AverageRating = reviews.Average(review => review.Rating),
                 Ratings = reviews.Count()
+            };
+
+        return new RatingStatistics
+        {
+            AverageRating = 0,
+            Ratings = 0
+        };
+    }
+
+    private static RatingStatistics RatingsStatistics(IEnumerable<int> reviews)
+    {
+        var array = reviews as int[] ?? reviews.ToArray();
+        if (array.Length != 0)
+            return new RatingStatistics
+            {
+                AverageRating = array.Average(),
+                Ratings = array.Length
             };
 
         return new RatingStatistics
