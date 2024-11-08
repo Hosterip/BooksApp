@@ -173,14 +173,14 @@ public class UsersController : ApiController
     [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<UserResult>>> GetFollowers(
-        [FromQuery] GetUsersRequest request,
+        [FromQuery] GetFollowersRequest request,
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
         var currentUser = HttpContext.GetId();
         var query = new GetUserRelationshipsQuery
         {
-            Query = request.Q,
+            Query = request.Query,
             Page = request.Page,
             Limit = request.PageSize,
             CurrentUserId = currentUser,
@@ -195,14 +195,14 @@ public class UsersController : ApiController
     [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<UserResult>>> GetFollowing(
-        [FromQuery] GetUsersRequest request,
+        [FromQuery] GetFollowingRequest request,
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
         var currentUser = HttpContext.GetId();
         var query = new GetUserRelationshipsQuery
         {
-            Query = request.Q,
+            Query = request.Query,
             Page = request.Page,
             Limit = request.PageSize,
             CurrentUserId = currentUser,
