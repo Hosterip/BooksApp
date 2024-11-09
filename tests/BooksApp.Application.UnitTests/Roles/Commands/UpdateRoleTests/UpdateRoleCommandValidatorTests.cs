@@ -87,7 +87,7 @@ public class UpdateRoleCommandValidatorTests
         User? usersGetSingle)
     {
         _unitOfWorkMock.Setup(x => x.Roles.AnyAsync(
-                It.IsAny<Expression<Func<Role, bool>>>()))
+                It.IsAny<Expression<Func<Role, bool>>>(), ))
             .ReturnsAsync(roleAnyAsync);
         _unitOfWorkMock.Setup(x => x.Users.AnyAsync(
                 It.IsAny<Expression<Func<User, bool>>>()))

@@ -5,8 +5,7 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 
-internal sealed class
-    GetBookshelfBooksQueryHandler : IRequestHandler<GetBookshelfBooksQuery, PaginatedArray<BookResult>>
+internal sealed class GetBookshelfBooksQueryHandler : IRequestHandler<GetBookshelfBooksQuery, PaginatedArray<BookResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
