@@ -36,8 +36,6 @@ public sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCom
         RuleFor(request => request.GenreIds).MustAsync(
             async (genreIds, cancellationToken) =>
         {
-            if (genreIds.Count == 0)
-                return false;
             var genres = await unitOfWork.Genres.GetAllByIds(genreIds, cancellationToken);
             return genres.Any();
         }).WithMessage(BookValidationMessages.GenresNotFound);
