@@ -4,5 +4,5 @@ namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IGenresRepository : IGenericRepository<Genre>
 {
-    IEnumerable<Genre?> GetAllByIds(IEnumerable<Guid> genreIds);
+    Task<IEnumerable<Genre>> GetAllByIds(IEnumerable<Guid> genreIds, CancellationToken token = default);
 }

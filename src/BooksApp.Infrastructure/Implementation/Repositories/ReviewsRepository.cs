@@ -54,13 +54,22 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
             .PaginationAsync(page, limit);
     }
 
-    public async Task<Review?> GetSingleById(Guid guid)
+    public async Task<Review?> GetSingleById(
+        Guid guid,
+        CancellationToken token = default)
     {
-        return await _dbContext.Reviews.SingleOrDefaultAsync(review => review.Id == ReviewId.CreateReviewId(guid));
+        return await _dbContext.Reviews
+            .SingleOrDefaultAsync(
+                review => review.Id == ReviewId.CreateReviewId(guid),
+                cancellationToken: token);
     }
 
-    public async Task<bool> AnyById(Guid guid)
+    public async Task<bool> AnyById(
+        Guid guid,
+        CancellationToken token = default)
     {
-        return await _dbContext.Reviews.AnyAsync(review => review.Id == ReviewId.CreateReviewId(guid));
+        return await _dbContext.Reviews.AnyAsync(
+            review => review.Id == ReviewId.CreateReviewId(guid),
+            cancellationToken: token);
     }
 }

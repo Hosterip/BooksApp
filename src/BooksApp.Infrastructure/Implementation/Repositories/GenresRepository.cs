@@ -2,6 +2,7 @@
 using BooksApp.Domain.Genre;
 using BooksApp.Domain.Genre.ValueObjects;
 using BooksApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BooksApp.Infrastructure.Implementation.Repositories;
 
@@ -11,10 +12,10 @@ public class GenresRepository : GenericRepository<Genre>, IGenresRepository
     {
     }
 
-    public IEnumerable<Genre?> GetAllByIds(IEnumerable<Guid> genreIds)
+    public async Task<IEnumerable<Genre>> GetAllByIds(IEnumerable<Guid> genreIds, CancellationToken token = default)
     {
         var parsedGenreIds = genreIds.Select(x => GenreId.CreateGenreId(x));
-        var result = _dbContext.Genres.Where(x => parsedGenreIds.Contains(x.Id)).ToList();
+        var result = await _dbContext.Genres.Where(x => parsedGenreIds.Contains(x.Id)).ToListAsync(token);
         return result;
     }
 }

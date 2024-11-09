@@ -14,29 +14,37 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken token = default)
     {
-        return await _dbContext.Set<T>().ToListAsync();
+        return await _dbContext.Set<T>().ToListAsync(token);
     }
 
-    public virtual async Task<IEnumerable<T>> GetAllWhereAsync(Expression<Func<T, bool>> expression)
+    public virtual async Task<IEnumerable<T>> GetAllWhereAsync(
+        Expression<Func<T, bool>> expression,
+        CancellationToken token = default)
     {
-        return await _dbContext.Set<T>().Where(expression).ToListAsync();
+        return await _dbContext.Set<T>().Where(expression).ToListAsync(token);
     }
 
-    public virtual async Task<T?> GetSingleWhereAsync(Expression<Func<T, bool>> expression)
+    public virtual async Task<T?> GetSingleWhereAsync(
+        Expression<Func<T, bool>> expression,
+        CancellationToken token = default)
     {
-        return await _dbContext.Set<T>().SingleOrDefaultAsync(expression);
+        return await _dbContext.Set<T>().SingleOrDefaultAsync(expression, cancellationToken: token);
     }
 
-    public virtual async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
+    public virtual async Task<bool> AnyAsync(
+        Expression<Func<T, bool>> expression,
+        CancellationToken token = default)
     {
-        return await _dbContext.Set<T>().AnyAsync(expression);
+        return await _dbContext.Set<T>().AnyAsync(expression, cancellationToken: token);
     }
 
-    public async Task AddAsync(T entity)
+    public async Task AddAsync(
+        T entity,
+        CancellationToken token = default)
     {
-        await _dbContext.Set<T>().AddAsync(entity);
+        await _dbContext.Set<T>().AddAsync(entity, cancellationToken: token);
     }
 
     public void Remove(T entity)

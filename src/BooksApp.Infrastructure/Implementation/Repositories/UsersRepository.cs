@@ -57,6 +57,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         return await (
                 from relationship in _dbContext.Users
                     .AsNoTracking()
+                    .Where(x => x.Id == UserId.CreateUserId(userId))
                     .Include(x => x.Followers)
                     .SelectMany(x => x.Followers)
                 join user in _dbContext.Users 
@@ -93,6 +94,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         return await (
                 from relationship in _dbContext.Users
                     .AsNoTracking()
+                    .Where(x => x.Id == UserId.CreateUserId(userId))
                     .Include(x => x.Following)
                     .SelectMany(x => x.Following)
                 join user in _dbContext.Users 
@@ -118,53 +120,76 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             .PaginationAsync(page, limit);
     }
 
-    public async Task<User?> GetSingleById(Guid guid)
+    public async Task<User?> GetSingleById(
+        Guid guid,
+        CancellationToken token = default)
     {
         return await _dbContext.Users
             .Include(x => x.Followers)
             .Include(x => x.Following)
-            .SingleOrDefaultAsync(user => user.Id == UserId.CreateUserId(guid));
+            .SingleOrDefaultAsync(
+                user => user.Id == UserId.CreateUserId(guid),
+                cancellationToken: token);
     }
 
-    public async Task<bool> AnyById(Guid guid)
+    public async Task<bool> AnyById(
+        Guid guid, 
+        CancellationToken token = default)
     {
-        return await _dbContext.Users.AnyAsync(user => user.Id == UserId.CreateUserId(guid));
+        return await _dbContext.Users.AnyAsync(
+            user => user.Id == UserId.CreateUserId(guid),
+            cancellationToken: token);
     }
 
-    public async Task<bool> AnyByEmail(string email)
+    public async Task<bool> AnyByEmail(
+        string email, 
+        CancellationToken token = default)
     {
         if (new EmailAddressAttribute().IsValid(email) != true) return false;
         var parsedEmail = email.Trim().ToLower();
-        return await _dbContext.Users.AnyAsync(user => user.Email == parsedEmail);
+        return await _dbContext.Users.AnyAsync(user => user.Email == parsedEmail, cancellationToken: token);
     }
 
-    public async Task<bool> AnyFollower(Guid userId, Guid followerId)
+    public async Task<bool> AnyFollower(
+        Guid userId,
+        Guid followerId,
+        CancellationToken token = default)
     {
         return
             await _dbContext.Users
                 .Take(1)
                 .Where(u => u.Id == UserId.CreateUserId(userId))
                 .SelectMany(u => u.Followers)
-                .AnyAsync(f => f.FollowerId == UserId.CreateUserId(followerId));
+                .AnyAsync(
+                    f => f.FollowerId == UserId.CreateUserId(followerId),
+                    cancellationToken: token);
     }
 
-    public async Task AddFollower(Guid userId, Guid followerId)
+    public async Task AddFollower(
+        Guid userId,
+        Guid followerId, 
+        CancellationToken token = default)
     {
-        var user = await GetSingleById(userId);
-        var follower = await GetSingleById(followerId);
+        var user = await GetSingleById(userId, token);
+        var follower = await GetSingleById(followerId, token);
         if (user != null && follower != null)
             user.AddFollower(follower);
     }
 
-    public async Task RemoveFollower(Guid userId, Guid followerId)
+    public async Task RemoveFollower(
+        Guid userId,
+        Guid followerId,
+        CancellationToken token = default)
     {
-        var user = await GetSingleById(userId);
-        var follower = await GetSingleById(followerId);
+        var user = await GetSingleById(userId, token);
+        var follower = await GetSingleById(followerId, token);
         if (user != null && follower != null)
             user.RemoveFollower(follower);
     }
 
-    public async Task<int> CountFollowers(Guid userId)
+    public async Task<int> CountFollowers(
+        Guid userId,
+        CancellationToken token = default)
     {
         var parsedUserId = UserId.CreateUserId(userId);
         return await _dbContext.Users
@@ -172,6 +197,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             .Take(1)
             .Where(x => x.Id == parsedUserId)
             .SelectMany(x => x.Followers)
-            .CountAsync();
+            .CountAsync(cancellationToken: token);
     }
 }

@@ -122,21 +122,27 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         return result;
     }
 
-    public async Task<Book?> GetSingleById(Guid guid)
+    public async Task<Book?> GetSingleById(Guid guid, CancellationToken token = default)
     {
-        return await _dbContext.Books.SingleOrDefaultAsync(book => book.Id == BookId.CreateBookId(guid));
+        return await _dbContext.Books.SingleOrDefaultAsync(
+            book => book.Id == BookId.CreateBookId(guid),
+            cancellationToken: token);
     }
 
-    public async Task<bool> AnyById(Guid guid)
+    public async Task<bool> AnyById(Guid guid, CancellationToken token = default)
     {
-        return await _dbContext.Books.AnyAsync(book => book.Id == BookId.CreateBookId(guid));
+        return await _dbContext.Books.AnyAsync(
+            book => book.Id == BookId.CreateBookId(guid),
+            cancellationToken: token);
     }
 
-    public async Task<bool> AnyByTitle(Guid userId, string title)
+    public async Task<bool> AnyByTitle(Guid userId, string title, CancellationToken token = default)
     {
         var refTitle = title.GenerateRefName();
-        return await _dbContext.Books.AnyAsync(book => book.Author.Id == UserId.CreateUserId(userId) &&
-                                                       book.ReferentialName == refTitle);
+        return await _dbContext.Books.AnyAsync(
+            book => book.Author.Id == UserId.CreateUserId(userId) &&
+                    book.ReferentialName == refTitle,
+            cancellationToken: token);
     }
 
     public RatingStatistics RatingStatistics(Guid bookId)

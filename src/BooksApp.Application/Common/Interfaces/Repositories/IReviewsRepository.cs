@@ -6,7 +6,15 @@ namespace BooksApp.Application.Common.Interfaces.Repositories;
 
 public interface IReviewsRepository : IGenericRepository<Review>
 {
-    Task<PaginatedArray<ReviewResult>> GetPaginated(Guid? currentUserId, Guid bookId, int page, int limit);
-    Task<Review?> GetSingleById(Guid guid);
-    Task<bool> AnyById(Guid guid);
+    Task<PaginatedArray<ReviewResult>> GetPaginated(
+        Guid? currentUserId,
+        Guid bookId,
+        int page,
+        int limit);
+    Task<Review?> GetSingleById(
+        Guid guid,
+        CancellationToken token = default);
+    Task<bool> AnyById(
+        Guid guid,
+        CancellationToken token = default);
 }

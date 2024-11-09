@@ -15,30 +15,36 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
     {
     }
 
-    public async Task<bool> AnyById(Guid bookshelfId)
+    public async Task<bool> AnyById(Guid bookshelfId, CancellationToken token = default)
     {
         return await _dbContext.Bookshelves
-            .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId));
+            .AnyAsync(
+                bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId), 
+                cancellationToken: token);
     }
 
-    public async Task<bool> AnyByName(string name, Guid userId)
+    public async Task<bool> AnyByName(string name, Guid userId, CancellationToken token = default)
     {
         var refName = name.GenerateRefName();
         return await _dbContext.Bookshelves
-            .AnyAsync(bookshelf => bookshelf.User != null &&
-                                   bookshelf.User.Id == UserId.CreateUserId(userId) &&
-                                   bookshelf.ReferentialName == refName);
+            .AnyAsync(
+                bookshelf => bookshelf.User != null &&
+                             bookshelf.User.Id == UserId.CreateUserId(userId) &&
+                             bookshelf.ReferentialName == refName,
+                cancellationToken: token);
     }
 
-    public async Task<bool> AnyBookById(Guid bookshelfId, Guid bookId)
+    public async Task<bool> AnyBookById(Guid bookshelfId, Guid bookId, CancellationToken token = default)
     {
         return await _dbContext.Bookshelves
             .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
-            .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId));
+            .AnyAsync(
+                book => book.Book.Id == BookId.CreateBookId(bookId),
+                cancellationToken: token);
     }
 
-    public async Task<bool> AnyBookByName(string name, Guid userId, Guid bookId)
+    public async Task<bool> AnyBookByName(string name, Guid userId, Guid bookId, CancellationToken token = default)
     {
         var refName = name.GenerateRefName();
         return await _dbContext.Bookshelves
@@ -46,21 +52,26 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
                                 bookshelf.ReferentialName == refName &&
                                 bookshelf.User.Id == UserId.CreateUserId(userId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
-            .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId));
+            .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId),
+                cancellationToken: token);
     }
 
-    public async Task<Bookshelf?> GetBookshelfByName(string name, Guid userId)
+    public async Task<Bookshelf?> GetBookshelfByName(string name, Guid userId, CancellationToken token = default)
     {
         var refName = name.GenerateRefName();
         return await _dbContext.Bookshelves
-            .SingleOrDefaultAsync(bookshelf => bookshelf.User != null &&
-                                               bookshelf.User.Id == UserId.CreateUserId(userId) &&
-                                               bookshelf.ReferentialName == refName);
+            .SingleOrDefaultAsync(
+                bookshelf => bookshelf.User != null &&
+                             bookshelf.User.Id == UserId.CreateUserId(userId) &&
+                             bookshelf.ReferentialName == refName,
+                cancellationToken: token);
     }
 
-    public async Task<Bookshelf?> GetSingleById(Guid bookshelfId)
+    public async Task<Bookshelf?> GetSingleById(Guid bookshelfId, CancellationToken token = default)
     {
         return await _dbContext.Bookshelves
-            .SingleOrDefaultAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId));
+            .SingleOrDefaultAsync(
+                bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId),
+                cancellationToken: token);
     }
 }
