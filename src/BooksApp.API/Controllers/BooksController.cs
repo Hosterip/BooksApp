@@ -147,13 +147,15 @@ public class BooksController : ApiController
         [FromQuery] GetUserBooksRequest request
     )
     {
+        var currentUserId = HttpContext.GetId();
         var query = new GetBooksQuery
         {
             Query = request.Q,
             Limit = request.PageSize,
             Page = request.Page,
             GenreId = request.GenreId,
-            UserId = userId
+            UserId = userId,
+            CurrentUserId = currentUserId
         };
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
