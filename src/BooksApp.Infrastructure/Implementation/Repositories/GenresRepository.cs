@@ -13,10 +13,8 @@ public class GenresRepository : GenericRepository<Genre>, IGenresRepository
 
     public IEnumerable<Genre?> GetAllByIds(IEnumerable<Guid> genreIds)
     {
-        var result = genreIds.Select(genreId =>
-        {
-            return _dbContext.Genres.FirstOrDefault(genre => genre.Id == GenreId.CreateGenreId(genreId));
-        });
+        var parsedGenreIds = genreIds.Select(x => GenreId.CreateGenreId(x));
+        var result = _dbContext.Genres.Where(x => parsedGenreIds.Contains(x.Id)).ToList();
         return result;
     }
 }

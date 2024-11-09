@@ -37,7 +37,8 @@ public sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCom
         {
             if (genreIds is null)
                 return false;
-            return !unitOfWork.Genres.GetAllByIds(genreIds).Any(genre => genre is null);
+            return unitOfWork.Genres.GetAllByIds(genreIds)
+                .Any();
         }).WithMessage(BookValidationMessages.GenresNotFound);
         RuleFor(request => request.GenreIds)
             .Must(genreIds => genreIds is not null && genreIds.Any())
