@@ -12,7 +12,7 @@ public class PaginatedArray<T>
         TotalCount = totalCount;
     }
 
-    public T[] Items { get; set; }
+    public T[] Items { get; init; }
     public int Page { get; }
     public int TotalPages { get; }
     public int TotalCount { get; }
