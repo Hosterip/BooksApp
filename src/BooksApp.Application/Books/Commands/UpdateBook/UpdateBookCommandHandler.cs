@@ -35,7 +35,7 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
 
         var genres = await _unitOfWork.Genres.GetAllByIds(request.GenreIds, cancellationToken);
         
-        book!.Genres = genres.ToList();
+        book!.ChangeGenres(genres.ToList());
 
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = _mapper.Map<BookResult>(book);

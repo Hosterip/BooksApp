@@ -14,8 +14,8 @@ public class Genre : AggregateRoot<GenreId>
         Name = name;
     }
 
-    public string Name { get; set; }
-    public List<Book.Book> Books { get; set; } = new();
+    public string Name { get; init; }
+    public List<Book.Book> Books { get; init; } = new();
 
     public static Genre Create(string name)
     {

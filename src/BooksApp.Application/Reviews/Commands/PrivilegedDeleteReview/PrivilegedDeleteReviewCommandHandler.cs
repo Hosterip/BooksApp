@@ -14,7 +14,7 @@ internal sealed class PrivilegedDeleteReviewCommandHandler : IRequestHandler<Pri
 
     public async Task Handle(PrivilegedDeleteReviewCommand request, CancellationToken cancellationToken)
     {
-        var review = await _unitOfWork.Reviews.GetSingleById(request.ReviewId);
+        var review = await _unitOfWork.Reviews.GetSingleById(request.ReviewId, cancellationToken);
 
         _unitOfWork.Reviews.Remove(review!);
         await _unitOfWork.SaveAsync(cancellationToken);

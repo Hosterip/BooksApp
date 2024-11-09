@@ -74,6 +74,7 @@ public class User : AggregateRoot<UserId>
 
         if (Followers.All(f => f.FollowerId != follower.Id))
             return false;
+        
         Followers.RemoveAll(x => x.FollowerId == follower.Id);
         return true;
     }
