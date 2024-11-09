@@ -172,7 +172,9 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         var user = await GetSingleById(userId, token);
         var follower = await GetSingleById(followerId, token);
-        if (user != null && follower != null)
+        if (user != null &&
+            follower != null &&
+            user.Id != follower.Id)
             user.AddFollower(follower);
     }
 
@@ -183,7 +185,9 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         var user = await GetSingleById(userId, token);
         var follower = await GetSingleById(followerId, token);
-        if (user != null && follower != null)
+        if (user != null &&
+            follower != null &&
+            user.Followers.Any(f => f.Id == follower.Id))
             user.RemoveFollower(follower);
     }
 

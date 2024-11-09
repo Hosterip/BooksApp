@@ -1,4 +1,6 @@
-﻿using BooksApp.Domain.Common.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Interfaces;
 using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.User.Entities;
 using BooksApp.Domain.User.ValueObjects;
@@ -25,7 +27,7 @@ public class User : AggregateRoot<UserId>
         Avatar = avatar;
     }
 
-    public string Email { get; set; }
+    public string Email { get; private set; }
     public string FirstName { get; set; }
     public string? MiddleName { get; set; }
     public string? LastName { get; set; }
@@ -40,6 +42,7 @@ public class User : AggregateRoot<UserId>
     public static User Create(string email, string firstName, string? middleName, string? lastName, Role.Role role,
         string hash, string salt, Image.Image? avatar)
     {
+        ValidateEmail(email);
         return new User(UserId.CreateUserId(), email.ToLower(), firstName, middleName, lastName, role, hash, salt,
             Guid.NewGuid().ToString(), avatar);
     }
@@ -56,28 +59,33 @@ public class User : AggregateRoot<UserId>
         Hash = hash;
         Salt = salt;
     }
+    
+    public void ChangeEmail(string email)
+    {
+        ValidateEmail(email);
+        Email = email;
+    }
 
-    public bool AddFollower(User follower)
+    public void AddFollower(User follower)
     {
         if (follower.Id == Id)
-            return false;
+            throw new DomainException("Can't add yourself to followers");
 
         var item = Relationship.Create(this, follower);
         Followers.Add(item);
-        return true;
     }
     
-    public bool RemoveFollower(User follower)
+    public void RemoveFollower(User follower)
     {
         if (follower.Id == Id)
-            return false;
+            throw new DomainException("Can't add yourself to followers");
 
-        if (Followers.All(f => f.FollowerId != follower.Id))
-            return false;
+        if (Followers.Any(f => f.FollowerId != follower.Id))
+            throw new DomainException("No follower to remove");
         
         Followers.RemoveAll(x => x.FollowerId == follower.Id);
-        return true;
     }
+
 
     public (bool IsFollowing, bool IsFriend, bool IsMe) ViewerRelationship(Guid? followerId)
     {
@@ -87,5 +95,12 @@ public class User : AggregateRoot<UserId>
         var isFollowing = !isMe && Followers.Any(x => x.FollowerId == userId);
         var isFriend = !isMe && isFollowing && Following.Any(x => x.UserId == userId);
         return (isFollowing, isFriend, isMe);
+    }
+
+    private static void ValidateEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email) ||
+            !new EmailAddressAttribute().IsValid(email))
+            throw new DomainException("Invalid email");
     }
 }
