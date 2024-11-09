@@ -9,7 +9,8 @@ public sealed class UpdateNameCommandValidator : AbstractValidator<UpdateNameCom
     public UpdateNameCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId));
+            .MustAsync(async (userId, cancellationToken) => 
+                await unitOfWork.Users.AnyById(userId, cancellationToken));
 
         RuleFor(user => user.FirstName)
             .NotEmpty()

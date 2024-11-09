@@ -18,31 +18,29 @@ public sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCom
             .MaximumLength((int)BookMaxLengths.Description);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title))
+                !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title, cancellationToken))
             .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
             .OverridePropertyName(nameof(CreateBookCommand.Title));
 
         // User Validation
 
         RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
+            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(BookValidationMessages.MustBeAnAuthor);
         RuleFor(book => book.UserId)
-            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
+            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
 
         // Genres Validation
 
-        RuleFor(request => request.GenreIds).Must(genreIds =>
+        RuleFor(request => request.GenreIds).MustAsync(
+            async (genreIds, cancellationToken) =>
         {
-            if (genreIds is null)
+            if (genreIds.Count == 0)
                 return false;
-            return unitOfWork.Genres.GetAllByIds(genreIds)
-                .Any();
+            var genres = await unitOfWork.Genres.GetAllByIds(genreIds, cancellationToken);
+            return genres.Any();
         }).WithMessage(BookValidationMessages.GenresNotFound);
-        RuleFor(request => request.GenreIds)
-            .Must(genreIds => genreIds is not null && genreIds.Any())
-            .WithMessage(BookValidationMessages.AtLeastOneGenre);
 
         // Images
 

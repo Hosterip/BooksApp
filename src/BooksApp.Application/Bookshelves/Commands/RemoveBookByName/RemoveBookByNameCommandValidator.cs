@@ -10,11 +10,15 @@ public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveB
     {
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId))
+                await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfName, request.UserId, request.BookId))
+                await unitOfWork.Bookshelves.AnyBookByName(
+                    request.BookshelfName,
+                    request.UserId,
+                    request.BookId,
+                    cancellationToken))
             .WithMessage(BookshelfValidationMessages.NoBookToRemove)
             .OverridePropertyName(nameof(RemoveBookByNameCommand.BookshelfName));
     }

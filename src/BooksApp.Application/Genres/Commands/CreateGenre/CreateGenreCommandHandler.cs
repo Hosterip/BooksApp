@@ -16,7 +16,7 @@ internal sealed class CreateGenreCommandHandler : IRequestHandler<CreateGenreCom
     public async Task<GenreResult> Handle(CreateGenreCommand request, CancellationToken cancellationToken)
     {
         var genre = Genre.Create(request.Name);
-        await _unitOfWork.Genres.AddAsync(genre);
+        await _unitOfWork.Genres.AddAsync(genre, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
         return new GenreResult
         {

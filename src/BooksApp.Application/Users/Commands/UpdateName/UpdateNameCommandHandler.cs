@@ -14,7 +14,7 @@ internal sealed class UpdateNameCommandHandler : IRequestHandler<UpdateNameComma
 
     public async Task Handle(UpdateNameCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleById(request.UserId);
+        var user = await _unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
         user!.FirstName = request.FirstName;
         user.MiddleName = request.MiddleName;
         user.LastName = request.LastName;

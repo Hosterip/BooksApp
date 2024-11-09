@@ -17,12 +17,13 @@ public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateRevie
             .GreaterThanOrEqualTo(1)
             .LessThanOrEqualTo(5);
         RuleFor(request => request.ReviewId)
-            .MustAsync(async (reviewId, cancellationToken) => await unitOfWork.Reviews.AnyById(reviewId))
+            .MustAsync(async (reviewId, cancellationToken) => 
+                await unitOfWork.Reviews.AnyById(reviewId, cancellationToken))
             .WithMessage(ReviewValidationMessages.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var review = await unitOfWork.Reviews.GetSingleById(request.ReviewId);
+                var review = await unitOfWork.Reviews.GetSingleById(request.ReviewId, cancellationToken);
                 if (review is not null)
                     return review.User.Id == UserId.CreateUserId(request.UserId);
                 return true;

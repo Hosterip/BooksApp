@@ -19,31 +19,30 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
 
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                request.Title == null || !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title))
+                request.Title == null || !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title, cancellationToken))
             .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
             .OverridePropertyName(nameof(UpdateBookCommand.Title));
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Books
                     .AnyAsync(book => book.Id == BookId.CreateBookId(request.Id) &&
-                                      book.Author.Id == UserId.CreateUserId(request.UserId))
+                                      book.Author.Id == UserId.CreateUserId(request.UserId), cancellationToken)
             ).WithMessage(BookValidationMessages.BookNotYour);
 
         // Genres
 
-        RuleFor(request => request.GenreIds).Must(genreIds =>
+        RuleFor(request => request.GenreIds).MustAsync(
+            async (genreIds, cancellationToken) =>
         {
-            if (genreIds is null)
+            if (genreIds.Count != 0)
                 return false;
-            return !unitOfWork.Genres.GetAllByIds(genreIds).Any(genre => genre is null);
+            var genres = await unitOfWork.Genres.GetAllByIds(genreIds, cancellationToken);
+            return genres.Any();
         }).WithMessage(BookValidationMessages.GenresNotFound);
-        RuleFor(request => request.GenreIds)
-            .Must(genreIds => genreIds is not null && genreIds.Any())
-            .WithMessage(BookValidationMessages.AtLeastOneGenre);
 
         // Images
 
-        RuleFor(request => request.Image.Length)
+        RuleFor(request => request.Image!.Length)
             .LessThan(10000000);
         RuleFor(request => request.Image)
             .Must(file => file == null || imageFileBuilder.IsValid(file.FileName))

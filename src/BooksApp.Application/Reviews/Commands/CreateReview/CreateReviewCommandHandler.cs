@@ -19,11 +19,11 @@ internal sealed class CreateReviewCommandHandler : IRequestHandler<CreateReviewC
 
     public async Task<ReviewResult> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork.Books.GetSingleById(request.BookId);
-        var user = await _unitOfWork.Users.GetSingleById(request.UserId);
+        var book = await _unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
+        var user = await _unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
         var review = Review.Create(request.Rating, request.Body, user!, book!);
 
-        await _unitOfWork.Reviews.AddAsync(review);
+        await _unitOfWork.Reviews.AddAsync(review, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
 
         return _mapper.Map<ReviewResult>(review);

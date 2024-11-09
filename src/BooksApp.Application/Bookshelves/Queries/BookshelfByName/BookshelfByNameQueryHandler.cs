@@ -17,7 +17,7 @@ internal sealed class BookshelfByNameQueryHandler : IRequestHandler<BookshelfByN
 
     public async Task<BookshelfResult> Handle(BookshelfByNameQuery request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetBookshelfByName(request.Name, request.UserId);
+        var bookshelf = await _unitOfWork.Bookshelves.GetBookshelfByName(request.Name, request.UserId, cancellationToken);
         var bookshelfResult = _mapster.Map<BookshelfResult>(bookshelf!);
         return bookshelfResult;
     }

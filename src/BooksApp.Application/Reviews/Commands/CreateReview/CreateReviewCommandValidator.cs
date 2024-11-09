@@ -18,17 +18,18 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
             .GreaterThanOrEqualTo(1)
             .LessThanOrEqualTo(5);
         RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
+            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request.BookId)
-            .MustAsync(async (bookId, cancellationToken) => { return await unitOfWork.Books.AnyById(bookId); })
+            .MustAsync(async (bookId, cancellationToken) => await unitOfWork.Books.AnyById(bookId, cancellationToken))
             .WithMessage(ReviewValidationMessages.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
                 return !await unitOfWork.Reviews.AnyAsync(review =>
                     review.User.Id == UserId.CreateUserId(request.UserId)
-                    && review.Book.Id == BookId.CreateBookId(request.BookId));
+                    && review.Book.Id == BookId.CreateBookId(request.BookId), 
+                    cancellationToken);
             })
             .WithMessage(ReviewValidationMessages.AlreadyHave)
             .OverridePropertyName(nameof(CreateReviewCommand.BookId));

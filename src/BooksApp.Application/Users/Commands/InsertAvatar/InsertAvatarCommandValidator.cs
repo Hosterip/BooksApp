@@ -9,7 +9,7 @@ public sealed class InsertAvatarCommandValidator : AbstractValidator<InsertAvata
     public InsertAvatarCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
     {
         RuleFor(user => user.Id)
-            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
+            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
 
 

@@ -11,18 +11,18 @@ public sealed class PrivilegedDeleteBookCommandValidator : AbstractValidator<Pri
     {
         RuleFor(request => request.Id)
             .MustAsync(async (bookId, cancellationToken) =>
-                await unitOfWork.Books.AnyById(bookId))
+                await unitOfWork.Books.AnyById(bookId, cancellationToken))
             .WithMessage(BookValidationMessages.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId))
+                await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleById(userId);
+                var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);
 
                 return user?.Role.Name is RoleNames.Admin;
             })

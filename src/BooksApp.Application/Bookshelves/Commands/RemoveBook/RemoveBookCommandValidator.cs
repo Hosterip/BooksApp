@@ -11,31 +11,31 @@ public sealed class RemoveBookCommandValidator : AbstractValidator<RemoveBookCom
         // Bookshelf
         RuleFor(request => request.BookshelfId)
             .MustAsync(async (bookshelfId, cancellationToken) =>
-                await unitOfWork.Bookshelves.AnyById(bookshelfId))
+                await unitOfWork.Bookshelves.AnyById(bookshelfId, cancellationToken))
             .WithMessage(BookshelfValidationMessages.NotFound);
 
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId);
+                var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
                 return bookshelf == null || bookshelf.User?.Id.Value == request.UserId;
             })
             .WithMessage(BookshelfValidationMessages.NotYours);
         // Books
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId, request.BookId))
+                await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId, request.BookId, cancellationToken))
             .WithMessage(BookshelfValidationMessages.NoBookToRemove)
             .OverridePropertyName(nameof(RemoveBookCommand.BookId));
 
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) =>
-                await unitOfWork.Books.AnyById(bookId))
+                await unitOfWork.Books.AnyById(bookId, cancellationToken))
             .WithMessage(BookValidationMessages.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId))
+                await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
     }
 }

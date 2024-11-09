@@ -14,7 +14,9 @@ internal sealed class ValidateUserQueryHandler : IRequestHandler<ValidateUserQue
 
     public async Task<string?> Handle(ValidateUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleById(request.UserId);
+        var user = await _unitOfWork.Users.GetSingleById(
+            request.UserId,
+            cancellationToken);
         if (user != null && user.SecurityStamp == request.SecurityStamp)
             return user.Role.Name;
         return null;

@@ -11,18 +11,18 @@ public sealed class PrivilegedDeleteReviewCommandValidator : AbstractValidator<P
     {
         RuleFor(request => request.ReviewId)
             .MustAsync(async (reviewId, cancellationToken) =>
-                await unitOfWork.Reviews.AnyById(reviewId))
+                await unitOfWork.Reviews.AnyById(reviewId, cancellationToken))
             .WithMessage(ReviewValidationMessages.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId))
+                await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleById(userId);
+                var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);
 
                 return user?.Role.Name is RoleNames.Admin or RoleNames.Moderator;
             })

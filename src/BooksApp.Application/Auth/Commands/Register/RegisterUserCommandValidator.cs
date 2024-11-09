@@ -15,7 +15,8 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
 
         RuleFor(user => user.Email)
             .MustAsync(async (email, cancellationToken) =>
-                !await unitOfWork.Users.AnyByEmail(email)).WithMessage(AuthValidationMessages.Occupied);
+                !await unitOfWork.Users.AnyByEmail(email, cancellationToken))
+            .WithMessage(AuthValidationMessages.Occupied);
 
         RuleFor(user => user.FirstName)
             .NotEmpty()

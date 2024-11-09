@@ -14,7 +14,8 @@ public sealed class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
         RuleFor(user => user.Password)
             .NotEmpty();
         RuleFor(request => request.Email)
-            .MustAsync(async (email, cancellationToken) => await unitOfWork.Users.AnyByEmail(email))
+            .MustAsync(async (email, cancellationToken) => 
+                await unitOfWork.Users.AnyByEmail(email, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
     }
 }

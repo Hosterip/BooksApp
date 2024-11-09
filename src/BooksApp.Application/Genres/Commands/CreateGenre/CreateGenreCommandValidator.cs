@@ -11,7 +11,9 @@ public sealed class CreateGenreCommandValidator : AbstractValidator<CreateGenreC
         RuleFor(request => request.Name)
             .MustAsync(async (name, cancellationToken) =>
             {
-                return !await unitOfWork.Genres.AnyAsync(genre => genre.Name.ToLower() == name.ToLower());
+                return !await unitOfWork.Genres.AnyAsync(
+                    genre => genre.Name.ToLower() == name.ToLower(),
+                    cancellationToken);
             })
             .WithMessage(GenreValidationMessages.AlreadyExists);
     }

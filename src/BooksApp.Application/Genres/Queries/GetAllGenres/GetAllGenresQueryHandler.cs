@@ -14,10 +14,9 @@ internal class GetAllGenresQueryHandler : IRequestHandler<GetAllGenresQuery, IEn
 
     public async Task<IEnumerable<GenreResult>> Handle(GetAllGenresQuery request, CancellationToken cancellationToken)
     {
-        var rawGenres = await _unitOfWork.Genres.GetAllAsync();
+        var rawGenres = await _unitOfWork.Genres.GetAllAsync(cancellationToken);
         var genres = rawGenres
-            .Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
-            .ToList();
+            .Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name });
         return genres;
     }
 }

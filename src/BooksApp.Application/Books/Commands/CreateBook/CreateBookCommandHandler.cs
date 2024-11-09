@@ -22,17 +22,17 @@ internal sealed class CreateBookCommandHandler : IRequestHandler<CreateBookComma
 
     public async Task<BookResult> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleById(request.UserId);
+        var user = await _unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
 
         // Images
         var imageName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
         var image = Image.Create(imageName);
         // Book creation
         var book = Book.Create(request.Title, request.Description, image, user!);
-        var genres = _unitOfWork.Genres.GetAllByIds(request.GenreIds);
+        var genres = await _unitOfWork.Genres.GetAllByIds(request.GenreIds, cancellationToken);
         book.Genres = genres.ToList()!;
-        await _unitOfWork.Images.AddAsync(image);
-        await _unitOfWork.Books.AddAsync(book);
+        await _unitOfWork.Images.AddAsync(image, cancellationToken);
+        await _unitOfWork.Books.AddAsync(book, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
 
         var result = _mapper.Map<BookResult>(book);

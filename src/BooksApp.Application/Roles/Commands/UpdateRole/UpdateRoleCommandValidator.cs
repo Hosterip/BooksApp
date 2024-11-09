@@ -12,13 +12,16 @@ public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCom
         RuleFor(request => request.Role)
             .MustAsync(async (roleName, cancellationToken) =>
             {
-                return await unitOfWork.Roles.AnyAsync(role => role.Name == roleName);
+                return await unitOfWork.Roles.AnyAsync(
+                    role => role.Name == roleName,
+                    cancellationToken);
             }).WithMessage(RoleValidationMessages.NotFound);
 
         RuleFor(request => request.ChangerId)
             .MustAsync(async (userId, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleById(userId);
+                var user = await unitOfWork.Users.GetSingleById(
+                    userId, cancellationToken);
 
                 return user?.Role.Name is RoleNames.Admin;
             })
@@ -30,11 +33,13 @@ public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCom
             .OverridePropertyName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(UpdateRoleCommand.ChangerId)}");
 
         RuleFor(request => request.ChangerId)
-            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
+            .MustAsync(async (userId, cancellationToken) =>
+                await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
 
         RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId))
+            .MustAsync(async (userId, cancellationToken) => 
+                await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
     }
 }

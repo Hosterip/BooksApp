@@ -24,7 +24,9 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
     public async Task<AuthResult> Handle(LoginUserQuery request, CancellationToken cancellationToken)
     {
         var user = await
-            _unitOfWork.Users.GetSingleWhereAsync(user => user.Email == request.Email);
+            _unitOfWork.Users.GetSingleWhereAsync(
+                user => user.Email == request.Email,
+                cancellationToken);
 
         if (!user!.IsPasswordValid(_passwordHasher, request.Password))
         {
@@ -34,6 +36,6 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
             ]);
         }
 
-        return _mapper.Map<AuthResult>(user!);
+        return _mapper.Map<AuthResult>(user);
     }
 }

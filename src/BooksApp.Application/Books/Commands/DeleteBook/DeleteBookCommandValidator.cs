@@ -13,8 +13,10 @@ public sealed class DeleteBookCommandValidator : AbstractValidator<DeleteBookCom
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Books
-                    .AnyAsync(book => book.Id == BookId.CreateBookId(request.Id) &&
-                                      book.Author.Id == UserId.CreateUserId(request.UserId))
+                    .AnyAsync(
+                        book => book.Id == BookId.CreateBookId(request.Id) &&
+                                book.Author.Id == UserId.CreateUserId(request.UserId),
+                        cancellationToken)
             ).WithMessage(BookValidationMessages.BookNotYour);
     }
 }

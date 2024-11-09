@@ -20,20 +20,22 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
 
     public async Task<BookResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork.Books.GetSingleById(request.Id);
+        var book = await _unitOfWork.Books.GetSingleById(request.Id, cancellationToken);
         if (request.Title != null)
             book!.Title = request.Title;
         if (request.Description != null)
             book!.Description = request.Description;
         if (request.Image != null)
         {
-            await _imageFileBuilder.DeleteImage(book.Cover.ImageName, cancellationToken);
+            _imageFileBuilder.DeleteImage(book!.Cover.ImageName);
             var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
 
-            book!.Cover.ImageName = fileName;
+            book!.Cover.ImageName = fileName!;
         }
 
-        book!.Genres = _unitOfWork.Genres.GetAllByIds(request.GenreIds).ToList()!;
+        var genres = await _unitOfWork.Genres.GetAllByIds(request.GenreIds, cancellationToken);
+        
+        book!.Genres = genres.ToList();
 
         await _unitOfWork.SaveAsync(cancellationToken);
         var result = _mapper.Map<BookResult>(book);

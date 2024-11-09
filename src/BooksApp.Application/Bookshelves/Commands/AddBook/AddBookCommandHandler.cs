@@ -14,8 +14,8 @@ internal sealed class AddBookCommandHandler : IRequestHandler<AddBookCommand>
 
     public async Task Handle(AddBookCommand request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetSingleById(request.BookshelfId);
-        var book = await _unitOfWork.Books.GetSingleById(request.BookId);
+        var bookshelf = await _unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
+        var book = await _unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
         bookshelf!.AddBook(book!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }

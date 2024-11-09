@@ -18,9 +18,9 @@ internal sealed class CreateBookshelfCommandHandler : IRequestHandler<CreateBook
 
     public async Task<BookshelfResult> Handle(CreateBookshelfCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleById(request.UserId);
+        var user = await _unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
         var bookshelf = Bookshelf.Create(user!, request.Name);
-        await _unitOfWork.Bookshelves.AddAsync(bookshelf);
+        await _unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
         return _mapper.Map<BookshelfResult>(bookshelf);
     }

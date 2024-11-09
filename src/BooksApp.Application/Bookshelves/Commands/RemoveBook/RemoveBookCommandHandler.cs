@@ -14,7 +14,7 @@ internal sealed class RemoveBookCommandHandler : IRequestHandler<RemoveBookComma
 
     public async Task Handle(RemoveBookCommand request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetSingleById(request.BookshelfId);
+        var bookshelf = await _unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
         bookshelf!.RemoveBook(request.BookId);
         await _unitOfWork.SaveAsync(cancellationToken);
     }

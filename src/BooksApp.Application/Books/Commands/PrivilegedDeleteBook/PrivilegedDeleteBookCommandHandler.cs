@@ -14,8 +14,8 @@ internal sealed class PrivilegedDeleteBookCommandHandler : IRequestHandler<Privi
 
     public async Task Handle(PrivilegedDeleteBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork
-            .Books.GetSingleById(request.Id);
+        var book = await _unitOfWork.Books
+            .GetSingleById(request.Id, cancellationToken);
         _unitOfWork.Books.Remove(book!);
         await _unitOfWork.SaveAsync(cancellationToken);
     }

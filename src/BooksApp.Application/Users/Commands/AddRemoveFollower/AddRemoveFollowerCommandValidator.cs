@@ -9,15 +9,18 @@ public sealed class AddRemoveFollowerCommandValidator : AbstractValidator<AddRem
     public AddRemoveFollowerCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(x => x.UserId)
-            .MustAsync(((guid, token) => unitOfWork.Users.AnyById(guid)))
+            .MustAsync((guid, token) => unitOfWork.Users.AnyById(
+                guid, token))
             .WithMessage(UserValidationMessages.NotFound);
         
         RuleFor(x => x.FollowerId)
-            .MustAsync(((guid, token) => unitOfWork.Users.AnyById(guid)))
+            .MustAsync((guid, token) =>
+                unitOfWork.Users.AnyById(guid, token))
             .WithMessage(UserValidationMessages.NotFound);
         
         RuleFor(x => x)
-            .Must(request => request.FollowerId != request.UserId)
+            .Must(request =>
+                request.FollowerId != request.UserId)
             .WithMessage(UserValidationMessages.CantFollowYourself)
             .OverridePropertyName(nameof(AddRemoveFollowerCommand.FollowerId));
     }

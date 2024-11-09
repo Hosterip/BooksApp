@@ -14,10 +14,10 @@ internal sealed class AddRemoveFollowerCommandHandler : IRequestHandler<AddRemov
 
     public async Task Handle(AddRemoveFollowerCommand request, CancellationToken cancellationToken)
     {
-        if(await _unitOfWork.Users.AnyFollower(request.UserId, request.FollowerId))
-            await _unitOfWork.Users.RemoveFollower(request.UserId, request.FollowerId);
+        if(await _unitOfWork.Users.AnyFollower(request.UserId, request.FollowerId, cancellationToken))
+            await _unitOfWork.Users.RemoveFollower(request.UserId, request.FollowerId, cancellationToken);
         else
-            await _unitOfWork.Users.AddFollower(request.UserId, request.FollowerId);
+            await _unitOfWork.Users.AddFollower(request.UserId, request.FollowerId, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

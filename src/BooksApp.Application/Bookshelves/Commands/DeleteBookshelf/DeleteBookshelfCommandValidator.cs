@@ -12,7 +12,7 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
-                var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId);
+                var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
 
                 if (bookshelf is null &&
                     bookshelf?.User?.Id.Value == request.UserId) return false;

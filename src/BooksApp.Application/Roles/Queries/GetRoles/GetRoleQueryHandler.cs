@@ -16,7 +16,7 @@ internal sealed class GetRoleQueryHandler : IRequestHandler<GetRoleQuery, IEnume
     {
         var roles =
         (
-            from role in await _unitOfWork.Roles.GetAllAsync()
+            from role in await _unitOfWork.Roles.GetAllAsync(cancellationToken)
             select new RoleResult { Id = role.Id.Value.ToString(), Name = role.Name }
         ).ToArray();
         return roles;

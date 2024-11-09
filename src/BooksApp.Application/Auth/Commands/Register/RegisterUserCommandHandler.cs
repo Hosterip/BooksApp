@@ -23,7 +23,9 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
     public async Task<AuthResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var hashSalt = _passwordHasher.GenerateHashSalt(request.Password);
-        var memberRole = await _unitOfWork.Roles.GetSingleWhereAsync(role => role.Name == RoleNames.Member);
+        var memberRole = await _unitOfWork.Roles.GetSingleWhereAsync(
+            role => role.Name == RoleNames.Member,
+            cancellationToken);
 
         var user = User.Create(
             request.Email,
@@ -36,7 +38,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
             null
         );
 
-        await _unitOfWork.Users.AddAsync(user);
+        await _unitOfWork.Users.AddAsync(user, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
         return _mapper.Map<AuthResult>(user!);
     }

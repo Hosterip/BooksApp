@@ -18,7 +18,8 @@ internal sealed class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQ
 
     public async Task<UserResult> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleById(request.Id);
+        var user = await _unitOfWork.Users.GetSingleById(
+            request.Id, cancellationToken);
 
         return _mapper.Map<UserResult>(user!);
     }

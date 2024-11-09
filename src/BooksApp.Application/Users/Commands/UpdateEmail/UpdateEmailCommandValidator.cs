@@ -11,7 +11,8 @@ public sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailC
     public UpdateEmailCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Id)
-            .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id))
+            .MustAsync(async (id, cancellationToken) => 
+                await unitOfWork.Users.AnyById(id, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(user => user.Email)
             .Length(0, 255)
@@ -19,7 +20,8 @@ public sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailC
         RuleFor(user => user.Email)
             .MustAsync(async (email, cancellationToken) =>
             {
-                return !await unitOfWork.Users.AnyAsync(user => user.Email == email)
+                return !await unitOfWork.Users.AnyAsync(
+                           user => user.Email == email, cancellationToken)
                        && new EmailAddressAttribute().IsValid(email);
             })
             .WithMessage(UserValidationMessages.Occupied);
