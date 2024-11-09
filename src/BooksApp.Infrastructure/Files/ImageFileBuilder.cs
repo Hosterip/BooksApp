@@ -19,7 +19,7 @@ public class ImageFileBuilder(string path) : IImageFileBuilder
         return fileName;
     }
 
-    public async Task<bool> DeleteImage(string fileName, CancellationToken token = default)
+    public bool DeleteImage(string fileName)
     {
         var fileInfo = new FileInfo(
             Path.Combine(path,
@@ -31,8 +31,7 @@ public class ImageFileBuilder(string path) : IImageFileBuilder
         return exists;
     }
 
-    public async Task<(FileInfo fileInfo, FileStream fileStream)> RetrieveImage(string fileName,
-        CancellationToken token = default)
+    public (FileInfo fileInfo, FileStream fileStream) RetrieveImage(string fileName)
     {
         var uploadPath =
             Path.Combine(path);
@@ -43,7 +42,7 @@ public class ImageFileBuilder(string path) : IImageFileBuilder
         return (fileInfo, fileStream);
     }
 
-    public bool AnyImage(string fileName, CancellationToken token = default)
+    public bool AnyImage(string fileName)
     {
         var fileInfo = new FileInfo(
             Path.Combine(path,
@@ -53,7 +52,7 @@ public class ImageFileBuilder(string path) : IImageFileBuilder
         return fileInfo.Exists;
     }
 
-    public bool IsValid(string fileName, CancellationToken token = default)
+    public bool IsValid(string fileName)
     {
         var path = Path.Combine(fileName);
         if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) > 0) return false;
