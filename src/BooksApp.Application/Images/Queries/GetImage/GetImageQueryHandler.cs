@@ -15,7 +15,7 @@ internal sealed class GetImageQueryHandler : IRequestHandler<GetImageQuery, Imag
 
     public async Task<ImageResult> Handle(GetImageQuery request, CancellationToken cancellationToken)
     {
-        var (fileInfo, fileStream) = await _imageFileBuilder.RetrieveImage(request.ImageName, cancellationToken);
+        var (fileInfo, fileStream) = _imageFileBuilder.RetrieveImage(request.ImageName);
         return new ImageResult
         {
             FileInfo = fileInfo,
