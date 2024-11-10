@@ -28,9 +28,9 @@ public class User : AggregateRoot<UserId>
     }
 
     public string Email { get; private set; }
-    public string FirstName { get; set; }
-    public string? MiddleName { get; set; }
-    public string? LastName { get; set; }
+    public string FirstName { get; private set; }
+    public string? MiddleName { get; private set; }
+    public string? LastName { get; private set; }
     public Role.Role Role { get; set; }
     private string Hash { get; set; }
     private string Salt { get; set; }
@@ -64,6 +64,16 @@ public class User : AggregateRoot<UserId>
     {
         ValidateEmail(email);
         Email = email;
+    }
+
+    public void ChangeName(string firstName, string? middleName, string? lastName)
+    {
+        if (string.IsNullOrWhiteSpace(firstName))
+            throw new DomainException("First name should be present");
+        FirstName = firstName;
+        
+        MiddleName = string.IsNullOrWhiteSpace(middleName) ? null : middleName;
+        LastName = string.IsNullOrWhiteSpace(lastName) ? null : lastName;
     }
 
     public void AddFollower(User follower)
