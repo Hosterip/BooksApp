@@ -11,5 +11,5 @@ public class BookResult : RatingStatistics
     public required string Description { get; init; }
     public required string CoverName { get; init; }
     public required UserResult Author { get; init; }
-    public required List<GenreResult> Genres { get; init; }
+    public required IEnumerable<GenreResult> Genres { get; init; }
 }
