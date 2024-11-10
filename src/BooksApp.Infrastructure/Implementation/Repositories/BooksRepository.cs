@@ -9,6 +9,7 @@ using BooksApp.Domain.Book;
 using BooksApp.Domain.Book.ValueObjects;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common.Utils;
+using BooksApp.Domain.Genre.ValueObjects;
 using BooksApp.Domain.Review;
 using BooksApp.Domain.User.ValueObjects;
 using BooksApp.Infrastructure.Data;
@@ -26,48 +27,21 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         Guid? currentUserId,
         int limit,
         int page,
-        Expression<Func<Book, bool>> expression)
+        string? title,
+        Guid? userId,
+        Guid? genreId)
     {
-        var result = await (
-                from book in _dbContext.Books
-                    .Include(b => b.Author.Followers)
-                    .Include(b => b.Author.Following)
-                    .Where(expression)
-                join review in _dbContext.Reviews
-                        .Include(x => x.Book)
-                        .Select(x => new { x.Book, x.Rating })
-                    on book.Id equals review.Book.Id into reviews
-                let viewerRelationship = book.Author.ViewerRelationship(currentUserId)
-                let ratingStatistics = RatingsStatistics(reviews.Select(x => x.Rating))
-                select new BookResult
-                {
-                    Id = book.Id.Value.ToString(),
-                    Title = book.Title,
-                    ReferentialName = book.ReferentialName,
-                    Description = book.Description,
-                    Author = new UserResult
-                    {
-                        Id = book.Author.Id.Value.ToString(),
-                        Email = book.Author.Email,
-                        FirstName = book.Author.FirstName,
-                        MiddleName = book.Author.MiddleName,
-                        LastName = book.Author.LastName,
-                        AvatarName = book.Author.Avatar == null ? null : book.Author.Avatar.ImageName,
-                        Role = book.Author.Role.Name,
-                        ViewerRelationship = new ViewerRelationship
-                        {
-                            IsFollowing = viewerRelationship.IsFollowing,
-                            IsFriend = viewerRelationship.IsFriend,
-                            IsMe = viewerRelationship.IsMe
-                        }
-                    },
-                    AverageRating = ratingStatistics.AverageRating,
-                    Ratings = ratingStatistics.Ratings,
-                    CoverName = book.Cover.ImageName,
-                    Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
-                        .ToList()
-                })
-            .PaginationAsync(page, limit);
+        var queryable = _dbContext.Books
+            .Include(b => b.Author.Followers)
+            .Include(b => b.Author.Following)
+            .Where(
+                book => (title != null && book.Title.Contains(title))
+                        && (userId != null && book.Author.Id == UserId.CreateUserId(userId))
+                        && (genreId != null && book.Genres.Any(genre => genre.Id == GenreId.CreateGenreId(genreId)))
+            );
+        var result =
+            await ConvertToBookResult(queryable, _dbContext.Reviews, currentUserId)
+                .PaginationAsync(page, limit);
         return result;
     }
 
@@ -79,46 +53,16 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
         if (!await _dbContext.Bookshelves
                 .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))) return null;
-        var result = await (
-            from book in _dbContext.Bookshelves
-                .Include(bookshelf => bookshelf.BookshelfBooks)
-                .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
-                .SelectMany(bookshelf => bookshelf.BookshelfBooks)
-                .Select(bb => bb.Book)
-            join review in _dbContext.Reviews
-                    .Include(x => x.Book)
-                    .Select(x => new { x.Book, x.Rating })
-                on book.Id equals review.Book.Id into reviews
-            let viewerRelationship = book.Author.ViewerRelationship(currentUserId)
-            let ratingStatistics = RatingsStatistics(reviews.Select(x => x.Rating))
-            select new BookResult
-            {
-                Id = book.Id.Value.ToString(),
-                Title = book.Title,
-                ReferentialName = book.ReferentialName,
-                Description = book.Description,
-                Author = new UserResult
-                {
-                    Id = book.Author.Id.Value.ToString(),
-                    Email = book.Author.Email,
-                    FirstName = book.Author.FirstName,
-                    MiddleName = book.Author.MiddleName,
-                    LastName = book.Author.LastName,
-                    AvatarName = book.Author.Avatar == null ? null : book.Author.Avatar.ImageName,
-                    Role = book.Author.Role.Name,
-                    ViewerRelationship = new ViewerRelationship
-                    {
-                        IsFollowing = viewerRelationship.IsFollowing,
-                        IsFriend = viewerRelationship.IsFriend,
-                        IsMe = viewerRelationship.IsMe
-                    }
-                },
-                AverageRating = ratingStatistics.AverageRating,
-                Ratings = ratingStatistics.Ratings,
-                CoverName = book.Cover.ImageName,
-                Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
-                    .ToList()
-            }).PaginationAsync(page, limit);
+        var queryable = _dbContext.Bookshelves
+            .Include(bookshelf => bookshelf.BookshelfBooks)
+            .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
+            .SelectMany(bookshelf => bookshelf.BookshelfBooks)
+            .Select(bb => bb.Book)
+            .Include(b => b.Author.Followers)
+            .Include(b => b.Author.Following);
+        var result =
+            await ConvertToBookResult(queryable, _dbContext.Reviews, currentUserId)
+                .PaginationAsync(page, limit);
         return result;
     }
 
@@ -179,5 +123,45 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             AverageRating = 0,
             Ratings = 0
         };
+    }
+
+    private static IQueryable<BookResult> ConvertToBookResult(IQueryable<Book> books,
+        IQueryable<Review> reviewsQueryable, Guid? currentUserId)
+    {
+        return (
+            from book in books
+            join review in reviewsQueryable
+                    .Include(x => x.Book)
+                    .Select(x => new { x.Book, x.Rating })
+                on book.Id equals review.Book.Id into reviews
+            let viewerRelationship = book.Author.ViewerRelationship(currentUserId)
+            let ratingStatistics = RatingsStatistics(reviews.Select(x => x.Rating))
+            select new BookResult
+            {
+                Id = book.Id.Value.ToString(),
+                Title = book.Title,
+                ReferentialName = book.ReferentialName,
+                Description = book.Description,
+                Author = new UserResult
+                {
+                    Id = book.Author.Id.Value.ToString(),
+                    Email = book.Author.Email,
+                    FirstName = book.Author.FirstName,
+                    MiddleName = book.Author.MiddleName,
+                    LastName = book.Author.LastName,
+                    AvatarName = book.Author.Avatar == null ? null : book.Author.Avatar.ImageName,
+                    Role = book.Author.Role.Name,
+                    ViewerRelationship = new ViewerRelationship
+                    {
+                        IsFollowing = viewerRelationship.IsFollowing,
+                        IsFriend = viewerRelationship.IsFriend,
+                        IsMe = viewerRelationship.IsMe
+                    }
+                },
+                AverageRating = ratingStatistics.AverageRating,
+                Ratings = ratingStatistics.Ratings,
+                CoverName = book.Cover.ImageName,
+                Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
+            });
     }
 }
