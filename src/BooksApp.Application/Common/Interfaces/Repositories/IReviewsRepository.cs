@@ -12,9 +12,9 @@ public interface IReviewsRepository : IGenericRepository<Review>
         int page,
         int limit);
     Task<Review?> GetSingleById(
-        Guid guid,
+        Guid reviewId,
         CancellationToken token = default);
     Task<bool> AnyById(
-        Guid guid,
+        Guid reviewId,
         CancellationToken token = default);
 }

@@ -55,21 +55,21 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
     }
 
     public async Task<Review?> GetSingleById(
-        Guid guid,
+        Guid reviewId,
         CancellationToken token = default)
     {
         return await _dbContext.Reviews
             .SingleOrDefaultAsync(
-                review => review.Id == ReviewId.CreateReviewId(guid),
+                review => review.Id == ReviewId.CreateReviewId(reviewId),
                 cancellationToken: token);
     }
 
     public async Task<bool> AnyById(
-        Guid guid,
+        Guid reviewId,
         CancellationToken token = default)
     {
         return await _dbContext.Reviews.AnyAsync(
-            review => review.Id == ReviewId.CreateReviewId(guid),
+            review => review.Id == ReviewId.CreateReviewId(reviewId),
             cancellationToken: token);
     }
 }
