@@ -32,6 +32,6 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
                     cancellationToken);
             })
             .WithMessage(ReviewValidationMessages.AlreadyHave)
-            .OverridePropertyName(nameof(CreateReviewCommand.BookId));
+            .WithName(nameof(CreateReviewCommand.BookId));
     }
 }

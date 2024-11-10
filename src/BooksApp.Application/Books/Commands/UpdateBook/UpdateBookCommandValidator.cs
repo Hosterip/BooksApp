@@ -21,13 +21,15 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
             .MustAsync(async (request, cancellationToken) =>
                 request.Title == null || !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title, cancellationToken))
             .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
-            .OverridePropertyName(nameof(UpdateBookCommand.Title));
+            .WithName(nameof(UpdateBookCommand.Title));
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Books
                     .AnyAsync(book => book.Id == BookId.CreateBookId(request.Id) &&
                                       book.Author.Id == UserId.CreateUserId(request.UserId), cancellationToken)
-            ).WithMessage(BookValidationMessages.BookNotYour);
+            )
+            .WithMessage(BookValidationMessages.BookNotYour)
+            .WithName(nameof(UpdateBookCommand.UserId));
 
         // Genres
 

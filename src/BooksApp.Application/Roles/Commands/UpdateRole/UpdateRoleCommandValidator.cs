@@ -30,7 +30,7 @@ public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCom
         RuleFor(request => request)
             .Must(request => request.ChangerId != request.UserId)
             .WithMessage(RoleValidationMessages.CanNotChangeYourOwn)
-            .OverridePropertyName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(UpdateRoleCommand.ChangerId)}");
+            .WithName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(UpdateRoleCommand.ChangerId)}");
 
         RuleFor(request => request.ChangerId)
             .MustAsync(async (userId, cancellationToken) =>

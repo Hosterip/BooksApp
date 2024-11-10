@@ -20,7 +20,7 @@ public sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCom
             .MustAsync(async (request, cancellationToken) =>
                 !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title, cancellationToken))
             .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
-            .OverridePropertyName(nameof(CreateBookCommand.Title));
+            .WithName(nameof(CreateBookCommand.Title));
 
         // User Validation
 

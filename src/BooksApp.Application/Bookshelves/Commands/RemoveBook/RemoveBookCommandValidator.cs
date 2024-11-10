@@ -20,13 +20,14 @@ public sealed class RemoveBookCommandValidator : AbstractValidator<RemoveBookCom
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
                 return bookshelf == null || bookshelf.User?.Id.Value == request.UserId;
             })
-            .WithMessage(BookshelfValidationMessages.NotYours);
+            .WithMessage(BookshelfValidationMessages.NotYours)
+            .WithName(nameof(RemoveBookCommand.UserId));
         // Books
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId, request.BookId, cancellationToken))
             .WithMessage(BookshelfValidationMessages.NoBookToRemove)
-            .OverridePropertyName(nameof(RemoveBookCommand.BookId));
+            .WithName(nameof(RemoveBookCommand.BookId));
 
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) =>

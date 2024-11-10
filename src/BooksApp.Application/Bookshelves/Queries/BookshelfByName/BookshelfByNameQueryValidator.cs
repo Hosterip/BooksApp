@@ -11,7 +11,7 @@ public sealed class BookshelfByNameQueryValidator : AbstractValidator<BookshelfB
         RuleFor(x => x)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyByName(request.Name, request.UserId, cancellationToken))
-            .OverridePropertyName(nameof(BookshelfByNameQuery.Name))
+            .WithName(nameof(BookshelfByNameQuery.Name))
             .WithMessage(BookshelfValidationMessages.NotFound);
     }
 }

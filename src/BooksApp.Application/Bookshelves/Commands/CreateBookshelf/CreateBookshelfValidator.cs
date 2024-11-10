@@ -18,7 +18,7 @@ public sealed class CreateBookshelfValidator : AbstractValidator<CreateBookshelf
             .MustAsync(async (request, cancellationToken) =>
                 !await unitOfWork.Bookshelves.AnyByName(request.Name, request.UserId, cancellationToken))
             .WithMessage(BookshelfValidationMessages.AlreadyHaveWithSameName)
-            .OverridePropertyName(nameof(CreateBookshelfCommand.Name));
+            .WithName(nameof(CreateBookshelfCommand.Name));
         RuleFor(request => request.Name)
             .MaximumLength((int)BookshelfMaxLengths.Name);
     }

@@ -20,6 +20,6 @@ public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveB
                     request.BookId,
                     cancellationToken))
             .WithMessage(BookshelfValidationMessages.NoBookToRemove)
-            .OverridePropertyName(nameof(RemoveBookByNameCommand.BookshelfName));
+            .WithName(nameof(RemoveBookByNameCommand.BookshelfName));
     }
 }

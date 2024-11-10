@@ -18,7 +18,7 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
                     bookshelf?.User?.Id.Value == request.UserId) return false;
                 return bookshelf != null && !DefaultBookshelvesNames.AllValues.Contains(bookshelf.ReferentialName);
             })
-            .OverridePropertyName(nameof(DeleteBookshelfCommand.BookshelfId))
+            .WithName(nameof(DeleteBookshelfCommand.BookshelfId))
             .WithMessage(BookshelfValidationMessages.CannotDeleteDefault);
     }
 }

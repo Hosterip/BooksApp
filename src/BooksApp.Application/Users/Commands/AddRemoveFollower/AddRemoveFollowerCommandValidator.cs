@@ -22,6 +22,6 @@ public sealed class AddRemoveFollowerCommandValidator : AbstractValidator<AddRem
             .Must(request =>
                 request.FollowerId != request.UserId)
             .WithMessage(UserValidationMessages.CantFollowYourself)
-            .OverridePropertyName(nameof(AddRemoveFollowerCommand.FollowerId));
+            .WithName(nameof(AddRemoveFollowerCommand.FollowerId));
     }
 }
