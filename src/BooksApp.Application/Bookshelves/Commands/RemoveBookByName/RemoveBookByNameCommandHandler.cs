@@ -27,6 +27,7 @@ internal sealed class RemoveBookByNameCommandHandler : IRequestHandler<RemoveBoo
             await _unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);
         }
 
-        bookshelf!.RemoveBook(request.BookId);
+        var removed = bookshelf!.RemoveBook(request.BookId);
+       if(removed) await _unitOfWork.SaveAsync(cancellationToken);
     }
 }
