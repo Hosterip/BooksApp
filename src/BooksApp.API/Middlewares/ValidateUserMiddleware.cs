@@ -26,11 +26,11 @@ public class ValidateUserMiddleware
                 UserId = id.Value,
                 SecurityStamp = securityStamp
             };
-            var userRole = await sender.Send(query);
-            if (userRole is null)
+            var result = await sender.Send(query);
+            if (result is null)
                 await context.SignOutAsync();
-            else if (userRole != role)
-                context.ChangeRole(userRole);
+            else if (role != result.Name)
+                context.ChangeRole(result.Name);
         }
 
         await _next(context);
