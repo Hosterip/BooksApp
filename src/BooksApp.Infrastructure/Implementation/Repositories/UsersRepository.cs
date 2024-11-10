@@ -125,8 +125,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         CancellationToken token = default)
     {
         return await _dbContext.Users
-            .Include(x => x.Followers)
-            .Include(x => x.Following)
             .SingleOrDefaultAsync(
                 user => user.Id == UserId.CreateUserId(guid),
                 cancellationToken: token);
@@ -170,8 +168,8 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         Guid followerId, 
         CancellationToken token = default)
     {
-        var user = await GetSingleById(userId, token);
-        var follower = await GetSingleById(followerId, token);
+        var user = await GetUserWithRelationships(userId, token);
+        var follower = await GetUserWithRelationships(followerId, token);
         if (user != null &&
             follower != null &&
             user.Id != follower.Id)
@@ -183,8 +181,8 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         Guid followerId,
         CancellationToken token = default)
     {
-        var user = await GetSingleById(userId, token);
-        var follower = await GetSingleById(followerId, token);
+        var user = await GetUserWithRelationships(userId, token);
+        var follower = await GetUserWithRelationships(followerId, token);
         if (user != null &&
             follower != null &&
             user.Followers.Any(f => f.Id == follower.Id))
@@ -203,4 +201,12 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             .SelectMany(x => x.Followers)
             .CountAsync(cancellationToken: token);
     }
+
+    private async Task<User?> GetUserWithRelationships(Guid userId, CancellationToken token)
+    {
+        return await _dbContext.Users
+            .Include(x => x.Followers)
+            .Include(x => x.Following)
+            .FirstOrDefaultAsync(x => x.Id == UserId.CreateUserId(userId), token);
+    } 
 }
