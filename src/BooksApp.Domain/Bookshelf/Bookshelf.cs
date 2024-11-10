@@ -1,4 +1,5 @@
-﻿using BooksApp.Domain.Bookshelf.Entities;
+﻿using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.Bookshelf.Entities;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.Common.Utils;
@@ -30,8 +31,8 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         }
     }
 
-    public string ReferentialName { get; set; }
-    public User.User? User { get; set; }
+    public string ReferentialName { get; private set; }
+    public User.User? User { get; init; }
     public List<BookshelfBook> BookshelfBooks { get; }
 
     public static Bookshelf Create(User.User user, string name)
@@ -44,9 +45,9 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         BookshelfBooks.Add(BookshelfBook.Create(book));
     }
 
-    public void RemoveBook(Guid bookId)
+    public bool RemoveBook(Guid bookId)
     {
-        var book = BookshelfBooks.FirstOrDefault();
-        if (book != null) BookshelfBooks.Remove(book);
+        var deletedCount = BookshelfBooks.RemoveAll(book => book.Book.Id == BookId.CreateBookId(bookId));
+        return deletedCount > 0;
     }
 }

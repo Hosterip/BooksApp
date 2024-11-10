@@ -14,11 +14,18 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
             {
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
 
-                if (bookshelf is null &&
-                    bookshelf?.User?.Id.Value == request.UserId) return false;
                 return bookshelf != null && !DefaultBookshelvesNames.AllValues.Contains(bookshelf.ReferentialName);
             })
             .WithName(nameof(DeleteBookshelfCommand.BookshelfId))
             .WithMessage(BookshelfValidationMessages.CannotDeleteDefault);
+        RuleFor(request => request)
+            .MustAsync(async (request, cancellationToken) =>
+            {
+                var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
+
+                return bookshelf != null && bookshelf.User?.Id.Value == request.UserId;
+            })
+            .WithName(nameof(DeleteBookshelfCommand.UserId))
+            .WithMessage(BookshelfValidationMessages.NotYours);
     }
 }
