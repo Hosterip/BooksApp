@@ -21,7 +21,7 @@ public static class ApiRoutes
         private const string PrivilegedBase = $"{ApiPrivilegedBase}/books";
 
         public const string GetMany = $"{Base}";
-        public const string GetSingle = $"{Base}/{{id:guid}}";
+        public const string GetSingle = $"{Base}/{{bookId:guid}}";
 
         public const string Create = $"{Base}";
 
