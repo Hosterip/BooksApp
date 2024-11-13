@@ -157,7 +157,9 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                     LastName = book.Author.LastName,
                     AvatarName = book.Author.Avatar == null ? null : book.Author.Avatar.ImageName,
                     Role = book.Author.Role.Name,
-                    ViewerRelationship = new ViewerRelationship
+                    ViewerRelationship = currentUserId == null 
+                        ? null
+                        : new ViewerRelationship
                     {
                         IsFollowing = viewerRelationship.IsFollowing,
                         IsFriend = viewerRelationship.IsFriend,

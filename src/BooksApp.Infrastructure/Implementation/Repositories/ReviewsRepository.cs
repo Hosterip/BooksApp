@@ -35,7 +35,9 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
                     LastName = review.User.LastName,
                     Role = review.User.Role.Name,
                     AvatarName = review.User.Avatar.ImageName,
-                    ViewerRelationship = new ViewerRelationship
+                    ViewerRelationship = currentUserId == null 
+                            ? null
+                            : new ViewerRelationship
                     {
                         IsFollowing = viewerRelationship.IsFollowing,
                         IsFriend = viewerRelationship.IsFriend,
