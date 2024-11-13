@@ -28,7 +28,7 @@ internal sealed class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, Pagi
                 request.CurrentUserId,
                 limit,
                 page,
-                request.Query,
+                request.Title,
                 request.UserId,
                 request.GenreId);
         
