@@ -17,8 +17,10 @@ builder.Services.AddSwaggerGen();
 // Adding Dependency Injectable 
 //  Api
 var corsPolicy = config["CorsPolicy"];
+
 builder.Services.AddApi(corsPolicy!);
 //  Application
+
 builder.Services.AddApplication();
 //  Infra
 var imagesPath = config["ImagesPath"];
@@ -41,7 +43,11 @@ if (!app.Environment.IsDevelopment())
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
+// Cors
 app.UseCors(corsPolicy!);
+
+// Output cache. IMPORTANT to use output cache after CORS
+app.UseOutputCache();
 
 // Authorization and authentication
 app.UseAuthentication();

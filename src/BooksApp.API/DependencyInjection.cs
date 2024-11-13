@@ -3,6 +3,8 @@ using BooksApp.API.Common;
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Requirements;
 using BooksApp.API.Middlewares;
+using BooksApp.Application.Genres.Queries.GetAllGenres;
+using BooksApp.Contracts.Requests.Books;
 using BooksApp.Domain.Common.Constants;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +19,8 @@ public static class DependencyInjection
         services
             .AddMyControllers()
             .AddCorsPolicy(corsPolicy)
-            .AddAuth();
+            .AddAuth()
+            .AddMyOutputCache();
         return services;
     }
 
@@ -72,6 +75,33 @@ public static class DependencyInjection
                     .AllowAnyMethod()
                     .AllowCredentials()
                     .SetIsOriginAllowed(hostName => true));
+        });
+        return services;
+    }
+
+    private static IServiceCollection AddMyOutputCache(this IServiceCollection services)
+    {
+        services.AddOutputCache(x =>
+        {
+            x.AddBasePolicy(c => c.Cache());
+            x.AddPolicy(OutputCache.Books.PolicyName, c =>
+            {
+                c.Cache()
+                    .Expire(TimeSpan.FromMinutes(1))
+                    .SetVaryByRouteValue(new []
+                    {
+                        "userId",
+                        "bookId"
+                    })
+                    .SetVaryByQuery(new []
+                    {
+                        nameof(GetBooksRequest.Title),
+                        nameof(GetBooksRequest.GenreId),
+                        nameof(GetBooksRequest.Page),
+                        nameof(GetBooksRequest.PageSize),
+                    })
+                    .Tag(OutputCache.Books.Tag);
+            });
         });
         return services;
     }
