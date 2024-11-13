@@ -14,6 +14,7 @@ using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
@@ -21,13 +22,16 @@ namespace BooksApp.API.Controllers;
 public class BooksController : ApiController
 {
     private readonly ISender _sender;
+    private readonly IOutputCacheStore _outputCacheStore;
 
-    public BooksController(ISender sender)
+    public BooksController(ISender sender, IOutputCacheStore outputCacheStore)
     {
         _sender = sender;
+        _outputCacheStore = outputCacheStore;
     }
 
     [HttpGet(ApiRoutes.Books.GetMany)]
+    [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<BookshelfResult>>> GetMany(
@@ -37,7 +41,7 @@ public class BooksController : ApiController
     {
         var query = new GetBooksQuery
         {
-            Query = request.Q,
+            Title = request.Title,
             Limit = request.PageSize,
             Page = request.Page,
             GenreId = request.GenreId,
@@ -48,13 +52,14 @@ public class BooksController : ApiController
     }
 
     [HttpGet(ApiRoutes.Books.GetSingle)]  
+    [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
     [ProducesResponseType(typeof(BookResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookResult>> GetSingle(
-        Guid id,
+        Guid bookId,
         CancellationToken cancellationToken)
     {
-        var query = new GetSingleBookQuery { Id = id };
+        var query = new GetSingleBookQuery { Id = bookId };
         var book = await _sender.Send(query, cancellationToken);
         return Ok(book);
     }
@@ -78,6 +83,8 @@ public class BooksController : ApiController
         };
         var book = await _sender.Send(createBookCommand, cancellationToken);
 
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
+        
         return CreatedAtAction(
             nameof(GetSingle),
             new { id = book.Id }, book);
@@ -100,7 +107,11 @@ public class BooksController : ApiController
             Image = request.Cover,
             GenreIds = request.GenreIds
         };
+        
         var result = await _sender.Send(updateBookCommand, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
+
         return CreatedAtAction(
             nameof(GetSingle),
             new { id = result.Id }, result);
@@ -115,7 +126,11 @@ public class BooksController : ApiController
         CancellationToken cancellationToken)
     {
         var command = new DeleteBookCommand { Id = id, UserId = HttpContext.GetId()!.Value };
+        
         await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
+        
         return Ok();
     }
 
@@ -133,12 +148,16 @@ public class BooksController : ApiController
             UserId = HttpContext.GetId()!.Value
         };
         await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
+        
         return Ok();
     }
 
     // Users endpoints
 
     [HttpGet(ApiRoutes.Users.GetManyBooks)]
+    [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<BookResult>>> GetManyByUserId(
@@ -150,7 +169,7 @@ public class BooksController : ApiController
         var currentUserId = HttpContext.GetId();
         var query = new GetBooksQuery
         {
-            Query = request.Q,
+            Title = request.Title,
             Limit = request.PageSize,
             Page = request.Page,
             GenreId = request.GenreId,
