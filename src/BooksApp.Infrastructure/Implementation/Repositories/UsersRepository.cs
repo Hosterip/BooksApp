@@ -22,29 +22,17 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         int limit,
         string query)
     {
-        return await (
-                from user in _dbContext.Users
-                    .AsNoTracking()
-                    .Include(x => x.Followers)
-                where query == null || user.FirstName.Contains(query)
-                let viewerRelationship = user.ViewerRelationship(currentUserId)
-                select new UserResult
-                {
-                    Id = user.Id.Value.ToString(),
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    MiddleName = user.MiddleName,
-                    LastName = user.LastName,
-                    Role = user.Role.Name,
-                    AvatarName = user.Avatar.ImageName ?? null,
-                    ViewerRelationship = new ViewerRelationship
-                    {
-                        IsFollowing = viewerRelationship.IsFollowing,
-                        IsFriend = viewerRelationship.IsFriend,
-                        IsMe = viewerRelationship.IsMe
-                    }
-                })
+        IQueryable<User> queryable = _dbContext.Users
+            .AsNoTracking()
+            .Include(x => x.Followers);
+
+        if (!string.IsNullOrWhiteSpace(query))
+            queryable = queryable.Where(x => x.FirstName.Contains(query));
+
+        var result = await ConvertToUserResult(queryable, currentUserId)
             .PaginationAsync(page, limit);
+
+        return result;
     }
 
     public async Task<PaginatedArray<UserResult>> GetPaginatedFollowers(
@@ -73,12 +61,14 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     LastName = user.LastName,
                     Role = user.Role.Name,
                     AvatarName = user.Avatar.ImageName ?? null,
-                    ViewerRelationship = new ViewerRelationship
-                    {
-                        IsFollowing = viewerRelationship.IsFollowing,
-                        IsFriend = viewerRelationship.IsFriend,
-                        IsMe = viewerRelationship.IsMe
-                    }
+                    ViewerRelationship = currentUserId == null
+                        ? null
+                        : new ViewerRelationship
+                        {
+                            IsFollowing = viewerRelationship.IsFollowing,
+                            IsFriend = viewerRelationship.IsFriend,
+                            IsMe = viewerRelationship.IsMe
+                        }
                 })
             .PaginationAsync(page, limit);
     }
@@ -90,7 +80,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         int limit,
         string query)
     {
-        
         return await (
                 from relationship in _dbContext.Users
                     .AsNoTracking()
@@ -98,7 +87,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     .Include(x => x.Following)
                     .SelectMany(x => x.Following)
                 join user in _dbContext.Users 
-                    on relationship.FollowerId equals user.Id
+                    on relationship.UserId equals user.Id
                 where query == null || user.FirstName.Contains(query)
                 let viewerRelationship = user.ViewerRelationship(currentUserId)
                 select new UserResult
@@ -110,12 +99,14 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     LastName = user.LastName,
                     Role = user.Role.Name,
                     AvatarName = user.Avatar.ImageName ?? null,
-                    ViewerRelationship = new ViewerRelationship
-                    {
-                        IsFollowing = viewerRelationship.IsFollowing,
-                        IsFriend = viewerRelationship.IsFriend,
-                        IsMe = viewerRelationship.IsMe
-                    }
+                    ViewerRelationship = currentUserId == null
+                        ? null
+                        : new ViewerRelationship
+                        {
+                            IsFollowing = viewerRelationship.IsFollowing,
+                            IsFriend = viewerRelationship.IsFriend,
+                            IsMe = viewerRelationship.IsMe
+                        }
                 })
             .PaginationAsync(page, limit);
     }
@@ -131,7 +122,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     }
 
     public async Task<bool> AnyById(
-        Guid guid, 
+        Guid guid,
         CancellationToken token = default)
     {
         return await _dbContext.Users.AnyAsync(
@@ -140,7 +131,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     }
 
     public async Task<bool> AnyByEmail(
-        string email, 
+        string email,
         CancellationToken token = default)
     {
         if (new EmailAddressAttribute().IsValid(email) != true) return false;
@@ -165,7 +156,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 
     public async Task AddFollower(
         Guid userId,
-        Guid followerId, 
+        Guid followerId,
         CancellationToken token = default)
     {
         var user = await GetUserWithRelationships(userId, token);
@@ -208,5 +199,30 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             .Include(x => x.Followers)
             .Include(x => x.Following)
             .FirstOrDefaultAsync(x => x.Id == UserId.CreateUserId(userId), token);
-    } 
+    }
+
+    private static IQueryable<UserResult> ConvertToUserResult(IQueryable<User> users, Guid? currentUserId)
+    {
+        return (
+            from user in users
+            let viewerRelationship = user.ViewerRelationship(currentUserId)
+            select new UserResult
+            {
+                Id = user.Id.Value.ToString(),
+                Email = user.Email,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                Role = user.Role.Name,
+                AvatarName = user.Avatar.ImageName ?? null,
+                ViewerRelationship = currentUserId == null
+                    ? null
+                    : new ViewerRelationship
+                    {
+                        IsFollowing = viewerRelationship.IsFollowing,
+                        IsFriend = viewerRelationship.IsFriend,
+                        IsMe = viewerRelationship.IsMe
+                    }
+            });
+    }
 }
