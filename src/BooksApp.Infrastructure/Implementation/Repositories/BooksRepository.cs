@@ -31,16 +31,22 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         Guid? userId,
         Guid? genreId)
     {
-        var queryable = _dbContext.Books
+        IQueryable<Book> bookQueryable = _dbContext.Books
             .Include(b => b.Author.Followers)
-            .Include(b => b.Author.Following)
-            .Where(
-                book => (title != null && book.Title.Contains(title))
-                        && (userId != null && book.Author.Id == UserId.CreateUserId(userId))
-                        && (genreId != null && book.Genres.Any(genre => genre.Id == GenreId.CreateGenreId(genreId)))
-            );
-        var result =
-            await ConvertToBookResult(queryable, _dbContext.Reviews, currentUserId)
+            .Include(b => b.Author.Following);;
+
+
+        if (!string.IsNullOrWhiteSpace(title))
+            bookQueryable = bookQueryable.Where(book => book.Title.Contains(title));
+        
+        if (userId != null)
+            bookQueryable = bookQueryable.Where(book => book.Author.Id == UserId.CreateUserId(userId));
+
+        if (genreId != null)
+            bookQueryable = bookQueryable.Where(book => book.Genres.Any(genre => genre.Id == GenreId.CreateGenreId(genreId)));
+
+        var result = await
+            ConvertToBookResult(bookQueryable, _dbContext.Reviews, currentUserId)
                 .PaginationAsync(page, limit);
         return result;
     }
