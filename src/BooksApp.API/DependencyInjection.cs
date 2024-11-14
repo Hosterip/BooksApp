@@ -3,8 +3,8 @@ using BooksApp.API.Common;
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Requirements;
 using BooksApp.API.Middlewares;
-using BooksApp.Application.Genres.Queries.GetAllGenres;
 using BooksApp.Contracts.Requests.Books;
+using BooksApp.Contracts.Requests.Users;
 using BooksApp.Domain.Common.Constants;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -101,6 +101,23 @@ public static class DependencyInjection
                         nameof(GetBooksRequest.PageSize),
                     })
                     .Tag(OutputCache.Books.Tag);
+            });
+            
+            x.AddPolicy(OutputCache.Users.PolicyName, c =>
+            {
+                c.Cache()
+                    .Expire(TimeSpan.FromMinutes(1))
+                    .SetVaryByRouteValue(new []
+                    {
+                        "userId"
+                    })
+                    .SetVaryByQuery(new []
+                    {
+                        nameof(GetUsersRequest.Q),
+                        nameof(GetUsersRequest.Page),
+                        nameof(GetUsersRequest.PageSize),
+                    })
+                    .Tag(OutputCache.Users.Tag);
             });
         });
         return services;
