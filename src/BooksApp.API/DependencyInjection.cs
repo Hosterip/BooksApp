@@ -3,6 +3,7 @@ using BooksApp.API.Common;
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Requirements;
 using BooksApp.API.Middlewares;
+using BooksApp.Contracts.Requests;
 using BooksApp.Contracts.Requests.Books;
 using BooksApp.Contracts.Requests.Users;
 using BooksApp.Domain.Common.Constants;
@@ -97,8 +98,8 @@ public static class DependencyInjection
                     {
                         nameof(GetBooksRequest.Title),
                         nameof(GetBooksRequest.GenreId),
-                        nameof(GetBooksRequest.Page),
-                        nameof(GetBooksRequest.PageSize),
+                        nameof(PagedRequest.Page),
+                        nameof(PagedRequest.PageSize),
                     })
                     .Tag(OutputCache.Books.Tag);
             });
@@ -109,13 +110,17 @@ public static class DependencyInjection
                     .Expire(TimeSpan.FromMinutes(1))
                     .SetVaryByRouteValue(new []
                     {
-                        "userId"
+                        "userId",
+                        "nameOrGuid",
+                        "followingId"
                     })
                     .SetVaryByQuery(new []
                     {
                         nameof(GetUsersRequest.Q),
-                        nameof(GetUsersRequest.Page),
-                        nameof(GetUsersRequest.PageSize),
+                        nameof(GetFollowersRequest.Query),
+                        nameof(GetFollowingRequest.Query),
+                        nameof(PagedRequest.Page),
+                        nameof(PagedRequest.PageSize),
                     })
                     .Tag(OutputCache.Users.Tag);
             });
