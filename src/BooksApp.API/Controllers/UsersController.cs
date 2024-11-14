@@ -16,6 +16,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
@@ -23,10 +24,12 @@ namespace BooksApp.API.Controllers;
 public class UsersController : ApiController
 {
     private readonly ISender _sender;
+    private readonly IOutputCacheStore _outputCacheStore;
 
-    public UsersController(ISender sender)
+    public UsersController(ISender sender, IOutputCacheStore outputCacheStore)
     {
         _sender = sender;
+        _outputCacheStore = outputCacheStore;
     }
 
     [HttpGet(ApiRoutes.Users.GetMe)]
@@ -42,6 +45,7 @@ public class UsersController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetMany)]
+    [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<UserResult>>> GetMany(
@@ -61,13 +65,14 @@ public class UsersController : ApiController
     }
 
     [HttpGet(ApiRoutes.Users.GetById)]
+    [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
     [ProducesResponseType(typeof(UserResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserResult>> GetById(
-        [FromRoute] Guid id,
+        [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
-        var query = new GetSingleUserQuery { Id = id };
+        var query = new GetSingleUserQuery { Id = userId };
         var user = await _sender.Send(query, cancellationToken);
         return Ok(user);
     }
@@ -84,6 +89,8 @@ public class UsersController : ApiController
 
         await HttpContext.SignOutAsync();
 
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        
         return Ok();
     }
 
@@ -105,6 +112,8 @@ public class UsersController : ApiController
 
         HttpContext.ChangeEmail(request.Email);
 
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        
         return Ok();
     }
 
@@ -125,6 +134,8 @@ public class UsersController : ApiController
         };
 
         await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return Ok();
     }
@@ -144,6 +155,8 @@ public class UsersController : ApiController
         };
 
         var result = await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
@@ -165,11 +178,14 @@ public class UsersController : ApiController
         };
 
         await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return Ok();
     }
     
     [HttpGet(ApiRoutes.Users.GetFollowers)]
+    [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<UserResult>>> GetFollowers(
@@ -187,11 +203,16 @@ public class UsersController : ApiController
             UserId = userId,
             RelationshipType = RelationshipType.Followers
         };
+        
         var users = await _sender.Send(query, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        
         return Ok(users);
     }
     
     [HttpGet(ApiRoutes.Users.GetFollowing)]
+    [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<UserResult>>> GetFollowing(
@@ -210,6 +231,9 @@ public class UsersController : ApiController
             RelationshipType = RelationshipType.Following
         };
         var users = await _sender.Send(query, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+
         return Ok(users);
     }
 }
