@@ -85,7 +85,7 @@ public static class ApiRoutes
 
         public const string GetMe = $"{Base}/me";
         public const string GetMany = $"{Base}";
-        public const string GetById = $"{Base}/{{id:guid}}";
+        public const string GetById = $"{Base}/{{userId:guid}}";
         public const string Delete = $"{Base}";
         public const string UpdateEmail = $"{Base}/email";
         public const string UpdateName = $"{Base}/name";
