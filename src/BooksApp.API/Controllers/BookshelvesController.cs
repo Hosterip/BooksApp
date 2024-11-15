@@ -18,6 +18,7 @@ using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
@@ -25,33 +26,9 @@ namespace BooksApp.API.Controllers;
 public class BookshelvesController : ApiController
 {
     private readonly ISender _sender;
-
     public BookshelvesController(ISender sender)
     {
         _sender = sender;
-    }
-
-    [HttpGet(ApiRoutes.Users.GetBookshelf)]
-    [ProducesResponseType(typeof(BookshelfResult), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BookshelfResult>> GetBookshelf(
-        [FromRoute] string nameOrGuid,
-        [FromRoute] Guid userId
-    )
-    {
-        var success = Guid.TryParse(nameOrGuid, out var bookshelfId);
-        var result = await _sender.Send(success
-            ? new BookshelfByIdQuery
-            {
-                BookshelfId = bookshelfId
-            }
-            : new BookshelfByNameQuery
-            {
-                UserId = userId,
-                Name = nameOrGuid
-            }
-        );
-        return Ok(result);
     }
 
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
@@ -59,7 +36,8 @@ public class BookshelvesController : ApiController
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<BookResult>>> GetBooks(
         [FromRoute] Guid bookshelfId,
-        [FromQuery] GetBookshelfBooksRequest request)
+        [FromQuery] GetBookshelfBooksRequest request,
+        CancellationToken token)
     {
         var userId = HttpContext.GetId();
         var query = new GetBookshelfBooksQuery
@@ -69,7 +47,7 @@ public class BookshelvesController : ApiController
             Limit = request.PageSize,
             Page = request.Page
         };
-        var result = await _sender.Send(query);
+        var result = await _sender.Send(query, token);
 
         return Ok(result);
     }
@@ -79,7 +57,8 @@ public class BookshelvesController : ApiController
     [ProducesResponseType(typeof(BookshelfResult), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookshelfResult>> Create(
-        [FromBodyOrDefault] CreateBookshelfRequest request)
+        [FromBodyOrDefault] CreateBookshelfRequest request,
+        CancellationToken token)
     {
         var userId = HttpContext.GetId()!.Value;
         var command = new CreateBookshelfCommand
@@ -87,7 +66,7 @@ public class BookshelvesController : ApiController
             Name = request.Name,
             UserId = userId
         };
-        var result = await _sender.Send(command);
+        var result = await _sender.Send(command, token);
 
         return CreatedAtAction(
             nameof(GetBookshelf),
@@ -100,7 +79,8 @@ public class BookshelvesController : ApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Remove(
-        [FromRoute] Guid bookshelfId)
+        [FromRoute] Guid bookshelfId,
+        CancellationToken token)
     {
         var userId = HttpContext.GetId();
         var command = new DeleteBookshelfCommand
@@ -109,7 +89,7 @@ public class BookshelvesController : ApiController
             UserId = userId!.Value
         };
 
-        await _sender.Send(command);
+        await _sender.Send(command, token);
 
         return Ok();
     }
@@ -122,7 +102,8 @@ public class BookshelvesController : ApiController
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddBook(
         [FromRoute] Guid bookId,
-        [FromRoute] string idOrName)
+        [FromRoute] string idOrName,
+        CancellationToken token)
     {
         var userId = HttpContext.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
@@ -138,8 +119,7 @@ public class BookshelvesController : ApiController
                 BookshelfName = idOrName,
                 BookId = bookId,
                 UserId = userId
-            }
-        );
+            }, token);
 
         return Ok();
     }
@@ -150,7 +130,8 @@ public class BookshelvesController : ApiController
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveBook(
         [FromRoute] Guid bookId,
-        [FromRoute] string idOrName)
+        [FromRoute] string idOrName,
+        CancellationToken token)
     {
         var userId = HttpContext.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
@@ -166,8 +147,7 @@ public class BookshelvesController : ApiController
                 BookshelfName = idOrName,
                 BookId = bookId,
                 UserId = userId
-            }
-        );
+            }, token);
         return Ok();
     }
 
@@ -177,14 +157,40 @@ public class BookshelvesController : ApiController
     [ProducesResponseType(typeof(IEnumerable<BookshelfResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<BookshelfResult>>> GetBookshelves(
-        Guid userId)
+        Guid userId,
+        CancellationToken token)
     {
         var query = new GetBookshelvesQuery
         {
             UserId = userId
         };
-        var result = await _sender.Send(query);
+        var result = await _sender.Send(query, token);
 
+        return Ok(result);
+    }
+    
+    [HttpGet(ApiRoutes.Users.GetBookshelf)]
+    [ProducesResponseType(typeof(BookshelfResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BookshelfResult>> GetBookshelf(
+        [FromRoute] string idOrName,
+        [FromRoute] Guid userId,
+        CancellationToken token
+    )
+    {
+        var success = Guid.TryParse(idOrName, out var bookshelfId);
+        var result = await _sender.Send(success
+            ? new BookshelfByIdQuery
+            {
+                BookshelfId = bookshelfId
+            }
+            : new BookshelfByNameQuery
+            {
+                UserId = userId,
+                Name = idOrName
+            },
+            token
+        );
         return Ok(result);
     }
 }
