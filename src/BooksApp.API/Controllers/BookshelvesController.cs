@@ -26,12 +26,15 @@ namespace BooksApp.API.Controllers;
 public class BookshelvesController : ApiController
 {
     private readonly ISender _sender;
-    public BookshelvesController(ISender sender)
+    private readonly IOutputCacheStore _outputCacheStore;
+    public BookshelvesController(ISender sender, IOutputCacheStore outputCacheStore)
     {
         _sender = sender;
+        _outputCacheStore = outputCacheStore;
     }
 
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
+    [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<BookResult>>> GetBooks(
@@ -68,6 +71,8 @@ public class BookshelvesController : ApiController
         };
         var result = await _sender.Send(command, token);
 
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+        
         return CreatedAtAction(
             nameof(GetBookshelf),
             new { nameOrGuid = result.Id, userId },
@@ -91,6 +96,8 @@ public class BookshelvesController : ApiController
 
         await _sender.Send(command, token);
 
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+        
         return Ok();
     }
 
@@ -121,6 +128,8 @@ public class BookshelvesController : ApiController
                 UserId = userId
             }, token);
 
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+
         return Ok();
     }
 
@@ -148,12 +157,16 @@ public class BookshelvesController : ApiController
                 BookId = bookId,
                 UserId = userId
             }, token);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+
         return Ok();
     }
 
     // Users endpoints 
 
     [HttpGet(ApiRoutes.Users.GetBookshelves)]
+    [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
     [ProducesResponseType(typeof(IEnumerable<BookshelfResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<BookshelfResult>>> GetBookshelves(
@@ -170,6 +183,7 @@ public class BookshelvesController : ApiController
     }
     
     [HttpGet(ApiRoutes.Users.GetBookshelf)]
+    [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
     [ProducesResponseType(typeof(BookshelfResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookshelfResult>> GetBookshelf(

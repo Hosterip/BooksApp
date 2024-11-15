@@ -111,7 +111,6 @@ public static class DependencyInjection
                     .SetVaryByRouteValue(new []
                     {
                         "userId",
-                        "nameOrGuid",
                         "followingId"
                     })
                     .SetVaryByQuery(new []
@@ -123,6 +122,25 @@ public static class DependencyInjection
                         nameof(PagedRequest.PageSize),
                     })
                     .Tag(OutputCache.Users.Tag);
+            });
+            
+            x.AddPolicy(OutputCache.Bookshelves.PolicyName, c =>
+            {
+                c.Cache()
+                    .Expire(TimeSpan.FromMinutes(1))
+                    .SetVaryByRouteValue(new []
+                    {
+                        "userId",
+                        "bookId",
+                        "idOrName",
+                        "bookshelfId"
+                    })
+                    .SetVaryByQuery(new []
+                    {
+                        nameof(PagedRequest.Page),
+                        nameof(PagedRequest.PageSize),
+                    })
+                    .Tag(OutputCache.Bookshelves.Tag);
             });
         });
         return services;
