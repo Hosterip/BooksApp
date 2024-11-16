@@ -6,16 +6,19 @@ using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace BooksApp.API.Controllers;
 
 public class GenresController : ApiController
 {
     private readonly ISender _sender;
+    private readonly IOutputCacheStore _outputCacheStore;
 
-    public GenresController(ISender sender)
+    public GenresController(ISender sender, IOutputCacheStore outputCacheStore)
     {
         _sender = sender;
+        _outputCacheStore = outputCacheStore;
     }
 
     [HttpPost(ApiRoutes.Genres.Create)]
@@ -30,12 +33,16 @@ public class GenresController : ApiController
         {
             Name = name
         };
+        
         var genre = await _sender.Send(createGenreCommand, cancellationToken);
 
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Genres.Tag, cancellationToken);
+        
         return Ok(genre);
     }
 
     [HttpGet(ApiRoutes.Genres.GetAll)]
+    [OutputCache(PolicyName = OutputCache.Genres.PolicyName)]
     [ProducesResponseType(typeof(IEnumerable<GenreResult>),StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<GenreResult>>> GetAll(
         CancellationToken cancellationToken)
