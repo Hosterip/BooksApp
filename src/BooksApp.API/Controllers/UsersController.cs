@@ -1,6 +1,7 @@
 ﻿using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Extensions;
 using BooksApp.Application.Common.Results;
+using BooksApp.Application.Roles.Commands.UpdateRole;
 using BooksApp.Application.Users.Commands.AddRemoveFollower;
 using BooksApp.Application.Users.Commands.DeleteUser;
 using BooksApp.Application.Users.Commands.InsertAvatar;
@@ -10,6 +11,7 @@ using BooksApp.Application.Users.Queries.GetSingleUser;
 using BooksApp.Application.Users.Queries.GetUserRelationships;
 using BooksApp.Application.Users.Queries.GetUsers;
 using BooksApp.Application.Users.Results;
+using BooksApp.Contracts.Requests.Roles;
 using BooksApp.Contracts.Requests.Users;
 using BooksApp.Contracts.Responses.Errors;
 using MediatR;
@@ -159,6 +161,30 @@ public class UsersController : ApiController
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+    
+    // Privileged
+    
+    [HttpPut(ApiRoutes.Users.UpdateRole)]
+    [Authorize(Policies.Admin)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateRole(
+        [FromBodyOrDefault] ChangeRoleRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateRoleCommand
+        {
+            ChangerId = HttpContext.GetId()!.Value,
+            Role = request.Role,
+            UserId = request.UserId
+        };
+
+        await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+
+        return Ok();
     }
     
     // Followers
