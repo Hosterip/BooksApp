@@ -85,6 +85,10 @@ public static class DependencyInjection
         services.AddOutputCache(x =>
         {
             x.AddBasePolicy(c => c.Cache());
+
+
+            #region Books policy
+            
             x.AddPolicy(OutputCache.Books.PolicyName, c =>
             {
                 c.Cache()
@@ -101,6 +105,10 @@ public static class DependencyInjection
                     ])
                     .Tag(OutputCache.Books.Tag);
             });
+            
+            #endregion Books policy
+            
+            #region Users policy
             
             x.AddPolicy(OutputCache.Users.PolicyName, c =>
             {
@@ -120,6 +128,10 @@ public static class DependencyInjection
                     .Tag(OutputCache.Users.Tag);
             });
             
+            #endregion Users policy
+            
+            #region Bookshelves policy
+            
             x.AddPolicy(OutputCache.Bookshelves.PolicyName, c =>
             {
                 c.Cache()
@@ -137,6 +149,10 @@ public static class DependencyInjection
                     .Tag(OutputCache.Bookshelves.Tag);
             });
             
+            #endregion Bookshelves policy
+            
+            #region Reviews policy
+            
             x.AddPolicy(OutputCache.Reviews.PolicyName, c =>
             {
                 c.Cache()
@@ -150,6 +166,19 @@ public static class DependencyInjection
                     ])
                     .Tag(OutputCache.Reviews.Tag);
             });
+            
+            #endregion Reviews policy
+
+            #region Genres policy
+            
+            x.AddPolicy(OutputCache.Genres.PolicyName, c =>
+            {
+                c.Cache()
+                    .Expire(TimeSpan.FromMinutes(10))
+                    .Tag(OutputCache.Genres.Tag);
+            });
+            
+            #endregion Genres policy
         });
         
         return services;
