@@ -12,6 +12,7 @@ using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
@@ -19,10 +20,12 @@ namespace BooksApp.API.Controllers;
 public class ReviewsController : ApiController
 {
     private readonly ISender _sender;
+    private readonly IOutputCacheStore _outputCacheStore;
 
-    public ReviewsController(ISender sender)
+    public ReviewsController(ISender sender, IOutputCacheStore outputCacheStore)
     {
         _sender = sender;
+        _outputCacheStore = outputCacheStore;
     }
 
     [HttpPost(ApiRoutes.Reviews.Create)]
@@ -40,7 +43,11 @@ public class ReviewsController : ApiController
             Body = request.Body,
             Rating = request.Rating
         };
+        
         var result = await _sender.Send(command, cancellationToken);
+
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+        
         return Ok(result);
     }
 
@@ -59,7 +66,11 @@ public class ReviewsController : ApiController
             Body = request.Body,
             Rating = request.Rating
         };
+        
         var result = await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+        
         return Ok(result);
     }
 
@@ -76,7 +87,11 @@ public class ReviewsController : ApiController
             ReviewId = id,
             UserId = HttpContext.GetId()!.Value
         };
+        
         await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+        
         return Ok();
     }
 
@@ -93,13 +108,18 @@ public class ReviewsController : ApiController
             ReviewId = id,
             UserId = HttpContext.GetId()!.Value
         };
+        
         await _sender.Send(command, cancellationToken);
+        
+        await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+        
         return Ok();
     }
 
     // Books
 
     [HttpGet(ApiRoutes.Books.GetReviews)]
+    [OutputCache(PolicyName = OutputCache.Reviews.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<ReviewResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<ReviewResult>>> GetReviews(

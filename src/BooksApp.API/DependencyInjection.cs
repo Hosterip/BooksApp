@@ -75,7 +75,7 @@ public static class DependencyInjection
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
-                    .SetIsOriginAllowed(hostName => true));
+                    .SetIsOriginAllowed(_ => true));
         });
         return services;
     }
@@ -89,18 +89,16 @@ public static class DependencyInjection
             {
                 c.Cache()
                     .Expire(TimeSpan.FromMinutes(1))
-                    .SetVaryByRouteValue(new []
-                    {
+                    .SetVaryByRouteValue([
                         "userId",
                         "bookId"
-                    })
-                    .SetVaryByQuery(new []
-                    {
+                    ])
+                    .SetVaryByQuery([
                         nameof(GetBooksRequest.Title),
                         nameof(GetBooksRequest.GenreId),
                         nameof(PagedRequest.Page),
-                        nameof(PagedRequest.PageSize),
-                    })
+                        nameof(PagedRequest.PageSize)
+                    ])
                     .Tag(OutputCache.Books.Tag);
             });
             
@@ -108,19 +106,17 @@ public static class DependencyInjection
             {
                 c.Cache()
                     .Expire(TimeSpan.FromMinutes(1))
-                    .SetVaryByRouteValue(new []
-                    {
+                    .SetVaryByRouteValue([
                         "userId",
                         "followingId"
-                    })
-                    .SetVaryByQuery(new []
-                    {
+                    ])
+                    .SetVaryByQuery([
                         nameof(GetUsersRequest.Q),
                         nameof(GetFollowersRequest.Query),
                         nameof(GetFollowingRequest.Query),
                         nameof(PagedRequest.Page),
-                        nameof(PagedRequest.PageSize),
-                    })
+                        nameof(PagedRequest.PageSize)
+                    ])
                     .Tag(OutputCache.Users.Tag);
             });
             
@@ -128,21 +124,34 @@ public static class DependencyInjection
             {
                 c.Cache()
                     .Expire(TimeSpan.FromMinutes(1))
-                    .SetVaryByRouteValue(new []
-                    {
+                    .SetVaryByRouteValue([
                         "userId",
                         "bookId",
                         "idOrName",
                         "bookshelfId"
-                    })
-                    .SetVaryByQuery(new []
-                    {
+                    ])
+                    .SetVaryByQuery([
                         nameof(PagedRequest.Page),
-                        nameof(PagedRequest.PageSize),
-                    })
+                        nameof(PagedRequest.PageSize)
+                    ])
                     .Tag(OutputCache.Bookshelves.Tag);
             });
+            
+            x.AddPolicy(OutputCache.Reviews.PolicyName, c =>
+            {
+                c.Cache()
+                    .Expire(TimeSpan.FromMinutes(1))
+                    .SetVaryByRouteValue([
+                        "bookId"
+                    ])
+                    .SetVaryByQuery([
+                        nameof(PagedRequest.Page),
+                        nameof(PagedRequest.PageSize)
+                    ])
+                    .Tag(OutputCache.Reviews.Tag);
+            });
         });
+        
         return services;
     }
 }
