@@ -33,6 +33,8 @@ public class BookshelvesController : ApiController
         _outputCacheStore = outputCacheStore;
     }
 
+    #region Bookshelves endpoints
+    
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
     [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
@@ -78,7 +80,7 @@ public class BookshelvesController : ApiController
             new { nameOrGuid = result.Id, userId },
             result);
     }
-
+    
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -100,8 +102,10 @@ public class BookshelvesController : ApiController
         
         return Ok();
     }
+    
+    #endregion Bookshelves endpoints
 
-    // Books endpoints
+    #region Books endpoints
 
     [HttpPost(ApiRoutes.Books.AddBook)]
     [Authorize]
@@ -162,8 +166,10 @@ public class BookshelvesController : ApiController
 
         return Ok();
     }
+    
+    #endregion Books endpoints
 
-    // Users endpoints 
+    #region Users endpoints 
 
     [HttpGet(ApiRoutes.Users.GetBookshelves)]
     [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
@@ -207,4 +213,6 @@ public class BookshelvesController : ApiController
         );
         return Ok(result);
     }
+    
+    #endregion Users endpoints 
 }

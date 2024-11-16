@@ -28,6 +28,8 @@ public class ReviewsController : ApiController
         _outputCacheStore = outputCacheStore;
     }
 
+    #region Reviews endpoints
+    
     [HttpPost(ApiRoutes.Reviews.Create)]
     [Authorize]
     [ProducesResponseType(typeof(ReviewResult), StatusCodes.Status200OK)]
@@ -74,6 +76,8 @@ public class ReviewsController : ApiController
         return Ok(result);
     }
 
+    #region Delete endpoints
+    
     [HttpDelete(ApiRoutes.Reviews.Delete)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -115,8 +119,12 @@ public class ReviewsController : ApiController
         
         return Ok();
     }
+    
+    #endregion Delete endpoints
 
-    // Books
+    #endregion Reviews endpoints
+    
+    #region Books Endpoints
 
     [HttpGet(ApiRoutes.Books.GetReviews)]
     [OutputCache(PolicyName = OutputCache.Reviews.PolicyName)]
@@ -138,4 +146,6 @@ public class ReviewsController : ApiController
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }
+    
+    #endregion Books Endpoints
 }

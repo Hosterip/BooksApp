@@ -30,6 +30,10 @@ public class BooksController : ApiController
         _outputCacheStore = outputCacheStore;
     }
 
+    #region Books Endpoints
+    
+    #region Get endpoints
+    
     [HttpGet(ApiRoutes.Books.GetMany)]
     [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
@@ -63,6 +67,10 @@ public class BooksController : ApiController
         var book = await _sender.Send(query, cancellationToken);
         return Ok(book);
     }
+    
+    #endregion Get endpoints
+
+    #region Post endpoints
 
     [HttpPost(ApiRoutes.Books.Create)]
     [Authorize(Policies.Author)]
@@ -89,7 +97,11 @@ public class BooksController : ApiController
             nameof(GetSingle),
             new { id = book.Id }, book);
     }
+    
+    #endregion Post endpoints
 
+    #region Put endpoints
+    
     [HttpPut(ApiRoutes.Books.Update)]
     [Authorize]
     [ProducesResponseType(typeof(BookResult), StatusCodes.Status201Created)]
@@ -116,7 +128,11 @@ public class BooksController : ApiController
             nameof(GetSingle),
             new { id = result.Id }, result);
     }
+    
+    #endregion Put endpoints
 
+    #region Delete endpoints
+    
     [HttpDelete(ApiRoutes.Books.Delete)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -153,9 +169,13 @@ public class BooksController : ApiController
         
         return Ok();
     }
+    
+    #endregion Delete endpoints
+    
+    #endregion Books Endpoints
 
-    // Users endpoints
-
+    #region Users endpoints
+    
     [HttpGet(ApiRoutes.Users.GetManyBooks)]
     [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
     [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
@@ -179,4 +199,6 @@ public class BooksController : ApiController
         var result = await _sender.Send(query, cancellationToken);
         return Ok(result);
     }
+    
+    #endregion Users endpoints
 }

@@ -26,6 +26,8 @@ public class AuthController : ApiController
         _sender = sender;
     }
 
+    #region Authorization endpoints
+    
     [HttpPost(ApiRoutes.Auth.Register)]
     [Authorize(Policies.NotAuthorized)]
     [ProducesResponseType(typeof(AuthResult), StatusCodes.Status201Created)]
@@ -69,7 +71,18 @@ public class AuthController : ApiController
         await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return Ok(user.Adapt<UserResponse>());
     }
-
+    
+    [HttpPost(ApiRoutes.Auth.Logout)]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Logout()
+    {
+        HttpContext.SignOutAsync();
+        return Ok();
+    }
+    
+    #endregion Authorization endpoints
+    
     [HttpPut(ApiRoutes.Auth.UpdatePassword)]
     [Authorize]
     [ProducesResponseType(typeof(AuthResult), StatusCodes.Status201Created)]
@@ -91,14 +104,5 @@ public class AuthController : ApiController
             "Users",
             new { id = result.Id },
             result.Adapt<UserResponse>());
-    }
-
-    [HttpPost(ApiRoutes.Auth.Logout)]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult Logout()
-    {
-        HttpContext.SignOutAsync();
-        return Ok();
     }
 }

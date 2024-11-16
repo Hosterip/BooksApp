@@ -8,6 +8,7 @@ using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
@@ -22,6 +23,7 @@ public class RolesController : ApiController
     }
     
     [HttpGet(ApiRoutes.Users.GetRoles)]
+    [OutputCache]
     [ProducesResponseType(typeof(IEnumerable<RoleResult>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RoleResult>>> GetRoles(
         CancellationToken cancellationToken)

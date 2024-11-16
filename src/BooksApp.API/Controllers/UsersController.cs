@@ -34,6 +34,10 @@ public class UsersController : ApiController
         _outputCacheStore = outputCacheStore;
     }
 
+    #region Users endpoints
+
+    #region Get endpoints
+    
     [HttpGet(ApiRoutes.Users.GetMe)]
     [Authorize]
     [ProducesResponseType(typeof(UserResult), StatusCodes.Status200OK)]
@@ -78,7 +82,11 @@ public class UsersController : ApiController
         var user = await _sender.Send(query, cancellationToken);
         return Ok(user);
     }
+    
+    #endregion Get endpoints
 
+    #region Delete endpoints
+    
     [HttpDelete(ApiRoutes.Users.Delete)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -95,7 +103,13 @@ public class UsersController : ApiController
         
         return Ok();
     }
+    
+    #endregion Delete endpoints
 
+    #region Put endpoints
+
+    #region Authorized
+    
     [HttpPut(ApiRoutes.Users.UpdateEmail)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -163,7 +177,9 @@ public class UsersController : ApiController
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
     
-    // Privileged
+    #endregion Authorized
+    
+    #region Privileged
     
     [HttpPut(ApiRoutes.Users.UpdateRole)]
     [Authorize(Policies.Admin)]
@@ -187,7 +203,13 @@ public class UsersController : ApiController
         return Ok();
     }
     
-    // Followers
+    #endregion Priveleged
+    
+    #endregion Put endpoints
+    
+    #endregion Users endpoints
+    
+    #region Followers
     
     [HttpPut(ApiRoutes.Users.AddFollower)]
     [Authorize]
@@ -262,4 +284,6 @@ public class UsersController : ApiController
 
         return Ok(users);
     }
+    
+    #endregion Followers
 }
