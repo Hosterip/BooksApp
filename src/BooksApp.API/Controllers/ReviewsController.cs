@@ -103,7 +103,7 @@ public class ReviewsController : ApiController
     [ProducesResponseType(typeof(PaginatedArray<ReviewResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PaginatedArray<ReviewResult>>> GetReviews(
-        Guid id,
+        [FromRoute] Guid bookId,
         [FromQuery] GetReviewsQuery request,
         CancellationToken cancellationToken)
     {
@@ -111,7 +111,7 @@ public class ReviewsController : ApiController
         var query = new GetReviewsQuery
         {
             CurrentUserId = userId,
-            BookId = id,
+            BookId = bookId,
             Page = request.Page,
             Limit = request.Limit
         };

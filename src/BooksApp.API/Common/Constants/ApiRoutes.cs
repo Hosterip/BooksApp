@@ -38,7 +38,7 @@ public static class ApiRoutes
 
         // Reviews 
 
-        public const string GetReviews = $"{Base}/{{id:guid}}/reviews";
+        public const string GetReviews = $"{Base}/{{bookId:guid}}/reviews";
     }
 
     public static class Bookshelves
