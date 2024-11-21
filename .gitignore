@@ -4,5 +4,5 @@ obj/
 .idea/
 .vs
 src/BooksApp.API/images
-images
+staticImages
 aspnet-books-project.sln.DotSettings.user
