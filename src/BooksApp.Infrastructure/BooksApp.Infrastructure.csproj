@@ -29,6 +29,6 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Data\Migrations\"/>
+      <Folder Include="Migrations\" />
     </ItemGroup>
 </Project>

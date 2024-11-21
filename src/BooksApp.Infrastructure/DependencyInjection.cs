@@ -1,9 +1,7 @@
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Interfaces;
 using BooksApp.Infrastructure.Authentication;
-using BooksApp.Infrastructure.Data;
-using BooksApp.Infrastructure.Files;
-using BooksApp.Infrastructure.Implementation;
+using BooksApp.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
