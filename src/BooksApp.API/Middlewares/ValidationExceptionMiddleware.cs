@@ -1,4 +1,4 @@
-using BooksApp.Contracts.Responses.Errors;
+using BooksApp.Contracts.Errors;
 using FluentValidation;
 
 namespace BooksApp.API.Middlewares;

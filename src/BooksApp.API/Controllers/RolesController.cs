@@ -3,8 +3,6 @@ using BooksApp.API.Common.Extensions;
 using BooksApp.Application.Roles;
 using BooksApp.Application.Roles.Commands.UpdateRole;
 using BooksApp.Application.Roles.Queries.GetRoles;
-using BooksApp.Contracts.Requests.Roles;
-using BooksApp.Contracts.Responses.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -2,7 +2,7 @@
 using BooksApp.Application.Genres;
 using BooksApp.Application.Genres.Commands.CreateGenre;
 using BooksApp.Application.Genres.Queries.GetAllGenres;
-using BooksApp.Contracts.Responses.Errors;
+using BooksApp.Contracts.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

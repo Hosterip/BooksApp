@@ -1,6 +1,6 @@
 ﻿using BooksApp.API.Common.Constants;
 using BooksApp.Application.Images.Queries.GetImage;
-using BooksApp.Contracts.Responses.Errors;
+using BooksApp.Contracts.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
