@@ -11,6 +11,8 @@ using BooksApp.Application.Bookshelves;
 using BooksApp.Application.Common.Results;
 using BooksApp.Contracts.Books;
 using BooksApp.Contracts.Errors;
+using Mapster;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +24,14 @@ namespace BooksApp.API.Controllers;
 public class BooksController : ApiController
 {
     private readonly ISender _sender;
+    private readonly IMapper _mapster;
     private readonly IOutputCacheStore _outputCacheStore;
 
-    public BooksController(ISender sender, IOutputCacheStore outputCacheStore)
+    public BooksController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
     {
         _sender = sender;
         _outputCacheStore = outputCacheStore;
+        _mapster = mapster;
     }
 
     #region Books Endpoints
@@ -52,7 +56,10 @@ public class BooksController : ApiController
             UserId = null
         };
         var result = await _sender.Send(query, cancellationToken);
-        return Ok(result);
+        
+        var response = _mapster.Map<BooksResponse>(result);
+        
+        return Ok(response);
     }
 
     [HttpGet(ApiRoutes.Books.GetSingle)]  
@@ -65,7 +72,10 @@ public class BooksController : ApiController
     {
         var query = new GetSingleBookQuery { Id = bookId };
         var book = await _sender.Send(query, cancellationToken);
-        return Ok(book);
+
+        var response = _mapster.Map<BookResponse>(book);
+        
+        return Ok(response);
     }
     
     #endregion Get endpoints
@@ -93,9 +103,13 @@ public class BooksController : ApiController
 
         await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
         
+        var response = _mapster.Map<BookResponse>(book);
+        
         return CreatedAtAction(
             nameof(GetSingle),
-            new { id = book.Id }, book);
+            new { id = book.Id },
+            response
+            );
     }
     
     #endregion Post endpoints
@@ -124,9 +138,12 @@ public class BooksController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
 
+        var response = _mapster.Map<BookResponse>(result);
+        
         return CreatedAtAction(
             nameof(GetSingle),
-            new { id = result.Id }, result);
+            new { id = result.Id }, 
+            response);
     }
     
     #endregion Put endpoints
@@ -197,7 +214,10 @@ public class BooksController : ApiController
             CurrentUserId = currentUserId
         };
         var result = await _sender.Send(query, cancellationToken);
-        return Ok(result);
+        
+        var response = _mapster.Map<BooksResponse>(result);
+        
+        return Ok(response);
     }
     
     #endregion Users endpoints

@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Security.Claims;
 using BooksApp.API.Common;
 using BooksApp.API.Common.Constants;
@@ -7,6 +8,7 @@ using BooksApp.Contracts;
 using BooksApp.Contracts.Books;
 using BooksApp.Contracts.Users;
 using BooksApp.Domain.Common.Constants;
+using Mapster;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
@@ -18,6 +20,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApi(this IServiceCollection services, string corsPolicy)
     {
         services
+            .AddMapping()
             .AddMyControllers()
             .AddCorsPolicy(corsPolicy)
             .AddAuth()
@@ -181,6 +184,15 @@ public static class DependencyInjection
             #endregion Genres policy
         });
         
+        return services;
+    }
+    
+    private static IServiceCollection AddMapping(this IServiceCollection services)
+    {
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Scan(Assembly.GetExecutingAssembly());
+        services.AddSingleton(config);
+
         return services;
     }
 }
