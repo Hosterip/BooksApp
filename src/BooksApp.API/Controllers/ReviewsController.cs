@@ -9,6 +9,7 @@ using BooksApp.Application.Reviews.Queries.GetReviews;
 using BooksApp.Application.Reviews.Results;
 using BooksApp.Contracts.Errors;
 using BooksApp.Contracts.Reviews;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,13 @@ public class ReviewsController : ApiController
 {
     private readonly ISender _sender;
     private readonly IOutputCacheStore _outputCacheStore;
+    private readonly IMapper _mapster;
 
-    public ReviewsController(ISender sender, IOutputCacheStore outputCacheStore)
+    public ReviewsController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
     {
         _sender = sender;
         _outputCacheStore = outputCacheStore;
+        _mapster = mapster;
     }
 
     #region Reviews endpoints
@@ -49,8 +52,10 @@ public class ReviewsController : ApiController
         var result = await _sender.Send(command, cancellationToken);
 
         await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+
+        var response = _mapster.Map<ReviewResponse>(result);
         
-        return Ok(result);
+        return Ok(response);
     }
 
     [HttpPut(ApiRoutes.Reviews.Update)]
@@ -73,7 +78,9 @@ public class ReviewsController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
         
-        return Ok(result);
+        var response = _mapster.Map<ReviewResponse>(result);
+        
+        return Ok(response);
     }
 
     #region Delete endpoints
@@ -144,7 +151,10 @@ public class ReviewsController : ApiController
             Limit = request.Limit
         };
         var result = await _sender.Send(query, cancellationToken);
-        return Ok(result);
+        
+        var response = _mapster.Map<ReviewsResponse>(result);
+        
+        return Ok(response);
     }
     
     #endregion Books Endpoints
