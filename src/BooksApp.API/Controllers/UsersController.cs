@@ -14,6 +14,7 @@ using BooksApp.Application.Users.Results;
 using BooksApp.Contracts.Errors;
 using BooksApp.Contracts.Roles;
 using BooksApp.Contracts.Users;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -27,11 +28,13 @@ public class UsersController : ApiController
 {
     private readonly ISender _sender;
     private readonly IOutputCacheStore _outputCacheStore;
+    private readonly IMapper _mapster;
 
-    public UsersController(ISender sender, IOutputCacheStore outputCacheStore)
+    public UsersController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
     {
         _sender = sender;
         _outputCacheStore = outputCacheStore;
+        _mapster = mapster;
     }
 
     #region Users endpoints
@@ -46,8 +49,12 @@ public class UsersController : ApiController
     {
         var id = HttpContext.GetId()!.Value;
         var query = new GetSingleUserQuery { Id = id };
+        
         var user = await _sender.Send(query, cancellationToken);
-        return Ok(user);
+
+        var response = _mapster.Map<ExtendedUserResponse>(user);
+        
+        return Ok(response);
     }
 
     [HttpGet(ApiRoutes.Users.GetMany)]
@@ -66,8 +73,12 @@ public class UsersController : ApiController
             Limit = request.PageSize,
             UserId = userId ?? null
         };
+        
         var users = await _sender.Send(query, cancellationToken);
-        return Ok(users);
+        
+        var response = _mapster.Map<UsersResponse>(users);
+        
+        return Ok(response);
     }
 
     [HttpGet(ApiRoutes.Users.GetById)]
@@ -80,7 +91,10 @@ public class UsersController : ApiController
     {
         var query = new GetSingleUserQuery { Id = userId };
         var user = await _sender.Send(query, cancellationToken);
-        return Ok(user);
+        
+        var response = _mapster.Map<ExtendedUserResponse>(user);
+        
+        return Ok(response);
     }
     
     #endregion Get endpoints
@@ -173,8 +187,10 @@ public class UsersController : ApiController
         var result = await _sender.Send(command, cancellationToken);
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
-
-        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+        
+        var response = _mapster.Map<UserResponse>(result);
+        
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, response);
     }
     
     #endregion Authorized
@@ -256,7 +272,9 @@ public class UsersController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
-        return Ok(users);
+        var response = _mapster.Map<UsersResponse>(users);
+        
+        return Ok(response);
     }
     
     [HttpGet(ApiRoutes.Users.GetFollowing)]
@@ -281,8 +299,10 @@ public class UsersController : ApiController
         var users = await _sender.Send(query, cancellationToken);
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
-
-        return Ok(users);
+        
+        var response = _mapster.Map<UsersResponse>(users);
+        
+        return Ok(response);
     }
     
     #endregion Followers
