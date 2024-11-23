@@ -14,7 +14,7 @@ public class BooksMappingConfig : IRegister
         config.NewConfig<BookResult, BookResponse>()
             .Map(dest => dest.Cover, src => src.CoverName)
             .Map(dest => dest.Slug, src => src.ReferentialName)
-            .Map(dest => dest.Author, src => src.Author.Adapt<UserResponse>(config))
+            .Map(dest => dest.Author, src => src.Author.Adapt<ExtendedUserResponse>(config))
             .Map(dest => dest.Genres, 
                 src => src.Genres.Select(x => x.Adapt<GenreResponse>(config)));
         
