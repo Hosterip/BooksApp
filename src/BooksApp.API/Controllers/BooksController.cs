@@ -40,9 +40,9 @@ public class BooksController : ApiController
     
     [HttpGet(ApiRoutes.Books.GetMany)]
     [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
-    [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BooksResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedArray<BookshelfResult>>> GetMany(
+    public async Task<ActionResult<BooksResponse>> GetMany(
         CancellationToken cancellationToken,
         [FromQuery] GetBooksRequest request
     )
@@ -64,9 +64,9 @@ public class BooksController : ApiController
 
     [HttpGet(ApiRoutes.Books.GetSingle)]  
     [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
-    [ProducesResponseType(typeof(BookResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BookResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BookResult>> GetSingle(
+    public async Task<ActionResult<BookResponse>> GetSingle(
         Guid bookId,
         CancellationToken cancellationToken)
     {
@@ -84,9 +84,9 @@ public class BooksController : ApiController
 
     [HttpPost(ApiRoutes.Books.Create)]
     [Authorize(Policies.Author)]
-    [ProducesResponseType(typeof(BookResult), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(BookResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BookResult>> Create(
+    public async Task<ActionResult<BookResponse>> Create(
         [FromBodyOrDefault] CreateBookRequest request,
         CancellationToken cancellationToken
     )
@@ -118,9 +118,9 @@ public class BooksController : ApiController
     
     [HttpPut(ApiRoutes.Books.Update)]
     [Authorize]
-    [ProducesResponseType(typeof(BookResult), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(BookResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BookResult>> Update(
+    public async Task<ActionResult<BookResponse>> Update(
         [FromBodyOrDefault] UpdateBookRequest request,
         CancellationToken cancellationToken)
     {
@@ -195,9 +195,9 @@ public class BooksController : ApiController
     
     [HttpGet(ApiRoutes.Users.GetManyBooks)]
     [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
-    [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BooksResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedArray<BookResult>>> GetManyByUserId(
+    public async Task<ActionResult<BooksResponse>> GetManyByUserId(
         CancellationToken cancellationToken,
         [FromRoute] Guid userId,
         [FromQuery] GetUserBooksRequest request

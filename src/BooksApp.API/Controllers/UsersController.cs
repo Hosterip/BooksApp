@@ -43,8 +43,8 @@ public class UsersController : ApiController
     
     [HttpGet(ApiRoutes.Users.GetMe)]
     [Authorize]
-    [ProducesResponseType(typeof(UserResult), StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserResult>> GetMe(
+    [ProducesResponseType(typeof(ExtendedUserResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ExtendedUserResponse>> GetMe(
         CancellationToken cancellationToken)
     {
         var id = HttpContext.GetId()!.Value;
@@ -59,9 +59,9 @@ public class UsersController : ApiController
 
     [HttpGet(ApiRoutes.Users.GetMany)]
     [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
-    [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UsersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedArray<UserResult>>> GetMany(
+    public async Task<ActionResult<UsersResponse>> GetMany(
         [FromQuery] GetUsersRequest request,
         CancellationToken cancellationToken)
     {
@@ -83,9 +83,9 @@ public class UsersController : ApiController
 
     [HttpGet(ApiRoutes.Users.GetById)]
     [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
-    [ProducesResponseType(typeof(UserResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ExtendedUserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<UserResult>> GetById(
+    public async Task<ActionResult<ExtendedUserResponse>> GetById(
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
@@ -172,9 +172,9 @@ public class UsersController : ApiController
 
     [HttpPut(ApiRoutes.Users.UpdateAvatar)]
     [Authorize]
-    [ProducesResponseType(typeof(UserResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<UserResult>> UpdateAvatar(
+    public async Task<ActionResult<UserResponse>> UpdateAvatar(
         [FromBodyOrDefault] InsertAvatarRequest request,
         CancellationToken cancellationToken)
     {
@@ -250,9 +250,9 @@ public class UsersController : ApiController
     
     [HttpGet(ApiRoutes.Users.GetFollowers)]
     [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
-    [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UsersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedArray<UserResult>>> GetFollowers(
+    public async Task<ActionResult<UsersResponse>> GetFollowers(
         [FromQuery] GetFollowersRequest request,
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
@@ -279,9 +279,9 @@ public class UsersController : ApiController
     
     [HttpGet(ApiRoutes.Users.GetFollowing)]
     [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
-    [ProducesResponseType(typeof(PaginatedArray<UserResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UsersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedArray<UserResult>>> GetFollowing(
+    public async Task<ActionResult<UsersResponse>> GetFollowing(
         [FromQuery] GetFollowingRequest request,
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)

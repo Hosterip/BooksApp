@@ -35,9 +35,9 @@ public class ReviewsController : ApiController
     
     [HttpPost(ApiRoutes.Reviews.Create)]
     [Authorize]
-    [ProducesResponseType(typeof(ReviewResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ReviewResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ReviewResult>> Create(
+    public async Task<ActionResult<ReviewResponse>> Create(
         [FromBodyOrDefault] CreateReviewRequest request,
         CancellationToken cancellationToken)
     {
@@ -60,9 +60,9 @@ public class ReviewsController : ApiController
 
     [HttpPut(ApiRoutes.Reviews.Update)]
     [Authorize]
-    [ProducesResponseType(typeof(ReviewResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ReviewResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ReviewResult>> Update(
+    public async Task<ActionResult<ReviewResponse>> Update(
         [FromBodyOrDefault] UpdateReviewRequest request,
         CancellationToken cancellationToken)
     {
@@ -135,9 +135,9 @@ public class ReviewsController : ApiController
 
     [HttpGet(ApiRoutes.Books.GetReviews)]
     [OutputCache(PolicyName = OutputCache.Reviews.PolicyName)]
-    [ProducesResponseType(typeof(PaginatedArray<ReviewResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ReviewsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedArray<ReviewResult>>> GetReviews(
+    public async Task<ActionResult<ReviewsResponse>> GetReviews(
         [FromRoute] Guid bookId,
         [FromQuery] GetReviewsQuery request,
         CancellationToken cancellationToken)
