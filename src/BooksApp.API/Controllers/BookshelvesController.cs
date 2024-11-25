@@ -15,6 +15,7 @@ using BooksApp.Application.Bookshelves.Queries.GetBookshelves;
 using BooksApp.Application.Common.Results;
 using BooksApp.Contracts.Bookshelves;
 using BooksApp.Contracts.Errors;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,10 +28,13 @@ public class BookshelvesController : ApiController
 {
     private readonly ISender _sender;
     private readonly IOutputCacheStore _outputCacheStore;
-    public BookshelvesController(ISender sender, IOutputCacheStore outputCacheStore)
+    private readonly IMapper _mapster;
+    
+    public BookshelvesController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
     {
         _sender = sender;
         _outputCacheStore = outputCacheStore;
+        _mapster = mapster;
     }
 
     #region Bookshelves endpoints
@@ -185,7 +189,9 @@ public class BookshelvesController : ApiController
         };
         var result = await _sender.Send(query, token);
 
-        return Ok(result);
+        var response = _mapster.Map<BookshelfResponse>(result);
+        
+        return Ok(response);
     }
     
     [HttpGet(ApiRoutes.Users.GetBookshelf)]
