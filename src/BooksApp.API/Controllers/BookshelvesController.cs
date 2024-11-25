@@ -13,6 +13,7 @@ using BooksApp.Application.Bookshelves.Queries.BookshelfByName;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelves;
 using BooksApp.Application.Common.Results;
+using BooksApp.Contracts.Books;
 using BooksApp.Contracts.Bookshelves;
 using BooksApp.Contracts.Errors;
 using MapsterMapper;
@@ -41,9 +42,9 @@ public class BookshelvesController : ApiController
     
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
     [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
-    [ProducesResponseType(typeof(PaginatedArray<BookResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BooksResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedArray<BookResult>>> GetBooks(
+    public async Task<ActionResult<BooksResponse>> GetBooks(
         [FromRoute] Guid bookshelfId,
         [FromQuery] GetBookshelfBooksRequest request,
         CancellationToken token)
@@ -58,14 +59,16 @@ public class BookshelvesController : ApiController
         };
         var result = await _sender.Send(query, token);
 
-        return Ok(result);
+        var response = _mapster.Map<BooksResponse>(result);
+        
+        return Ok(response);
     }
 
     [HttpPost(ApiRoutes.Bookshelves.Create)]
     [Authorize]
     [ProducesResponseType(typeof(BookshelfResult), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BookshelfResult>> Create(
+    public async Task<ActionResult<BookshelfResponse>> Create(
         [FromBodyOrDefault] CreateBookshelfRequest request,
         CancellationToken token)
     {
@@ -78,11 +81,13 @@ public class BookshelvesController : ApiController
         var result = await _sender.Send(command, token);
 
         await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+
+        var response = _mapster.Map<BookshelfResponse>(result);
         
         return CreatedAtAction(
             nameof(GetBookshelf),
             new { nameOrGuid = result.Id, userId },
-            result);
+            response);
     }
     
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
@@ -177,9 +182,9 @@ public class BookshelvesController : ApiController
 
     [HttpGet(ApiRoutes.Users.GetBookshelves)]
     [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
-    [ProducesResponseType(typeof(IEnumerable<BookshelfResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<BookshelfResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<BookshelfResult>>> GetBookshelves(
+    public async Task<ActionResult<IEnumerable<BookshelfResponse>>> GetBookshelves(
         Guid userId,
         CancellationToken token)
     {
@@ -189,16 +194,16 @@ public class BookshelvesController : ApiController
         };
         var result = await _sender.Send(query, token);
 
-        var response = _mapster.Map<BookshelfResponse>(result);
+        var response = _mapster.Map<IEnumerable<BookshelfResponse>>(result);
         
         return Ok(response);
     }
     
     [HttpGet(ApiRoutes.Users.GetBookshelf)]
     [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
-    [ProducesResponseType(typeof(BookshelfResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BookshelfResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BookshelfResult>> GetBookshelf(
+    public async Task<ActionResult<BookshelfResponse>> GetBookshelf(
         [FromRoute] string idOrName,
         [FromRoute] Guid userId,
         CancellationToken token
@@ -217,7 +222,10 @@ public class BookshelvesController : ApiController
             },
             token
         );
-        return Ok(result);
+
+        var response = _mapster.Map<BookshelfResponse>(result!);
+        
+        return Ok(response);
     }
     
     #endregion Users endpoints 
