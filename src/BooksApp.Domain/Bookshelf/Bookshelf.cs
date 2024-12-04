@@ -17,7 +17,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     private Bookshelf(BookshelfId id, User.User user, string name) : base(id)
     {
         User = user;
-        BookshelfBooks = new List<BookshelfBook>();
+        _bookshelfBooks = new List<BookshelfBook>();
         Name = name;
     }
 
@@ -33,7 +33,8 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     public string ReferentialName { get; private set; }
     public User.User? User { get; init; }
-    public List<BookshelfBook> BookshelfBooks { get; }
+    private readonly List<BookshelfBook> _bookshelfBooks = [];
+    public IReadOnlyList<BookshelfBook> BookshelfBooks => _bookshelfBooks.AsReadOnly();
 
     public static Bookshelf Create(User.User user, string name)
     {
@@ -42,12 +43,12 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     public void AddBook(Book.Book book)
     {
-        BookshelfBooks.Add(BookshelfBook.Create(book));
+        _bookshelfBooks.Add(BookshelfBook.Create(book));
     }
 
     public bool RemoveBook(Guid bookId)
     {
-        var deletedCount = BookshelfBooks.RemoveAll(book => book.Book.Id == BookId.CreateBookId(bookId));
+        var deletedCount = _bookshelfBooks.RemoveAll(book => book.Book.Id == BookId.CreateBookId(bookId));
         return deletedCount > 0;
     }
 }

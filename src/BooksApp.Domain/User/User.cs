@@ -36,8 +36,16 @@ public class User : AggregateRoot<UserId>
     private string Salt { get; set; }
     public string SecurityStamp { get; set; }
     public Image.Image? Avatar { get; set; }
-    public List<Relationship> Followers { get; private set; } = [];
-    public List<Relationship> Following { get; private set; } = [];
+    private List<Relationship> _followers = [];
+    public IReadOnlyList<Relationship> Followers 
+    {
+        get { return _following.AsReadOnly(); }
+    }
+    private List<Relationship> _following = [];
+    public IReadOnlyList<Relationship> Following
+    {
+        get { return _following.AsReadOnly(); }
+    }
 
     public static User Create(string email, string firstName, string? middleName, string? lastName, Role.Role role,
         string hash, string salt, Image.Image? avatar)
@@ -82,7 +90,7 @@ public class User : AggregateRoot<UserId>
             throw new DomainException("Can't add yourself to followers");
 
         var item = Relationship.Create(this, follower);
-        Followers.Add(item);
+        _followers.Add(item);
     }
     
     public void RemoveFollower(User follower)
@@ -90,10 +98,10 @@ public class User : AggregateRoot<UserId>
         if (follower.Id == Id)
             throw new DomainException("Can't add yourself to followers");
 
-        if (Followers.Any(f => f.FollowerId != follower.Id))
+        if (_followers.Any(f => f.FollowerId != follower.Id))
             throw new DomainException("No follower to remove");
         
-        Followers.RemoveAll(x => x.FollowerId == follower.Id);
+        _followers.RemoveAll(x => x.FollowerId == follower.Id);
     }
 
 
@@ -102,8 +110,8 @@ public class User : AggregateRoot<UserId>
         if (followerId == null) return (false, false, false);
         var userId = UserId.CreateUserId(followerId);
         var isMe = Id == userId;
-        var isFollowing = !isMe && Followers.Any(x => x.FollowerId == userId);
-        var isFriend = !isMe && isFollowing && Following.Any(x => x.UserId == userId);
+        var isFollowing = !isMe && _followers.Any(x => x.FollowerId == userId);
+        var isFriend = !isMe && isFollowing && _following.Any(x => x.UserId == userId);
         return (isFollowing, isFriend, isMe);
     }
 

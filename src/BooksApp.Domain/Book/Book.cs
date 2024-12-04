@@ -18,7 +18,7 @@ public class Book : AggregateRoot<BookId>
         Cover = cover;
         Author = author;
         ReferentialName = Title.GenerateRefName();
-        Genres = genres;
+        _genres = genres;
     }
 
     private string _title { get; set; }
@@ -38,8 +38,9 @@ public class Book : AggregateRoot<BookId>
     public string Description { get; set; }
     public string ReferentialName { get; private set; }
     public Image.Image Cover { get; set; }
-    public User.User Author { get; }
-    public List<Genre.Genre> Genres { get; private set; }
+    public User.User Author { get; init; }
+    private List<Genre.Genre> _genres;
+    public IReadOnlyList<Genre.Genre> Genres => _genres;
 
     public static Book Create(string title, string description, Image.Image cover, User.User author, List<Genre.Genre> genres)
     {
@@ -53,6 +54,6 @@ public class Book : AggregateRoot<BookId>
     {
         if (genres.Count == 0)
             throw new DomainException("Book must have at least one genre");
-        Genres = genres;
+        _genres = genres;
     }
 }
