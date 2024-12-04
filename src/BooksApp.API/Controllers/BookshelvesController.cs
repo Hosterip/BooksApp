@@ -86,7 +86,7 @@ public class BookshelvesController : ApiController
         
         return CreatedAtAction(
             nameof(GetBookshelf),
-            new { nameOrGuid = result.Id, userId },
+            new { idOrName = result.Id, userId },
             response);
     }
     

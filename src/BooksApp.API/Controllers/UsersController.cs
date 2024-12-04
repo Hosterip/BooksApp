@@ -190,7 +190,7 @@ public class UsersController : ApiController
         
         var response = _mapster.Map<UserResponse>(result);
         
-        return CreatedAtAction(nameof(GetById), new { id = result.Id }, response);
+        return CreatedAtAction(nameof(GetById), new { userId = result.Id }, response);
     }
     
     #endregion Authorized

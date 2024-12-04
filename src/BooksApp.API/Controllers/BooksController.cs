@@ -107,7 +107,7 @@ public class BooksController : ApiController
         
         return CreatedAtAction(
             nameof(GetSingle),
-            new { id = book.Id },
+            new { bookId = book.Id },
             response
             );
     }
@@ -142,7 +142,7 @@ public class BooksController : ApiController
         
         return CreatedAtAction(
             nameof(GetSingle),
-            new { id = result.Id }, 
+            new { bookId = result.Id }, 
             response);
     }
     
