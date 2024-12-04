@@ -18,7 +18,7 @@ public class Role : AggregateRoot<RoleId>
         Name = name;
     }
 
-    public string Name { get; set; }
+    public string Name { get; init; }
 
     public static Role Create(string name)
     {
