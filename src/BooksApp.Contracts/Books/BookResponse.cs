@@ -11,5 +11,7 @@ public class BookResponse
     public required string Description { get; init; }
     public required string Slug { get; init; }
     public required string Cover { get; init; }
+    public required int AverageRating { get; init; }
+    public required int Ratings { get; init; }
     public required IEnumerable<GenreResponse> Genres { get; init; } = [];
 }
