@@ -26,14 +26,14 @@ internal sealed class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarC
         var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
         if (user?.Avatar is null)
         {
-            var image = Image.Create(fileName);
+            var image = Image.Create(fileName!);
             user!.Avatar = image;
             await _unitOfWork.Images.AddAsync(image, cancellationToken);
         }
         else
         {
             _imageFileBuilder.DeleteImage(user.Avatar.ImageName);
-            user.Avatar.ImageName = fileName;
+            user.Avatar.ChangeImageName(fileName!);
         }
 
         await _unitOfWork.SaveAsync(cancellationToken);

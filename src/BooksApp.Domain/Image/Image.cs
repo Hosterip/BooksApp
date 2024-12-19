@@ -14,10 +14,15 @@ public class Image : AggregateRoot<ImageId>
         ImageName = imageName;
     }
 
-    public string ImageName { get; set; }
+    public string ImageName { get; private set; }
 
     public static Image Create(string imageName)
     {
         return new Image(ImageId.CreateImageId(), imageName);
+    }
+
+    public void ChangeImageName(string imageName)
+    {
+        ImageName = imageName;
     }
 }

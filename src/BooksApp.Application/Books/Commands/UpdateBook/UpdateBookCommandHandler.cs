@@ -22,15 +22,15 @@ internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookComma
     {
         var book = await _unitOfWork.Books.GetSingleById(request.Id, cancellationToken);
         if (request.Title != null)
-            book!.Title = request.Title;
+            book!.ChangeTitle(request.Title);
         if (request.Description != null)
-            book!.Description = request.Description;
+            book!.ChangeDescription(request.Description);
         if (request.Image != null)
         {
             _imageFileBuilder.DeleteImage(book!.Cover.ImageName);
             var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
 
-            book!.Cover.ImageName = fileName!;
+            book.Cover.ChangeImageName(fileName!);
         }
 
         var genres = await _unitOfWork.Genres.GetAllByIds(request.GenreIds, cancellationToken);
