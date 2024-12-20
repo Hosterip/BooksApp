@@ -74,11 +74,11 @@ public class AuthController : ApiController
     
     [HttpPost(ApiRoutes.Auth.Logout)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult Logout()
     {
         HttpContext.SignOutAsync();
-        return Ok();
+        return NoContent();
     }
     
     #endregion Authorization endpoints

@@ -92,7 +92,7 @@ public class BookshelvesController : ApiController
     
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Remove(
         [FromRoute] Guid bookshelfId,
@@ -109,7 +109,7 @@ public class BookshelvesController : ApiController
 
         await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
         
-        return Ok();
+        return NoContent();
     }
     
     #endregion Bookshelves endpoints

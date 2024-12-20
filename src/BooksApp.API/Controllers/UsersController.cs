@@ -103,7 +103,7 @@ public class UsersController : ApiController
     
     [HttpDelete(ApiRoutes.Users.Delete)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(
         CancellationToken cancellationToken)
@@ -115,7 +115,7 @@ public class UsersController : ApiController
 
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
-        return Ok();
+        return NoContent();
     }
     
     #endregion Delete endpoints
@@ -126,7 +126,7 @@ public class UsersController : ApiController
     
     [HttpPut(ApiRoutes.Users.UpdateEmail)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateEmail(
         [FromBodyOrDefault] UpdateEmailRequest request,
@@ -144,12 +144,12 @@ public class UsersController : ApiController
 
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
-        return Ok();
+        return NoContent();
     }
 
     [HttpPut(ApiRoutes.Users.UpdateName)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateName(
         [FromBodyOrDefault] UpdateNameRequest request,
@@ -167,7 +167,7 @@ public class UsersController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
-        return Ok();
+        return NoContent();
     }
 
     [HttpPut(ApiRoutes.Users.UpdateAvatar)]
@@ -199,7 +199,7 @@ public class UsersController : ApiController
     
     [HttpPut(ApiRoutes.Users.UpdateRole)]
     [Authorize(Policies.Admin)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateRole(
         [FromBodyOrDefault] ChangeRoleRequest request,
@@ -216,7 +216,7 @@ public class UsersController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
-        return Ok();
+        return NoContent();
     }
     
     #endregion Priveleged
@@ -229,7 +229,7 @@ public class UsersController : ApiController
     
     [HttpPut(ApiRoutes.Users.AddFollower)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddRemoveFollower(
         [FromRoute] Guid followingId,
@@ -245,7 +245,7 @@ public class UsersController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
-        return Ok();
+        return NoContent();
     }
     
     [HttpGet(ApiRoutes.Users.GetFollowers)]

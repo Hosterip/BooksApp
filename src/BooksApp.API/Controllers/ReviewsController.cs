@@ -87,7 +87,7 @@ public class ReviewsController : ApiController
     
     [HttpDelete(ApiRoutes.Reviews.Delete)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(
         [FromRoute] Guid id,
@@ -103,12 +103,12 @@ public class ReviewsController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
         
-        return Ok();
+        return NoContent();
     }
 
     [HttpDelete(ApiRoutes.Reviews.PrivilegedDelete)]
     [Authorize(Policies.Moderator)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PrivilegedDelete(
         [FromRoute] Guid id,
@@ -124,7 +124,7 @@ public class ReviewsController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
         
-        return Ok();
+        return NoContent();
     }
     
     #endregion Delete endpoints

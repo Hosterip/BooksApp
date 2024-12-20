@@ -152,7 +152,7 @@ public class BooksController : ApiController
     
     [HttpDelete(ApiRoutes.Books.Delete)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(
         Guid id,
@@ -164,12 +164,12 @@ public class BooksController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
         
-        return Ok();
+        return NoContent();
     }
 
     [HttpDelete(ApiRoutes.Books.PrivilegedDelete)]
     [Authorize(Policies.Admin)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PrivilegedDelete(
         Guid id,
@@ -184,7 +184,7 @@ public class BooksController : ApiController
         
         await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
         
-        return Ok();
+        return NoContent();
     }
     
     #endregion Delete endpoints
