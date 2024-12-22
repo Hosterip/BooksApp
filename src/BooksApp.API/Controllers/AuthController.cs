@@ -54,7 +54,7 @@ public class AuthController : ApiController
         return CreatedAtAction(
             nameof(UsersController.GetById),
             "Users",
-            new { id = user.Id },
+            new { userId = user.Id },
             user.Adapt<UserResponse>());
     }
 
