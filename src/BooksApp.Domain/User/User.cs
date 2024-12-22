@@ -31,10 +31,10 @@ public class User : AggregateRoot<UserId>
     public string FirstName { get; private set; }
     public string? MiddleName { get; private set; }
     public string? LastName { get; private set; }
-    public Role.Role Role { get; set; }
+    public Role.Role Role { get; private set; }
     private string Hash { get; set; }
     private string Salt { get; set; }
-    public string SecurityStamp { get; set; }
+    public string SecurityStamp { get; private set; }
     public Image.Image? Avatar { get; set; }
     private List<Relationship> _followers = [];
     public IReadOnlyList<Relationship> Followers 
@@ -82,6 +82,16 @@ public class User : AggregateRoot<UserId>
         
         MiddleName = string.IsNullOrWhiteSpace(middleName) ? null : middleName;
         LastName = string.IsNullOrWhiteSpace(lastName) ? null : lastName;
+    }
+
+    public void ChangeRole(Role.Role role)
+    {
+        Role = role;
+    }
+
+    public void ChangeSecurityStamp()
+    {
+        SecurityStamp = Guid.NewGuid().ToString();
     }
 
     public void AddFollower(User follower)
