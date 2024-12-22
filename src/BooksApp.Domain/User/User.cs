@@ -104,6 +104,10 @@ public class User : AggregateRoot<UserId>
         _followers.RemoveAll(x => x.FollowerId == follower.Id);
     }
 
+    public bool HasFollower(UserId userId)
+    {
+        return _followers.Any(x => x.UserId == userId);
+    }
 
     public (bool IsFollowing, bool IsFriend, bool IsMe) ViewerRelationship(Guid? followerId)
     {

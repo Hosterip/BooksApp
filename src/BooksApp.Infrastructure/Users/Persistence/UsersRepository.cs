@@ -6,7 +6,6 @@ using BooksApp.Application.Users.Results;
 using BooksApp.Domain.User;
 using BooksApp.Domain.User.ValueObjects;
 using BooksApp.Infrastructure.Common.Persistence;
-using BooksApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BooksApp.Infrastructure.Users.Persistence;
@@ -156,32 +155,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     cancellationToken: token);
     }
 
-    public async Task AddFollower(
-        Guid userId,
-        Guid followerId,
-        CancellationToken token = default)
-    {
-        var user = await GetUserWithRelationships(userId, token);
-        var follower = await GetUserWithRelationships(followerId, token);
-        if (user != null &&
-            follower != null &&
-            user.Id != follower.Id)
-            user.AddFollower(follower);
-    }
-
-    public async Task RemoveFollower(
-        Guid userId,
-        Guid followerId,
-        CancellationToken token = default)
-    {
-        var user = await GetUserWithRelationships(userId, token);
-        var follower = await GetUserWithRelationships(followerId, token);
-        if (user != null &&
-            follower != null &&
-            user.Followers.Any(f => f.Id == follower.Id))
-            user.RemoveFollower(follower);
-    }
-
     public async Task<int> CountFollowers(
         Guid userId,
         CancellationToken token = default)
@@ -195,7 +168,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             .CountAsync(cancellationToken: token);
     }
 
-    private async Task<User?> GetUserWithRelationships(Guid userId, CancellationToken token)
+    public async Task<User?> GetUserWithRelationshipsById(Guid userId, CancellationToken token)
     {
         return await DbContext.Users
             .Include(x => x.Followers)
