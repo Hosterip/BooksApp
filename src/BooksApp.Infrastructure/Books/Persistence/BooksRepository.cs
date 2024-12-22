@@ -31,18 +31,20 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         Guid? genreId)
     {
         IQueryable<Book> bookQueryable = DbContext.Books
+            .AsNoTracking()
             .Include(b => b.Author.Followers)
-            .Include(b => b.Author.Following);;
+            .Include(b => b.Author.Following);
 
 
         if (!string.IsNullOrWhiteSpace(title))
             bookQueryable = bookQueryable.Where(book => book.Title.Contains(title));
-        
+
         if (userId != null)
             bookQueryable = bookQueryable.Where(book => book.Author.Id == UserId.CreateUserId(userId));
 
         if (genreId != null)
-            bookQueryable = bookQueryable.Where(book => book.Genres.Any(genre => genre.Id == GenreId.CreateGenreId(genreId)));
+            bookQueryable =
+                bookQueryable.Where(book => book.Genres.Any(genre => genre.Id == GenreId.CreateGenreId(genreId)));
 
         var result = await
             ConvertToBookResult(bookQueryable, DbContext.Reviews, currentUserId)
@@ -59,6 +61,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         if (!await DbContext.Bookshelves
                 .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))) return null;
         var queryable = DbContext.Bookshelves
+            .AsNoTracking()
             .Include(bookshelf => bookshelf.BookshelfBooks)
             .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
@@ -73,9 +76,11 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
 
     public async Task<Book?> GetSingleById(Guid guid, CancellationToken token = default)
     {
-        return await DbContext.Books.SingleOrDefaultAsync(
-            book => book.Id == BookId.CreateBookId(guid),
-            cancellationToken: token);
+        return await DbContext.Books
+            .AsNoTracking()
+            .SingleOrDefaultAsync(
+                book => book.Id == BookId.CreateBookId(guid),
+                cancellationToken: token);
     }
 
     public async Task<bool> AnyById(Guid guid, CancellationToken token = default)
@@ -156,14 +161,14 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                     LastName = book.Author.LastName,
                     AvatarName = book.Author.Avatar == null ? null : book.Author.Avatar.ImageName,
                     Role = book.Author.Role.Name,
-                    ViewerRelationship = currentUserId == null 
+                    ViewerRelationship = currentUserId == null
                         ? null
                         : new ViewerRelationship
-                    {
-                        IsFollowing = viewerRelationship.IsFollowing,
-                        IsFriend = viewerRelationship.IsFriend,
-                        IsMe = viewerRelationship.IsMe
-                    }
+                        {
+                            IsFollowing = viewerRelationship.IsFollowing,
+                            IsFriend = viewerRelationship.IsFriend,
+                            IsMe = viewerRelationship.IsMe
+                        }
                 },
                 AverageRating = ratingStatistics.AverageRating,
                 Ratings = ratingStatistics.Ratings,

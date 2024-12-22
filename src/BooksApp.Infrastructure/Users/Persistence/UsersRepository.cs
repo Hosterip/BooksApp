@@ -117,6 +117,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         CancellationToken token = default)
     {
         return await DbContext.Users
+            .AsNoTracking()
             .SingleOrDefaultAsync(
                 user => user.Id == UserId.CreateUserId(guid),
                 cancellationToken: token);
