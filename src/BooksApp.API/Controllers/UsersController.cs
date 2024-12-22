@@ -175,7 +175,7 @@ public class UsersController : ApiController
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserResponse>> UpdateAvatar(
-        [FromBodyOrDefault] InsertAvatarRequest request,
+        [FromForm] InsertAvatarRequest request,
         CancellationToken cancellationToken)
     {
         var command = new InsertAvatarCommand
