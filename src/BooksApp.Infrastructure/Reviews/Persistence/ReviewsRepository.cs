@@ -22,7 +22,6 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         return await
             (
                 from review in DbContext.Reviews
-                    .AsNoTracking()
                     .Include(r => r.User.Followers)
                     .Include(r => r.User.Following)
                 where review.Book.Id == BookId.CreateBookId(bookId)
@@ -62,7 +61,6 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         CancellationToken token = default)
     {
         return await DbContext.Reviews
-            .AsNoTracking()
             .SingleOrDefaultAsync(
                 review => review.Id == ReviewId.CreateReviewId(reviewId),
                 cancellationToken: token);

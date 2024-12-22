@@ -31,7 +31,6 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         Guid? genreId)
     {
         IQueryable<Book> bookQueryable = DbContext.Books
-            .AsNoTracking()
             .Include(b => b.Author.Followers)
             .Include(b => b.Author.Following);
 
@@ -61,13 +60,12 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         if (!await DbContext.Bookshelves
                 .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))) return null;
         var queryable = DbContext.Bookshelves
-            .AsNoTracking()
             .Include(bookshelf => bookshelf.BookshelfBooks)
             .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
-            .Select(bb => bb.Book)
-            .Include(b => b.Author.Followers)
-            .Include(b => b.Author.Following);
+            .Include(b => b.Book.Author.Followers)
+            .Include(b => b.Book.Author.Following)
+            .Select(bb => bb.Book);
         var result =
             await ConvertToBookResult(queryable, DbContext.Reviews, currentUserId)
                 .PaginationAsync(page, limit);
@@ -77,7 +75,6 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     public async Task<Book?> GetSingleById(Guid guid, CancellationToken token = default)
     {
         return await DbContext.Books
-            .AsNoTracking()
             .SingleOrDefaultAsync(
                 book => book.Id == BookId.CreateBookId(guid),
                 cancellationToken: token);

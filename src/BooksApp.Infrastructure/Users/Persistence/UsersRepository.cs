@@ -44,7 +44,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         return await (
                 from relationship in DbContext.Users
-                    .AsNoTracking()
                     .Where(x => x.Id == UserId.CreateUserId(userId))
                     .Include(x => x.Followers)
                     .SelectMany(x => x.Followers)
@@ -82,7 +81,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         return await (
                 from relationship in DbContext.Users
-                    .AsNoTracking()
                     .Where(x => x.Id == UserId.CreateUserId(userId))
                     .Include(x => x.Following)
                     .SelectMany(x => x.Following)
@@ -126,7 +124,8 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         Guid guid,
         CancellationToken token = default)
     {
-        return await DbContext.Users.AnyAsync(
+        return await DbContext.Users
+            .AnyAsync(
             user => user.Id == UserId.CreateUserId(guid),
             cancellationToken: token);
     }

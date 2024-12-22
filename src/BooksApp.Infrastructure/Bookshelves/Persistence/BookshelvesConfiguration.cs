@@ -2,6 +2,7 @@
 using BooksApp.Domain.Bookshelf;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.User.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,9 +24,11 @@ public class BookshelvesConfiguration : IEntityTypeConfiguration<Bookshelf>
             .HasMaxLength((int)BookshelfMaxLengths.Name)
             .IsRequired();
 
-        builder.HasOne(b => b.User)
-            .WithMany()
-            .OnDelete(DeleteBehavior.SetNull);
+        builder.Property(b => b.UserId)
+            .ValueGeneratedNever()
+            .HasConversion(
+                id => id.Value,
+                value => UserId.CreateUserId(value));
 
         builder.OwnsMany(b => b.BookshelfBooks, bb =>
         {
@@ -44,8 +47,5 @@ public class BookshelvesConfiguration : IEntityTypeConfiguration<Bookshelf>
             bb.Navigation(b => b.Book)
                 .AutoInclude();
         });
-
-        builder.Navigation(b => b.User)
-            .AutoInclude();
     }
 }

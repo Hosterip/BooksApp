@@ -16,7 +16,6 @@ public class GenresRepository : GenericRepository<Genre>, IGenresRepository
     {
         var parsedGenreIds = genreIds.Select(x => GenreId.CreateGenreId(x));
         var result = await DbContext.Genres
-            .AsNoTracking()
             .Where(x => parsedGenreIds.Contains(x.Id)).ToListAsync(token);
         return result;
     }

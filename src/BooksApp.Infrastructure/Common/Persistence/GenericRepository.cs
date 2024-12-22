@@ -12,7 +12,6 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
     public virtual async Task<IEnumerable<T>> GetAllAsync(CancellationToken token = default)
     {
         return await DbContext.Set<T>()
-            .AsNoTracking()
             .ToListAsync(token);
     }
 
@@ -21,7 +20,6 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
         CancellationToken token = default)
     {
         return await DbContext.Set<T>()
-            .AsNoTracking()
             .Where(expression)
             .ToListAsync(token);
     }
@@ -31,7 +29,7 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
         CancellationToken token = default)
     {
         return await DbContext.Set<T>()
-            .AsNoTracking()
+            .AsTracking()
             .SingleOrDefaultAsync(expression, cancellationToken: token);
     }
 
@@ -57,10 +55,10 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
         return Task.CompletedTask;
     }
 
-    public Task Update(T entity)
+    public virtual Task Update(T entity)
     {
         DbContext.Set<T>().Update(entity);
-
+        
         return Task.CompletedTask;
     }
 }

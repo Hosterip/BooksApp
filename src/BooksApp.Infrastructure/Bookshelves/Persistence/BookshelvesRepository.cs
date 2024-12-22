@@ -3,6 +3,7 @@ using BooksApp.Domain.Book.ValueObjects;
 using BooksApp.Domain.Bookshelf;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common.Utils;
+using BooksApp.Domain.User;
 using BooksApp.Domain.User.ValueObjects;
 using BooksApp.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
         var refName = name.GenerateRefName();
         return await DbContext.Bookshelves
             .AnyAsync(
-                bookshelf => bookshelf.User != null &&
-                             bookshelf.User.Id == UserId.CreateUserId(userId) &&
+                bookshelf => bookshelf.UserId == UserId.CreateUserId(userId) &&
                              bookshelf.ReferentialName == refName,
                 cancellationToken: token);
     }
@@ -48,9 +48,8 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
     {
         var refName = name.GenerateRefName();
         return await DbContext.Bookshelves
-            .Where(bookshelf => bookshelf.User != null &&
-                                bookshelf.ReferentialName == refName &&
-                                bookshelf.User.Id == UserId.CreateUserId(userId))
+            .Where(bookshelf => bookshelf.ReferentialName == refName &&
+                                bookshelf.UserId == UserId.CreateUserId(userId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
             .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId),
                 cancellationToken: token);
@@ -60,9 +59,8 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
     {
         var refName = name.GenerateRefName();
         return await DbContext.Bookshelves
-            .SingleOrDefaultAsync(
-                bookshelf => bookshelf.User != null &&
-                             bookshelf.User.Id == UserId.CreateUserId(userId) &&
+            .FirstOrDefaultAsync(
+                bookshelf => bookshelf.UserId == UserId.CreateUserId(userId) &&
                              bookshelf.ReferentialName == refName,
                 cancellationToken: token);
     }
@@ -70,8 +68,16 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
     public async Task<Bookshelf?> GetSingleById(Guid bookshelfId, CancellationToken token = default)
     {
         return await DbContext.Bookshelves
+            .AsSplitQuery()
             .SingleOrDefaultAsync(
                 bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId),
                 cancellationToken: token);
+    }
+
+    public override Task Update(Bookshelf entity)
+    {
+        DbContext.Update(entity);
+        
+        return Task.CompletedTask;
     }
 }

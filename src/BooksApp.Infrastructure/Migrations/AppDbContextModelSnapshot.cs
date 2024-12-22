@@ -70,12 +70,10 @@ namespace PostsApp.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Bookshelves");
                 });
@@ -295,11 +293,6 @@ namespace PostsApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("BooksApp.Domain.Bookshelf.Bookshelf", b =>
                 {
-                    b.HasOne("BooksApp.Domain.User.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.OwnsMany("BooksApp.Domain.Bookshelf.Entities.BookshelfBook", "BookshelfBooks", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -332,8 +325,6 @@ namespace PostsApp.Infrastructure.Data.Migrations
                         });
 
                     b.Navigation("BookshelfBooks");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BooksApp.Domain.Review.Review", b =>
