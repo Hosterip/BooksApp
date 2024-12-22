@@ -9,5 +9,6 @@ public interface IGenericRepository<T> where T : class
     Task<T?> GetSingleWhereAsync(Expression<Func<T, bool>> expression, CancellationToken token = default);
     Task<bool> AnyAsync(Expression<Func<T, bool>> expression, CancellationToken token = default);
     Task AddAsync(T entity, CancellationToken token = default);
-    void Remove(T entity);
+    Task Remove(T entity);
+    Task Update(T entity);
 }

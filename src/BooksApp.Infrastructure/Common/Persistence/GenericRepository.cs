@@ -4,50 +4,63 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BooksApp.Infrastructure.Common.Persistence;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class
+public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRepository<T>
+    where T : class
 {
-    public AppDbContext _dbContext;
+    protected readonly AppDbContext DbContext = dbContext;
 
-    public GenericRepository(AppDbContext dbContext)
+    public virtual async Task<IEnumerable<T>> GetAllAsync(CancellationToken token = default)
     {
-        _dbContext = dbContext;
-    }
-
-    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken token = default)
-    {
-        return await _dbContext.Set<T>().ToListAsync(token);
+        return await DbContext.Set<T>()
+            .AsNoTracking()
+            .ToListAsync(token);
     }
 
     public virtual async Task<IEnumerable<T>> GetAllWhereAsync(
         Expression<Func<T, bool>> expression,
         CancellationToken token = default)
     {
-        return await _dbContext.Set<T>().Where(expression).ToListAsync(token);
+        return await DbContext.Set<T>()
+            .AsNoTracking()
+            .Where(expression)
+            .ToListAsync(token);
     }
 
     public virtual async Task<T?> GetSingleWhereAsync(
         Expression<Func<T, bool>> expression,
         CancellationToken token = default)
     {
-        return await _dbContext.Set<T>().SingleOrDefaultAsync(expression, cancellationToken: token);
+        return await DbContext.Set<T>()
+            .AsNoTracking()
+            .SingleOrDefaultAsync(expression, cancellationToken: token);
     }
 
     public virtual async Task<bool> AnyAsync(
         Expression<Func<T, bool>> expression,
         CancellationToken token = default)
     {
-        return await _dbContext.Set<T>().AnyAsync(expression, cancellationToken: token);
+        return await DbContext.Set<T>()
+            .AnyAsync(expression, cancellationToken: token);
     }
 
     public async Task AddAsync(
         T entity,
         CancellationToken token = default)
     {
-        await _dbContext.Set<T>().AddAsync(entity, cancellationToken: token);
+        await DbContext.Set<T>().AddAsync(entity, cancellationToken: token);
     }
 
-    public void Remove(T entity)
+    public Task Remove(T entity)
     {
-        _dbContext.Set<T>().Remove(entity);
+        DbContext.Set<T>().Remove(entity);
+
+        return Task.CompletedTask;
+    }
+
+    public Task Update(T entity)
+    {
+        DbContext.Set<T>().Update(entity);
+
+        return Task.CompletedTask;
     }
 }

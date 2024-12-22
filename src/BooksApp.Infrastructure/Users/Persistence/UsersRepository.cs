@@ -23,7 +23,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         int limit,
         string query)
     {
-        IQueryable<User> queryable = _dbContext.Users
+        IQueryable<User> queryable = DbContext.Users
             .AsNoTracking()
             .Include(x => x.Followers);
 
@@ -44,12 +44,12 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         string query)
     {
         return await (
-                from relationship in _dbContext.Users
+                from relationship in DbContext.Users
                     .AsNoTracking()
                     .Where(x => x.Id == UserId.CreateUserId(userId))
                     .Include(x => x.Followers)
                     .SelectMany(x => x.Followers)
-                join user in _dbContext.Users 
+                join user in DbContext.Users 
                     on relationship.FollowerId equals user.Id
                 where query == null || user.FirstName.Contains(query)
                 let viewerRelationship = user.ViewerRelationship(currentUserId)
@@ -82,12 +82,12 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         string query)
     {
         return await (
-                from relationship in _dbContext.Users
+                from relationship in DbContext.Users
                     .AsNoTracking()
                     .Where(x => x.Id == UserId.CreateUserId(userId))
                     .Include(x => x.Following)
                     .SelectMany(x => x.Following)
-                join user in _dbContext.Users 
+                join user in DbContext.Users 
                     on relationship.UserId equals user.Id
                 where query == null || user.FirstName.Contains(query)
                 let viewerRelationship = user.ViewerRelationship(currentUserId)
@@ -116,7 +116,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         Guid guid,
         CancellationToken token = default)
     {
-        return await _dbContext.Users
+        return await DbContext.Users
             .SingleOrDefaultAsync(
                 user => user.Id == UserId.CreateUserId(guid),
                 cancellationToken: token);
@@ -126,7 +126,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         Guid guid,
         CancellationToken token = default)
     {
-        return await _dbContext.Users.AnyAsync(
+        return await DbContext.Users.AnyAsync(
             user => user.Id == UserId.CreateUserId(guid),
             cancellationToken: token);
     }
@@ -137,7 +137,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         if (new EmailAddressAttribute().IsValid(email) != true) return false;
         var parsedEmail = email.Trim().ToLower();
-        return await _dbContext.Users.AnyAsync(user => user.Email == parsedEmail, cancellationToken: token);
+        return await DbContext.Users.AnyAsync(user => user.Email == parsedEmail, cancellationToken: token);
     }
 
     public async Task<bool> AnyFollower(
@@ -146,7 +146,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         CancellationToken token = default)
     {
         return
-            await _dbContext.Users
+            await DbContext.Users
                 .Take(1)
                 .Where(u => u.Id == UserId.CreateUserId(userId))
                 .SelectMany(u => u.Followers)
@@ -186,7 +186,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         CancellationToken token = default)
     {
         var parsedUserId = UserId.CreateUserId(userId);
-        return await _dbContext.Users
+        return await DbContext.Users
             .Include(x => x.Followers)
             .Take(1)
             .Where(x => x.Id == parsedUserId)
@@ -196,7 +196,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 
     private async Task<User?> GetUserWithRelationships(Guid userId, CancellationToken token)
     {
-        return await _dbContext.Users
+        return await DbContext.Users
             .Include(x => x.Followers)
             .Include(x => x.Following)
             .FirstOrDefaultAsync(x => x.Id == UserId.CreateUserId(userId), token);

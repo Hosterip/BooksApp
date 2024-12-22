@@ -21,7 +21,7 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
     {
         return await
             (
-                from review in _dbContext.Reviews
+                from review in DbContext.Reviews
                     .Include(r => r.User.Followers)
                     .Include(r => r.User.Following)
                 where review.Book.Id == BookId.CreateBookId(bookId)
@@ -60,7 +60,7 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         Guid reviewId,
         CancellationToken token = default)
     {
-        return await _dbContext.Reviews
+        return await DbContext.Reviews
             .SingleOrDefaultAsync(
                 review => review.Id == ReviewId.CreateReviewId(reviewId),
                 cancellationToken: token);
@@ -70,7 +70,7 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         Guid reviewId,
         CancellationToken token = default)
     {
-        return await _dbContext.Reviews.AnyAsync(
+        return await DbContext.Reviews.AnyAsync(
             review => review.Id == ReviewId.CreateReviewId(reviewId),
             cancellationToken: token);
     }
