@@ -20,7 +20,7 @@ internal sealed class GetBookshelvesQueryHandler : IRequestHandler<GetBookshelve
     {
         var rawBookshelves = await _unitOfWork.Bookshelves
             .GetAllWhereAsync(bookshelf =>
-                bookshelf.User != null && bookshelf.User.Id == UserId.CreateUserId(request.UserId), cancellationToken);
+                bookshelf.UserId == UserId.CreateUserId(request.UserId), cancellationToken);
         var bookshelves =
             rawBookshelves.Select(bookshelf => _mapper.Map<BookshelfResult>(bookshelf)).ToList();
         return bookshelves;

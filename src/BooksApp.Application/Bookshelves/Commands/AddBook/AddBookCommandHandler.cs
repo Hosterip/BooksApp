@@ -16,7 +16,10 @@ internal sealed class AddBookCommandHandler : IRequestHandler<AddBookCommand>
     {
         var bookshelf = await _unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
         var book = await _unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
+        
         bookshelf!.AddBook(book!);
+
+        await _unitOfWork.Bookshelves.Update(bookshelf);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

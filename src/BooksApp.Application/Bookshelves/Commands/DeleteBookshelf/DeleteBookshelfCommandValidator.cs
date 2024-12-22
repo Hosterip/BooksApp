@@ -23,7 +23,7 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
             {
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
 
-                return bookshelf != null && bookshelf.User?.Id.Value == request.UserId;
+                return bookshelf != null && bookshelf.UserId.Value == request.UserId;
             })
             .WithName(nameof(DeleteBookshelfCommand.UserId))
             .WithMessage(BookshelfValidationMessages.NotYours);

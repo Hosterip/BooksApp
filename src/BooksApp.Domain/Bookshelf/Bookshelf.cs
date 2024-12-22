@@ -3,6 +3,7 @@ using BooksApp.Domain.Bookshelf.Entities;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.Common.Utils;
+using BooksApp.Domain.User.ValueObjects;
 
 namespace BooksApp.Domain.Bookshelf;
 
@@ -16,7 +17,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     private Bookshelf(BookshelfId id, User.User user, string name) : base(id)
     {
-        User = user;
+        UserId = user.Id;
         _bookshelfBooks = new List<BookshelfBook>();
         Name = name;
     }
@@ -32,7 +33,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     }
 
     public string ReferentialName { get; private set; }
-    public User.User? User { get; init; }
+    public UserId UserId { get; init; }
     private readonly List<BookshelfBook> _bookshelfBooks = [];
     public IReadOnlyList<BookshelfBook> BookshelfBooks => _bookshelfBooks.AsReadOnly();
 

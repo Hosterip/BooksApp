@@ -18,7 +18,7 @@ public sealed class RemoveBookCommandValidator : AbstractValidator<RemoveBookCom
             .MustAsync(async (request, cancellationToken) =>
             {
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
-                return bookshelf == null || bookshelf.User?.Id.Value == request.UserId;
+                return bookshelf == null || bookshelf.UserId.Value == request.UserId;
             })
             .WithMessage(BookshelfValidationMessages.NotYours)
             .WithName(nameof(RemoveBookCommand.UserId));

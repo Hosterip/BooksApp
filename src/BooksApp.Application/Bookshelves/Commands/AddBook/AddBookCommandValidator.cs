@@ -15,7 +15,7 @@ public sealed class AddBookCommandValidator : AbstractValidator<AddBookCommand>
         
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId, request.BookId, cancellationToken))
+                !await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId, request.BookId, cancellationToken))
             .WithMessage(BookshelfValidationMessages.AlreadyExists)
             .WithName(nameof(AddBookCommand.BookId));
 
@@ -23,7 +23,7 @@ public sealed class AddBookCommandValidator : AbstractValidator<AddBookCommand>
             .MustAsync(async (request, cancellationToken) =>
             {
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
-                return bookshelf == null || bookshelf.User?.Id.Value == request.UserId;
+                return bookshelf == null || bookshelf.UserId.Value == request.UserId;
             })
             .WithMessage(BookshelfValidationMessages.NotYours)
             .WithName(nameof(AddBookCommand.UserId)); 

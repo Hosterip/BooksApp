@@ -16,10 +16,7 @@ internal sealed class AddBookByNameCommandHandler : IRequestHandler<AddBookByNam
 
     public async Task Handle(AddBookByNameCommand request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetSingleWhereAsync(bookshelf =>
-            bookshelf.Name == request.BookshelfName &&
-            bookshelf.User != null &&
-            bookshelf.User.Id == UserId.CreateUserId(request.UserId), cancellationToken);
+        var bookshelf = await _unitOfWork.Bookshelves.GetBookshelfByName(request.BookshelfName, request.UserId, cancellationToken);
         if (bookshelf is null)
         {
             var user = await _unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
@@ -29,6 +26,7 @@ internal sealed class AddBookByNameCommandHandler : IRequestHandler<AddBookByNam
 
         var book = await _unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
         bookshelf!.AddBook(book!);
+
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }
