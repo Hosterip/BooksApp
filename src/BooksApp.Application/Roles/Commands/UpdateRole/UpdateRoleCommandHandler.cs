@@ -20,7 +20,10 @@ internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleComma
     {
         var user = await _unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
         var role = await _unitOfWork.Roles.GetSingleWhereAsync(role => role.Name == request.Role, cancellationToken);
-        user!.Role = role!;
+        
+        user!.ChangeRole(role!);
+        
+        await _unitOfWork.Users.Update(user);
         await _unitOfWork.SaveAsync(cancellationToken);
         return _mapper.Map<UserResult>(user);
     }

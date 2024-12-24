@@ -1,6 +1,7 @@
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
 using BooksApp.Domain.Common.Interfaces;
+using BooksApp.Domain.Role;
 using BooksApp.Domain.User;
 using MapsterMapper;
 using MediatR;
@@ -38,6 +39,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
             null
         );
 
+        await _unitOfWork.Roles.Update(memberRole!);
         await _unitOfWork.Users.AddAsync(user, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
         return _mapper.Map<AuthResult>(user!);

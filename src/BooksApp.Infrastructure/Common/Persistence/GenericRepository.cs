@@ -29,7 +29,6 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
         CancellationToken token = default)
     {
         return await DbContext.Set<T>()
-            .AsTracking()
             .SingleOrDefaultAsync(expression, cancellationToken: token);
     }
 

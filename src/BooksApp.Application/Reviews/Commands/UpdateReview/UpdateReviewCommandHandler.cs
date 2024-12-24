@@ -23,6 +23,7 @@ internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewC
         review!.Rating = request.Rating;
         review.Body = request.Body;
 
+        await _unitOfWork.Reviews.Update(review);
         await _unitOfWork.SaveAsync(cancellationToken);
 
         return _mapper.Map<ReviewResult>(review);

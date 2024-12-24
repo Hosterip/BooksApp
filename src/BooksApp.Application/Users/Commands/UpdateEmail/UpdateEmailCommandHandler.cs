@@ -17,6 +17,7 @@ internal sealed class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCom
         var user = await _unitOfWork.Users.GetSingleById(request.Id, cancellationToken);
         user!.ChangeEmail(request.Email);
 
+        await _unitOfWork.Users.Update(user);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

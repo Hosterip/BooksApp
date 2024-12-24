@@ -19,6 +19,8 @@ internal sealed class UpdateNameCommandHandler : IRequestHandler<UpdateNameComma
             request.FirstName,
             request.MiddleName,
             request.LastName);
+
+        await _unitOfWork.Users.Update(user);
         await _unitOfWork.SaveAsync(cancellationToken);
     }
 }

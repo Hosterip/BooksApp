@@ -29,15 +29,19 @@ internal sealed class InsertAvatarCommandHandler : IRequestHandler<InsertAvatarC
             var image = Image.Create(fileName!);
             user!.Avatar = image;
             await _unitOfWork.Images.AddAsync(image, cancellationToken);
+            
+            await _unitOfWork.Users.Update(user);
         }
         else
         {
             _imageFileBuilder.DeleteImage(user.Avatar.ImageName);
             user.Avatar.ChangeImageName(fileName!);
+            
+            await _unitOfWork.Images.Update(user.Avatar);
         }
 
         await _unitOfWork.SaveAsync(cancellationToken);
-
+        
         return _mapper.Map<UserResult>(user);
     }
 }
