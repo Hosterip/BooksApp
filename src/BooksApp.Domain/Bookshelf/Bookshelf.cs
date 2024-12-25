@@ -1,6 +1,7 @@
 ﻿using BooksApp.Domain.Book.ValueObjects;
 using BooksApp.Domain.Bookshelf.Entities;
 using BooksApp.Domain.Bookshelf.ValueObjects;
+using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.Common.Utils;
 using BooksApp.Domain.User.ValueObjects;
@@ -9,8 +10,6 @@ namespace BooksApp.Domain.Bookshelf;
 
 public class Bookshelf : AggregateRoot<BookshelfId>
 {
-    private string _name;
-
     private Bookshelf(BookshelfId id) : base(id)
     {
     }
@@ -20,17 +19,10 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         UserId = user.Id;
         _bookshelfBooks = new List<BookshelfBook>();
         Name = name;
+        ReferentialName = name.GenerateRefName();
     }
 
-    public string Name
-    {
-        get => _name;
-        set
-        {
-            _name = value;
-            ReferentialName = _name.GenerateRefName();
-        }
-    }
+    public string Name { get; private set; }
 
     public string ReferentialName { get; private set; }
     public UserId UserId { get; init; }
@@ -40,6 +32,22 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     public static Bookshelf Create(User.User user, string name)
     {
         return new Bookshelf(BookshelfId.CreateBookshelfId(), user, name);
+    }
+
+    public void ChangeName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Name could not be empty");
+        
+        Name = name
+            .TrimStart()
+            .TrimEnd();
+        ReferentialName = name.GenerateRefName();
+    }
+    
+    public bool HasBook(BookId bookId)
+    {
+        return _bookshelfBooks.Any(x => x.Book.Id == bookId);
     }
 
     public void AddBook(Book.Book book)

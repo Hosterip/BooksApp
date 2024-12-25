@@ -20,8 +20,8 @@ internal sealed class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewC
     {
         var review = await _unitOfWork.Reviews.GetSingleById(request.ReviewId, cancellationToken);
 
-        review!.Rating = request.Rating;
-        review.Body = request.Body;
+        review!.ChangeRating(request.Rating);
+        review.ChangeBody(request.Body);
 
         await _unitOfWork.Reviews.Update(review);
         await _unitOfWork.SaveAsync(cancellationToken);

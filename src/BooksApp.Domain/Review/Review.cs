@@ -1,4 +1,5 @@
-﻿using BooksApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.Review.ValueObjects;
 
 namespace BooksApp.Domain.Review;
@@ -23,8 +24,8 @@ public class Review : Entity<ReviewId>
         Book = book;
     }
 
-    public int Rating { get; set; }
-    public string Body { get; set; }
+    public int Rating { get; private set; }
+    public string Body { get; private set; }
     public User.User User { get; }
     public Book.Book Book { get; }
 
@@ -42,5 +43,18 @@ public class Review : Entity<ReviewId>
             user,
             book
         );
+    }
+
+    public void ChangeRating(int rating)
+    {
+        if (rating is > 5 or < 1)
+            throw new DomainException("Rating should be between 1 to 5 inclusively");
+        
+        Rating = rating;
+    }
+
+    public void ChangeBody(string body)
+    {
+        Body = body;
     }
 }
