@@ -8,27 +8,20 @@ using MediatR;
 
 namespace BooksApp.Application.Auth.Queries.Login;
 
-internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, AuthResult>
+internal sealed class LoginUserQueryHandler(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    IPasswordHasher passwordHasher)
+    : IRequestHandler<LoginUserQuery, AuthResult>
 {
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IPasswordHasher _passwordHasher;
-
-    public LoginUserQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher passwordHasher)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _passwordHasher = passwordHasher;
-    }
-
     public async Task<AuthResult> Handle(LoginUserQuery request, CancellationToken cancellationToken)
     {
         var user = await
-            _unitOfWork.Users.GetSingleWhereAsync(
+            unitOfWork.Users.GetSingleWhereAsync(
                 user => user.Email == request.Email,
                 cancellationToken);
 
-        if (!user!.IsPasswordValid(_passwordHasher, request.Password))
+        if (!user!.IsPasswordValid(passwordHasher, request.Password))
         {
             var property = $"{nameof(LoginUserQuery.Email)} and/or {nameof(LoginUserQuery.Password)}";
             throw new ValidationException([
@@ -36,6 +29,6 @@ internal sealed class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Au
             ]);
         }
 
-        return _mapper.Map<AuthResult>(user);
+        return mapper.Map<AuthResult>(user);
     }
 }

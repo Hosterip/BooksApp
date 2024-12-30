@@ -4,20 +4,14 @@ using MediatR;
 
 namespace BooksApp.Application.Genres.Commands.CreateGenre;
 
-internal sealed class CreateGenreCommandHandler : IRequestHandler<CreateGenreCommand, GenreResult>
+internal sealed class CreateGenreCommandHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<CreateGenreCommand, GenreResult>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateGenreCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<GenreResult> Handle(CreateGenreCommand request, CancellationToken cancellationToken)
     {
         var genre = Genre.Create(request.Name);
-        await _unitOfWork.Genres.AddAsync(genre, cancellationToken);
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await unitOfWork.Genres.AddAsync(genre, cancellationToken);
+        await unitOfWork.SaveAsync(cancellationToken);
         return new GenreResult
         {
             Id = genre.Id.Value,

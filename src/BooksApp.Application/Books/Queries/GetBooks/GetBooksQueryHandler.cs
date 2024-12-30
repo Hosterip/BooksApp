@@ -9,21 +9,15 @@ using MediatR;
 
 namespace BooksApp.Application.Books.Queries.GetBooks;
 
-internal sealed class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, PaginatedArray<BookResult>>
+internal sealed class GetBooksQueryHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<GetBooksQuery, PaginatedArray<BookResult>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public GetBooksQueryHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<PaginatedArray<BookResult>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
         var limit = request.Limit ?? 10;
         var page = request.Page ?? 1;
 
-        var result = await _unitOfWork.Books
+        var result = await unitOfWork.Books
             .GetPaginated(
                 request.CurrentUserId,
                 limit,

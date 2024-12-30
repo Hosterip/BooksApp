@@ -4,21 +4,15 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Queries.BookshelfByName;
 
-internal sealed class BookshelfByNameQueryHandler : IRequestHandler<BookshelfByNameQuery, BookshelfResult>
+internal sealed class BookshelfByNameQueryHandler(
+    IUnitOfWork unitOfWork,
+    IMapper mapster)
+    : IRequestHandler<BookshelfByNameQuery, BookshelfResult>
 {
-    private readonly IMapper _mapster;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public BookshelfByNameQueryHandler(IUnitOfWork unitOfWork, IMapper mapster)
-    {
-        _unitOfWork = unitOfWork;
-        _mapster = mapster;
-    }
-
     public async Task<BookshelfResult> Handle(BookshelfByNameQuery request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetBookshelfByName(request.Name, request.UserId, cancellationToken);
-        var bookshelfResult = _mapster.Map<BookshelfResult>(bookshelf!);
+        var bookshelf = await unitOfWork.Bookshelves.GetBookshelfByName(request.Name, request.UserId, cancellationToken);
+        var bookshelfResult = mapster.Map<BookshelfResult>(bookshelf!);
         return bookshelfResult;
     }
 }

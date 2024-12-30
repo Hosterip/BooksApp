@@ -3,21 +3,14 @@ using MediatR;
 
 namespace BooksApp.Application.Users.Commands.UpdateEmail;
 
-internal sealed class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand>
+internal sealed class UpdateEmailCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateEmailCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public UpdateEmailCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleById(request.Id, cancellationToken);
+        var user = await unitOfWork.Users.GetSingleById(request.Id, cancellationToken);
         user!.ChangeEmail(request.Email);
 
-        await _unitOfWork.Users.Update(user);
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await unitOfWork.Users.Update(user);
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

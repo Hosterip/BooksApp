@@ -5,15 +5,9 @@ using MediatR;
 
 namespace BooksApp.Application.Users.Queries.GetUsers;
 
-internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, PaginatedArray<UserResult>>
+internal sealed class GetUsersQueryHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<GetUsersQuery, PaginatedArray<UserResult>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public GetUsersQueryHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<PaginatedArray<UserResult>> Handle(
         GetUsersQuery request,
         CancellationToken cancellationToken)
@@ -22,7 +16,7 @@ internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Pagi
         var limit = request.Limit ?? 10;
         var page = request.Page ?? 1;
 
-        var result = await _unitOfWork.Users.GetPaginated(request.UserId, page, limit, query);
+        var result = await unitOfWork.Users.GetPaginated(request.UserId, page, limit, query);
         return result;
     }
 }

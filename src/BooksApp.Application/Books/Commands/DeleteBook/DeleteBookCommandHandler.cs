@@ -5,22 +5,15 @@ using MediatR;
 
 namespace BooksApp.Application.Books.Commands.DeleteBook;
 
-internal sealed class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand>
+internal sealed class DeleteBookCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteBookCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public DeleteBookCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Handle(DeleteBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork.Books
+        var book = await unitOfWork.Books
             .GetSingleWhereAsync(book =>
                 book.Id == BookId.CreateBookId(request.Id),
                 cancellationToken);
-        _unitOfWork.Books.Remove(book!);
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await unitOfWork.Books.Remove(book!);
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

@@ -3,19 +3,14 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 
-internal sealed class DeleteBookshelfCommandHandler : IRequestHandler<DeleteBookshelfCommand>
+internal sealed class DeleteBookshelfCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteBookshelfCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public DeleteBookshelfCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Handle(DeleteBookshelfCommand request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
-        _unitOfWork.Bookshelves.Remove(bookshelf!);
-        await _unitOfWork.SaveAsync(cancellationToken);
+        var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
+        
+        await unitOfWork.Bookshelves.Remove(bookshelf!);
+        
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

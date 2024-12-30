@@ -3,23 +3,16 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.AddBook;
 
-internal sealed class AddBookCommandHandler : IRequestHandler<AddBookCommand>
+internal sealed class AddBookCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<AddBookCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public AddBookCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Handle(AddBookCommand request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
-        var book = await _unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
+        var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
+        var book = await unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
         
         bookshelf!.AddBook(book!);
 
-        await _unitOfWork.Bookshelves.Update(bookshelf);
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await unitOfWork.Bookshelves.Update(bookshelf);
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

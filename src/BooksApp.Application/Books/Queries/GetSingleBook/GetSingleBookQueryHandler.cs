@@ -5,23 +5,17 @@ using MediatR;
 
 namespace BooksApp.Application.Books.Queries.GetSingleBook;
 
-internal sealed class GetSingleBookQueryHandler : IRequestHandler<GetSingleBookQuery, BookResult>
+internal sealed class GetSingleBookQueryHandler(
+    IUnitOfWork unitOfWork,
+    IMapper mapper)
+    : IRequestHandler<GetSingleBookQuery, BookResult>
 {
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public GetSingleBookQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
-
     public async Task<BookResult> Handle(GetSingleBookQuery request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork.Books.GetSingleById(request.Id, cancellationToken);
+        var book = await unitOfWork.Books.GetSingleById(request.Id, cancellationToken);
 
-        var result = _mapper.Map<BookResult>(book!);
-        var bookStats = _unitOfWork.Books.RatingStatistics(book!.Id.Value);
+        var result = mapper.Map<BookResult>(book!);
+        var bookStats = unitOfWork.Books.RatingStatistics(book!.Id.Value);
         result.AverageRating = bookStats.AverageRating;
         result.Ratings = bookStats.Ratings;
 

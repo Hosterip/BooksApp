@@ -5,29 +5,22 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.AddBookByName;
 
-internal sealed class AddBookByNameCommandHandler : IRequestHandler<AddBookByNameCommand>
+internal sealed class AddBookByNameCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<AddBookByNameCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public AddBookByNameCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Handle(AddBookByNameCommand request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetBookshelfByName(request.BookshelfName, request.UserId, cancellationToken);
+        var bookshelf = await unitOfWork.Bookshelves.GetBookshelfByName(request.BookshelfName, request.UserId, cancellationToken);
         if (bookshelf is null)
         {
-            var user = await _unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
+            var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
             bookshelf = Bookshelf.Create(user!, request.BookshelfName);
-            await _unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);
+            await unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);
         }
 
-        var book = await _unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
+        var book = await unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
         bookshelf!.AddBook(book!);
 
-        await _unitOfWork.Bookshelves.Update(bookshelf);
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await unitOfWork.Bookshelves.Update(bookshelf);
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

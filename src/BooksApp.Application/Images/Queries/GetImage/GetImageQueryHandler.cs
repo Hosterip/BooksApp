@@ -4,18 +4,12 @@ using MediatR;
 
 namespace BooksApp.Application.Images.Queries.GetImage;
 
-internal sealed class GetImageQueryHandler : IRequestHandler<GetImageQuery, ImageResult>
+internal sealed class GetImageQueryHandler(IImageFileBuilder imageFileBuilder)
+    : IRequestHandler<GetImageQuery, ImageResult>
 {
-    private readonly IImageFileBuilder _imageFileBuilder;
-
-    public GetImageQueryHandler(IImageFileBuilder imageFileBuilder)
-    {
-        _imageFileBuilder = imageFileBuilder;
-    }
-
     public async Task<ImageResult> Handle(GetImageQuery request, CancellationToken cancellationToken)
     {
-        var (fileInfo, fileStream) = _imageFileBuilder.RetrieveImage(request.ImageName);
+        var (fileInfo, fileStream) = imageFileBuilder.RetrieveImage(request.ImageName);
         return new ImageResult
         {
             FileInfo = fileInfo,

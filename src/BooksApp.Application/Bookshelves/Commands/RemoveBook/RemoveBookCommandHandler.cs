@@ -3,19 +3,12 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.RemoveBook;
 
-internal sealed class RemoveBookCommandHandler : IRequestHandler<RemoveBookCommand>
+internal sealed class RemoveBookCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<RemoveBookCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public RemoveBookCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Handle(RemoveBookCommand request, CancellationToken cancellationToken)
     {
-        var bookshelf = await _unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
+        var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
         var removed = bookshelf!.RemoveBook(request.BookId);
-        if (removed) await _unitOfWork.SaveAsync(cancellationToken);
+        if (removed) await unitOfWork.SaveAsync(cancellationToken);
     }
 }

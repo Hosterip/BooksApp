@@ -5,43 +5,36 @@ using MediatR;
 
 namespace BooksApp.Application.Books.Commands.UpdateBook;
 
-internal sealed class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, BookResult>
+internal sealed class UpdateBookCommandHandler(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    IImageFileBuilder imageFileBuilder)
+    : IRequestHandler<UpdateBookCommand, BookResult>
 {
-    private readonly IImageFileBuilder _imageFileBuilder;
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public UpdateBookCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IImageFileBuilder imageFileBuilder)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _imageFileBuilder = imageFileBuilder;
-    }
-
     public async Task<BookResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork.Books.GetSingleById(request.Id, cancellationToken);
+        var book = await unitOfWork.Books.GetSingleById(request.Id, cancellationToken);
         if (request.Title != null)
             book!.ChangeTitle(request.Title);
         if (request.Description != null)
             book!.ChangeDescription(request.Description);
         if (request.Image != null)
         {
-            _imageFileBuilder.DeleteImage(book!.Cover.ImageName);
-            var fileName = await _imageFileBuilder.CreateImage(request.Image, cancellationToken);
+            imageFileBuilder.DeleteImage(book!.Cover.ImageName);
+            var fileName = await imageFileBuilder.CreateImage(request.Image, cancellationToken);
 
             book.Cover.ChangeImageName(fileName!);
         }
 
-        var genres = await _unitOfWork.Genres.GetAllByIds(request.GenreIds, cancellationToken);
+        var genres = await unitOfWork.Genres.GetAllByIds(request.GenreIds, cancellationToken);
         
         book!.ChangeGenres(genres.ToList());
 
-        await _unitOfWork.Books.Update(book);   
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await unitOfWork.Books.Update(book);   
+        await unitOfWork.SaveAsync(cancellationToken);
         
-        var result = _mapper.Map<BookResult>(book);
-        var bookStats = _unitOfWork.Books.RatingStatistics(book.Id.Value);
+        var result = mapper.Map<BookResult>(book);
+        var bookStats = unitOfWork.Books.RatingStatistics(book.Id.Value);
         result.AverageRating = bookStats.AverageRating;
         result.Ratings = bookStats.Ratings;
         return result;

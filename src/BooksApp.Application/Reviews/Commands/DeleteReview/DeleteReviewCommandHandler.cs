@@ -3,20 +3,13 @@ using MediatR;
 
 namespace BooksApp.Application.Reviews.Commands.DeleteReview;
 
-internal sealed class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
+internal sealed class DeleteReviewCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteReviewCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public DeleteReviewCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Handle(DeleteReviewCommand request, CancellationToken cancellationToken)
     {
-        var review = await _unitOfWork.Reviews.GetSingleById(request.ReviewId, cancellationToken);
+        var review = await unitOfWork.Reviews.GetSingleById(request.ReviewId, cancellationToken);
 
-        _unitOfWork.Reviews.Remove(review!);
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await unitOfWork.Reviews.Remove(review!);
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

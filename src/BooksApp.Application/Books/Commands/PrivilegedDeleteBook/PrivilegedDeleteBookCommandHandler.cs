@@ -3,20 +3,14 @@ using MediatR;
 
 namespace BooksApp.Application.Books.Commands.PrivilegedDeleteBook;
 
-internal sealed class PrivilegedDeleteBookCommandHandler : IRequestHandler<PrivilegedDeleteBookCommand>
+internal sealed class PrivilegedDeleteBookCommandHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<PrivilegedDeleteBookCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public PrivilegedDeleteBookCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Handle(PrivilegedDeleteBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await _unitOfWork.Books
+        var book = await unitOfWork.Books
             .GetSingleById(request.Id, cancellationToken);
-        _unitOfWork.Books.Remove(book!);
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await unitOfWork.Books.Remove(book!);
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

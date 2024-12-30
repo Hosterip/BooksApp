@@ -4,18 +4,11 @@ using MediatR;
 
 namespace BooksApp.Application.Auth.Queries.ValidateUser;
 
-internal sealed class ValidateUserQueryHandler : IRequestHandler<ValidateUserQuery, RoleResult?>
+internal sealed class ValidateUserQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<ValidateUserQuery, RoleResult?>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public ValidateUserQueryHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<RoleResult?> Handle(ValidateUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleById(
+        var user = await unitOfWork.Users.GetSingleById(
             request.UserId,
             cancellationToken);
         if (user != null && user.SecurityStamp == request.SecurityStamp)

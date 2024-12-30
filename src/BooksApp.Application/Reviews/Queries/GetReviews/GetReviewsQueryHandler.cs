@@ -5,19 +5,13 @@ using MediatR;
 
 namespace BooksApp.Application.Reviews.Queries.GetReviews;
 
-internal sealed class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, PaginatedArray<ReviewResult>>
+internal sealed class GetReviewsQueryHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<GetReviewsQuery, PaginatedArray<ReviewResult>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public GetReviewsQueryHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<PaginatedArray<ReviewResult>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
     {
         return
-            await _unitOfWork.Reviews.GetPaginated(request.CurrentUserId, request.BookId, request.Page, request.Limit);
+            await unitOfWork.Reviews.GetPaginated(request.CurrentUserId, request.BookId, request.Page, request.Limit);
         ;
     }
 }

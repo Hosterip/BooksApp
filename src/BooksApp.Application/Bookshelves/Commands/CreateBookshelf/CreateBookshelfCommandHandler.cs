@@ -5,23 +5,17 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 
-internal sealed class CreateBookshelfCommandHandler : IRequestHandler<CreateBookshelfCommand, BookshelfResult>
+internal sealed class CreateBookshelfCommandHandler(
+    IUnitOfWork unitOfWork,
+    IMapper mapper)
+    : IRequestHandler<CreateBookshelfCommand, BookshelfResult>
 {
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateBookshelfCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
-
     public async Task<BookshelfResult> Handle(CreateBookshelfCommand request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
+        var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
         var bookshelf = Bookshelf.Create(user!, request.Name);
-        await _unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);
-        await _unitOfWork.SaveAsync(cancellationToken);
-        return _mapper.Map<BookshelfResult>(bookshelf);
+        await unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);
+        await unitOfWork.SaveAsync(cancellationToken);
+        return mapper.Map<BookshelfResult>(bookshelf);
     }
 }
