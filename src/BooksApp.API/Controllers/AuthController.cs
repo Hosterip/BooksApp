@@ -17,15 +17,8 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
 
-public class AuthController : ApiController
+public class AuthController(ISender sender) : ApiController
 {
-    private readonly ISender _sender;
-
-    public AuthController(ISender sender)
-    {
-        _sender = sender;
-    }
-
     #region Authorization endpoints
     
     [HttpPost(ApiRoutes.Auth.Register)]
@@ -44,12 +37,12 @@ public class AuthController : ApiController
             LastName = request.LastName,
             Password = request.Password
         };
-        var user = await _sender.Send(command, cancellationToken);
+        var user = await sender.Send(command, cancellationToken);
         var createDefaultBookshelves = new CreateDefaultBookshelvesCommand
         {
             UserId = Guid.Parse(user.Id)
         };
-        await _sender.Send(createDefaultBookshelves, cancellationToken);
+        await sender.Send(createDefaultBookshelves, cancellationToken);
         await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return CreatedAtAction(
             nameof(UsersController.GetById),
@@ -67,7 +60,7 @@ public class AuthController : ApiController
         CancellationToken cancellationToken)
     {
         var command = new LoginUserQuery { Email = request.Email, Password = request.Password };
-        var user = await _sender.Send(command, cancellationToken);
+        var user = await sender.Send(command, cancellationToken);
         await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return Ok(user.Adapt<UserResponse>());
     }
@@ -97,7 +90,7 @@ public class AuthController : ApiController
             OldPassword = request.OldPassword,
             Id = HttpContext.GetId()!.Value
         };
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
         HttpContext.ChangeSecurityStamp(result.SecurityStamp);
         return CreatedAtAction(
             nameof(UsersController.GetById),

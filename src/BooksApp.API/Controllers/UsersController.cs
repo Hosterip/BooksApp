@@ -24,19 +24,12 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
 
-public class UsersController : ApiController
+public class UsersController(
+    ISender sender,
+    IOutputCacheStore outputCacheStore,
+    IMapper mapster)
+    : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IOutputCacheStore _outputCacheStore;
-    private readonly IMapper _mapster;
-
-    public UsersController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
-    {
-        _sender = sender;
-        _outputCacheStore = outputCacheStore;
-        _mapster = mapster;
-    }
-
     #region Users endpoints
 
     #region Get endpoints
@@ -50,9 +43,9 @@ public class UsersController : ApiController
         var id = HttpContext.GetId()!.Value;
         var query = new GetSingleUserQuery { Id = id };
         
-        var user = await _sender.Send(query, cancellationToken);
+        var user = await sender.Send(query, cancellationToken);
 
-        var response = _mapster.Map<ExtendedUserResponse>(user);
+        var response = mapster.Map<ExtendedUserResponse>(user);
         
         return Ok(response);
     }
@@ -74,9 +67,9 @@ public class UsersController : ApiController
             UserId = userId ?? null
         };
         
-        var users = await _sender.Send(query, cancellationToken);
+        var users = await sender.Send(query, cancellationToken);
         
-        var response = _mapster.Map<UsersResponse>(users);
+        var response = mapster.Map<UsersResponse>(users);
         
         return Ok(response);
     }
@@ -90,9 +83,9 @@ public class UsersController : ApiController
         CancellationToken cancellationToken)
     {
         var query = new GetSingleUserQuery { Id = userId };
-        var user = await _sender.Send(query, cancellationToken);
+        var user = await sender.Send(query, cancellationToken);
         
-        var response = _mapster.Map<ExtendedUserResponse>(user);
+        var response = mapster.Map<ExtendedUserResponse>(user);
         
         return Ok(response);
     }
@@ -109,11 +102,11 @@ public class UsersController : ApiController
         CancellationToken cancellationToken)
     {
         var command = new DeleteUserCommand { Id = HttpContext.GetId()!.Value };
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
 
         await HttpContext.SignOutAsync();
 
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
         return NoContent();
     }
@@ -138,11 +131,11 @@ public class UsersController : ApiController
             Email = request.Email
         };
 
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
 
         HttpContext.ChangeEmail(request.Email);
 
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
         return NoContent();
     }
@@ -163,9 +156,9 @@ public class UsersController : ApiController
             LastName = request.LastName
         };
 
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return NoContent();
     }
@@ -184,11 +177,11 @@ public class UsersController : ApiController
             Image = request.Image
         };
 
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
-        var response = _mapster.Map<UserResponse>(result);
+        var response = mapster.Map<UserResponse>(result);
         
         return CreatedAtAction(nameof(GetById), new { userId = result.Id }, response);
     }
@@ -212,9 +205,9 @@ public class UsersController : ApiController
             UserId = request.UserId
         };
 
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return NoContent();
     }
@@ -241,9 +234,9 @@ public class UsersController : ApiController
             FollowerId = HttpContext.GetId()!.Value
         };
 
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return NoContent();
     }
@@ -268,11 +261,11 @@ public class UsersController : ApiController
             RelationshipType = RelationshipType.Followers
         };
         
-        var users = await _sender.Send(query, cancellationToken);
+        var users = await sender.Send(query, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
-        var response = _mapster.Map<UsersResponse>(users);
+        var response = mapster.Map<UsersResponse>(users);
         
         return Ok(response);
     }
@@ -296,11 +289,11 @@ public class UsersController : ApiController
             UserId = userId,
             RelationshipType = RelationshipType.Following
         };
-        var users = await _sender.Send(query, cancellationToken);
+        var users = await sender.Send(query, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
-        var response = _mapster.Map<UsersResponse>(users);
+        var response = mapster.Map<UsersResponse>(users);
         
         return Ok(response);
     }

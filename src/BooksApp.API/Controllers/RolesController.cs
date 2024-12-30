@@ -13,17 +13,11 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
 
-public class RolesController : ApiController
+public class RolesController(
+    ISender sender,
+    IMapper mapster) 
+    : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapster;
-
-    public RolesController(ISender sender, IMapper mapster)
-    {
-        _sender = sender;
-        _mapster = mapster;
-    }
-    
     [HttpGet(ApiRoutes.Users.GetRoles)]
     [OutputCache]
     [ProducesResponseType(typeof(IEnumerable<RoleResponse>), StatusCodes.Status200OK)]
@@ -32,9 +26,9 @@ public class RolesController : ApiController
     {
         var command = new GetRoleQuery();
 
-        var roles = await _sender.Send(command, cancellationToken);
+        var roles = await sender.Send(command, cancellationToken);
 
-        var response = _mapster.Map<IEnumerable<RoleResponse>>(roles);
+        var response = mapster.Map<IEnumerable<RoleResponse>>(roles);
         
         return Ok(response);
     }

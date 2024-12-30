@@ -18,19 +18,12 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
 
-public class ReviewsController : ApiController
+public class ReviewsController(
+    ISender sender,
+    IOutputCacheStore outputCacheStore,
+    IMapper mapster)
+    : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IOutputCacheStore _outputCacheStore;
-    private readonly IMapper _mapster;
-
-    public ReviewsController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
-    {
-        _sender = sender;
-        _outputCacheStore = outputCacheStore;
-        _mapster = mapster;
-    }
-
     #region Reviews endpoints
     
     [HttpPost(ApiRoutes.Reviews.Create)]
@@ -49,11 +42,11 @@ public class ReviewsController : ApiController
             Rating = request.Rating
         };
         
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
 
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
 
-        var response = _mapster.Map<ReviewResponse>(result);
+        var response = mapster.Map<ReviewResponse>(result);
         
         return Ok(response);
     }
@@ -74,11 +67,11 @@ public class ReviewsController : ApiController
             Rating = request.Rating
         };
         
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
         
-        var response = _mapster.Map<ReviewResponse>(result);
+        var response = mapster.Map<ReviewResponse>(result);
         
         return Ok(response);
     }
@@ -99,9 +92,9 @@ public class ReviewsController : ApiController
             UserId = HttpContext.GetId()!.Value
         };
         
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
         
         return NoContent();
     }
@@ -120,9 +113,9 @@ public class ReviewsController : ApiController
             UserId = HttpContext.GetId()!.Value
         };
         
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Reviews.Tag, cancellationToken);
         
         return NoContent();
     }
@@ -150,9 +143,9 @@ public class ReviewsController : ApiController
             Page = request.Page,
             Limit = request.Limit
         };
-        var result = await _sender.Send(query, cancellationToken);
+        var result = await sender.Send(query, cancellationToken);
         
-        var response = _mapster.Map<ReviewsResponse>(result);
+        var response = mapster.Map<ReviewsResponse>(result);
         
         return Ok(response);
     }

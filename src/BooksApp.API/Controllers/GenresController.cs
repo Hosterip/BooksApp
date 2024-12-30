@@ -12,19 +12,12 @@ using Microsoft.AspNetCore.OutputCaching;
 
 namespace BooksApp.API.Controllers;
 
-public class GenresController : ApiController
+public class GenresController(
+    ISender sender,
+    IOutputCacheStore outputCacheStore,
+    IMapper mapster)
+    : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IOutputCacheStore _outputCacheStore;
-    private readonly IMapper _mapster;
-
-    public GenresController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
-    {
-        _sender = sender;
-        _outputCacheStore = outputCacheStore;
-        _mapster = mapster;
-    }
-
     [HttpPost(ApiRoutes.Genres.Create)]
     [Authorize]
     [ProducesResponseType(typeof(GenreResponse), StatusCodes.Status200OK)]
@@ -38,11 +31,11 @@ public class GenresController : ApiController
             Name = name
         };
         
-        var genre = await _sender.Send(createGenreCommand, cancellationToken);
+        var genre = await sender.Send(createGenreCommand, cancellationToken);
 
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Genres.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Genres.Tag, cancellationToken);
 
-        var response = _mapster.Map<GenreResponse>(genre);
+        var response = mapster.Map<GenreResponse>(genre);
         
         return Ok(response);
     }
@@ -54,9 +47,9 @@ public class GenresController : ApiController
         CancellationToken cancellationToken)
     {
         var getAllGenreQuery = new GetAllGenresQuery();
-        var genres = await _sender.Send(getAllGenreQuery, cancellationToken);
+        var genres = await sender.Send(getAllGenreQuery, cancellationToken);
         
-        var response = _mapster.Map<IEnumerable<GenreResponse>>(genres);
+        var response = mapster.Map<IEnumerable<GenreResponse>>(genres);
         
         return Ok(response);
     }

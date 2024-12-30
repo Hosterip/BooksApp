@@ -6,15 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApp.API.Controllers;
 
-public class ImagesController : ApiController
+public class ImagesController(ISender sender) : ApiController
 {
-    private readonly ISender _sender;
-
-    public ImagesController(ISender sender)
-    {
-        _sender = sender;
-    }
-
     [HttpGet(ApiRoutes.Images.Get)]
     [ProducesResponseType(typeof(FileStream), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
@@ -26,7 +19,7 @@ public class ImagesController : ApiController
         {
             ImageName = name
         };
-        var result = await _sender.Send(query, cancellationToken);
+        var result = await sender.Send(query, cancellationToken);
         return File(
             result.FileStream,
             $"image/{result.FileInfo.Extension.Trim('.')}"

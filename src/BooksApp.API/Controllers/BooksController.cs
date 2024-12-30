@@ -21,19 +21,9 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
 
-public class BooksController : ApiController
+public class BooksController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
+    : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapster;
-    private readonly IOutputCacheStore _outputCacheStore;
-
-    public BooksController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
-    {
-        _sender = sender;
-        _outputCacheStore = outputCacheStore;
-        _mapster = mapster;
-    }
-
     #region Books Endpoints
     
     #region Get endpoints
@@ -55,9 +45,9 @@ public class BooksController : ApiController
             GenreId = request.GenreId,
             UserId = null
         };
-        var result = await _sender.Send(query, cancellationToken);
+        var result = await sender.Send(query, cancellationToken);
         
-        var response = _mapster.Map<BooksResponse>(result);
+        var response = mapster.Map<BooksResponse>(result);
         
         return Ok(response);
     }
@@ -71,9 +61,9 @@ public class BooksController : ApiController
         CancellationToken cancellationToken)
     {
         var query = new GetSingleBookQuery { Id = bookId };
-        var book = await _sender.Send(query, cancellationToken);
+        var book = await sender.Send(query, cancellationToken);
 
-        var response = _mapster.Map<BookResponse>(book);
+        var response = mapster.Map<BookResponse>(book);
         
         return Ok(response);
     }
@@ -99,11 +89,11 @@ public class BooksController : ApiController
             Image = request.Cover,
             GenreIds = request.GenreIds
         };
-        var book = await _sender.Send(createBookCommand, cancellationToken);
+        var book = await sender.Send(createBookCommand, cancellationToken);
 
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
         
-        var response = _mapster.Map<BookResponse>(book);
+        var response = mapster.Map<BookResponse>(book);
         
         return CreatedAtAction(
             nameof(GetSingle),
@@ -134,11 +124,11 @@ public class BooksController : ApiController
             GenreIds = request.GenreIds
         };
         
-        var result = await _sender.Send(updateBookCommand, cancellationToken);
+        var result = await sender.Send(updateBookCommand, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
 
-        var response = _mapster.Map<BookResponse>(result);
+        var response = mapster.Map<BookResponse>(result);
         
         return CreatedAtAction(
             nameof(GetSingle),
@@ -160,9 +150,9 @@ public class BooksController : ApiController
     {
         var command = new DeleteBookCommand { Id = id, UserId = HttpContext.GetId()!.Value };
         
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
         
         return NoContent();
     }
@@ -180,9 +170,9 @@ public class BooksController : ApiController
             Id = id,
             UserId = HttpContext.GetId()!.Value
         };
-        await _sender.Send(command, cancellationToken);
+        await sender.Send(command, cancellationToken);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
         
         return NoContent();
     }
@@ -213,9 +203,9 @@ public class BooksController : ApiController
             UserId = userId,
             CurrentUserId = currentUserId
         };
-        var result = await _sender.Send(query, cancellationToken);
+        var result = await sender.Send(query, cancellationToken);
         
-        var response = _mapster.Map<BooksResponse>(result);
+        var response = mapster.Map<BooksResponse>(result);
         
         return Ok(response);
     }

@@ -25,19 +25,12 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
 
-public class BookshelvesController : ApiController
+public class BookshelvesController(
+    ISender sender,
+    IOutputCacheStore outputCacheStore,
+    IMapper mapster)
+    : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IOutputCacheStore _outputCacheStore;
-    private readonly IMapper _mapster;
-    
-    public BookshelvesController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
-    {
-        _sender = sender;
-        _outputCacheStore = outputCacheStore;
-        _mapster = mapster;
-    }
-
     #region Bookshelves endpoints
     
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
@@ -57,9 +50,9 @@ public class BookshelvesController : ApiController
             Limit = request.PageSize,
             Page = request.Page
         };
-        var result = await _sender.Send(query, token);
+        var result = await sender.Send(query, token);
 
-        var response = _mapster.Map<BooksResponse>(result);
+        var response = mapster.Map<BooksResponse>(result);
         
         return Ok(response);
     }
@@ -78,11 +71,11 @@ public class BookshelvesController : ApiController
             Name = request.Name,
             UserId = userId
         };
-        var result = await _sender.Send(command, token);
+        var result = await sender.Send(command, token);
 
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
 
-        var response = _mapster.Map<BookshelfResponse>(result);
+        var response = mapster.Map<BookshelfResponse>(result);
         
         return CreatedAtAction(
             nameof(GetBookshelf),
@@ -105,9 +98,9 @@ public class BookshelvesController : ApiController
             UserId = userId!.Value
         };
 
-        await _sender.Send(command, token);
+        await sender.Send(command, token);
 
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
         
         return NoContent();
     }
@@ -127,7 +120,7 @@ public class BookshelvesController : ApiController
     {
         var userId = HttpContext.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
-        await _sender.Send(success
+        await sender.Send(success
             ? new AddBookCommand
             {
                 BookshelfId = bookshelfId,
@@ -141,7 +134,7 @@ public class BookshelvesController : ApiController
                 UserId = userId
             }, token);
 
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
 
         return Ok();
     }
@@ -157,7 +150,7 @@ public class BookshelvesController : ApiController
     {
         var userId = HttpContext.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
-        await _sender.Send(success
+        await sender.Send(success
             ? new RemoveBookCommand
             {
                 BookshelfId = bookshelfId,
@@ -171,7 +164,7 @@ public class BookshelvesController : ApiController
                 UserId = userId
             }, token);
         
-        await _outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+        await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
 
         return Ok();
     }
@@ -192,9 +185,9 @@ public class BookshelvesController : ApiController
         {
             UserId = userId
         };
-        var result = await _sender.Send(query, token);
+        var result = await sender.Send(query, token);
 
-        var response = _mapster.Map<IEnumerable<BookshelfResponse>>(result);
+        var response = mapster.Map<IEnumerable<BookshelfResponse>>(result);
         
         return Ok(response);
     }
@@ -210,7 +203,7 @@ public class BookshelvesController : ApiController
     )
     {
         var success = Guid.TryParse(idOrName, out var bookshelfId);
-        var result = await _sender.Send(success
+        var result = await sender.Send(success
             ? new BookshelfByIdQuery
             {
                 BookshelfId = bookshelfId
@@ -223,7 +216,7 @@ public class BookshelvesController : ApiController
             token
         );
 
-        var response = _mapster.Map<BookshelfResponse>(result!);
+        var response = mapster.Map<BookshelfResponse>(result!);
         
         return Ok(response);
     }
