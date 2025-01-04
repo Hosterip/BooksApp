@@ -1,5 +1,5 @@
 using BooksApp.Contracts.Errors;
-using FluentValidation;
+using ValidationException = BooksApp.Application.Common.Errors.ValidationException;
 
 namespace BooksApp.API.Middlewares;
 
