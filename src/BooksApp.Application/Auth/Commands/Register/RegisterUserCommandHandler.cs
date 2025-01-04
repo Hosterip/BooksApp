@@ -32,7 +32,7 @@ internal sealed class RegisterUserCommandHandler(
             null
         );
 
-        await unitOfWork.Roles.Update(memberRole!);
+        await unitOfWork.Roles.Attach(memberRole!);
         await unitOfWork.Users.AddAsync(user, cancellationToken);
         await unitOfWork.SaveAsync(cancellationToken);
         return mapper.Map<AuthResult>(user!);

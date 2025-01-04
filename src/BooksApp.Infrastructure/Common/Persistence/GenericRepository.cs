@@ -54,9 +54,16 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
         return Task.CompletedTask;
     }
 
-    public virtual Task Update(T entity)
+    public Task Update(T entity)
     {
         DbContext.Set<T>().Update(entity);
+        
+        return Task.CompletedTask;
+    }
+
+    public Task Attach(T entity)
+    {
+        DbContext.Set<T>().Attach(entity);
         
         return Task.CompletedTask;
     }

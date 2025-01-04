@@ -73,11 +73,4 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
                 bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId),
                 cancellationToken: token);
     }
-
-    public override Task Update(Bookshelf entity)
-    {
-        DbContext.Update(entity);
-        
-        return Task.CompletedTask;
-    }
 }
