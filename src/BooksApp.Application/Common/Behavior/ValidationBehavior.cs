@@ -1,8 +1,7 @@
-using BooksApp.Application.Common.Errors;
 using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 using ValidationException = BooksApp.Application.Common.Errors.ValidationException;
+using ValidationFailure = BooksApp.Application.Common.Errors.ValidationFailure;
 
 namespace BooksApp.Application.Common.Behavior;
 
@@ -31,7 +30,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
                 .Where(r => r.Errors.Any())
                 .SelectMany(r => r.Errors)
                 .Select(r =>
-                    new ValidationException.ValidationFailure { ErrorMessage = r.ErrorMessage, PropertyName = r.PropertyName })
+                    new ValidationFailure { ErrorMessage = r.ErrorMessage, PropertyName = r.PropertyName })
                 .ToList();
             if (failures.Any()) throw new ValidationException(failures);
         }
