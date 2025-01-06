@@ -15,11 +15,11 @@ public class ValidationException : Exception
         
         return string.Format(string.Join("Validation failed: ", arr));
     }
-    
-    public class ValidationFailure
-    {
-        public required string PropertyName { get; init; }
-        public required string ErrorMessage { get; init; }
-    }
+}
+
+public class ValidationFailure
+{
+    public required string PropertyName { get; init; }
+    public required string ErrorMessage { get; init; }
 }
 
