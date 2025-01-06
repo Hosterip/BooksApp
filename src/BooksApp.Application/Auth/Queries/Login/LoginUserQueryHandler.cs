@@ -1,10 +1,10 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Errors;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Interfaces;
-using FluentValidation;
-using FluentValidation.Results;
 using MapsterMapper;
 using MediatR;
+using ValidationException = BooksApp.Application.Common.Errors.ValidationException;
 
 namespace BooksApp.Application.Auth.Queries.Login;
 
@@ -25,7 +25,10 @@ internal sealed class LoginUserQueryHandler(
         {
             var property = $"{nameof(LoginUserQuery.Email)} and/or {nameof(LoginUserQuery.Password)}";
             throw new ValidationException([
-                new ValidationFailure(property, AuthValidationMessages.EmailOrPassword)
+                new ValidationFailure {
+                    PropertyName = property,
+                    ErrorMessage = AuthValidationMessages.EmailOrPassword
+                }
             ]);
         }
 

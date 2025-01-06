@@ -1,10 +1,10 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Errors;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Interfaces;
-using FluentValidation;
-using FluentValidation.Results;
 using MapsterMapper;
 using MediatR;
+using ValidationException = BooksApp.Application.Common.Errors.ValidationException;
 
 namespace BooksApp.Application.Auth.Commands.ChangePassword;
 
@@ -21,9 +21,10 @@ internal sealed class ChangePasswordCommandHandler(
 
         if (!user!.IsPasswordValid(passwordHasher, request.OldPassword))
             throw new ValidationException([
-                new ValidationFailure(
-                    nameof(ChangePasswordCommand.OldPassword),
-                    AuthValidationMessages.Password)
+                new ValidationFailure {
+                    PropertyName = nameof(ChangePasswordCommand.OldPassword),
+                    ErrorMessage = AuthValidationMessages.Password
+                }
             ]);
 
         user.ChangePassword(passwordHasher, request.NewPassword);
