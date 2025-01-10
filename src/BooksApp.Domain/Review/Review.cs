@@ -1,4 +1,5 @@
 ﻿using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.Review.ValueObjects;
 
@@ -36,6 +37,9 @@ public class Review : Entity<ReviewId>
         Book.Book book
     )
     {
+        ValidateRating(rating);
+        ValidateBody(body);
+        
         return new Review(
             ReviewId.CreateReviewId(),
             rating,
@@ -47,14 +51,27 @@ public class Review : Entity<ReviewId>
 
     public void ChangeRating(int rating)
     {
-        if (rating is > 5 or < 1)
-            throw new DomainException("Rating should be between 1 to 5 inclusively");
+        ValidateRating(rating);
         
         Rating = rating;
     }
 
     public void ChangeBody(string body)
     {
+        ValidateBody(body);
+        
         Body = body;
+    }
+    
+    private static void ValidateRating(int rating)
+    {
+        if (rating is > 5 or < 1)
+            throw new DomainException("Rating should be between 1 to 5 inclusively");
+    }
+    
+    private static void ValidateBody(string body)
+    {
+        if (body.Length is > ReviewMaxLengths.Body or < 1)
+            throw new DomainException($"Body length should be between 1 and {ReviewMaxLengths.Body}");
     }
 }

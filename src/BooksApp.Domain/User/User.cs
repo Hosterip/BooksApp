@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Common.Interfaces;
 using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.User.Entities;
@@ -36,21 +37,16 @@ public class User : AggregateRoot<UserId>
     private string Salt { get; set; }
     public string SecurityStamp { get; private set; }
     public Image.Image? Avatar { get; set; }
-    private List<Relationship> _followers = [];
-    public IReadOnlyList<Relationship> Followers 
-    {
-        get { return _following.AsReadOnly(); }
-    }
-    private List<Relationship> _following = [];
-    public IReadOnlyList<Relationship> Following
-    {
-        get { return _following.AsReadOnly(); }
-    }
+    private readonly List<Relationship> _followers = [];
+    public IReadOnlyList<Relationship> Followers => _following.AsReadOnly();
+    private readonly List<Relationship> _following = [];
+    public IReadOnlyList<Relationship> Following => _following.AsReadOnly();
 
     public static User Create(string email, string firstName, string? middleName, string? lastName, Role.Role role,
         string hash, string salt, Image.Image? avatar)
     {
         ValidateEmail(email);
+        ValidateName(firstName, middleName, lastName);
         return new User(UserId.CreateUserId(), email.ToLower(), firstName, middleName, lastName, role, hash, salt,
             Guid.NewGuid().ToString(), avatar);
     }
@@ -76,8 +72,8 @@ public class User : AggregateRoot<UserId>
 
     public void ChangeName(string firstName, string? middleName, string? lastName)
     {
-        if (string.IsNullOrWhiteSpace(firstName))
-            throw new DomainException("First name should be present");
+        ValidateName(firstName, middleName, lastName);
+        
         FirstName = firstName;
         
         MiddleName = string.IsNullOrWhiteSpace(middleName) ? null : middleName;
@@ -134,5 +130,20 @@ public class User : AggregateRoot<UserId>
         if (string.IsNullOrWhiteSpace(email) ||
             !new EmailAddressAttribute().IsValid(email))
             throw new DomainException("Invalid email");
+    }
+
+    private static void ValidateName(string firstName, string? middleName, string? lastName)
+    {
+        if (string.IsNullOrWhiteSpace(firstName))
+            throw new DomainException("First name should be present");
+        
+        if (firstName.Length is > UserMaxLengths.FirstName or < 1)
+            throw new DomainException($"First name length should be between 1 and {UserMaxLengths.FirstName}");
+        
+        if (middleName?.Length is > UserMaxLengths.MiddleName or < 1)
+            throw new DomainException($"Middle name length should be between 1 and {UserMaxLengths.MiddleName}");
+        
+        if (lastName?.Length is > UserMaxLengths.LastName or < 1)
+            throw new DomainException($"Last name length should be between 1 and {UserMaxLengths.LastName}");
     }
 }

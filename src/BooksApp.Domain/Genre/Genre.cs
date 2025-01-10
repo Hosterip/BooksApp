@@ -1,4 +1,6 @@
-﻿using BooksApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Constants.MaxLengths;
+using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.Genre.ValueObjects;
 
 namespace BooksApp.Domain.Genre;
@@ -19,6 +21,12 @@ public class Genre : AggregateRoot<GenreId>
 
     public static Genre Create(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Name should be present and not whitespace");
+        if (name.Length is > GenreMaxLengths.Name or < 1)
+            throw new DomainException($"Name should be inclusively between 1 and {GenreMaxLengths.Name}");
+            
+        
         return new Genre(GenreId.CreateGenreId(), name);
     }
 }

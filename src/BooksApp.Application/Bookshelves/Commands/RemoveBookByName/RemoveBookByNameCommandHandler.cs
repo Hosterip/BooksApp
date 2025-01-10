@@ -19,7 +19,7 @@ internal sealed class RemoveBookByNameCommandHandler(IUnitOfWork unitOfWork) : I
             await unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);
         }
 
-        var removed = bookshelf!.RemoveBook(request.BookId);
-       if(removed) await unitOfWork.SaveAsync(cancellationToken);
+        bookshelf.RemoveBook(request.BookId);
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

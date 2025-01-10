@@ -2,6 +2,7 @@
 using BooksApp.Domain.Bookshelf.Entities;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.Common.Utils;
 using BooksApp.Domain.User.ValueObjects;
@@ -31,13 +32,14 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     public static Bookshelf Create(User.User user, string name)
     {
+        ValidateName(name);
+        
         return new Bookshelf(BookshelfId.CreateBookshelfId(), user, name);
     }
 
     public void ChangeName(string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new DomainException("Name could not be empty");
+        ValidateName(name);
         
         Name = name
             .TrimStart()
@@ -52,12 +54,26 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     public void AddBook(Book.Book book)
     {
+        if (HasBook(book.Id))
+            throw new DomainException("Bookshelf already have this book");
+        
         _bookshelfBooks.Add(BookshelfBook.Create(book));
     }
 
-    public bool RemoveBook(Guid bookId)
+    public void RemoveBook(Guid bookId)
     {
-        var deletedCount = _bookshelfBooks.RemoveAll(book => book.Book.Id == BookId.CreateBookId(bookId));
-        return deletedCount > 0;
+        if (HasBook(BookId.CreateBookId(bookId)))
+            throw new DomainException("Bookshelf does not have this book");
+        
+        _bookshelfBooks.RemoveAll(book => book.Book.Id == BookId.CreateBookId(bookId));
+    }
+    
+    private static void ValidateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Name could not be empty");
+
+        if (name.Length is > BookshelfMaxLengths.Name or < 1)
+            throw new DomainException($"Name should be inclusively between 1 and {BookshelfMaxLengths.Name}");
     }
 }
