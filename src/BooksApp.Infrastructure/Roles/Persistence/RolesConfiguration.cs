@@ -1,4 +1,4 @@
-﻿using BooksApp.Domain.Common.Enums.MaxLengths;
+﻿using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Role;
 using BooksApp.Domain.Role.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ public class RolesConfiguration : IEntityTypeConfiguration<Role>
             .IsUnique();
 
         builder.Property(r => r.Name)
-            .HasMaxLength((int)RoleMaxLengths.Name)
+            .HasMaxLength(RoleMaxLengths.Name)
             .IsRequired();
 
         builder.Property(o => o.Id)

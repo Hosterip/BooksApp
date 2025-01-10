@@ -1,6 +1,6 @@
 using BooksApp.Domain.Book;
 using BooksApp.Domain.Book.ValueObjects;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -26,10 +26,10 @@ public class BooksConfiguration : IEntityTypeConfiguration<Book>
                 value => BookId.CreateBookId(value));
 
         builder.Property(b => b.Title)
-            .HasMaxLength((int)BookMaxLengths.Title)
+            .HasMaxLength(BookMaxLengths.Title)
             .IsRequired();
         builder.Property(b => b.Description)
-            .HasMaxLength((int)BookMaxLengths.Description)
+            .HasMaxLength(BookMaxLengths.Description)
             .IsRequired();
 
         // AutoIncludes

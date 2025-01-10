@@ -1,5 +1,5 @@
 ﻿using BooksApp.Domain.Book;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Genre;
 using BooksApp.Domain.Genre.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,7 @@ public class GenresConfiguration : IEntityTypeConfiguration<Genre>
         builder.HasKey(g => g.Id);
 
         builder.Property(g => g.Name)
-            .HasMaxLength((int)GenreMaxLengths.Name)
+            .HasMaxLength(GenreMaxLengths.Name)
             .IsRequired();
 
         builder.Property(o => o.Id)

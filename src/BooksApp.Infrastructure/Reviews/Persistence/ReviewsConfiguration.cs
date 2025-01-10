@@ -1,4 +1,4 @@
-﻿using BooksApp.Domain.Common.Enums.MaxLengths;
+﻿using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Review;
 using BooksApp.Domain.Review.ValueObjects;
 using Microsoft.EntityFrameworkCore;

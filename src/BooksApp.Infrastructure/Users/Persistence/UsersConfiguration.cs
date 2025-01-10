@@ -1,4 +1,4 @@
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.User;
 using BooksApp.Domain.User.Entities;
 using BooksApp.Domain.User.ValueObjects;
@@ -24,14 +24,14 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
             .IsUnique();
 
         builder.Property(u => u.Email)
-            .HasMaxLength((int)UserMaxLengths.Email);
+            .HasMaxLength(UserMaxLengths.Email);
         builder.Property(u => u.FirstName)
-            .HasMaxLength((int)UserMaxLengths.FirstName)
+            .HasMaxLength(UserMaxLengths.FirstName)
             .IsRequired();
         builder.Property(u => u.MiddleName)
-            .HasMaxLength((int)UserMaxLengths.MiddleName);
+            .HasMaxLength(UserMaxLengths.MiddleName);
         builder.Property(u => u.LastName)
-            .HasMaxLength((int)UserMaxLengths.LastName);
+            .HasMaxLength(UserMaxLengths.LastName);
 
         builder.HasOne(u => u.Role)
             .WithMany();
