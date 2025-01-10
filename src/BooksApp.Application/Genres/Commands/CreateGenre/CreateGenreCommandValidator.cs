@@ -1,5 +1,6 @@
 ﻿using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Genres.Commands.CreateGenre;
@@ -16,5 +17,9 @@ public sealed class CreateGenreCommandValidator : AbstractValidator<CreateGenreC
                     cancellationToken);
             })
             .WithMessage(GenreValidationMessages.AlreadyExists);
+
+        RuleFor(x => x.Name)
+            .MinimumLength(1)
+            .MaximumLength(GenreMaxLengths.Name);
     }
 }

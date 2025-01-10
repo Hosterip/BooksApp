@@ -1,7 +1,7 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Book.ValueObjects;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
@@ -13,9 +13,9 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
     {
         // Books
         RuleFor(book => book.Title)
-            .MaximumLength((int)BookMaxLengths.Title);
+            .MaximumLength(BookMaxLengths.Title);
         RuleFor(post => post.Description)
-            .MaximumLength((int)BookMaxLengths.Description);
+            .MaximumLength(BookMaxLengths.Description);
 
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>

@@ -1,6 +1,6 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Auth.Commands.ChangePassword;
@@ -13,6 +13,6 @@ public sealed class ChangePasswordCommandValidator : AbstractValidator<ChangePas
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id, cancellationToken))
             .WithMessage(UserValidationMessages.NotFound);
         RuleFor(request => request.NewPassword)
-            .MaximumLength((int)UserMaxLengths.Password);
+            .MaximumLength(UserMaxLengths.Password);
     }
 }

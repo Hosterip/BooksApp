@@ -1,5 +1,5 @@
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Users.Commands.UpdateName;
@@ -14,12 +14,12 @@ public sealed class UpdateNameCommandValidator : AbstractValidator<UpdateNameCom
 
         RuleFor(user => user.FirstName)
             .NotEmpty()
-            .Length(1, (int)UserMaxLengths.FirstName);
+            .Length(1, UserMaxLengths.FirstName);
 
         RuleFor(user => user.MiddleName)
-            .MaximumLength((int)UserMaxLengths.MiddleName);
+            .MaximumLength(UserMaxLengths.MiddleName);
 
         RuleFor(user => user.LastName)
-            .MaximumLength((int)UserMaxLengths.LastName);
+            .MaximumLength(UserMaxLengths.LastName);
     }
 }

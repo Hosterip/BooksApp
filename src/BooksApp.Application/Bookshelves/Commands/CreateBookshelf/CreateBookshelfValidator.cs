@@ -1,7 +1,7 @@
 ﻿using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
@@ -20,6 +20,6 @@ public sealed class CreateBookshelfValidator : AbstractValidator<CreateBookshelf
             .WithMessage(BookshelfValidationMessages.AlreadyHaveWithSameName)
             .WithName(nameof(CreateBookshelfCommand.Name));
         RuleFor(request => request.Name)
-            .MaximumLength((int)BookshelfMaxLengths.Name);
+            .MaximumLength(BookshelfMaxLengths.Name);
     }
 }

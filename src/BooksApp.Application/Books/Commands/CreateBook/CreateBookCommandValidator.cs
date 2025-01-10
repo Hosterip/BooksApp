@@ -1,6 +1,6 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Books.Commands.CreateBook;
@@ -12,10 +12,10 @@ public sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCom
         // Books validation
         RuleFor(book => book.Title)
             .NotEmpty()
-            .MaximumLength((int)BookMaxLengths.Title);
+            .MaximumLength(BookMaxLengths.Title);
         RuleFor(book => book.Description)
             .NotEmpty()
-            .MaximumLength((int)BookMaxLengths.Description);
+            .MaximumLength(BookMaxLengths.Description);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title, cancellationToken))

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Auth.Commands.Register;
@@ -20,16 +20,16 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
 
         RuleFor(user => user.FirstName)
             .NotEmpty()
-            .Length(1, (int)UserMaxLengths.FirstName);
+            .Length(1, UserMaxLengths.FirstName);
 
         RuleFor(user => user.MiddleName)
-            .MaximumLength((int)UserMaxLengths.MiddleName);
+            .MaximumLength(UserMaxLengths.MiddleName);
 
         RuleFor(user => user.LastName)
-            .MaximumLength((int)UserMaxLengths.LastName);
+            .MaximumLength(UserMaxLengths.LastName);
 
         RuleFor(user => user.Password)
-            .MaximumLength((int)UserMaxLengths.Password);
+            .MaximumLength(UserMaxLengths.Password);
 
         RuleFor(user => user.Password)
             .NotEmpty();

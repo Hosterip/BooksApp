@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Users.Commands.UpdateEmail;
@@ -25,6 +25,6 @@ public sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailC
 
         RuleFor(user => user.Email)
             .NotEmpty()
-            .Length(1, (int)UserMaxLengths.Email);
+            .Length(1, UserMaxLengths.Email);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Book.ValueObjects;
-using BooksApp.Domain.Common.Enums.MaxLengths;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
