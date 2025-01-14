@@ -16,20 +16,19 @@ internal sealed class RegisterUserCommandHandler(
 {
     public async Task<AuthResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var hashSalt = passwordHasher.GenerateHashSalt(request.Password);
         var memberRole = await unitOfWork.Roles.GetSingleWhereAsync(
             role => role.Name == RoleNames.Member,
             cancellationToken);
 
         var user = User.Create(
+            passwordHasher,
             request.Email,
+            memberRole!,
+            request.Password,
+            null,
             request.FirstName,
             request.MiddleName,
-            request.LastName,
-            memberRole!,
-            hashSalt.Hash,
-            hashSalt.Salt,
-            null
+            request.LastName
         );
 
         await unitOfWork.Roles.Attach(memberRole!);

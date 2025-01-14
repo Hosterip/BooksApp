@@ -42,12 +42,29 @@ public class User : AggregateRoot<UserId>
     private readonly List<Relationship> _following = [];
     public IReadOnlyList<Relationship> Following => _following.AsReadOnly();
 
-    public static User Create(string email, string firstName, string? middleName, string? lastName, Role.Role role,
-        string hash, string salt, Image.Image? avatar)
+    public static User Create(
+        IPasswordHasher passwordHasher,
+        string email,
+        Role.Role role,
+        string password,
+        Image.Image? avatar,
+        string firstName,
+        string? middleName = null,
+        string? lastName = null)
     {
         ValidateEmail(email);
         ValidateName(firstName, middleName, lastName);
-        return new User(UserId.CreateUserId(), email.ToLower(), firstName, middleName, lastName, role, hash, salt,
+        var (hash, salt) = passwordHasher.GenerateHashSalt(password);
+        
+        return new User(
+            UserId.CreateUserId(),
+            email.ToLower(),
+            firstName,
+            middleName, 
+            lastName, 
+            role,
+            hash,
+            salt,
             Guid.NewGuid().ToString(), avatar);
     }
 
