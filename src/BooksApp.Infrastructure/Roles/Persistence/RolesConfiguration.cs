@@ -25,9 +25,9 @@ public class RolesConfiguration : IEntityTypeConfiguration<Role>
                 id => id.Value,
                 value => RoleId.CreateRoleId(value));
         
-        builder.HasData(Role.Member());
-        builder.HasData(Role.Author());
-        builder.HasData(Role.Moderator());
-        builder.HasData(Role.Admin());
+        builder.HasData(RoleFactory.Member());
+        builder.HasData(RoleFactory.Author());
+        builder.HasData(RoleFactory.Moderator());
+        builder.HasData(RoleFactory.Admin());
     }
 }
