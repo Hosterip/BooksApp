@@ -17,6 +17,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksApp.Contracts", "src\BooksApp.Contracts\BooksApp.Contracts.csproj", "{97A53B7E-3996-4E44-93D5-BA93B0203778}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCommon", "tests\TestCommon\TestCommon.csproj", "{D972B807-F79A-47F7-B33C-CEF6F6E4125B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{97A53B7E-3996-4E44-93D5-BA93B0203778}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97A53B7E-3996-4E44-93D5-BA93B0203778}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97A53B7E-3996-4E44-93D5-BA93B0203778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D972B807-F79A-47F7-B33C-CEF6F6E4125B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D972B807-F79A-47F7-B33C-CEF6F6E4125B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D972B807-F79A-47F7-B33C-CEF6F6E4125B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D972B807-F79A-47F7-B33C-CEF6F6E4125B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

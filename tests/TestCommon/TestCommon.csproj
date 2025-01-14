@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Bookshelves\" />
+      <Folder Include="Books\" />
+      <Folder Include="Genres\" />
+      <Folder Include="Reviews\" />
+      <Folder Include="Roles\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\BooksApp.Domain\BooksApp.Domain.csproj" />
+      <ProjectReference Include="..\..\src\BooksApp.Infrastructure\BooksApp.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NSubstitute" Version="5.3.0" />
+    </ItemGroup>
+
+</Project>
