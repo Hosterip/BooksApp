@@ -36,8 +36,8 @@ public class UsersController(
     
     [HttpGet(ApiRoutes.Users.GetMe)]
     [Authorize]
-    [ProducesResponseType(typeof(ExtendedUserResponse), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ExtendedUserResponse>> GetMe(
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserResponse>> GetMe(
         CancellationToken cancellationToken)
     {
         var id = HttpContext.GetId()!.Value;
@@ -45,7 +45,7 @@ public class UsersController(
         
         var user = await sender.Send(query, cancellationToken);
 
-        var response = mapster.Map<ExtendedUserResponse>(user);
+        var response = mapster.Map<UserResponse>(user);
         
         return Ok(response);
     }
