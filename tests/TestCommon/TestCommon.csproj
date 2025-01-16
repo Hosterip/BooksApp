@@ -8,8 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Bookshelves\" />
-      <Folder Include="Books\" />
-      <Folder Include="Genres\" />
       <Folder Include="Reviews\" />
       <Folder Include="Roles\" />
     </ItemGroup>
