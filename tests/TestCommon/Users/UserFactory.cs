@@ -1,7 +1,7 @@
 using BooksApp.Domain.Image;
 using BooksApp.Domain.Role;
 using BooksApp.Domain.User;
-using TestCommon.Common;
+using TestCommon.Common.Constants;
 using TestCommon.Common.Factories;
 
 namespace TestCommon.Users;

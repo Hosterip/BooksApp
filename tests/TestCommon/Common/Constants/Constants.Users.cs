@@ -1,6 +1,6 @@
 using BooksApp.Domain.Role;
 
-namespace TestCommon.Common;
+namespace TestCommon.Common.Constants;
 
 public static partial class Constants
 {
