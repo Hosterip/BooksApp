@@ -12,7 +12,13 @@ public class Book : AggregateRoot<BookId>
     {
     }
 
-    private Book(BookId id, string title, string description, Image.Image cover, User.User author, List<Genre.Genre> genres) : base(id)
+    private Book(
+        BookId id,
+        string title,
+        string description,
+        Image.Image cover,
+        User.User author,
+        List<Genre.Genre> genres) : base(id)
     {
         Title = title.TrimStart().TrimEnd();
         Description = description;
@@ -30,7 +36,12 @@ public class Book : AggregateRoot<BookId>
     private List<Genre.Genre> _genres;
     public IReadOnlyList<Genre.Genre> Genres => _genres;
 
-    public static Book Create(string title, string description, Image.Image cover, User.User author, List<Genre.Genre> genres)
+    public static Book Create(
+        string title,
+        string description,
+        Image.Image cover,
+        User.User author,
+        List<Genre.Genre> genres)
     {
         ValidateGenres(genres);
         ValidateTitle(title);
