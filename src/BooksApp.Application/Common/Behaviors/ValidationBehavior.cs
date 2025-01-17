@@ -3,7 +3,7 @@ using MediatR;
 using ValidationException = BooksApp.Application.Common.Errors.ValidationException;
 using ValidationFailure = BooksApp.Application.Common.Errors.ValidationFailure;
 
-namespace BooksApp.Application.Common.Behavior;
+namespace BooksApp.Application.Common.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull

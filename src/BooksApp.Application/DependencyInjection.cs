@@ -1,5 +1,5 @@
 using System.Reflection;
-using BooksApp.Application.Common.Behavior;
+using BooksApp.Application.Common.Behaviors;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
