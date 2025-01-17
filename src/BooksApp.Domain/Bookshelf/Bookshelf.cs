@@ -15,7 +15,10 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     {
     }
 
-    private Bookshelf(BookshelfId id, User.User user, string name) : base(id)
+    private Bookshelf(
+        BookshelfId id,
+        User.User user,
+        string name) : base(id)
     {
         UserId = user.Id;
         _bookshelfBooks = new List<BookshelfBook>();
@@ -30,7 +33,9 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     private readonly List<BookshelfBook> _bookshelfBooks = [];
     public IReadOnlyList<BookshelfBook> BookshelfBooks => _bookshelfBooks.AsReadOnly();
 
-    public static Bookshelf Create(User.User user, string name)
+    public static Bookshelf Create(
+        User.User user,
+        string name)
     {
         ValidateName(name);
         
