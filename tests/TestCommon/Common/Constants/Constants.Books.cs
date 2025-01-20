@@ -5,6 +5,7 @@ public static partial class Constants
     public static class Books
     {
         public const string Title = "foo";
+        public const string ReferentialName = "foo";
         public const string Description = "foo";
     }
 }
