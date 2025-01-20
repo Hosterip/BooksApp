@@ -1,0 +1,7 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9c229f78_002D3c76_002D490d_002Da966_002D97eac8f6cdf6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="InvokeHandle_WhenValidatorIsReturnsValid_ShouldInvokeNext" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::45471FAB-16C2-48C5-87F7-6F29F23B5EC5::net8.0::BooksApp.Application.UnitTests.Common.Behaviors.ValidationBehaviorTests.InvokeHandle_WhenValidatorIsReturnsValid_ShouldInvokeNext&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::45471FAB-16C2-48C5-87F7-6F29F23B5EC5::net8.0::BooksApp.Application.UnitTests.Common.Behaviors.ValidationBehaviorTests.InvokeHandle_WhenValidatorIsReturnsError_ShouldThrowAnError&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
