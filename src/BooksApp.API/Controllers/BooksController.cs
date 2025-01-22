@@ -57,7 +57,7 @@ public class BooksController(ISender sender, IOutputCacheStore outputCacheStore,
     [ProducesResponseType(typeof(BookResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookResponse>> GetSingle(
-        Guid bookId,
+        [FromRoute] Guid bookId,
         CancellationToken cancellationToken)
     {
         var query = new GetSingleBookQuery { Id = bookId };
@@ -145,10 +145,10 @@ public class BooksController(ISender sender, IOutputCacheStore outputCacheStore,
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(
-        Guid id,
+        [FromRoute] Guid bookId,
         CancellationToken cancellationToken)
     {
-        var command = new DeleteBookCommand { Id = id, UserId = HttpContext.GetId()!.Value };
+        var command = new DeleteBookCommand { Id = bookId, UserId = HttpContext.GetId()!.Value };
         
         await sender.Send(command, cancellationToken);
         
@@ -162,12 +162,12 @@ public class BooksController(ISender sender, IOutputCacheStore outputCacheStore,
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PrivilegedDelete(
-        Guid id,
+        Guid bookId,
         CancellationToken cancellationToken)
     {
         var command = new PrivilegedDeleteBookCommand
         {
-            Id = id,
+            Id = bookId,
             UserId = HttpContext.GetId()!.Value
         };
         await sender.Send(command, cancellationToken);

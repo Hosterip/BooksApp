@@ -178,7 +178,7 @@ public class BookshelvesController(
     [ProducesResponseType(typeof(IEnumerable<BookshelfResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<BookshelfResponse>>> GetBookshelves(
-        Guid userId,
+        [FromRoute] Guid userId,
         CancellationToken token)
     {
         var query = new GetBookshelvesQuery
