@@ -27,8 +27,8 @@ public static class ApiRoutes
 
         public const string Update = $"{Base}";
 
-        public const string Delete = $"{Base}/{{id:guid}}";
-        public const string PrivilegedDelete = $"{PrivilegedBase}/{{id:guid}}";
+        public const string Delete = $"{Base}/{{bookId:guid}}";
+        public const string PrivilegedDelete = $"{PrivilegedBase}/{{bookId:guid}}";
 
         // Bookshelves
 
