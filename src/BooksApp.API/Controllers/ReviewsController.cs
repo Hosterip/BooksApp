@@ -1,12 +1,10 @@
 ﻿using BooksApp.API.Common.Constants;
-using BooksApp.API.Common.Extensions;
-using BooksApp.Application.Common.Results;
+using BooksApp.Application.Common.Interfaces;
 using BooksApp.Application.Reviews.Commands.CreateReview;
 using BooksApp.Application.Reviews.Commands.DeleteReview;
 using BooksApp.Application.Reviews.Commands.PrivilegedDeleteReview;
 using BooksApp.Application.Reviews.Commands.UpdateReview;
 using BooksApp.Application.Reviews.Queries.GetReviews;
-using BooksApp.Application.Reviews.Results;
 using BooksApp.Contracts.Errors;
 using BooksApp.Contracts.Reviews;
 using MapsterMapper;
@@ -21,7 +19,8 @@ namespace BooksApp.API.Controllers;
 public class ReviewsController(
     ISender sender,
     IOutputCacheStore outputCacheStore,
-    IMapper mapster)
+    IMapper mapster,
+    IUserService userService)
     : ApiController
 {
     #region Reviews endpoints
@@ -37,7 +36,7 @@ public class ReviewsController(
         var command = new CreateReviewCommand
         {
             BookId = request.BookId,
-            UserId = HttpContext.GetId()!.Value,
+            UserId = userService.GetId()!.Value,
             Body = request.Body,
             Rating = request.Rating
         };
@@ -62,7 +61,7 @@ public class ReviewsController(
         var command = new UpdateReviewCommand
         {
             ReviewId = request.ReviewId,
-            UserId = HttpContext.GetId()!.Value,
+            UserId = userService.GetId()!.Value,
             Body = request.Body,
             Rating = request.Rating
         };
@@ -89,7 +88,7 @@ public class ReviewsController(
         var command = new DeleteReviewCommand
         {
             ReviewId = id,
-            UserId = HttpContext.GetId()!.Value
+            UserId = userService.GetId()!.Value
         };
         
         await sender.Send(command, cancellationToken);
@@ -110,7 +109,7 @@ public class ReviewsController(
         var command = new PrivilegedDeleteReviewCommand
         {
             ReviewId = id,
-            UserId = HttpContext.GetId()!.Value
+            UserId = userService.GetId()!.Value
         };
         
         await sender.Send(command, cancellationToken);
@@ -135,7 +134,7 @@ public class ReviewsController(
         [FromQuery] GetReviewsQuery request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.GetId();
+        var userId = userService.GetId();
         var query = new GetReviewsQuery
         {
             CurrentUserId = userId,

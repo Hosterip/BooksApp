@@ -1,10 +1,10 @@
 ﻿using BooksApp.API.Common.Constants;
-using BooksApp.API.Common.Extensions;
 using BooksApp.Application.Auth;
 using BooksApp.Application.Auth.Commands.ChangePassword;
 using BooksApp.Application.Auth.Commands.Register;
 using BooksApp.Application.Auth.Queries.Login;
 using BooksApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
+using BooksApp.Application.Common.Interfaces;
 using BooksApp.Contracts.Auth;
 using BooksApp.Contracts.Errors;
 using BooksApp.Contracts.Users;
@@ -17,7 +17,7 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
 
-public class AuthController(ISender sender) : ApiController
+public class AuthController(ISender sender, IUserService userService) : ApiController
 {
     #region Authorization endpoints
     
@@ -43,7 +43,7 @@ public class AuthController(ISender sender) : ApiController
             UserId = Guid.Parse(user.Id)
         };
         await sender.Send(createDefaultBookshelves, cancellationToken);
-        await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
+        await userService.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return CreatedAtAction(
             nameof(UsersController.GetById),
             "Users",
@@ -61,7 +61,7 @@ public class AuthController(ISender sender) : ApiController
     {
         var command = new LoginUserQuery { Email = request.Email, Password = request.Password };
         var user = await sender.Send(command, cancellationToken);
-        await HttpContext.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
+        await userService.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return Ok(user.Adapt<UserResponse>());
     }
     
@@ -88,10 +88,10 @@ public class AuthController(ISender sender) : ApiController
         {
             NewPassword = request.NewPassword,
             OldPassword = request.OldPassword,
-            Id = HttpContext.GetId()!.Value
+            Id = userService.GetId()!.Value
         };
         var result = await sender.Send(command, cancellationToken);
-        HttpContext.ChangeSecurityStamp(result.SecurityStamp);
+        userService.ChangeSecurityStamp(result.SecurityStamp);
         return CreatedAtAction(
             nameof(UsersController.GetById),
             "Users",

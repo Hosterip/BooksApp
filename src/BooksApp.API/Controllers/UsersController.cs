@@ -1,6 +1,5 @@
 ﻿using BooksApp.API.Common.Constants;
-using BooksApp.API.Common.Extensions;
-using BooksApp.Application.Common.Results;
+using BooksApp.Application.Common.Interfaces;
 using BooksApp.Application.Roles.Commands.UpdateRole;
 using BooksApp.Application.Users.Commands.AddRemoveFollower;
 using BooksApp.Application.Users.Commands.DeleteUser;
@@ -10,7 +9,6 @@ using BooksApp.Application.Users.Commands.UpdateName;
 using BooksApp.Application.Users.Queries.GetSingleUser;
 using BooksApp.Application.Users.Queries.GetUserRelationships;
 using BooksApp.Application.Users.Queries.GetUsers;
-using BooksApp.Application.Users.Results;
 using BooksApp.Contracts.Errors;
 using BooksApp.Contracts.Roles;
 using BooksApp.Contracts.Users;
@@ -27,7 +25,8 @@ namespace BooksApp.API.Controllers;
 public class UsersController(
     ISender sender,
     IOutputCacheStore outputCacheStore,
-    IMapper mapster)
+    IMapper mapster,
+    IUserService userService)
     : ApiController
 {
     #region Users endpoints
@@ -40,7 +39,7 @@ public class UsersController(
     public async Task<ActionResult<UserResponse>> GetMe(
         CancellationToken cancellationToken)
     {
-        var id = HttpContext.GetId()!.Value;
+        var id = userService.GetId()!.Value;
         var query = new GetSingleUserQuery { Id = id };
         
         var user = await sender.Send(query, cancellationToken);
@@ -58,7 +57,7 @@ public class UsersController(
         [FromQuery] GetUsersRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.GetId();
+        var userId = userService.GetId();
         var query = new GetUsersQuery
         {
             Query = request.Q,
@@ -101,7 +100,7 @@ public class UsersController(
     public async Task<IActionResult> Delete(
         CancellationToken cancellationToken)
     {
-        var command = new DeleteUserCommand { Id = HttpContext.GetId()!.Value };
+        var command = new DeleteUserCommand { Id = userService.GetId()!.Value };
         await sender.Send(command, cancellationToken);
 
         await HttpContext.SignOutAsync();
@@ -127,13 +126,13 @@ public class UsersController(
     {
         var command = new UpdateEmailCommand
         {
-            Id = HttpContext.GetId()!.Value,
+            Id = userService.GetId()!.Value,
             Email = request.Email
         };
 
         await sender.Send(command, cancellationToken);
 
-        HttpContext.ChangeEmail(request.Email);
+        userService.ChangeEmail(request.Email);
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
         
@@ -150,7 +149,7 @@ public class UsersController(
     {
         var command = new UpdateNameCommand
         {
-            UserId = HttpContext.GetId()!.Value,
+            UserId = userService.GetId()!.Value,
             FirstName = request.FirstName,
             MiddleName = request.MiddleName,
             LastName = request.LastName
@@ -173,7 +172,7 @@ public class UsersController(
     {
         var command = new InsertAvatarCommand
         {
-            Id = HttpContext.GetId()!.Value,
+            Id = userService.GetId()!.Value,
             Image = request.Image
         };
 
@@ -200,7 +199,7 @@ public class UsersController(
     {
         var command = new UpdateRoleCommand
         {
-            ChangerId = HttpContext.GetId()!.Value,
+            ChangerId = userService.GetId()!.Value,
             Role = request.Role,
             UserId = request.UserId
         };
@@ -231,7 +230,7 @@ public class UsersController(
         var command = new AddRemoveFollowerCommand
         {
             UserId = followingId,
-            FollowerId = HttpContext.GetId()!.Value
+            FollowerId = userService.GetId()!.Value
         };
 
         await sender.Send(command, cancellationToken);
@@ -250,7 +249,7 @@ public class UsersController(
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
-        var currentUser = HttpContext.GetId();
+        var currentUser = userService.GetId();
         var query = new GetUserRelationshipsQuery
         {
             Query = request.Query,
@@ -279,7 +278,7 @@ public class UsersController(
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
-        var currentUser = HttpContext.GetId();
+        var currentUser = userService.GetId();
         var query = new GetUserRelationshipsQuery
         {
             Query = request.Query,

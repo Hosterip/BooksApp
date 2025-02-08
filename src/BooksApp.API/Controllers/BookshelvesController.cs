@@ -1,6 +1,4 @@
 using BooksApp.API.Common.Constants;
-using BooksApp.API.Common.Extensions;
-using BooksApp.Application.Books.Results;
 using BooksApp.Application.Bookshelves;
 using BooksApp.Application.Bookshelves.Commands.AddBook;
 using BooksApp.Application.Bookshelves.Commands.AddBookByName;
@@ -12,7 +10,7 @@ using BooksApp.Application.Bookshelves.Queries.BookshelfById;
 using BooksApp.Application.Bookshelves.Queries.BookshelfByName;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelves;
-using BooksApp.Application.Common.Results;
+using BooksApp.Application.Common.Interfaces;
 using BooksApp.Contracts.Books;
 using BooksApp.Contracts.Bookshelves;
 using BooksApp.Contracts.Errors;
@@ -28,7 +26,8 @@ namespace BooksApp.API.Controllers;
 public class BookshelvesController(
     ISender sender,
     IOutputCacheStore outputCacheStore,
-    IMapper mapster)
+    IMapper mapster,
+    IUserService userService)
     : ApiController
 {
     #region Bookshelves endpoints
@@ -42,7 +41,7 @@ public class BookshelvesController(
         [FromQuery] GetBookshelfBooksRequest request,
         CancellationToken token)
     {
-        var userId = HttpContext.GetId();
+        var userId = userService.GetId();
         var query = new GetBookshelfBooksQuery
         {
             CurrentUserId = userId,
@@ -65,7 +64,7 @@ public class BookshelvesController(
         [FromBodyOrDefault] CreateBookshelfRequest request,
         CancellationToken token)
     {
-        var userId = HttpContext.GetId()!.Value;
+        var userId = userService.GetId()!.Value;
         var command = new CreateBookshelfCommand
         {
             Name = request.Name,
@@ -91,7 +90,7 @@ public class BookshelvesController(
         [FromRoute] Guid bookshelfId,
         CancellationToken token)
     {
-        var userId = HttpContext.GetId();
+        var userId = userService.GetId();
         var command = new DeleteBookshelfCommand
         {
             BookshelfId = bookshelfId,
@@ -118,7 +117,7 @@ public class BookshelvesController(
         [FromRoute] string idOrName,
         CancellationToken token)
     {
-        var userId = HttpContext.GetId()!.Value;
+        var userId = userService.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
         await sender.Send(success
             ? new AddBookCommand
@@ -148,7 +147,7 @@ public class BookshelvesController(
         [FromRoute] string idOrName,
         CancellationToken token)
     {
-        var userId = HttpContext.GetId()!.Value;
+        var userId = userService.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
         await sender.Send(success
             ? new RemoveBookCommand

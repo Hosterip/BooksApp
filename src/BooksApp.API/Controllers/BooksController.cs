@@ -1,17 +1,13 @@
 using BooksApp.API.Common.Constants;
-using BooksApp.API.Common.Extensions;
 using BooksApp.Application.Books.Commands.CreateBook;
 using BooksApp.Application.Books.Commands.DeleteBook;
 using BooksApp.Application.Books.Commands.PrivilegedDeleteBook;
 using BooksApp.Application.Books.Commands.UpdateBook;
 using BooksApp.Application.Books.Queries.GetBooks;
 using BooksApp.Application.Books.Queries.GetSingleBook;
-using BooksApp.Application.Books.Results;
-using BooksApp.Application.Bookshelves;
-using BooksApp.Application.Common.Results;
+using BooksApp.Application.Common.Interfaces;
 using BooksApp.Contracts.Books;
 using BooksApp.Contracts.Errors;
-using Mapster;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +17,11 @@ using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 namespace BooksApp.API.Controllers;
 
-public class BooksController(ISender sender, IOutputCacheStore outputCacheStore, IMapper mapster)
+public class BooksController(
+    ISender sender,
+    IOutputCacheStore outputCacheStore,
+    IMapper mapster,
+    IUserService userService)
     : ApiController
 {
     #region Books Endpoints
@@ -83,7 +83,7 @@ public class BooksController(ISender sender, IOutputCacheStore outputCacheStore,
     {
         var createBookCommand = new CreateBookCommand
         {
-            UserId = HttpContext.GetId()!.Value,
+            UserId = userService.GetId()!.Value,
             Title = request.Title,
             Description = request.Description,
             Image = request.Cover,
@@ -117,7 +117,7 @@ public class BooksController(ISender sender, IOutputCacheStore outputCacheStore,
         var updateBookCommand = new UpdateBookCommand
         {
             Id = request.Id,
-            UserId = HttpContext.GetId()!.Value,
+            UserId = userService.GetId()!.Value,
             Title = request.Title,
             Description = request.Description,
             Image = request.Cover,
@@ -148,7 +148,7 @@ public class BooksController(ISender sender, IOutputCacheStore outputCacheStore,
         [FromRoute] Guid bookId,
         CancellationToken cancellationToken)
     {
-        var command = new DeleteBookCommand { Id = bookId, UserId = HttpContext.GetId()!.Value };
+        var command = new DeleteBookCommand { Id = bookId, UserId = userService.GetId()!.Value };
         
         await sender.Send(command, cancellationToken);
         
@@ -168,7 +168,7 @@ public class BooksController(ISender sender, IOutputCacheStore outputCacheStore,
         var command = new PrivilegedDeleteBookCommand
         {
             Id = bookId,
-            UserId = HttpContext.GetId()!.Value
+            UserId = userService.GetId()!.Value
         };
         await sender.Send(command, cancellationToken);
         
@@ -193,7 +193,7 @@ public class BooksController(ISender sender, IOutputCacheStore outputCacheStore,
         [FromQuery] GetUserBooksRequest request
     )
     {
-        var currentUserId = HttpContext.GetId();
+        var currentUserId = userService.GetId();
         var query = new GetBooksQuery
         {
             Title = request.Title,
