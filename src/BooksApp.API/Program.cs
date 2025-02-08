@@ -57,7 +57,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Registering endpoints
-app.UseMiddleware<ValidateUserMiddleware>();
 app.UseMiddleware<ValidationExceptionMiddleware>();
 
 // Running the application
