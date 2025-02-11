@@ -10,9 +10,7 @@ internal sealed class DeleteBookCommandHandler(IUnitOfWork unitOfWork) : IReques
     public async Task Handle(DeleteBookCommand request, CancellationToken cancellationToken)
     {
         var book = await unitOfWork.Books
-            .GetSingleWhereAsync(book =>
-                book.Id == BookId.CreateBookId(request.Id),
-                cancellationToken);
+            .GetSingleById(request.Id, cancellationToken);
         await unitOfWork.Books.Remove(book!);
         await unitOfWork.SaveAsync(cancellationToken);
     }
