@@ -24,14 +24,14 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
             .IsUnique();
 
         builder.Property(u => u.Email)
-            .HasMaxLength(UserMaxLengths.Email);
+            .HasMaxLength(MaxPropertyLength.User.Email);
         builder.Property(u => u.FirstName)
-            .HasMaxLength(UserMaxLengths.FirstName)
+            .HasMaxLength(MaxPropertyLength.User.FirstName)
             .IsRequired();
         builder.Property(u => u.MiddleName)
-            .HasMaxLength(UserMaxLengths.MiddleName);
+            .HasMaxLength(MaxPropertyLength.User.MiddleName);
         builder.Property(u => u.LastName)
-            .HasMaxLength(UserMaxLengths.LastName);
+            .HasMaxLength(MaxPropertyLength.User.LastName);
 
         builder.HasOne(u => u.Role)
             .WithMany();

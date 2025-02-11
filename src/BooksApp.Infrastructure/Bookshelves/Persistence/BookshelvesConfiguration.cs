@@ -21,7 +21,7 @@ public class BookshelvesConfiguration : IEntityTypeConfiguration<Bookshelf>
                 value => BookshelfId.CreateBookshelfId(value));
 
         builder.Property(g => g.Name)
-            .HasMaxLength(BookshelfMaxLengths.Name)
+            .HasMaxLength(MaxPropertyLength.Bookshelf.Name)
             .IsRequired();
 
         builder.Property(b => b.UserId)

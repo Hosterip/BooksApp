@@ -11,7 +11,7 @@ public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateRevie
     public UpdateReviewCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(request => request.Body)
-            .MaximumLength((int)ReviewMaxLengths.Body)
+            .MaximumLength(MaxPropertyLength.Review.Body)
             .NotEmpty();
         RuleFor(request => request.Rating)
             .GreaterThanOrEqualTo(1)

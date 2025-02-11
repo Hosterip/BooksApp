@@ -14,12 +14,12 @@ public sealed class UpdateNameCommandValidator : AbstractValidator<UpdateNameCom
 
         RuleFor(user => user.FirstName)
             .NotEmpty()
-            .Length(1, UserMaxLengths.FirstName);
+            .Length(1, MaxPropertyLength.User.FirstName);
 
         RuleFor(user => user.MiddleName)
-            .MaximumLength(UserMaxLengths.MiddleName);
+            .MaximumLength(MaxPropertyLength.User.MiddleName);
 
         RuleFor(user => user.LastName)
-            .MaximumLength(UserMaxLengths.LastName);
+            .MaximumLength(MaxPropertyLength.User.LastName);
     }
 }

@@ -29,7 +29,7 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<Review>
             .OnDelete(DeleteBehavior.NoAction);
         // AutoIncludes
         builder.Property(r => r.Body)
-            .HasMaxLength((int)ReviewMaxLengths.Body)
+            .HasMaxLength(MaxPropertyLength.Review.Body)
             .IsRequired();
         builder.Navigation(r => r.User)
             .AutoInclude();

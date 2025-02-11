@@ -20,6 +20,6 @@ public sealed class CreateGenreCommandValidator : AbstractValidator<CreateGenreC
 
         RuleFor(x => x.Name)
             .MinimumLength(1)
-            .MaximumLength(GenreMaxLengths.Name);
+            .MaximumLength(MaxPropertyLength.Genre.Name);
     }
 }

@@ -25,6 +25,6 @@ public sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailC
 
         RuleFor(user => user.Email)
             .NotEmpty()
-            .Length(1, UserMaxLengths.Email);
+            .Length(1, MaxPropertyLength.User.Email);
     }
 }

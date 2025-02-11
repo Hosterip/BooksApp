@@ -14,7 +14,7 @@ public class GenresConfiguration : IEntityTypeConfiguration<Genre>
         builder.HasKey(g => g.Id);
 
         builder.Property(g => g.Name)
-            .HasMaxLength(GenreMaxLengths.Name)
+            .HasMaxLength(MaxPropertyLength.Genre.Name)
             .IsRequired();
 
         builder.Property(o => o.Id)

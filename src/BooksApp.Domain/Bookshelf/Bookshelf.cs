@@ -78,7 +78,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Name could not be empty");
 
-        if (name.Length is > BookshelfMaxLengths.Name or < 1)
-            throw new DomainException($"Name should be inclusively between 1 and {BookshelfMaxLengths.Name}");
+        if (name.Length is > MaxPropertyLength.Bookshelf.Name or < 1)
+            throw new DomainException($"Name should be inclusively between 1 and {MaxPropertyLength.Bookshelf.Name}");
     }
 }

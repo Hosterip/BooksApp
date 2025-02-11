@@ -16,7 +16,7 @@ public class RolesConfiguration : IEntityTypeConfiguration<Role>
             .IsUnique();
 
         builder.Property(r => r.Name)
-            .HasMaxLength(RoleMaxLengths.Name)
+            .HasMaxLength(MaxPropertyLength.Role.Name)
             .IsRequired();
 
         builder.Property(o => o.Id)

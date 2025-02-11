@@ -20,6 +20,6 @@ public sealed class CreateBookshelfValidator : AbstractValidator<CreateBookshelf
             .WithMessage(BookshelfValidationMessages.AlreadyHaveWithSameName)
             .WithName(nameof(CreateBookshelfCommand.Name));
         RuleFor(request => request.Name)
-            .MaximumLength(BookshelfMaxLengths.Name);
+            .MaximumLength(MaxPropertyLength.Bookshelf.Name);
     }
 }

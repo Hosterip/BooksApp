@@ -6,7 +6,7 @@ namespace BooksApp.Infrastructure.Common.Persistence;
 
 public class ImageFileBuilder(string path) : IImageFileBuilder
 {
-    public async Task<string?> CreateImage(IFormFile file, CancellationToken token = default)
+    public async Task<string> CreateImage(IFormFile file, CancellationToken token = default)
     {
         var savePath = Path.Combine(path);
         if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);

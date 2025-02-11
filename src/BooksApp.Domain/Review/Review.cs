@@ -71,7 +71,7 @@ public class Review : Entity<ReviewId>
     
     private static void ValidateBody(string body)
     {
-        if (body.Length is > ReviewMaxLengths.Body or < 1)
-            throw new DomainException($"Body length should be between 1 and {ReviewMaxLengths.Body}");
+        if (body.Length is > MaxPropertyLength.Review.Body or < 1)
+            throw new DomainException($"Body length should be between 1 and {MaxPropertyLength.Review.Body}");
     }
 }
