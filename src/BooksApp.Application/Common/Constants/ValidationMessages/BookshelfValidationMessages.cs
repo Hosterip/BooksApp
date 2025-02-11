@@ -1,6 +1,6 @@
 namespace BooksApp.Application.Common.Constants.ValidationMessages;
 
-public class BookshelfValidationMessages
+public static class BookshelfValidationMessages
 {
     public const string NotFound = "Bookshelf was not found";
     public const string NotYours = "Bookshelf is not yours";
