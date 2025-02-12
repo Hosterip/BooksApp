@@ -13,9 +13,9 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
     {
         // Books
         RuleFor(book => book.Title)
-            .MaximumLength(BookMaxLengths.Title);
+            .MaximumLength(MaxPropertyLength.Book.Title);
         RuleFor(post => post.Description)
-            .MaximumLength(BookMaxLengths.Description);
+            .MaximumLength(MaxPropertyLength.Book.Description);
 
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>

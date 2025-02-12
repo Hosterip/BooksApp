@@ -26,10 +26,10 @@ public class BooksConfiguration : IEntityTypeConfiguration<Book>
                 value => BookId.CreateBookId(value));
 
         builder.Property(b => b.Title)
-            .HasMaxLength(BookMaxLengths.Title)
+            .HasMaxLength(MaxPropertyLength.Book.Title)
             .IsRequired();
         builder.Property(b => b.Description)
-            .HasMaxLength(BookMaxLengths.Description)
+            .HasMaxLength(MaxPropertyLength.Book.Description)
             .IsRequired();
 
         // AutoIncludes

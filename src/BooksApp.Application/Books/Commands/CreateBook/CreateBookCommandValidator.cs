@@ -12,10 +12,10 @@ public sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCom
         // Books validation
         RuleFor(book => book.Title)
             .NotEmpty()
-            .MaximumLength(BookMaxLengths.Title);
+            .MaximumLength(MaxPropertyLength.Book.Title);
         RuleFor(book => book.Description)
             .NotEmpty()
-            .MaximumLength(BookMaxLengths.Description);
+            .MaximumLength(MaxPropertyLength.Book.Description);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title, cancellationToken))

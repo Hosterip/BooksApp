@@ -76,16 +76,16 @@ public class Book : AggregateRoot<BookId>
 
     private static void ValidateTitle(string title)
     {
-        if (title.Length is > BookMaxLengths.Title or < 1)
-            throw new DomainException($"Title should be inclusively between 1 and {BookMaxLengths.Title}");
+        if (title.Length is > MaxPropertyLength.Book.Title or < 1)
+            throw new DomainException($"Title should be inclusively between 1 and {MaxPropertyLength.Book.Title}");
         if (string.IsNullOrWhiteSpace(title))
             throw new DomainException("Title should be present and not be white space");
     }
     
     private static void ValidateDescription(string description)
     {
-        if (description.Length is > BookMaxLengths.Description or < 1)
-            throw new DomainException($"Description should be inclusively between 1 and {BookMaxLengths.Description}");
+        if (description.Length is > MaxPropertyLength.Book.Description or < 1)
+            throw new DomainException($"Description should be inclusively between 1 and {MaxPropertyLength.Book.Description}");
         if (string.IsNullOrWhiteSpace(description))
             throw new DomainException("Description should be present and not be white space");
     }
