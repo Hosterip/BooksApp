@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCommon", "tests\TestCom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksApp.Application.UnitTests", "tests\BooksApp.Application.UnitTests\BooksApp.Application.UnitTests.csproj", "{45471FAB-16C2-48C5-87F7-6F29F23B5EC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksApp.Domain.UnitTests", "BooksApp.Domain.UnitTests\BooksApp.Domain.UnitTests.csproj", "{703BA893-9C67-43DC-B644-6730B877C8C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{45471FAB-16C2-48C5-87F7-6F29F23B5EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45471FAB-16C2-48C5-87F7-6F29F23B5EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45471FAB-16C2-48C5-87F7-6F29F23B5EC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{703BA893-9C67-43DC-B644-6730B877C8C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{703BA893-9C67-43DC-B644-6730B877C8C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{703BA893-9C67-43DC-B644-6730B877C8C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{703BA893-9C67-43DC-B644-6730B877C8C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
