@@ -10,7 +10,6 @@ public static class UserResultFactory
     public static UserResult CreateUserResult(
         Guid? id = null,
         string email = Constants.Users.Email,
-        string password = Constants.Users.Password,
         string firstName = Constants.Users.FirstName,
         string? middleName = null,
         string? lastName = null,
