@@ -9,7 +9,7 @@ public class PasswordHasherTests
     private readonly IPasswordHasher _passwordHasher = new PasswordHasher();
 
     [Fact]
-    public void IsValid_WhenHashAndSaltIsRight_ShouldReturnTrue()
+    public void IsPasswordValid_WhenHashAndSaltIsRight_ShouldReturnTrue()
     {
         // Arrange
         var password = Guid
@@ -25,7 +25,7 @@ public class PasswordHasherTests
     }
     
     [Fact]
-    public void IsValid_WhenHashAndSaltInvalid_ShouldReturnFalse()
+    public void IsPasswordValid_WhenHashAndSaltInvalid_ShouldReturnFalse()
     {
         // Arrange
         var password = string.Empty;
