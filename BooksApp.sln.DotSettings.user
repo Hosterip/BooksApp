@@ -5,5 +5,7 @@
     &lt;TestId&gt;xUnit::45471FAB-16C2-48C5-87F7-6F29F23B5EC5::net8.0::BooksApp.Application.UnitTests.Common.Behaviors.ValidationBehaviorTests.InvokeHandle_WhenValidatorIsReturnsError_ShouldThrowAnError&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Common.PasswordHasherTests.IsValid_WhenHashAndSaltIsRight_ShouldReturnTrue&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Common.PasswordHasherTests.IsValid_WhenHashAndSaltInvalid_ShouldReturnFalse&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Books.BookTests.Create_WhenEverythingInOrder_ShouldCreateBook&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Books.BookTests.Create_WhenEverythingTitleIsWrong_ShouldThrowAnError&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
