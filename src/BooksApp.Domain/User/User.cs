@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using BooksApp.Domain.Common;
+﻿using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
+using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.Common.Interfaces;
 using BooksApp.Domain.Common.Models;
 using BooksApp.Domain.User.Entities;
@@ -19,8 +19,8 @@ public class User : AggregateRoot<UserId>
     {
         Email = email;
         FirstName = firstName;
-        MiddleName = middleName;
-        LastName = lastName;
+        MiddleName = string.IsNullOrWhiteSpace(middleName) ? null : middleName;
+        LastName = string.IsNullOrWhiteSpace(lastName) ? null : lastName;
         Role = role;
         Hash = hash;
         Salt = salt;
@@ -55,13 +55,13 @@ public class User : AggregateRoot<UserId>
         ValidateEmail(email);
         ValidateName(firstName, middleName, lastName);
         var (hash, salt) = passwordHasher.GenerateHashSalt(password);
-        
+
         return new User(
             UserId.CreateUserId(),
             email.ToLower(),
             firstName,
-            middleName, 
-            lastName, 
+            middleName,
+            lastName,
             role,
             hash,
             salt,
@@ -80,7 +80,7 @@ public class User : AggregateRoot<UserId>
         Hash = hash;
         Salt = salt;
     }
-    
+
     public void ChangeEmail(string email)
     {
         ValidateEmail(email);
@@ -90,9 +90,9 @@ public class User : AggregateRoot<UserId>
     public void ChangeName(string firstName, string? middleName, string? lastName)
     {
         ValidateName(firstName, middleName, lastName);
-        
+
         FirstName = firstName;
-        
+
         MiddleName = string.IsNullOrWhiteSpace(middleName) ? null : middleName;
         LastName = string.IsNullOrWhiteSpace(lastName) ? null : lastName;
     }
@@ -115,7 +115,7 @@ public class User : AggregateRoot<UserId>
         var item = Relationship.Create(this, follower);
         _followers.Add(item);
     }
-    
+
     public void RemoveFollower(User follower)
     {
         if (follower.Id == Id)
@@ -123,7 +123,7 @@ public class User : AggregateRoot<UserId>
 
         if (_followers.Any(f => f.FollowerId != follower.Id))
             throw new DomainException("No follower to remove");
-        
+
         _followers.RemoveAll(x => x.FollowerId == follower.Id);
     }
 
@@ -144,8 +144,7 @@ public class User : AggregateRoot<UserId>
 
     private static void ValidateEmail(string email)
     {
-        if (string.IsNullOrWhiteSpace(email) ||
-            !new EmailAddressAttribute().IsValid(email))
+        if (!EmailValidator.Validate(email))
             throw new DomainException("Invalid email");
     }
 
@@ -153,13 +152,11 @@ public class User : AggregateRoot<UserId>
     {
         if (string.IsNullOrWhiteSpace(firstName))
             throw new DomainException("First name should be present");
-        
+
         if (firstName.Length is > MaxPropertyLength.User.FirstName or < 1)
             throw new DomainException($"First name length should be between 1 and {MaxPropertyLength.User.FirstName}");
-        
         if (middleName?.Length is > MaxPropertyLength.User.MiddleName or < 1)
             throw new DomainException($"Middle name length should be between 1 and {MaxPropertyLength.User.MiddleName}");
-        
         if (lastName?.Length is > MaxPropertyLength.User.LastName or < 1)
             throw new DomainException($"Last name length should be between 1 and {MaxPropertyLength.User.LastName}");
     }
