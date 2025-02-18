@@ -1,8 +1,8 @@
 ﻿using BooksApp.Domain.Book.ValueObjects;
 using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
+using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.Common.Models;
-using BooksApp.Domain.Common.Utils;
 
 namespace BooksApp.Domain.Book;
 

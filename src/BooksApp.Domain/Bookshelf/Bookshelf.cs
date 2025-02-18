@@ -3,8 +3,8 @@ using BooksApp.Domain.Bookshelf.Entities;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
+using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.Common.Models;
-using BooksApp.Domain.Common.Utils;
 using BooksApp.Domain.User.ValueObjects;
 
 namespace BooksApp.Domain.Bookshelf;

@@ -7,7 +7,7 @@ using BooksApp.Application.Users.Results;
 using BooksApp.Domain.Book;
 using BooksApp.Domain.Book.ValueObjects;
 using BooksApp.Domain.Bookshelf.ValueObjects;
-using BooksApp.Domain.Common.Utils;
+using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.Genre.ValueObjects;
 using BooksApp.Domain.Review;
 using BooksApp.Domain.User.ValueObjects;

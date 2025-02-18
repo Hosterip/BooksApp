@@ -2,8 +2,7 @@
 using BooksApp.Domain.Book.ValueObjects;
 using BooksApp.Domain.Bookshelf;
 using BooksApp.Domain.Bookshelf.ValueObjects;
-using BooksApp.Domain.Common.Utils;
-using BooksApp.Domain.User;
+using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.User.ValueObjects;
 using BooksApp.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
