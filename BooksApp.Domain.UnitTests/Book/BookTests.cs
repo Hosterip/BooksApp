@@ -5,7 +5,7 @@ using TestCommon.Genres;
 using TestCommon.Images;
 using TestCommon.Users;
 
-namespace BooksApp.Domain.UnitTests.Books;
+namespace BooksApp.Domain.UnitTests.Book;
 
 public class BookTests
 {
@@ -21,7 +21,7 @@ public class BookTests
         var user = UserFactory.CreateUser();
         
         // Act
-        var result = Book.Book.Create(
+        var result = Domain.Book.Book.Create(
             Constants.Books.Title,
             Constants.Books.Description,
             image,
@@ -29,7 +29,7 @@ public class BookTests
             genres);
 
         // Assert
-        result.Should().BeOfType<Book.Book>();
+        result.Should().BeOfType<Domain.Book.Book>();
         result.Title.Should().Be(Constants.Books.Title);
     }
     
@@ -45,7 +45,7 @@ public class BookTests
         var user = UserFactory.CreateUser();
         
         // Act
-        var act = () => Book.Book.Create(
+        var act = () => Domain.Book.Book.Create(
             string.Empty,
             Constants.Books.Description,
             image,
@@ -65,7 +65,7 @@ public class BookTests
         var user = UserFactory.CreateUser();
         
         // Act
-        var act = () => Book.Book.Create(
+        var act = () => Domain.Book.Book.Create(
             Constants.Books.Title,
             Constants.Books.Description,
             image,
@@ -85,7 +85,7 @@ public class BookTests
         var user = UserFactory.CreateUser();
         
         // Act
-        var act = () => Book.Book.Create(
+        var act = () => Domain.Book.Book.Create(
             Constants.Books.Title,
             string.Empty,
             image,
