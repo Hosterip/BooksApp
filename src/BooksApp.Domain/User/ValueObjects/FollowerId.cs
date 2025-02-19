@@ -4,7 +4,7 @@ namespace BooksApp.Domain.User.ValueObjects;
 
 public class FollowerId : ValueObject
 {
-    public FollowerId(Guid value)
+    private FollowerId(Guid value)
     {
         Value = value;
     }

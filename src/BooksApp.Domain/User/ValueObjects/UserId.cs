@@ -4,7 +4,7 @@ namespace BooksApp.Domain.User.ValueObjects;
 
 public sealed class UserId : ValueObject
 {
-    public UserId(Guid value)
+    private UserId(Guid value)
     {
         Value = value;
     }

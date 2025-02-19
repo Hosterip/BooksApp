@@ -4,7 +4,7 @@ namespace BooksApp.Domain.Role.ValueObjects;
 
 public class RoleId : ValueObject
 {
-    public RoleId(Guid value)
+    private RoleId(Guid value)
     {
         Value = value;
     }

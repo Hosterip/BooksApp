@@ -4,7 +4,7 @@ namespace BooksApp.Domain.Book.ValueObjects;
 
 public class BookId : ValueObject
 {
-    public BookId(Guid value)
+    private BookId(Guid value)
     {
         Value = value;
     }

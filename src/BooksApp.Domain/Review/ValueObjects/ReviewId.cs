@@ -4,7 +4,7 @@ namespace BooksApp.Domain.Review.ValueObjects;
 
 public class ReviewId : ValueObject
 {
-    public ReviewId(Guid value)
+    private ReviewId(Guid value)
     {
         Value = value;
     }

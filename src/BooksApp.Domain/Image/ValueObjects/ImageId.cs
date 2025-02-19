@@ -4,7 +4,7 @@ namespace BooksApp.Domain.Image.ValueObjects;
 
 public class ImageId : ValueObject
 {
-    public ImageId(Guid value)
+    private ImageId(Guid value)
     {
         Value = value;
     }
