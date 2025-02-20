@@ -22,6 +22,6 @@ public class Role : AggregateRoot<RoleId>
 
     internal static Role Create(string name, Guid? roleId = null)
     {
-        return new Role(RoleId.CreateRoleId(roleId), name);
+        return new Role(RoleId.Create(roleId), name);
     }
 }

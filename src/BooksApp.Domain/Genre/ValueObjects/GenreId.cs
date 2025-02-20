@@ -11,7 +11,7 @@ public class GenreId : ValueObject
 
     public Guid Value { get; }
 
-    public static GenreId CreateGenreId(Guid? value = null)
+    public static GenreId Create(Guid? value = null)
     {
         return new GenreId(value ?? Guid.NewGuid());
     }

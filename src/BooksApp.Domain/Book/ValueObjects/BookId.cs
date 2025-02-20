@@ -11,7 +11,7 @@ public class BookId : ValueObject
 
     public Guid Value { get; }
 
-    public static BookId CreateBookId(Guid? value = null)
+    public static BookId Create(Guid? value = null)
     {
         return new BookId(value ?? Guid.NewGuid());
     }

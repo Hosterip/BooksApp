@@ -18,7 +18,7 @@ public class BookshelvesConfiguration : IEntityTypeConfiguration<Bookshelf>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => BookshelfId.CreateBookshelfId(value));
+                value => BookshelfId.Create(value));
 
         builder.Property(g => g.Name)
             .HasMaxLength(MaxPropertyLength.Bookshelf.Name)
@@ -28,7 +28,7 @@ public class BookshelvesConfiguration : IEntityTypeConfiguration<Bookshelf>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => UserId.CreateUserId(value));
+                value => UserId.Create(value));
 
         builder.OwnsMany(b => b.BookshelfBooks, bb =>
         {
@@ -42,7 +42,7 @@ public class BookshelvesConfiguration : IEntityTypeConfiguration<Bookshelf>
                 .ValueGeneratedNever()
                 .HasConversion(
                     id => id.Value,
-                    value => BookshelfBookId.CreateBookshelfBookId(value));
+                    value => BookshelfBookId.Create(value));
 
             bb.Navigation(b => b.Book)
                 .AutoInclude();

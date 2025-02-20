@@ -11,7 +11,7 @@ public class ImageId : ValueObject
 
     public Guid Value { get; }
 
-    public static ImageId CreateImageId(Guid? value = null)
+    public static ImageId Create(Guid? value = null)
     {
         return new ImageId(value ?? Guid.NewGuid());
     }

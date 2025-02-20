@@ -39,11 +39,11 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
             bookQueryable = bookQueryable.Where(book => book.Title.Contains(title));
 
         if (userId != null)
-            bookQueryable = bookQueryable.Where(book => book.Author.Id == UserId.CreateUserId(userId));
+            bookQueryable = bookQueryable.Where(book => book.Author.Id == UserId.Create(userId));
 
         if (genreId != null)
             bookQueryable =
-                bookQueryable.Where(book => book.Genres.Any(genre => genre.Id == GenreId.CreateGenreId(genreId)));
+                bookQueryable.Where(book => book.Genres.Any(genre => genre.Id == GenreId.Create(genreId)));
 
         var result = await
             ConvertToBookResult(bookQueryable, DbContext.Reviews, currentUserId)
@@ -58,10 +58,10 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         int page)
     {
         if (!await DbContext.Bookshelves
-                .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))) return null;
+                .AnyAsync(bookshelf => bookshelf.Id == BookshelfId.Create(bookshelfId))) return null;
         var queryable = DbContext.Bookshelves
             .Include(bookshelf => bookshelf.BookshelfBooks)
-            .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
+            .Where(bookshelf => bookshelf.Id == BookshelfId.Create(bookshelfId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
             .Include(b => b.Book.Author.Followers)
             .Include(b => b.Book.Author.Following)
@@ -76,14 +76,14 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
         return await DbContext.Books
             .SingleOrDefaultAsync(
-                book => book.Id == BookId.CreateBookId(guid),
+                book => book.Id == BookId.Create(guid),
                 cancellationToken: token);
     }
 
     public async Task<bool> AnyById(Guid guid, CancellationToken token = default)
     {
         return await DbContext.Books.AnyAsync(
-            book => book.Id == BookId.CreateBookId(guid),
+            book => book.Id == BookId.Create(guid),
             cancellationToken: token);
     }
 
@@ -91,7 +91,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
         var refTitle = title.GenerateRefName();
         return await DbContext.Books.AnyAsync(
-            book => book.Author.Id == UserId.CreateUserId(userId) &&
+            book => book.Author.Id == UserId.Create(userId) &&
                     book.ReferentialName == refTitle,
             cancellationToken: token);
     }
@@ -100,7 +100,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     {
         var reviews = DbContext.Reviews
             .Include(review => review.Book)
-            .Where(review => review.Book.Id == BookId.CreateBookId(bookId));
+            .Where(review => review.Book.Id == BookId.Create(bookId));
         if (reviews.Any())
             return new RatingStatistics
             {

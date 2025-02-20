@@ -15,6 +15,6 @@ public class ImagesConfiguration : IEntityTypeConfiguration<Image>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => ImageId.CreateImageId(value));
+                value => ImageId.Create(value));
     }
 }

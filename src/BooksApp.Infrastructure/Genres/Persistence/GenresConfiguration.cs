@@ -21,7 +21,7 @@ public class GenresConfiguration : IEntityTypeConfiguration<Genre>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => GenreId.CreateGenreId(value));
+                value => GenreId.Create(value));
 
         builder
             .HasMany(genre => genre.Books)

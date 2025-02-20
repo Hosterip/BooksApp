@@ -14,7 +14,7 @@ public class GenresRepository : GenericRepository<Genre>, IGenresRepository
 
     public async Task<IEnumerable<Genre>> GetAllByIds(IEnumerable<Guid> genreIds, CancellationToken token = default)
     {
-        var parsedGenreIds = genreIds.Select(x => GenreId.CreateGenreId(x));
+        var parsedGenreIds = genreIds.Select(x => GenreId.Create(x));
         var result = await DbContext.Genres
             .Where(x => parsedGenreIds.Contains(x.Id)).ToListAsync(token);
         return result;

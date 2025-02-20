@@ -16,7 +16,7 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => UserId.CreateUserId(value));
+                value => UserId.Create(value));
 
         builder.HasIndex(u => u.MiddleName);
         builder.HasIndex(u => u.LastName);

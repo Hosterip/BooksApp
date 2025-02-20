@@ -11,7 +11,7 @@ public class RoleId : ValueObject
 
     public Guid Value { get; }
 
-    public static RoleId CreateRoleId(Guid? value = null)
+    public static RoleId Create(Guid? value = null)
     {
         return new RoleId(value ?? Guid.NewGuid());
     }

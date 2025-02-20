@@ -11,7 +11,7 @@ public sealed class UserId : ValueObject
 
     public Guid Value { get; }
 
-    public static UserId CreateUserId(Guid? value = null)
+    public static UserId Create(Guid? value = null)
     {
         return new UserId(value ?? Guid.NewGuid());
     }

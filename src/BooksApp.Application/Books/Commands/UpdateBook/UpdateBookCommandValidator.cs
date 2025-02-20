@@ -25,8 +25,8 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Books
-                    .AnyAsync(book => book.Id == BookId.CreateBookId(request.Id) &&
-                                      book.Author.Id == UserId.CreateUserId(request.UserId), cancellationToken)
+                    .AnyAsync(book => book.Id == BookId.Create(request.Id) &&
+                                      book.Author.Id == UserId.Create(request.UserId), cancellationToken)
             )
             .WithMessage(BookValidationMessages.BookNotYour)
             .WithName(nameof(UpdateBookCommand.UserId));

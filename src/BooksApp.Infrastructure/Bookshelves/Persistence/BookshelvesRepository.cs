@@ -19,7 +19,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
     {
         return await DbContext.Bookshelves
             .AnyAsync(
-                bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId), 
+                bookshelf => bookshelf.Id == BookshelfId.Create(bookshelfId), 
                 cancellationToken: token);
     }
 
@@ -28,7 +28,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
         var refName = name.GenerateRefName();
         return await DbContext.Bookshelves
             .AnyAsync(
-                bookshelf => bookshelf.UserId == UserId.CreateUserId(userId) &&
+                bookshelf => bookshelf.UserId == UserId.Create(userId) &&
                              bookshelf.ReferentialName == refName,
                 cancellationToken: token);
     }
@@ -36,10 +36,10 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
     public async Task<bool> AnyBookById(Guid bookshelfId, Guid bookId, CancellationToken token = default)
     {
         return await DbContext.Bookshelves
-            .Where(bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId))
+            .Where(bookshelf => bookshelf.Id == BookshelfId.Create(bookshelfId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
             .AnyAsync(
-                book => book.Book.Id == BookId.CreateBookId(bookId),
+                book => book.Book.Id == BookId.Create(bookId),
                 cancellationToken: token);
     }
 
@@ -48,9 +48,9 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
         var refName = name.GenerateRefName();
         return await DbContext.Bookshelves
             .Where(bookshelf => bookshelf.ReferentialName == refName &&
-                                bookshelf.UserId == UserId.CreateUserId(userId))
+                                bookshelf.UserId == UserId.Create(userId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
-            .AnyAsync(book => book.Book.Id == BookId.CreateBookId(bookId),
+            .AnyAsync(book => book.Book.Id == BookId.Create(bookId),
                 cancellationToken: token);
     }
 
@@ -59,7 +59,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
         var refName = name.GenerateRefName();
         return await DbContext.Bookshelves
             .FirstOrDefaultAsync(
-                bookshelf => bookshelf.UserId == UserId.CreateUserId(userId) &&
+                bookshelf => bookshelf.UserId == UserId.Create(userId) &&
                              bookshelf.ReferentialName == refName,
                 cancellationToken: token);
     }
@@ -69,7 +69,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
         return await DbContext.Bookshelves
             .AsSplitQuery()
             .SingleOrDefaultAsync(
-                bookshelf => bookshelf.Id == BookshelfId.CreateBookshelfId(bookshelfId),
+                bookshelf => bookshelf.Id == BookshelfId.Create(bookshelfId),
                 cancellationToken: token);
     }
 }

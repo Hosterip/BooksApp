@@ -41,7 +41,7 @@ public class Review : Entity<ReviewId>
         ValidateBody(body);
         
         return new Review(
-            ReviewId.CreateReviewId(),
+            ReviewId.Create(),
             rating,
             body,
             user,

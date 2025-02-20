@@ -23,7 +23,7 @@ public class BooksConfiguration : IEntityTypeConfiguration<Book>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => BookId.CreateBookId(value));
+                value => BookId.Create(value));
 
         builder.Property(b => b.Title)
             .HasMaxLength(MaxPropertyLength.Book.Title)

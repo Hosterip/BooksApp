@@ -44,7 +44,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         return await (
                 from relationship in DbContext.Users
-                    .Where(x => x.Id == UserId.CreateUserId(userId))
+                    .Where(x => x.Id == UserId.Create(userId))
                     .Include(x => x.Followers)
                     .SelectMany(x => x.Followers)
                 join user in DbContext.Users 
@@ -81,7 +81,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         return await (
                 from relationship in DbContext.Users
-                    .Where(x => x.Id == UserId.CreateUserId(userId))
+                    .Where(x => x.Id == UserId.Create(userId))
                     .Include(x => x.Following)
                     .SelectMany(x => x.Following)
                 join user in DbContext.Users 
@@ -116,7 +116,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         return await DbContext.Users
             .AsNoTracking()
             .SingleOrDefaultAsync(
-                user => user.Id == UserId.CreateUserId(guid),
+                user => user.Id == UserId.Create(guid),
                 cancellationToken: token);
     }
 
@@ -126,7 +126,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         return await DbContext.Users
             .AnyAsync(
-            user => user.Id == UserId.CreateUserId(guid),
+            user => user.Id == UserId.Create(guid),
             cancellationToken: token);
     }
 
@@ -147,10 +147,10 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         return
             await DbContext.Users
                 .Take(1)
-                .Where(u => u.Id == UserId.CreateUserId(userId))
+                .Where(u => u.Id == UserId.Create(userId))
                 .SelectMany(u => u.Followers)
                 .AnyAsync(
-                    f => f.FollowerId == UserId.CreateUserId(followerId),
+                    f => f.FollowerId == UserId.Create(followerId),
                     cancellationToken: token);
     }
 
@@ -158,7 +158,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         Guid userId,
         CancellationToken token = default)
     {
-        var parsedUserId = UserId.CreateUserId(userId);
+        var parsedUserId = UserId.Create(userId);
         return await DbContext.Users
             .Include(x => x.Followers)
             .Take(1)
@@ -172,7 +172,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         return await DbContext.Users
             .Include(x => x.Followers)
             .Include(x => x.Following)
-            .FirstOrDefaultAsync(x => x.Id == UserId.CreateUserId(userId), token);
+            .FirstOrDefaultAsync(x => x.Id == UserId.Create(userId), token);
     }
 
     private static IQueryable<UserResult> ConvertToUserResult(IQueryable<User> users, Guid? currentUserId)

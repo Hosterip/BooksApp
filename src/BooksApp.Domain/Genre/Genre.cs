@@ -27,6 +27,6 @@ public class Genre : AggregateRoot<GenreId>
             throw new DomainException($"Name should be inclusively between 1 and {MaxPropertyLength.Genre.Name}");
             
         
-        return new Genre(GenreId.CreateGenreId(), name);
+        return new Genre(GenreId.Create(), name);
     }
 }

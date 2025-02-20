@@ -21,14 +21,14 @@ public sealed class RelationshipConfiguration : IEntityTypeConfiguration<Relatio
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => UserId.CreateUserId(value));
+                value => UserId.Create(value));
             
             
         builder.Property(o => o.UserId)
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => UserId.CreateUserId(value));
+                value => UserId.Create(value));
 
     }
 }

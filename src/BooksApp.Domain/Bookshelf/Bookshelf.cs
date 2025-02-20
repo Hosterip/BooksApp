@@ -39,7 +39,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     {
         ValidateName(name);
         
-        return new Bookshelf(BookshelfId.CreateBookshelfId(), user, name);
+        return new Bookshelf(BookshelfId.Create(), user, name);
     }
 
     public void ChangeName(string name)
@@ -67,10 +67,10 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     public void RemoveBook(Guid bookId)
     {
-        if (HasBook(BookId.CreateBookId(bookId)))
+        if (HasBook(BookId.Create(bookId)))
             throw new DomainException("Bookshelf does not have this book");
         
-        _bookshelfBooks.RemoveAll(book => book.Book.Id == BookId.CreateBookId(bookId));
+        _bookshelfBooks.RemoveAll(book => book.Book.Id == BookId.Create(bookId));
     }
     
     private static void ValidateName(string name)

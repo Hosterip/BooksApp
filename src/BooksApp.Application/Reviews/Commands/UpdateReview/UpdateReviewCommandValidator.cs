@@ -25,7 +25,7 @@ public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateRevie
             {
                 var review = await unitOfWork.Reviews.GetSingleById(request.ReviewId, cancellationToken);
                 if (review is not null)
-                    return review.User.Id == UserId.CreateUserId(request.UserId);
+                    return review.User.Id == UserId.Create(request.UserId);
                 return true;
             }).WithMessage(ReviewValidationMessages.NotYours);
     }

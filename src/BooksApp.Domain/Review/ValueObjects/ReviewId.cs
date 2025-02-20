@@ -11,7 +11,7 @@ public class ReviewId : ValueObject
 
     public Guid Value { get; }
 
-    public static ReviewId CreateReviewId(Guid? value = null)
+    public static ReviewId Create(Guid? value = null)
     {
         return new ReviewId(value ?? Guid.NewGuid());
     }

@@ -16,7 +16,7 @@ public class BookshelfId : ValueObject
         yield return Value;
     }
 
-    public static BookshelfId CreateBookshelfId(Guid? value = null)
+    public static BookshelfId Create(Guid? value = null)
     {
         return new BookshelfId(value ?? Guid.NewGuid());
     }

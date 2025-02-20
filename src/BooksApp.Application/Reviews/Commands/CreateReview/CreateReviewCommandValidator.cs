@@ -27,8 +27,8 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
             .MustAsync(async (request, cancellationToken) =>
             {
                 return !await unitOfWork.Reviews.AnyAsync(review =>
-                    review.User.Id == UserId.CreateUserId(request.UserId)
-                    && review.Book.Id == BookId.CreateBookId(request.BookId), 
+                    review.User.Id == UserId.Create(request.UserId)
+                    && review.Book.Id == BookId.Create(request.BookId), 
                     cancellationToken);
             })
             .WithMessage(ReviewValidationMessages.AlreadyHave)

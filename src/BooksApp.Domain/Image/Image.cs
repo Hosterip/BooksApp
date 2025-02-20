@@ -18,7 +18,7 @@ public class Image : AggregateRoot<ImageId>
 
     public static Image Create(string imageName)
     {
-        return new Image(ImageId.CreateImageId(), imageName);
+        return new Image(ImageId.Create(), imageName);
     }
 
     public void ChangeImageName(string imageName)

@@ -47,7 +47,7 @@ public class Book : AggregateRoot<BookId>
         ValidateTitle(title);
         ValidateDescription(description);
         
-        return new Book(BookId.CreateBookId(), title, description, cover, author, genres);
+        return new Book(BookId.Create(), title, description, cover, author, genres);
     }
 
     public void ChangeGenres(List<Genre.Genre> genres)

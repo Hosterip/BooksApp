@@ -23,7 +23,7 @@ public class RolesConfiguration : IEntityTypeConfiguration<Role>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => RoleId.CreateRoleId(value));
+                value => RoleId.Create(value));
         
         builder.HasData(RoleFactory.Member());
         builder.HasData(RoleFactory.Author());

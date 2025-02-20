@@ -18,6 +18,6 @@ public class BookshelfBook : Entity<BookshelfBookId>
 
     public static BookshelfBook Create(Book.Book book)
     {
-        return new BookshelfBook(BookshelfBookId.CreateBookshelfBookId(), book);
+        return new BookshelfBook(BookshelfBookId.Create(), book);
     }
 }
