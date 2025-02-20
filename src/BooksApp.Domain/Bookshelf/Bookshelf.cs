@@ -11,9 +11,7 @@ namespace BooksApp.Domain.Bookshelf;
 
 public class Bookshelf : AggregateRoot<BookshelfId>
 {
-    private Bookshelf(BookshelfId id) : base(id)
-    {
-    }
+    private Bookshelf(BookshelfId id) : base(id) { }
 
     private Bookshelf(
         BookshelfId id,
@@ -21,8 +19,10 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         string name) : base(id)
     {
         UserId = user.Id;
-        _bookshelfBooks = new List<BookshelfBook>();
-        Name = name;
+        _bookshelfBooks = [];
+        Name = name
+            .TrimStart()
+            .TrimEnd();
         ReferentialName = name.GenerateRefName();
     }
 
