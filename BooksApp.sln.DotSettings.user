@@ -12,5 +12,9 @@
     &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.Create_WhenEverythingInOrder_ShouldCreateBook&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.Create_WhenNameIsNotRight_ShouldThrowAnError&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.Create_WhenEmailIsNotRight_ShouldThrowAnError&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Review.ReviewTests.Create_WhenRatingIsWrong_ShouldCreateReview&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Review.ReviewTests.Create_WhenBodyIsWrong_ShouldThrowAnError&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.AddFollower_WhenEverythingInOrder_ShouldAddAFollower&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.RemoveFollower_WhenEverythingInOrder_ShouldAddAFollower&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

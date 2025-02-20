@@ -4,6 +4,7 @@ using FluentAssertions;
 using TestCommon.Common.Constants;
 using TestCommon.Common.Factories;
 using TestCommon.Images;
+using TestCommon.Users;
 
 namespace BooksApp.Domain.UnitTests.User;
 
@@ -82,5 +83,34 @@ public class UserTests
 
         // Assert
         Assert.ThrowsAny<DomainException>(act);
+    }
+    
+    [Fact]
+    public void AddFollower_WhenEverythingInOrder_ShouldAddAFollower()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var follower = UserFactory.CreateUser();
+
+        // Act
+        user.AddFollower(follower);
+        
+        // Assert
+        user.HasFollower(follower.Id).Should().BeTrue();
+    }
+    
+    [Fact]
+    public void RemoveFollower_WhenEverythingInOrder_ShouldRemoveAFollower()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var follower = UserFactory.CreateUser();
+        user.AddFollower(follower);
+
+        // Act
+        user.RemoveFollower(follower);
+        
+        // Assert
+        user.HasFollower(follower.Id).Should().BeFalse();
     }
 }
