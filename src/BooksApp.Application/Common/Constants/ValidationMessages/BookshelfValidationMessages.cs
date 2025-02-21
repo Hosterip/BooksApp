@@ -8,4 +8,5 @@ public static class BookshelfValidationMessages
     public const string AlreadyHaveWithSameName = "You already have bookshelf with the same name";
     public const string NoBookToRemove = "There is no book with this bookId to delete";
     public const string CannotDeleteDefault = "You can't delete default bookshelf";
+    public const string NameIsTheSameAsItWas = "New name is the same as bookshelf's name now";
 }

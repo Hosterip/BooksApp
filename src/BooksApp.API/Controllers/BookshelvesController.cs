@@ -6,6 +6,7 @@ using BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 using BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using BooksApp.Application.Bookshelves.Commands.RemoveBook;
 using BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
+using BooksApp.Application.Bookshelves.Commands.UpdateName;
 using BooksApp.Application.Bookshelves.Queries.BookshelfById;
 using BooksApp.Application.Bookshelves.Queries.BookshelfByName;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
@@ -81,6 +82,31 @@ public class BookshelvesController(
             new { idOrName = result.Id, userId },
             response);
     }
+    
+    [HttpPut(ApiRoutes.Bookshelves.Update)]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BookshelfResponse>> UpdateName(
+        Guid bookshelfId,
+        string newName,
+        CancellationToken token)
+    {
+        var userId = userService.GetId()!.Value;
+        var command = new UpdateNameCommand
+        {
+            NewName = newName,
+            BookshelfId = bookshelfId
+        };
+        await sender.Send(command, token);
+
+        await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
+
+        return CreatedAtAction(
+            nameof(GetBookshelf),
+            new { idOrName = bookshelfId, userId });
+    }
+
     
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
     [Authorize]

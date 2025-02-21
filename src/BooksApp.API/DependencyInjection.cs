@@ -3,7 +3,9 @@ using System.Security.Claims;
 using BooksApp.API.Common;
 using BooksApp.API.Common.Constants;
 using BooksApp.API.Common.Requirements;
+using BooksApp.API.Common.Services;
 using BooksApp.API.Middlewares;
+using BooksApp.Application.Common.Interfaces;
 using BooksApp.Contracts;
 using BooksApp.Contracts.Books;
 using BooksApp.Contracts.Users;
@@ -25,6 +27,9 @@ public static class DependencyInjection
             .AddCorsPolicy(corsPolicy)
             .AddAuth()
             .AddMyOutputCache();
+
+        services.AddScoped<IUserService, UserService>();
+        
         return services;
     }
 
