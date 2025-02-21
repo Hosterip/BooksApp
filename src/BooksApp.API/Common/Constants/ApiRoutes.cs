@@ -48,6 +48,9 @@ public static class ApiRoutes
         public const string GetBooks = $"{Base}/{{bookshelfId:guid}}/books/";
 
         public const string Create = $"{Base}";
+        
+        public const string Update = $"{Base}/{{bookshelfId:guid}}/{{newName}}";
+        
         public const string Remove = $"{Base}/{{bookshelfId:guid}}";
     }
 
