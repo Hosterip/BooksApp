@@ -4,11 +4,11 @@ using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
-namespace BooksApp.Application.Bookshelves.Commands.UpdateName;
+namespace BooksApp.Application.Bookshelves.Commands.UpdateBookshelfName;
 
-public sealed class UpdateNameCommandValidator : AbstractValidator<UpdateNameCommand>
+public sealed class UpdateBookshelfNameCommandValidator : AbstractValidator<UpdateBookshelfNameCommand>
 {
-    public UpdateNameCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
+    public UpdateBookshelfNameCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId();
         RuleFor(x => x.BookshelfId)
@@ -26,7 +26,7 @@ public sealed class UpdateNameCommandValidator : AbstractValidator<UpdateNameCom
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, token);
                 return bookshelf?.Name != request.NewName;
             })
-            .OverridePropertyName(nameof(UpdateNameCommand.NewName))
+            .OverridePropertyName(nameof(UpdateBookshelfNameCommand.NewName))
             .WithMessage(BookshelfValidationMessages.NameIsTheSameAsItWas);
     }
 }

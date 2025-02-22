@@ -1,13 +1,13 @@
 using BooksApp.Application.Common.Interfaces;
 using MediatR;
 
-namespace BooksApp.Application.Bookshelves.Commands.UpdateName;
+namespace BooksApp.Application.Bookshelves.Commands.UpdateBookshelfName;
 
-internal sealed class UpdateNameCommandHandler(
+internal sealed class UpdateBookshelfNameCommandHandler(
     IUnitOfWork unitOfWork)
-    : IRequestHandler<UpdateNameCommand>
+    : IRequestHandler<UpdateBookshelfNameCommand>
 {
-    public async Task Handle(UpdateNameCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateBookshelfNameCommand request, CancellationToken cancellationToken)
     {
         var bookshelf = await unitOfWork.Bookshelves
             .GetSingleById(request.BookshelfId, cancellationToken);
