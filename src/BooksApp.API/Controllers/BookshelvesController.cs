@@ -6,7 +6,7 @@ using BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 using BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using BooksApp.Application.Bookshelves.Commands.RemoveBook;
 using BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
-using BooksApp.Application.Bookshelves.Commands.UpdateName;
+using BooksApp.Application.Bookshelves.Commands.UpdateBookshelfName;
 using BooksApp.Application.Bookshelves.Queries.BookshelfById;
 using BooksApp.Application.Bookshelves.Queries.BookshelfByName;
 using BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
@@ -93,7 +93,7 @@ public class BookshelvesController(
         CancellationToken token)
     {
         var userId = userService.GetId()!.Value;
-        var command = new UpdateNameCommand
+        var command = new UpdateBookshelfNameCommand
         {
             NewName = newName,
             BookshelfId = bookshelfId
@@ -136,7 +136,7 @@ public class BookshelvesController(
 
     [HttpPost(ApiRoutes.Books.AddBook)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddBook(
         [FromRoute] Guid bookId,
@@ -161,12 +161,12 @@ public class BookshelvesController(
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
 
-        return Ok();
+        return NoContent();
     }
 
     [HttpDelete(ApiRoutes.Books.RemoveBook)]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveBook(
         [FromRoute] Guid bookId,
@@ -191,7 +191,7 @@ public class BookshelvesController(
         
         await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
 
-        return Ok();
+        return NoContent();
     }
     
     #endregion Books endpoints
