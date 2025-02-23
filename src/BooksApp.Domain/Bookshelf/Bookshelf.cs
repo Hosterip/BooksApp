@@ -67,7 +67,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     public void RemoveBook(Guid bookId)
     {
-        if (HasBook(bookId))
+        if (!HasBook(bookId))
             throw new DomainException("Bookshelf does not have this book");
         
         _bookshelfBooks.RemoveAll(book => book.Book.Id == BookId.Create(bookId));
