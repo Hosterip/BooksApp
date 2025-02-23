@@ -52,14 +52,14 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         ReferentialName = name.GenerateRefName();
     }
     
-    public bool HasBook(BookId bookId)
+    public bool HasBook(Guid bookId)
     {
-        return _bookshelfBooks.Any(x => x.Book.Id == bookId);
+        return _bookshelfBooks.Any(x => x.Book.Id == BookId.Create(bookId));
     }
 
     public void AddBook(Book.Book book)
     {
-        if (HasBook(book.Id))
+        if (HasBook(book.Id.Value))
             throw new DomainException("Bookshelf already have this book");
         
         _bookshelfBooks.Add(BookshelfBook.Create(book));
@@ -67,7 +67,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     public void RemoveBook(Guid bookId)
     {
-        if (HasBook(BookId.Create(bookId)))
+        if (HasBook(bookId))
             throw new DomainException("Bookshelf does not have this book");
         
         _bookshelfBooks.RemoveAll(book => book.Book.Id == BookId.Create(bookId));
