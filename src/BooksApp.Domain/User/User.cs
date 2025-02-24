@@ -112,6 +112,9 @@ public class User : AggregateRoot<UserId>
         if (follower.Id == Id)
             throw new DomainException("Can't add yourself to followers");
 
+        if (HasFollower(follower.Id))
+            throw new DomainException("There is already a follower");
+
         var item = Relationship.Create(this, follower);
         _followers.Add(item);
     }
@@ -121,7 +124,7 @@ public class User : AggregateRoot<UserId>
         if (follower.Id == Id)
             throw new DomainException("Can't add yourself to followers");
 
-        if (_followers.Any(f => f.FollowerId != follower.Id))
+        if (!HasFollower(follower.Id))
             throw new DomainException("No follower to remove");
 
         _followers.RemoveAll(x => x.FollowerId == follower.Id);
