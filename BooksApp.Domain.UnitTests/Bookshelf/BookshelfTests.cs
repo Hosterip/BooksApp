@@ -1,4 +1,4 @@
-using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain.Common;
 using FluentAssertions;
 using TestCommon.Books;
 using TestCommon.Bookshelves;
@@ -52,5 +52,50 @@ public class BookshelfTests
 
         // Assert
         bookshelf.HasBook(book.Id.Value).Should().BeFalse();
+    }
+    
+    [Fact]
+    public void Create_WhenNameIsIncorrect_ShouldThrowAnError()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        var act = () => Domain.Bookshelf.Bookshelf.Create(
+            user,
+            string.Empty);
+
+        // Assert
+        Assert.ThrowsAny<DomainException>(act);
+    }
+    
+    [Fact]
+    public void AddBook_WhenThereIsAlreadyABook_ShouldThrowAnError()
+    {
+        // Arrange
+        var bookshelf = BookshelfFactory.CreateBookshelf();
+        var book = BookFactory.CreateBook();
+        bookshelf.AddBook(book);
+
+        // Act
+        var act = () => bookshelf.AddBook(book);
+
+        // Assert
+        Assert.ThrowsAny<DomainException>(act);
+    }
+    
+    [Fact]
+    public void RemoveBook_WhenThereIsNoBookToRemove_ShouldThrowAnError()
+    {
+        // Arrange
+        var bookshelf = BookshelfFactory.CreateBookshelf();
+        var book = BookFactory.CreateBook();
+        bookshelf.AddBook(book);
+
+        // Act
+        var act = () => bookshelf.AddBook(book);
+
+        // Assert
+        Assert.ThrowsAny<DomainException>(act);
     }
 }

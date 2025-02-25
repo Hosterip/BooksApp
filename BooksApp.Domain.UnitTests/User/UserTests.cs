@@ -100,6 +100,21 @@ public class UserTests
     }
     
     [Fact]
+    public void AddFollower_WhenFollowerAlreadyInAList_ShouldThrowAnError()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var follower = UserFactory.CreateUser();
+        user.AddFollower(follower);
+
+        // Act
+        var act = () => user.AddFollower(follower);
+        
+        // Assert
+        Assert.ThrowsAny<DomainException>(act);
+    }
+    
+    [Fact]
     public void RemoveFollower_WhenEverythingInOrder_ShouldRemoveAFollower()
     {
         // Arrange
@@ -112,5 +127,19 @@ public class UserTests
         
         // Assert
         user.HasFollower(follower.Id).Should().BeFalse();
+    }
+    
+    [Fact]
+    public void RemoveFollower_WhenThereIsNoFollower_ShouldThrowAnError()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var follower = UserFactory.CreateUser();
+
+        // Act
+        var act = () => user.RemoveFollower(follower);
+        
+        // Assert
+        Assert.ThrowsAny<DomainException>(act);
     }
 }
