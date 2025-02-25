@@ -1,8 +1,10 @@
 using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentAssertions;
 using TestCommon.Books;
 using TestCommon.Bookshelves;
 using TestCommon.Common.Constants;
+using TestCommon.Common.Helpers;
 using TestCommon.Users;
 
 namespace BooksApp.Domain.UnitTests.Bookshelf;
@@ -54,16 +56,20 @@ public class BookshelfTests
         bookshelf.HasBook(book.Id.Value).Should().BeFalse();
     }
     
-    [Fact]
-    public void Create_WhenNameIsIncorrect_ShouldThrowAnError()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(MaxPropertyLength.Bookshelf.Name)]
+    public void Create_WhenNameIsIncorrect_ShouldThrowAnError(int nameLength)
     {
         // Arrange
         var user = UserFactory.CreateUser();
 
+        var name = StringUtilities.ExceedMaxStringLength(nameLength);
+        
         // Act
         var act = () => Domain.Bookshelf.Bookshelf.Create(
             user,
-            string.Empty);
+            name);
 
         // Assert
         Assert.ThrowsAny<DomainException>(act);

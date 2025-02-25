@@ -1,6 +1,8 @@
 using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentAssertions;
 using TestCommon.Common.Constants;
+using TestCommon.Common.Helpers;
 using TestCommon.Genres;
 using TestCommon.Images;
 using TestCommon.Users;
@@ -33,8 +35,10 @@ public class BookTests
         result.Title.Should().Be(Constants.Books.Title);
     }
     
-    [Fact]
-    public void Create_WhenTitleIsWrong_ShouldThrowAnError()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(MaxPropertyLength.Book.Title)]
+    public void Create_WhenTitleIsWrong_ShouldThrowAnError(int stringLength)
     {
         // Arrange
         var genres = new List<Genre.Genre>
@@ -43,10 +47,11 @@ public class BookTests
         };
         var image = ImageFactory.CreateImage();
         var user = UserFactory.CreateUser();
+        var title = StringUtilities.ExceedMaxStringLength(stringLength);
         
         // Act
         var act = () => Domain.Book.Book.Create(
-            string.Empty,
+            title,
             Constants.Books.Description,
             image,
             user,
@@ -76,17 +81,21 @@ public class BookTests
         Assert.ThrowsAny<DomainException>(act);
     }
     
-    [Fact]
-    public void Create_WhenDescriptionIsWrong_ShouldThrowAnError()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(MaxPropertyLength.Book.Description)]
+    public void Create_WhenDescriptionIsWrong_ShouldThrowAnError(int stringLength)
     {
         // Arrange
         var genres = new List<Genre.Genre>();
         var image = ImageFactory.CreateImage();
         var user = UserFactory.CreateUser();
+
+        var title = StringUtilities.ExceedMaxStringLength(stringLength);
         
         // Act
         var act = () => Domain.Book.Book.Create(
-            Constants.Books.Title,
+            title,
             string.Empty,
             image,
             user,

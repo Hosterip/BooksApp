@@ -1,7 +1,9 @@
 using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentAssertions;
 using TestCommon.Books;
 using TestCommon.Common.Constants;
+using TestCommon.Common.Helpers;
 using TestCommon.Users;
 
 namespace BooksApp.Domain.UnitTests.Review;
@@ -48,17 +50,21 @@ public class ReviewTests
         Assert.ThrowsAny<DomainException>(act);
     }
     
-    [Fact]
-    public void Create_WhenBodyIsWrong_ShouldThrowAnError()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(MaxPropertyLength.Review.Body)]
+    public void Create_WhenBodyIsWrong_ShouldThrowAnError(int stringLength)
     {
         // Arrange
         var book = BookFactory.CreateBook();
         var user = UserFactory.CreateUser();
+
+        var body = StringUtilities.ExceedMaxStringLength(stringLength);
         
         // Act
         var act = () => Domain.Review.Review.Create(
             Constants.Reviews.Rating,
-            string.Empty, 
+            body, 
             user,
             book);
 

@@ -1,8 +1,10 @@
 using BooksApp.Domain.Common;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Role;
 using FluentAssertions;
 using TestCommon.Common.Constants;
 using TestCommon.Common.Factories;
+using TestCommon.Common.Helpers;
 using TestCommon.Images;
 using TestCommon.Users;
 
@@ -33,17 +35,27 @@ public class UserTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData("", "", "")]
+    [InlineData(0)]
+    [InlineData(MaxPropertyLength.User.FirstName)]
+    [InlineData(0, 0, 0)]
+    [InlineData(MaxPropertyLength.User.FirstName, MaxPropertyLength.User.MiddleName, MaxPropertyLength.User.LastName)]
     public void Create_WhenNameIsNotRight_ShouldThrowAnError(
-        string firstName,
-        string? middleName = null,
-        string? lastName = null)
+        int firstNameLength,
+        int? middleNameLength = null,
+        int? lastNameLength = null)
     {
         // Arrange
         var image = ImageFactory.CreateImage();
         var role = RoleFactory.Member();
         var passwordHasher = PasswordHasherFactory.CreatePasswordHasher();
+
+        var firstName = StringUtilities.ExceedMaxStringLength(firstNameLength);
+        var middleName = middleNameLength != null
+            ? StringUtilities.ExceedMaxStringLength(middleNameLength.Value)
+            : null;
+        var lastName = lastNameLength != null 
+            ? StringUtilities.ExceedMaxStringLength(lastNameLength.Value) 
+            : null;
         
         // Act
         var act = () => Domain.User.User.Create(
