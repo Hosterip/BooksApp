@@ -58,13 +58,33 @@ public class BookshelfTests
     
     [Theory]
     [InlineData(0)]
-    [InlineData(MaxPropertyLength.Bookshelf.Name)]
-    public void Create_WhenNameIsIncorrect_ShouldThrowAnError(int nameLength)
+    [InlineData(MaxPropertyLength.Bookshelf.Name + 1)]
+    public void Create_WhenNameLengthIsWrong_ShouldThrowAnError(int stringLength)
     {
         // Arrange
         var user = UserFactory.CreateUser();
 
-        var name = StringUtilities.ExceedMaxStringLength(nameLength);
+        var name = StringUtilities.GenerateLongString(stringLength);
+        
+        // Act
+        var act = () => Domain.Bookshelf.Bookshelf.Create(
+            user,
+            name);
+
+        // Assert
+        Assert.ThrowsAny<DomainException>(act);
+    }
+    
+    [Theory]
+    [InlineData(1)]
+    [InlineData(20)]
+    [InlineData(MaxPropertyLength.Bookshelf.Name)]
+    public void Create_WhenNameIsWhiteSpace_ShouldThrowAnError(int whiteSpaceLength)
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        var name = StringUtilities.GenerateLongWhiteSpace(whiteSpaceLength);
         
         // Act
         var act = () => Domain.Bookshelf.Bookshelf.Create(

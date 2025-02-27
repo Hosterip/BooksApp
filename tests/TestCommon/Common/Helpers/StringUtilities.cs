@@ -4,12 +4,17 @@ namespace TestCommon.Common.Helpers;
 
 public static class StringUtilities 
 {
-    public static string ExceedMaxStringLength(int length)
+    public static string GenerateLongString(int length)
     {
         var builder = new StringBuilder();
-        builder.Append('1', length == 0 
-            ? length 
-            : length + 1);
+        builder.Append('1', length);
+        return builder.ToString();
+    }
+    
+    public static string GenerateLongWhiteSpace(int length)
+    {
+        var builder = new StringBuilder();
+        builder.Append(' ', length);
         return builder.ToString();
     }
 }

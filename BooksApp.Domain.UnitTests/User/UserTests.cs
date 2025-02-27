@@ -36,9 +36,9 @@ public class UserTests
 
     [Theory]
     [InlineData(0)]
-    [InlineData(MaxPropertyLength.User.FirstName)]
     [InlineData(0, 0, 0)]
-    [InlineData(MaxPropertyLength.User.FirstName, MaxPropertyLength.User.MiddleName, MaxPropertyLength.User.LastName)]
+    [InlineData(MaxPropertyLength.User.FirstName + 1)]
+    [InlineData(MaxPropertyLength.User.FirstName + 1, MaxPropertyLength.User.MiddleName + 1, MaxPropertyLength.User.LastName + 1)]
     public void Create_WhenNameIsNotRight_ShouldThrowAnError(
         int firstNameLength,
         int? middleNameLength = null,
@@ -49,13 +49,45 @@ public class UserTests
         var role = RoleFactory.Member();
         var passwordHasher = PasswordHasherFactory.CreatePasswordHasher();
 
-        var firstName = StringUtilities.ExceedMaxStringLength(firstNameLength);
+        var firstName = StringUtilities.GenerateLongString(firstNameLength);
         var middleName = middleNameLength != null
-            ? StringUtilities.ExceedMaxStringLength(middleNameLength.Value)
+            ? StringUtilities.GenerateLongString(middleNameLength.Value)
             : null;
         var lastName = lastNameLength != null 
-            ? StringUtilities.ExceedMaxStringLength(lastNameLength.Value) 
+            ? StringUtilities.GenerateLongString(lastNameLength.Value) 
             : null;
+        
+        // Act
+        var act = () => Domain.User.User.Create(
+            passwordHasher,
+            Constants.Users.Email,
+            role,
+            Constants.Users.Password,
+            image,
+            firstName,
+            middleName,
+            lastName);
+
+        // Assert
+        Assert.ThrowsAny<DomainException>(act);
+    }
+    
+    [Theory]
+    [InlineData(1, 1, 1)]
+    [InlineData(MaxPropertyLength.User.FirstName, MaxPropertyLength.User.MiddleName, MaxPropertyLength.User.LastName)]
+    public void Create_WhenNameIsWhiteSpace_ShouldThrowAnError(
+        int firstNameLength,
+        int middleNameLength,
+        int lastNameLength)
+    {
+        // Arrange
+        var image = ImageFactory.CreateImage();
+        var role = RoleFactory.Member();
+        var passwordHasher = PasswordHasherFactory.CreatePasswordHasher();
+
+        var firstName = StringUtilities.GenerateLongWhiteSpace(firstNameLength);
+        var middleName = StringUtilities.GenerateLongWhiteSpace(middleNameLength);
+        var lastName = StringUtilities.GenerateLongWhiteSpace(lastNameLength);
         
         // Act
         var act = () => Domain.User.User.Create(

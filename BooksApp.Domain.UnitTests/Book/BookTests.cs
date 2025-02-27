@@ -37,7 +37,7 @@ public class BookTests
     
     [Theory]
     [InlineData(0)]
-    [InlineData(MaxPropertyLength.Book.Title)]
+    [InlineData(MaxPropertyLength.Book.Title + 1)]
     public void Create_WhenTitleIsWrong_ShouldThrowAnError(int stringLength)
     {
         // Arrange
@@ -47,7 +47,7 @@ public class BookTests
         };
         var image = ImageFactory.CreateImage();
         var user = UserFactory.CreateUser();
-        var title = StringUtilities.ExceedMaxStringLength(stringLength);
+        var title = StringUtilities.GenerateLongString(stringLength);
         
         // Act
         var act = () => Domain.Book.Book.Create(
@@ -91,7 +91,7 @@ public class BookTests
         var image = ImageFactory.CreateImage();
         var user = UserFactory.CreateUser();
 
-        var title = StringUtilities.ExceedMaxStringLength(stringLength);
+        var title = StringUtilities.GenerateLongString(stringLength);
         
         // Act
         var act = () => Domain.Book.Book.Create(

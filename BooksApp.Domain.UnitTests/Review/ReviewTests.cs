@@ -52,14 +52,36 @@ public class ReviewTests
     
     [Theory]
     [InlineData(0)]
-    [InlineData(MaxPropertyLength.Review.Body)]
-    public void Create_WhenBodyIsWrong_ShouldThrowAnError(int stringLength)
+    [InlineData(MaxPropertyLength.Review.Body + 1)]
+    public void Create_WhenBodyExceedsMaximumLength_ShouldThrowAnError(int stringLength)
     {
         // Arrange
         var book = BookFactory.CreateBook();
         var user = UserFactory.CreateUser();
 
-        var body = StringUtilities.ExceedMaxStringLength(stringLength);
+        var body = StringUtilities.GenerateLongString(stringLength);
+        
+        // Act
+        var act = () => Domain.Review.Review.Create(
+            Constants.Reviews.Rating,
+            body, 
+            user,
+            book);
+
+        // Assert
+        Assert.ThrowsAny<DomainException>(act);
+    }
+    
+    [Theory]
+    [InlineData(1)]
+    [InlineData(MaxPropertyLength.Review.Body)]
+    public void Create_WhenBodyIsWhiteSpace_ShouldThrowAnError(int stringLength)
+    {
+        // Arrange
+        var book = BookFactory.CreateBook();
+        var user = UserFactory.CreateUser();
+
+        var body = StringUtilities.GenerateLongString(stringLength);
         
         // Act
         var act = () => Domain.Review.Review.Create(
