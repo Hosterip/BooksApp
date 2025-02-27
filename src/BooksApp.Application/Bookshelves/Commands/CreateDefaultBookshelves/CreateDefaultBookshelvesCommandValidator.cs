@@ -11,6 +11,6 @@ public sealed class CreateDefaultBookshelvesCommandValidator : AbstractValidator
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
     }
 }

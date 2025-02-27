@@ -11,6 +11,6 @@ public sealed class GetSingleBookQueryValidator : AbstractValidator<GetSingleBoo
         RuleFor(book => book.Id)
             .MustAsync(async (id, cancellationToken) => 
                 await unitOfWork.Books.AnyById(id, cancellationToken))
-            .WithMessage(BookValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.Book.NotFound);
     }
 }

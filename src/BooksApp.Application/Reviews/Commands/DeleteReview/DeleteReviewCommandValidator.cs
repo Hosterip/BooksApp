@@ -18,7 +18,7 @@ public sealed class DeleteReviewCommandValidator : AbstractValidator<DeleteRevie
                         review.User.Id == UserId.Create(request.UserId) &&
                         review.Id == ReviewId.Create(request.ReviewId), cancellationToken);
             })
-            .WithMessage(UserValidationMessages.Permission)
+            .WithMessage(ValidationMessages.User.Permission)
             .WithName(nameof(DeleteReviewCommand.UserId));
     }
 }

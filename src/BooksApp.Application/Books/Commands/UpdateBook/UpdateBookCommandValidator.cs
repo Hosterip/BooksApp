@@ -20,7 +20,7 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 request.Title == null || !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title, cancellationToken))
-            .WithMessage(BookValidationMessages.WithSameNameAlreadyExists)
+            .WithMessage(ValidationMessages.Book.WithSameNameAlreadyExists)
             .WithName(nameof(UpdateBookCommand.Title));
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
@@ -28,7 +28,7 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
                     .AnyAsync(book => book.Id == BookId.Create(request.Id) &&
                                       book.Author.Id == UserId.Create(request.UserId), cancellationToken)
             )
-            .WithMessage(BookValidationMessages.BookNotYour)
+            .WithMessage(ValidationMessages.Book.BookNotYour)
             .WithName(nameof(UpdateBookCommand.UserId));
 
         // Genres
@@ -40,7 +40,7 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
                 return false;
             var genres = await unitOfWork.Genres.GetAllByIds(genreIds, cancellationToken);
             return genres.Any();
-        }).WithMessage(BookValidationMessages.GenresNotFound);
+        }).WithMessage(ValidationMessages.Book.GenresNotFound);
 
         // Images
 
@@ -48,6 +48,6 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
             .LessThan(10000000);
         RuleFor(request => request.Image)
             .Must(file => file == null || imageFileBuilder.IsValid(file.FileName))
-            .WithMessage(ImageValidationMessages.WrongFileName);
+            .WithMessage(ValidationMessages.Image.WrongFileName);
     }
 }

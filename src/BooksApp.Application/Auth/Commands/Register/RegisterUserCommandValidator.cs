@@ -13,12 +13,12 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
     {
         RuleFor(user => user.Email)
             .Must(EmailValidator.Validate)
-            .WithMessage(UserValidationMessages.InappropriateEmail);
+            .WithMessage(ValidationMessages.User.InappropriateEmail);
 
         RuleFor(user => user.Email)
             .MustAsync(async (email, cancellationToken) =>
                 !await unitOfWork.Users.AnyByEmail(email, cancellationToken))
-            .WithMessage(AuthValidationMessages.Occupied);
+            .WithMessage(ValidationMessages.Auth.Occupied);
 
         RuleFor(user => user.FirstName)
             .NotEmpty()

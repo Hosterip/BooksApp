@@ -13,7 +13,7 @@ public sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailC
         RuleFor(user => user.Id)
             .MustAsync(async (id, cancellationToken) => 
                 await unitOfWork.Users.AnyById(id, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
         
         RuleFor(user => user.Email)
             .MustAsync(async (email, cancellationToken) =>
@@ -21,10 +21,10 @@ public sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailC
                 return !await unitOfWork.Users.AnyAsync(
                            user => user.Email == email, cancellationToken);
             })
-            .WithMessage(UserValidationMessages.Occupied);
+            .WithMessage(ValidationMessages.User.Occupied);
         RuleFor(user => user.Email)
             .Must(EmailValidator.Validate)
-            .WithMessage(UserValidationMessages.InappropriateEmail);
+            .WithMessage(ValidationMessages.User.InappropriateEmail);
         
         RuleFor(user => user.Email)
             .NotEmpty()

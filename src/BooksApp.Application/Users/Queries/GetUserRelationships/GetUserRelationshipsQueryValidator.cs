@@ -11,7 +11,7 @@ public sealed class GetUserRelationshipsQueryValidator : AbstractValidator<GetUs
         RuleFor(request => request.UserId)
             .MustAsync(async (id, cancellationToken) =>
                 await unitOfWork.Users.AnyById(id, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
         
         RuleFor(request => request.Page)
             .GreaterThanOrEqualTo(1);

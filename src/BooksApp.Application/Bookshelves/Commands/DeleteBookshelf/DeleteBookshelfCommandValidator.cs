@@ -17,7 +17,7 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
                 return bookshelf != null && !DefaultBookshelvesNames.AllValues.Contains(bookshelf.ReferentialName);
             })
             .WithName(nameof(DeleteBookshelfCommand.BookshelfId))
-            .WithMessage(BookshelfValidationMessages.CannotDeleteDefault);
+            .WithMessage(ValidationMessages.Bookshelf.CannotDeleteDefault);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
@@ -26,6 +26,6 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
                 return bookshelf != null && bookshelf.UserId.Value == request.UserId;
             })
             .WithName(nameof(DeleteBookshelfCommand.UserId))
-            .WithMessage(BookshelfValidationMessages.NotYours);
+            .WithMessage(ValidationMessages.Bookshelf.NotYours);
     }
 }

@@ -12,12 +12,12 @@ public sealed class PrivilegedDeleteBookCommandValidator : AbstractValidator<Pri
         RuleFor(request => request.Id)
             .MustAsync(async (bookId, cancellationToken) =>
                 await unitOfWork.Books.AnyById(bookId, cancellationToken))
-            .WithMessage(BookValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.Book.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
@@ -26,6 +26,6 @@ public sealed class PrivilegedDeleteBookCommandValidator : AbstractValidator<Pri
 
                 return user?.Role.Name is RoleNames.Admin;
             })
-            .WithMessage(UserValidationMessages.Permission);
+            .WithMessage(ValidationMessages.User.Permission);
     }
 }

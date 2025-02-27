@@ -11,6 +11,6 @@ public sealed class DeleteUserCommandValidator : AbstractValidator<DeleteUserCom
         RuleFor(request => request.Id)
             .MustAsync(async (id, cancellationToken) =>
                 await unitOfWork.Users.AnyById(id, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
     }
 }

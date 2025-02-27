@@ -13,11 +13,11 @@ public sealed class CreateBookshelfValidator : AbstractValidator<CreateBookshelf
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 !await unitOfWork.Bookshelves.AnyByName(request.Name, request.UserId, cancellationToken))
-            .WithMessage(BookshelfValidationMessages.AlreadyHaveWithSameName)
+            .WithMessage(ValidationMessages.Bookshelf.AlreadyHaveWithSameName)
             .WithName(nameof(CreateBookshelfCommand.Name));
         RuleFor(request => request.Name)
             .MaximumLength(MaxPropertyLength.Bookshelf.Name);

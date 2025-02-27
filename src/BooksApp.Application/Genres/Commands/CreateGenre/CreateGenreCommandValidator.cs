@@ -16,7 +16,7 @@ public sealed class CreateGenreCommandValidator : AbstractValidator<CreateGenreC
                     genre => genre.Name.ToLower() == name.ToLower(),
                     cancellationToken);
             })
-            .WithMessage(GenreValidationMessages.AlreadyExists);
+            .WithMessage(ValidationMessages.Genre.AlreadyExists);
 
         RuleFor(x => x.Name)
             .MinimumLength(1)

@@ -19,10 +19,10 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
             .LessThanOrEqualTo(5);
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) => await unitOfWork.Books.AnyById(bookId, cancellationToken))
-            .WithMessage(ReviewValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.Review.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
@@ -31,7 +31,7 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
                     && review.Book.Id == BookId.Create(request.BookId), 
                     cancellationToken);
             })
-            .WithMessage(ReviewValidationMessages.AlreadyHave)
+            .WithMessage(ValidationMessages.Review.AlreadyHave)
             .WithName(nameof(CreateReviewCommand.BookId));
     }
 }

@@ -11,6 +11,6 @@ public sealed class GetBookshelfBooksQueryValidator : AbstractValidator<GetBooks
         RuleFor(request => request.BookshelfId)
             .MustAsync(async (bookshelfId, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyById(bookshelfId, cancellationToken))
-            .WithMessage(BookshelfValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.Bookshelf.NotFound);
     }
 }

@@ -18,7 +18,7 @@ public sealed class UpdateBookshelfNameCommandValidator : AbstractValidator<Upda
                     .AnyAsync(x => x.Id == BookshelfId.Create(bookshelfId) &&
                                    x.UserId == UserId.Create(userId!.Value), token);
             })
-            .WithMessage(BookshelfValidationMessages.NotYours);
+            .WithMessage(ValidationMessages.Bookshelf.NotYours);
         
         RuleFor(x => x)
             .MustAsync(async (request, token) =>
@@ -27,6 +27,6 @@ public sealed class UpdateBookshelfNameCommandValidator : AbstractValidator<Upda
                 return bookshelf?.Name != request.NewName;
             })
             .OverridePropertyName(nameof(UpdateBookshelfNameCommand.NewName))
-            .WithMessage(BookshelfValidationMessages.NameIsTheSameAsItWas);
+            .WithMessage(ValidationMessages.Bookshelf.NameIsTheSameAsItWas);
     }
 }

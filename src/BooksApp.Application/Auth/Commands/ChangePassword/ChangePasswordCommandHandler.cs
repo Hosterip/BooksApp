@@ -23,7 +23,7 @@ internal sealed class ChangePasswordCommandHandler(
             throw new ValidationException([
                 new ValidationFailure {
                     PropertyName = nameof(ChangePasswordCommand.OldPassword),
-                    ErrorMessage = AuthValidationMessages.Password
+                    ErrorMessage = ValidationMessages.Auth.Password
                 }
             ]);
 

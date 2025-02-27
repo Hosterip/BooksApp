@@ -19,7 +19,7 @@ public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateRevie
         RuleFor(request => request.ReviewId)
             .MustAsync(async (reviewId, cancellationToken) => 
                 await unitOfWork.Reviews.AnyById(reviewId, cancellationToken))
-            .WithMessage(ReviewValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.Review.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
@@ -27,6 +27,6 @@ public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateRevie
                 if (review is not null)
                     return review.User.Id == UserId.Create(request.UserId);
                 return true;
-            }).WithMessage(ReviewValidationMessages.NotYours);
+            }).WithMessage(ValidationMessages.Review.NotYours);
     }
 }

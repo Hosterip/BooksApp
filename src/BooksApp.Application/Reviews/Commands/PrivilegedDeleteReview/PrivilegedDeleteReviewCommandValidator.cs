@@ -12,12 +12,12 @@ public sealed class PrivilegedDeleteReviewCommandValidator : AbstractValidator<P
         RuleFor(request => request.ReviewId)
             .MustAsync(async (reviewId, cancellationToken) =>
                 await unitOfWork.Reviews.AnyById(reviewId, cancellationToken))
-            .WithMessage(ReviewValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.Review.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
@@ -26,6 +26,6 @@ public sealed class PrivilegedDeleteReviewCommandValidator : AbstractValidator<P
 
                 return user?.Role.Name is RoleNames.Admin or RoleNames.Moderator;
             })
-            .WithMessage(UserValidationMessages.Permission);
+            .WithMessage(ValidationMessages.User.Permission);
     }
 }

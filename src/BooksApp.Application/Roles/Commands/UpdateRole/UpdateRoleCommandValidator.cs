@@ -15,7 +15,7 @@ public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCom
                 return await unitOfWork.Roles.AnyAsync(
                     role => role.Name == roleName,
                     cancellationToken);
-            }).WithMessage(RoleValidationMessages.NotFound);
+            }).WithMessage(ValidationMessages.Role.NotFound);
 
         RuleFor(request => request.ChangerId)
             .MustAsync(async (userId, cancellationToken) =>
@@ -25,21 +25,21 @@ public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCom
 
                 return user?.Role.Name is RoleNames.Admin;
             })
-            .WithMessage(UserValidationMessages.Permission);
+            .WithMessage(ValidationMessages.User.Permission);
 
         RuleFor(request => request)
             .Must(request => request.ChangerId != request.UserId)
-            .WithMessage(RoleValidationMessages.CanNotChangeYourOwn)
+            .WithMessage(ValidationMessages.Role.CanNotChangeYourOwn)
             .WithName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(UpdateRoleCommand.ChangerId)}");
 
         RuleFor(request => request.ChangerId)
             .MustAsync(async (userId, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) => 
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
     }
 }

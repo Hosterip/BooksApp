@@ -10,15 +10,13 @@ public sealed class InsertAvatarCommandValidator : AbstractValidator<InsertAvata
     {
         RuleFor(user => user.Id)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
-
-
+            .WithMessage(ValidationMessages.User.NotFound);
+        
         // Images
-
         RuleFor(request => request.Image.Length)
             .LessThan(10000000);
         RuleFor(request => request.Image)
             .Must(file => file == null || imageFileBuilder.IsValid(file.FileName))
-            .WithMessage(ImageValidationMessages.WrongFileName);
+            .WithMessage(ValidationMessages.Image.WrongFileName);
     }
 }

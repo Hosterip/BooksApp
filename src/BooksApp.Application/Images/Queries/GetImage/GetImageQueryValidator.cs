@@ -10,6 +10,6 @@ public sealed class GetImageQueryValidator : AbstractValidator<GetImageQuery>
     {
         RuleFor(request => request.ImageName)
             .Must(imageName => fileBuilder.AnyImage(imageName))
-            .WithMessage(ImageValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.Image.NotFound);
     }
 }

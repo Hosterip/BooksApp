@@ -27,7 +27,7 @@ internal sealed class LoginUserQueryHandler(
             throw new ValidationException([
                 new ValidationFailure {
                     PropertyName = property,
-                    ErrorMessage = AuthValidationMessages.EmailOrPassword
+                    ErrorMessage = ValidationMessages.Auth.EmailOrPassword
                 }
             ]);
         }

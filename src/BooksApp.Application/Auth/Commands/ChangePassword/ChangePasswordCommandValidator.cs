@@ -11,7 +11,7 @@ public sealed class ChangePasswordCommandValidator : AbstractValidator<ChangePas
     {
         RuleFor(request => request.Id)
             .MustAsync(async (id, cancellationToken) => await unitOfWork.Users.AnyById(id, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
         RuleFor(request => request.NewPassword)
             .MaximumLength(MaxPropertyLength.User.Password);
     }

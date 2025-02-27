@@ -11,7 +11,7 @@ public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveB
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(UserValidationMessages.NotFound);
+            .WithMessage(ValidationMessages.User.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyBookByName(
@@ -19,7 +19,7 @@ public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveB
                     request.UserId,
                     request.BookId,
                     cancellationToken))
-            .WithMessage(BookshelfValidationMessages.NoBookToRemove)
+            .WithMessage(ValidationMessages.Bookshelf.NoBookToRemove)
             .WithName(nameof(RemoveBookByNameCommand.BookshelfName));
     }
 }
