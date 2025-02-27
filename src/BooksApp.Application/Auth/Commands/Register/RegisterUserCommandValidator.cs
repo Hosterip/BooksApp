@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants.MaxLengths;
+using BooksApp.Domain.Common.Helpers;
 using FluentValidation;
 
 namespace BooksApp.Application.Auth.Commands.Register;
@@ -11,7 +12,8 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
     public RegisterUserCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(user => user.Email)
-            .Must(email => new EmailAddressAttribute().IsValid(email));
+            .Must(EmailValidator.Validate)
+            .WithMessage(UserValidationMessages.InappropriateEmail);
 
         RuleFor(user => user.Email)
             .MustAsync(async (email, cancellationToken) =>

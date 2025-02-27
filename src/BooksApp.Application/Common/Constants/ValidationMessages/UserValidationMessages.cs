@@ -6,4 +6,5 @@ public static class UserValidationMessages
     public const string Occupied = "Username is occupied";
     public const string Permission = "Permission denied";
     public const string CantFollowYourself = "Can't follow yourself";
+    public const string InappropriateEmail = "Inappropriate email";
 }
