@@ -138,11 +138,12 @@ public class User : AggregateRoot<UserId>
     public (bool IsFollowing, bool IsFriend, bool IsMe) ViewerRelationship(Guid? followerId)
     {
         if (followerId == null) return (false, false, false);
+        if (followerId.Value == Id.Value)
+            return (false, false, true);
         var userId = UserId.Create(followerId);
-        var isMe = Id == userId;
-        var isFollowing = !isMe && _followers.Any(x => x.FollowerId == userId);
-        var isFriend = !isMe && isFollowing && _following.Any(x => x.UserId == userId);
-        return (isFollowing, isFriend, isMe);
+        var isFollowing = _followers.Any(x => x.FollowerId == userId);
+        var isFriend = isFollowing && _following.Any(x => x.UserId == userId);
+        return (isFollowing, isFriend, false);
     }
 
     private static void ValidateEmail(string email)
