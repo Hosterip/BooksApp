@@ -186,4 +186,52 @@ public class UserTests
         // Assert
         Assert.ThrowsAny<DomainException>(act);
     }
+    
+    [Fact]
+    public void ViewerRelationship_WhenThereIsNoFollower_ShouldReturnATuple()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var secondUser = UserFactory.CreateUser();
+
+        // Act
+        var result = user.ViewerRelationship(secondUser.Id.Value);
+        
+        // Assert
+        result.IsFollowing.Should().BeFalse();
+        result.IsFriend.Should().BeFalse();
+        result.IsMe.Should().BeFalse();
+    }
+    
+    [Fact]
+    public void ViewerRelationship_WhenThereIsFollower_ShouldReturnATuple()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var follower = UserFactory.CreateUser();
+        user.AddFollower(follower);
+        
+        // Act
+        var result = user.ViewerRelationship(follower.Id.Value);
+        
+        // Assert
+        result.IsFollowing.Should().BeTrue();
+        result.IsFriend.Should().BeFalse();
+        result.IsMe.Should().BeFalse();
+    }
+    
+    [Fact]
+    public void ViewerRelationship_WhenComparingToOneself_ShouldReturnATuple()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        
+        // Act
+        var result = user.ViewerRelationship(user.Id.Value);
+        
+        // Assert
+        result.IsFollowing.Should().BeFalse();
+        result.IsFriend.Should().BeFalse();
+        result.IsMe.Should().BeTrue();
+    }
 }
