@@ -71,6 +71,8 @@ public class Review : Entity<ReviewId>
     
     private static void ValidateBody(string body)
     {
+        if (string.IsNullOrWhiteSpace(body))
+            throw new DomainException("Body can not be full of whitespace");
         if (body.Length is > MaxPropertyLength.Review.Body or < 1)
             throw new DomainException($"Body length should be between 1 and {MaxPropertyLength.Review.Body}");
     }
