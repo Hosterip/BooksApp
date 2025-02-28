@@ -25,8 +25,8 @@ public static class BookResultFactory
             ReferentialName = referentialName,
             Description = description,
             CoverName = imageName ?? Constants.Images.ImageName,
-            Author = UserResultFactory.CreateUserResult(),
-            Genres = [GenreResultFactory.CreateGenreResult()],
+            Author = author ?? UserResultFactory.CreateUserResult(),
+            Genres = genres ?? [GenreResultFactory.CreateGenreResult()],
             AverageRating = 0,
             Ratings = 0
         };

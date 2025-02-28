@@ -81,7 +81,7 @@ public class ReviewTests
         var book = BookFactory.CreateBook();
         var user = UserFactory.CreateUser();
 
-        var body = StringUtilities.GenerateLongString(stringLength);
+        var body = StringUtilities.GenerateLongWhiteSpace(stringLength);
         
         // Act
         var act = () => Domain.Review.Review.Create(
