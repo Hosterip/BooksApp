@@ -219,7 +219,7 @@ public class UsersController(
     
     #region Followers
     
-    [HttpPut(ApiRoutes.Users.AddFollower)]
+    [HttpPut(ApiRoutes.Users.AddRemoveFollower)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]

@@ -110,7 +110,7 @@ public static class ApiRoutes
         
         // Followers
 
-        public const string AddFollower = $"{Base}/{{followingId:guid}}/followers";
+        public const string AddRemoveFollower = $"{Base}/{{followingId:guid}}/followers";
         public const string GetFollowers = $"{Base}/{{userId:guid}}/followers";
         public const string GetFollowing = $"{Base}/{{userId:guid}}/following";
     }
