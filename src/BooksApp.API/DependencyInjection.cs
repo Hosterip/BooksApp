@@ -26,7 +26,8 @@ public static class DependencyInjection
             .AddMyControllers()
             .AddCorsPolicy(corsPolicy)
             .AddAuth()
-            .AddMyOutputCache();
+            .AddMyOutputCache()
+            .AddHttpContextAccessor();
 
         services.AddScoped<IUserService, UserService>();
         
@@ -93,8 +94,7 @@ public static class DependencyInjection
         services.AddOutputCache(x =>
         {
             x.AddBasePolicy(c => c.Cache());
-
-
+            
             #region Books policy
             
             x.AddPolicy(OutputCache.Books.PolicyName, c =>
