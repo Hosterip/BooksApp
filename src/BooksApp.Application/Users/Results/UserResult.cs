@@ -11,5 +11,5 @@ public class UserResult
     public required string? LastName { get; init; }
     public required string Role { get; init; }
     public required string? AvatarName { get; init; }
-    public required ViewerRelationship? ViewerRelationship { get; init; }
+    public required ViewerRelationship? ViewerRelationship { get; set; }
 }
