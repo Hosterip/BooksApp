@@ -111,13 +111,19 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 
     public async Task<User?> GetSingleById(
         Guid guid,
-        CancellationToken token = default)
+        CancellationToken token = default,
+        bool includeRelationships = false,
+        bool asTracking = false)
     {
-        return await DbContext.Users
-            .AsNoTracking()
-            .SingleOrDefaultAsync(
-                user => user.Id == UserId.Create(guid),
-                cancellationToken: token);
+        var query = DbContext.Users.AsNoTracking();
+        if (asTracking)
+            query = query.AsTracking();
+        if (includeRelationships)
+            query = query
+                .Include(x => x.Followers)
+                .Include(x => x.Following);
+        return await query.FirstOrDefaultAsync(x => x.Id == UserId.Create(guid), token);
+
     }
 
     public async Task<bool> AnyById(
@@ -165,14 +171,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             .Where(x => x.Id == parsedUserId)
             .SelectMany(x => x.Followers)
             .CountAsync(cancellationToken: token);
-    }
-
-    public async Task<User?> GetUserWithRelationshipsById(Guid userId, CancellationToken token)
-    {
-        return await DbContext.Users
-            .Include(x => x.Followers)
-            .Include(x => x.Following)
-            .FirstOrDefaultAsync(x => x.Id == UserId.Create(userId), token);
     }
 
     private static IQueryable<UserResult> ConvertToUserResult(IQueryable<User> users, Guid? currentUserId)
