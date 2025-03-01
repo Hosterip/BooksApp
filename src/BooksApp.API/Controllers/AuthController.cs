@@ -87,8 +87,7 @@ public class AuthController(ISender sender, IUserService userService) : ApiContr
         var command = new ChangePasswordCommand
         {
             NewPassword = request.NewPassword,
-            OldPassword = request.OldPassword,
-            Id = userService.GetId()!.Value
+            OldPassword = request.OldPassword
         };
         var result = await sender.Send(command, cancellationToken);
         userService.ChangeSecurityStamp(result.SecurityStamp);

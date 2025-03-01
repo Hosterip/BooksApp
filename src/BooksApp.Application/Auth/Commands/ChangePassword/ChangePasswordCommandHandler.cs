@@ -11,13 +11,14 @@ namespace BooksApp.Application.Auth.Commands.ChangePassword;
 internal sealed class ChangePasswordCommandHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    IPasswordHasher passwordHasher)
+    IPasswordHasher passwordHasher,
+    IUserService userService)
     : IRequestHandler<ChangePasswordCommand, AuthResult>
 {
     public async Task<AuthResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
         var user = await unitOfWork.Users
-            .GetSingleById(request.Id, cancellationToken);
+            .GetSingleById(userService.GetId()!.Value, cancellationToken);
 
         if (!user!.IsPasswordValid(passwordHasher, request.OldPassword))
             throw new ValidationException([
