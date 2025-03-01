@@ -9,8 +9,13 @@ namespace BooksApp.Application.Books.Commands.UpdateBook;
 
 public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
-    public UpdateBookCommandValidator(IUnitOfWork unitOfWork, IImageFileBuilder imageFileBuilder)
+    public UpdateBookCommandValidator(
+        IUnitOfWork unitOfWork,
+        IImageFileBuilder imageFileBuilder,
+        IUserService userService)
     {
+        var userId = userService.GetId()!.Value;
+
         // Books
         RuleFor(book => book.Title)
             .MaximumLength(MaxPropertyLength.Book.Title);
@@ -19,17 +24,17 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
 
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                request.Title == null || !await unitOfWork.Books.AnyByTitle(request.UserId, request.Title, cancellationToken))
+                request.Title == null || !await unitOfWork.Books.AnyByTitle(userId, request.Title, cancellationToken))
             .WithMessage(ValidationMessages.Book.WithSameNameAlreadyExists)
             .WithName(nameof(UpdateBookCommand.Title));
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Books
                     .AnyAsync(book => book.Id == BookId.Create(request.Id) &&
-                                      book.Author.Id == UserId.Create(request.UserId), cancellationToken)
+                                      book.Author.Id == UserId.Create(userId), cancellationToken)
             )
             .WithMessage(ValidationMessages.Book.BookNotYour)
-            .WithName(nameof(UpdateBookCommand.UserId));
+            .WithName(nameof(UserId));
 
         // Genres
 

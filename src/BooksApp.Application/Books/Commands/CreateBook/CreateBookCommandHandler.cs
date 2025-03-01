@@ -10,12 +10,13 @@ namespace BooksApp.Application.Books.Commands.CreateBook;
 internal sealed class CreateBookCommandHandler(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    IImageFileBuilder imageFileBuilder)
+    IImageFileBuilder imageFileBuilder,
+    IUserService userService)
     : IRequestHandler<CreateBookCommand, BookResult>
 {
     public async Task<BookResult> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
-        var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
+        var user = await unitOfWork.Users.GetSingleById(userService.GetId()!.Value, cancellationToken);
 
         // Images
         var imageName = await imageFileBuilder.CreateImage(request.Image, cancellationToken);

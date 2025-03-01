@@ -8,14 +8,14 @@ namespace BooksApp.Application.Books.Commands.DeleteBook;
 
 public sealed class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
 {
-    public DeleteBookCommandValidator(IUnitOfWork unitOfWork)
+    public DeleteBookCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 await unitOfWork.Books
                     .AnyAsync(
                         book => book.Id == BookId.Create(request.Id) &&
-                                book.Author.Id == UserId.Create(request.UserId),
+                                book.Author.Id == UserId.Create(userService.GetId()!.Value),
                         cancellationToken)
             ).WithMessage(ValidationMessages.Book.BookNotYour);
     }

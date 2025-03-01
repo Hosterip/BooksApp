@@ -83,7 +83,6 @@ public class BooksController(
     {
         var createBookCommand = new CreateBookCommand
         {
-            UserId = userService.GetId()!.Value,
             Title = request.Title,
             Description = request.Description,
             Image = request.Cover,
@@ -117,7 +116,6 @@ public class BooksController(
         var updateBookCommand = new UpdateBookCommand
         {
             Id = request.Id,
-            UserId = userService.GetId()!.Value,
             Title = request.Title,
             Description = request.Description,
             Image = request.Cover,
@@ -148,7 +146,7 @@ public class BooksController(
         [FromRoute] Guid bookId,
         CancellationToken cancellationToken)
     {
-        var command = new DeleteBookCommand { Id = bookId, UserId = userService.GetId()!.Value };
+        var command = new DeleteBookCommand { Id = bookId };
         
         await sender.Send(command, cancellationToken);
         
@@ -167,8 +165,7 @@ public class BooksController(
     {
         var command = new PrivilegedDeleteBookCommand
         {
-            Id = bookId,
-            UserId = userService.GetId()!.Value
+            Id = bookId
         };
         await sender.Send(command, cancellationToken);
         
@@ -193,7 +190,6 @@ public class BooksController(
         [FromQuery] GetUserBooksRequest request
     )
     {
-        var currentUserId = userService.GetId();
         var query = new GetBooksQuery
         {
             Title = request.Title,
@@ -201,7 +197,6 @@ public class BooksController(
             Page = request.Page,
             GenreId = request.GenreId,
             UserId = userId,
-            CurrentUserId = currentUserId
         };
         var result = await sender.Send(query, cancellationToken);
         
