@@ -42,10 +42,8 @@ public class BookshelvesController(
         [FromQuery] GetBookshelfBooksRequest request,
         CancellationToken token)
     {
-        var userId = userService.GetId();
         var query = new GetBookshelfBooksQuery
         {
-            CurrentUserId = userId,
             BookshelfId = bookshelfId,
             Limit = request.PageSize,
             Page = request.Page
@@ -116,11 +114,9 @@ public class BookshelvesController(
         [FromRoute] Guid bookshelfId,
         CancellationToken token)
     {
-        var userId = userService.GetId();
         var command = new DeleteBookshelfCommand
         {
-            BookshelfId = bookshelfId,
-            UserId = userId!.Value
+            BookshelfId = bookshelfId
         };
 
         await sender.Send(command, token);
@@ -143,20 +139,17 @@ public class BookshelvesController(
         [FromRoute] string idOrName,
         CancellationToken token)
     {
-        var userId = userService.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
         await sender.Send(success
             ? new AddBookCommand
             {
                 BookshelfId = bookshelfId,
                 BookId = bookId,
-                UserId = userId
             }
             : new AddBookByNameCommand
             {
                 BookshelfName = idOrName,
                 BookId = bookId,
-                UserId = userId
             }, token);
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
@@ -173,20 +166,17 @@ public class BookshelvesController(
         [FromRoute] string idOrName,
         CancellationToken token)
     {
-        var userId = userService.GetId()!.Value;
         var success = Guid.TryParse(idOrName, out var bookshelfId);
         await sender.Send(success
             ? new RemoveBookCommand
             {
                 BookshelfId = bookshelfId,
-                BookId = bookId,
-                UserId = userId
+                BookId = bookId
             }
             : new RemoveBookByNameCommand
             {
                 BookshelfName = idOrName,
-                BookId = bookId,
-                UserId = userId
+                BookId = bookId
             }, token);
         
         await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);

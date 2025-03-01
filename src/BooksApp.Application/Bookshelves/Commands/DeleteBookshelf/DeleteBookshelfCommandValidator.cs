@@ -1,14 +1,17 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
+using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 
 public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBookshelfCommand>
 {
-    public DeleteBookshelfCommandValidator(IUnitOfWork unitOfWork)
+    public DeleteBookshelfCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
+        var userId = userService.GetId()!.Value;
+
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
@@ -23,9 +26,9 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
             {
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
 
-                return bookshelf != null && bookshelf.UserId.Value == request.UserId;
+                return bookshelf != null && bookshelf.UserId.Value == userId;
             })
-            .WithName(nameof(DeleteBookshelfCommand.UserId))
+            .WithName(nameof(UserId))
             .WithMessage(ValidationMessages.Bookshelf.NotYours);
     }
 }

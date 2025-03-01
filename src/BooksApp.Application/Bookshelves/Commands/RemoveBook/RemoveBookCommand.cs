@@ -6,5 +6,4 @@ public sealed class RemoveBookCommand : IRequest
 {
     public required Guid BookId { get; init; }
     public required Guid BookshelfId { get; init; }
-    public required Guid UserId { get; init; }
 }

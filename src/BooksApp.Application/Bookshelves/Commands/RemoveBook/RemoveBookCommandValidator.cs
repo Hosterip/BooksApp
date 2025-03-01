@@ -1,13 +1,16 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.RemoveBook;
 
 public sealed class RemoveBookCommandValidator : AbstractValidator<RemoveBookCommand>
 {
-    public RemoveBookCommandValidator(IUnitOfWork unitOfWork)
+    public RemoveBookCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
+        var userId = userService.GetId()!.Value;
+        
         // Bookshelf
         RuleFor(request => request.BookshelfId)
             .MustAsync(async (bookshelfId, cancellationToken) =>
@@ -18,10 +21,10 @@ public sealed class RemoveBookCommandValidator : AbstractValidator<RemoveBookCom
             .MustAsync(async (request, cancellationToken) =>
             {
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
-                return bookshelf == null || bookshelf.UserId.Value == request.UserId;
+                return bookshelf == null || bookshelf.UserId.Value == userId;
             })
             .WithMessage(ValidationMessages.Bookshelf.NotYours)
-            .WithName(nameof(RemoveBookCommand.UserId));
+            .WithName(nameof(UserId));
         // Books
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
@@ -34,8 +37,8 @@ public sealed class RemoveBookCommandValidator : AbstractValidator<RemoveBookCom
                 await unitOfWork.Books.AnyById(bookId, cancellationToken))
             .WithMessage(ValidationMessages.Book.NotFound);
 
-        RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) =>
+        RuleFor(request => request)
+            .MustAsync(async (_, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(ValidationMessages.User.NotFound);
     }

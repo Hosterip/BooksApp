@@ -7,7 +7,6 @@ namespace BooksApp.Application.Bookshelves.Queries.GetBookshelfBooks;
 public sealed class GetBookshelfBooksQuery : IRequest<PaginatedArray<BookResult>>
 {
     public required Guid BookshelfId { get; init; }
-    public required Guid? CurrentUserId { get; init; }
     public int? Limit { get; init; }
     public int? Page { get; init; }
 }
