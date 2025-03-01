@@ -12,7 +12,6 @@ namespace TestCommon.Books;
 public static class BookCommandFactory
 {
     public static CreateBookCommand CreateCreateBookCommand(
-        Guid? userId = null,
         string title = Constants.Books.Title, 
         string description = Constants.Books.Description,
         List<Guid>? genres = null,
@@ -20,7 +19,6 @@ public static class BookCommandFactory
     {
         return new CreateBookCommand
         {
-            UserId = userId ?? Guid.NewGuid(),
             Title = title,
             Description = description,
             GenreIds = genres ?? [GenreFactory.CreateGenre().Id.Value],
@@ -30,7 +28,6 @@ public static class BookCommandFactory
     
     public static UpdateBookCommand CreateUpdateBookCommand(
         Guid? bookId = null,
-        Guid? userId = null,
         string title = Constants.Books.Title, 
         string description = Constants.Books.Description,
         List<Guid>? genres = null,
@@ -39,7 +36,6 @@ public static class BookCommandFactory
         return new UpdateBookCommand
         {
             Id = bookId ?? Guid.NewGuid(),
-            UserId = userId ?? Guid.NewGuid(),
             Title = title,
             Description = description,
             GenreIds = genres ?? [GenreFactory.CreateGenre().Id.Value],
@@ -48,25 +44,21 @@ public static class BookCommandFactory
     }
     
     public static DeleteBookCommand CreateDeleteBookCommand(
-        Guid? bookId = null,
-        Guid? userId = null
+        Guid? bookId = null
     )
     {
         return new DeleteBookCommand
         {
-            UserId = userId ?? Guid.NewGuid(),
             Id = bookId ?? Guid.NewGuid()
         };
     }
     
     public static PrivilegedDeleteBookCommand CreatePrivilegedDeleteBookCommand(
-        Guid? bookId = null,
-        Guid? userId = null
+        Guid? bookId = null
     )
     {
         return new PrivilegedDeleteBookCommand
         {
-            UserId = userId ?? Guid.NewGuid(),
             Id = bookId ?? Guid.NewGuid()
         };
     }
