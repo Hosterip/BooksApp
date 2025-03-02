@@ -5,7 +5,6 @@ using BooksApp.Application.Books.Commands.PrivilegedDeleteBook;
 using BooksApp.Application.Books.Commands.UpdateBook;
 using BooksApp.Application.Books.Queries.GetBooks;
 using BooksApp.Application.Books.Queries.GetSingleBook;
-using BooksApp.Application.Common.Interfaces;
 using BooksApp.Contracts.Books;
 using BooksApp.Contracts.Errors;
 using MapsterMapper;
@@ -20,8 +19,7 @@ namespace BooksApp.API.Controllers;
 public class BooksController(
     ISender sender,
     IOutputCacheStore outputCacheStore,
-    IMapper mapster,
-    IUserService userService)
+    IMapper mapster)
     : ApiController
 {
     #region Books Endpoints
