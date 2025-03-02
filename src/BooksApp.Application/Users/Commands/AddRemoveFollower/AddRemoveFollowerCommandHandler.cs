@@ -3,14 +3,22 @@ using MediatR;
 
 namespace BooksApp.Application.Users.Commands.AddRemoveFollower;
 
-internal sealed class AddRemoveFollowerCommandHandler(IUnitOfWork unitOfWork)
+internal sealed class AddRemoveFollowerCommandHandler(
+    IUnitOfWork unitOfWork,
+    IUserService userService)
     : IRequestHandler<AddRemoveFollowerCommand>
 {
     public async Task Handle(AddRemoveFollowerCommand request, CancellationToken cancellationToken)
     {
-        var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken, includeRelationships: true, asTracking: true);
+        var followerId = userService.GetId()!.Value;
+        
+        var user = await unitOfWork.Users.GetSingleById(
+            request.UserId,
+            cancellationToken,
+            includeRelationships: true,
+            asTracking: true);
 
-        var follower = await unitOfWork.Users.GetSingleById(request.FollowerId, token: cancellationToken);
+        var follower = await unitOfWork.Users.GetSingleById(followerId, token: cancellationToken);
         if(user!.HasFollower(follower!.Id))
             user.RemoveFollower(follower);
         else

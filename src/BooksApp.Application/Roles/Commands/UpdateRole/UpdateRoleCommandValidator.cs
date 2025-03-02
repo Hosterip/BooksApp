@@ -7,8 +7,10 @@ namespace BooksApp.Application.Roles.Commands.UpdateRole;
 
 public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
 {
-    public UpdateRoleCommandValidator(IUnitOfWork unitOfWork)
+    public UpdateRoleCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
+        var changerId = userService.GetId()!.Value;
+
         RuleFor(request => request.Role)
             .MustAsync(async (roleName, cancellationToken) =>
             {
@@ -17,25 +19,26 @@ public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCom
                     cancellationToken);
             }).WithMessage(ValidationMessages.Role.NotFound);
 
-        RuleFor(request => request.ChangerId)
-            .MustAsync(async (userId, cancellationToken) =>
+        RuleFor(request => request)
+            .MustAsync(async (_, cancellationToken) =>
             {
-                var user = await unitOfWork.Users.GetSingleById(
-                    userId, cancellationToken);
+                var user = await unitOfWork.Users.GetSingleById(changerId, cancellationToken);
 
                 return user?.Role.Name is RoleNames.Admin;
             })
-            .WithMessage(ValidationMessages.User.Permission);
+            .WithMessage(ValidationMessages.User.Permission)
+            .WithName(nameof(changerId));
 
         RuleFor(request => request)
-            .Must(request => request.ChangerId != request.UserId)
+            .Must(request => changerId != request.UserId)
             .WithMessage(ValidationMessages.Role.CanNotChangeYourOwn)
-            .WithName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(UpdateRoleCommand.ChangerId)}");
+            .WithName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(changerId)}");
 
-        RuleFor(request => request.ChangerId)
-            .MustAsync(async (userId, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(ValidationMessages.User.NotFound);
+        RuleFor(request => request)
+            .MustAsync(async (_, cancellationToken) =>
+                await unitOfWork.Users.AnyById(changerId, cancellationToken))
+            .WithMessage(ValidationMessages.User.NotFound)
+            .WithName(nameof(changerId));
 
         RuleFor(request => request.UserId)
             .MustAsync(async (userId, cancellationToken) => 

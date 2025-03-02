@@ -5,5 +5,4 @@ namespace BooksApp.Application.Users.Commands.AddRemoveFollower;
 public sealed class AddRemoveFollowerCommand : IRequest
 {
     public required Guid UserId { get; init; }
-    public required Guid FollowerId { get; init; }
 }

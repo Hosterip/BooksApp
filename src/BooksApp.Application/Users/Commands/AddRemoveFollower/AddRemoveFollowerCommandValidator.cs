@@ -1,27 +1,31 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
 namespace BooksApp.Application.Users.Commands.AddRemoveFollower;
 
 public sealed class AddRemoveFollowerCommandValidator : AbstractValidator<AddRemoveFollowerCommand>
 {
-    public AddRemoveFollowerCommandValidator(IUnitOfWork unitOfWork)
+    public AddRemoveFollowerCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
+        var followerId = userService.GetId()!.Value;
+
         RuleFor(x => x.UserId)
             .MustAsync((guid, token) => unitOfWork.Users.AnyById(
                 guid, token))
             .WithMessage(ValidationMessages.User.NotFound);
         
-        RuleFor(x => x.FollowerId)
-            .MustAsync((guid, token) =>
-                unitOfWork.Users.AnyById(guid, token))
-            .WithMessage(ValidationMessages.User.NotFound);
+        RuleFor(x => x)
+            .MustAsync((_, token) =>
+                unitOfWork.Users.AnyById(followerId, token))
+            .WithMessage(ValidationMessages.User.NotFound)
+            .WithName(nameof(followerId));
         
         RuleFor(x => x)
             .Must(request =>
-                request.FollowerId != request.UserId)
+                followerId != request.UserId)
             .WithMessage(ValidationMessages.User.CantFollowYourself)
-            .WithName(nameof(AddRemoveFollowerCommand.FollowerId));
+            .WithName(nameof(followerId));
     }
 }

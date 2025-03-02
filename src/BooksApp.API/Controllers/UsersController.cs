@@ -57,13 +57,11 @@ public class UsersController(
         [FromQuery] GetUsersRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = userService.GetId();
         var query = new GetUsersQuery
         {
             Query = request.Q,
             Page = request.Page,
-            Limit = request.PageSize,
-            UserId = userId ?? null
+            Limit = request.PageSize
         };
         
         var users = await sender.Send(query, cancellationToken);
@@ -199,7 +197,6 @@ public class UsersController(
     {
         var command = new UpdateRoleCommand
         {
-            ChangerId = userService.GetId()!.Value,
             Role = request.Role,
             UserId = request.UserId
         };
@@ -229,8 +226,7 @@ public class UsersController(
     {
         var command = new AddRemoveFollowerCommand
         {
-            UserId = followingId,
-            FollowerId = userService.GetId()!.Value
+            UserId = followingId
         };
 
         await sender.Send(command, cancellationToken);
@@ -249,13 +245,11 @@ public class UsersController(
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
-        var currentUser = userService.GetId();
         var query = new GetUserRelationshipsQuery
         {
             Query = request.Query,
             Page = request.Page,
             Limit = request.PageSize,
-            CurrentUserId = currentUser,
             UserId = userId,
             RelationshipType = RelationshipType.Followers
         };
@@ -278,13 +272,11 @@ public class UsersController(
         [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
-        var currentUser = userService.GetId();
         var query = new GetUserRelationshipsQuery
         {
             Query = request.Query,
             Page = request.Page,
             Limit = request.PageSize,
-            CurrentUserId = currentUser,
             UserId = userId,
             RelationshipType = RelationshipType.Following
         };
