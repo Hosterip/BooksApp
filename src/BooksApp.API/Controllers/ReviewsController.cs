@@ -19,8 +19,7 @@ namespace BooksApp.API.Controllers;
 public class ReviewsController(
     ISender sender,
     IOutputCacheStore outputCacheStore,
-    IMapper mapster,
-    IUserService userService)
+    IMapper mapster)
     : ApiController
 {
     #region Reviews endpoints
@@ -36,7 +35,6 @@ public class ReviewsController(
         var command = new CreateReviewCommand
         {
             BookId = request.BookId,
-            UserId = userService.GetId()!.Value,
             Body = request.Body,
             Rating = request.Rating
         };
@@ -61,7 +59,6 @@ public class ReviewsController(
         var command = new UpdateReviewCommand
         {
             ReviewId = request.ReviewId,
-            UserId = userService.GetId()!.Value,
             Body = request.Body,
             Rating = request.Rating
         };
@@ -87,8 +84,7 @@ public class ReviewsController(
     {
         var command = new DeleteReviewCommand
         {
-            ReviewId = id,
-            UserId = userService.GetId()!.Value
+            ReviewId = id
         };
         
         await sender.Send(command, cancellationToken);
@@ -108,8 +104,7 @@ public class ReviewsController(
     {
         var command = new PrivilegedDeleteReviewCommand
         {
-            ReviewId = id,
-            UserId = userService.GetId()!.Value
+            ReviewId = id
         };
         
         await sender.Send(command, cancellationToken);
@@ -134,10 +129,8 @@ public class ReviewsController(
         [FromQuery] GetReviewsQuery request,
         CancellationToken cancellationToken)
     {
-        var userId = userService.GetId();
         var query = new GetReviewsQuery
         {
-            CurrentUserId = userId,
             BookId = bookId,
             Page = request.Page,
             Limit = request.Limit

@@ -8,13 +8,14 @@ namespace BooksApp.Application.Reviews.Commands.CreateReview;
 
 internal sealed class CreateReviewCommandHandler(
     IUnitOfWork unitOfWork,
-    IMapper mapper)
+    IMapper mapper,
+    IUserService userService)
     : IRequestHandler<CreateReviewCommand, ReviewResult>
 {
     public async Task<ReviewResult> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
         var book = await unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
-        var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
+        var user = await unitOfWork.Users.GetSingleById(userService.GetId()!.Value, cancellationToken);
         var review = Review.Create(request.Rating, request.Body, user!, book!);
 
         await unitOfWork.Reviews.AddAsync(review, cancellationToken);

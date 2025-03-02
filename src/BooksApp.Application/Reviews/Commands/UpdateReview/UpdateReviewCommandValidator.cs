@@ -8,8 +8,10 @@ namespace BooksApp.Application.Reviews.Commands.UpdateReview;
 
 public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewCommand>
 {
-    public UpdateReviewCommandValidator(IUnitOfWork unitOfWork)
+    public UpdateReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
+        var userId = userService.GetId()!.Value;
+        
         RuleFor(request => request.Body)
             .MaximumLength(MaxPropertyLength.Review.Body)
             .NotEmpty();
@@ -25,8 +27,10 @@ public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateRevie
             {
                 var review = await unitOfWork.Reviews.GetSingleById(request.ReviewId, cancellationToken);
                 if (review is not null)
-                    return review.User.Id == UserId.Create(request.UserId);
+                    return review.User.Id == UserId.Create(userId);
                 return true;
-            }).WithMessage(ValidationMessages.Review.NotYours);
+            })
+            .WithMessage(ValidationMessages.Review.NotYours)
+            .WithName(nameof(UserId));
     }
 }

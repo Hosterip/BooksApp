@@ -8,17 +8,19 @@ namespace BooksApp.Application.Reviews.Commands.DeleteReview;
 
 public sealed class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewCommand>
 {
-    public DeleteReviewCommandValidator(IUnitOfWork unitOfWork)
+    public DeleteReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
+        var userId = userService.GetId()!.Value;
+        
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
                 return await unitOfWork.Reviews
                     .AnyAsync(review =>
-                        review.User.Id == UserId.Create(request.UserId) &&
+                        review.User.Id == UserId.Create(userId) &&
                         review.Id == ReviewId.Create(request.ReviewId), cancellationToken);
             })
             .WithMessage(ValidationMessages.User.Permission)
-            .WithName(nameof(DeleteReviewCommand.UserId));
+            .WithName(nameof(UserId));
     }
 }

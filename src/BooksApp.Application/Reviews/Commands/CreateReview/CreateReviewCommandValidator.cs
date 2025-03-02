@@ -9,17 +9,20 @@ namespace BooksApp.Application.Reviews.Commands.CreateReview;
 
 public sealed class CreateReviewCommandValidator : AbstractValidator<CreateReviewCommand>
 {
-    public CreateReviewCommandValidator(IUnitOfWork unitOfWork)
+    public CreateReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
+        var userId = userService.GetId()!.Value;
+        
         RuleFor(request => request.Body)
             .MaximumLength(MaxPropertyLength.Review.Body)
             .NotEmpty();
         RuleFor(request => request.Rating)
             .GreaterThanOrEqualTo(1)
             .LessThanOrEqualTo(5);
-        RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) => await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(ValidationMessages.User.NotFound);
+        RuleFor(request => request)
+            .MustAsync(async (_, cancellationToken) => await unitOfWork.Users.AnyById(userId, cancellationToken))
+            .WithMessage(ValidationMessages.User.NotFound)
+            .WithName(nameof(UserId));
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) => await unitOfWork.Books.AnyById(bookId, cancellationToken))
             .WithMessage(ValidationMessages.Review.NotFound);
@@ -27,7 +30,7 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
             .MustAsync(async (request, cancellationToken) =>
             {
                 return !await unitOfWork.Reviews.AnyAsync(review =>
-                    review.User.Id == UserId.Create(request.UserId)
+                    review.User.Id == UserId.Create(userId)
                     && review.Book.Id == BookId.Create(request.BookId), 
                     cancellationToken);
             })
