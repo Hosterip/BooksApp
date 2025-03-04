@@ -47,13 +47,16 @@ public class ReviewTests
             book);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("Rating should be between 1 to 5 inclusively");
+        
     }
     
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Review.Body + 1)]
-    public void Create_WhenBodyExceedsMaximumLength_ShouldThrowAnError(int stringLength)
+    public void Create_WhenBodyExceedsMaximumLengthOrMinimumLength_ShouldThrowAnError(int stringLength)
     {
         // Arrange
         var book = BookFactory.CreateBook();
@@ -69,7 +72,9 @@ public class ReviewTests
             book);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage($"Body length should be between 1 and {MaxPropertyLength.Review.Body}");
     }
     
     [Theory]
@@ -91,6 +96,8 @@ public class ReviewTests
             book);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("Body can not be full of whitespace");
     }
 }

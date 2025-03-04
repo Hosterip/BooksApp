@@ -92,7 +92,9 @@ public class BookshelfTests
             name);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("Name could not be empty");
     }
     
     [Fact]
@@ -107,7 +109,9 @@ public class BookshelfTests
         var act = () => bookshelf.AddBook(book);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("Bookshelf already have this book");
     }
     
     [Fact]
@@ -115,13 +119,13 @@ public class BookshelfTests
     {
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
-        var book = BookFactory.CreateBook();
-        bookshelf.AddBook(book);
 
         // Act
-        var act = () => bookshelf.AddBook(book);
+        var act = () => bookshelf.RemoveBook(Guid.NewGuid());
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("Bookshelf does not have this book");
     }
 }
