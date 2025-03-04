@@ -1,31 +1,4 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=591f2d59_002Dc804_002D460a_002Dbead_002D3ecd6781ac01/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Create_WhenTitleIsWrong_ShouldThrowAnError" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Book.BookTests.Create_WhenTitleIsWrong_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9c229f78_002D3c76_002D490d_002Da966_002D97eac8f6cdf6/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" IsActive="True" Name="InvokeHandle_WhenValidatorIsReturnsValid_ShouldInvokeNext" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::45471FAB-16C2-48C5-87F7-6F29F23B5EC5::net8.0::BooksApp.Application.UnitTests.Common.Behaviors.ValidationBehaviorTests.InvokeHandle_WhenValidatorIsReturnsValid_ShouldInvokeNext&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::45471FAB-16C2-48C5-87F7-6F29F23B5EC5::net8.0::BooksApp.Application.UnitTests.Common.Behaviors.ValidationBehaviorTests.InvokeHandle_WhenValidatorIsReturnsError_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Common.PasswordHasherTests.IsValid_WhenHashAndSaltIsRight_ShouldReturnTrue&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Common.PasswordHasherTests.IsValid_WhenHashAndSaltInvalid_ShouldReturnFalse&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Books.BookTests.Create_WhenEverythingInOrder_ShouldCreateBook&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Books.BookTests.Create_WhenEverythingTitleIsWrong_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Books.BookTests.Create_WhenGenreIsWrong_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Books.BookTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.Create_WhenEverythingInOrder_ShouldCreateBook&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.Create_WhenNameIsNotRight_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.Create_WhenEmailIsNotRight_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Review.ReviewTests.Create_WhenRatingIsWrong_ShouldCreateReview&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Review.ReviewTests.Create_WhenBodyIsWrong_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.AddFollower_WhenEverythingInOrder_ShouldAddAFollower&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests.RemoveFollower_WhenEverythingInOrder_ShouldAddAFollower&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Bookshelf.BookshelfTests.Create_WhenEverythingIsOK_ShouldReturnBookshelf&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Bookshelf.BookshelfTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.User.UserTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Book.BookTests.Create_WhenTitleIsWrong_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Book.BookTests.Create_WhenDescriptionIsWrong_ShouldThrowAnError&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::703BA893-9C67-43DC-B644-6730B877C8C5::net8.0::BooksApp.Domain.UnitTests.Book.BookTests.Create_WhenEverythingInOrder_ShouldCreateBook&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ff5c0601_002D2220_002D4e7a_002Daa67_002D9f620866314e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
