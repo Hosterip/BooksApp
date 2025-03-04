@@ -122,7 +122,7 @@ public class User : AggregateRoot<UserId>
     public void RemoveFollower(User follower)
     {
         if (follower.Id == Id)
-            throw new DomainException("Can't add yourself to followers");
+            throw new DomainException("Can't remove yourself to followers");
 
         if (!HasFollower(follower.Id))
             throw new DomainException("No follower to remove");
