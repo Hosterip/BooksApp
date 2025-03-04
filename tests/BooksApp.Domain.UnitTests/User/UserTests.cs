@@ -69,7 +69,9 @@ public class UserTests
             lastName);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage($"First name length should be between 1 and {MaxPropertyLength.User.FirstName}");
     }
     
     [Theory]
@@ -101,7 +103,9 @@ public class UserTests
             lastName);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("First name should be present");
     }
     
     [Theory]
@@ -126,7 +130,9 @@ public class UserTests
             Constants.Users.FirstName);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("Invalid email");
     }
     
     [Fact]
@@ -155,7 +161,24 @@ public class UserTests
         var act = () => user.AddFollower(follower);
         
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("There is already a follower");
+    }
+    
+    [Fact]
+    public void AddFollower_WhenAddingOneself_ShouldThrowAnError()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        var act = () => user.AddFollower(user);
+        
+        // Assert
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("Can't add yourself to followers");
     }
     
     [Fact]
@@ -184,7 +207,27 @@ public class UserTests
         var act = () => user.RemoveFollower(follower);
         
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("No follower to remove");
+        
+    }
+    
+    [Fact]
+    public void RemoveFollower_WhenRemovingOneself_ShouldThrowAnError()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var follower = UserFactory.CreateUser();
+
+        // Act
+        var act = () => user.RemoveFollower(follower);
+        
+        // Assert
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage("Can't remove yourself to followers");
+        
     }
     
     [Fact]
