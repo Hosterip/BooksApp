@@ -154,14 +154,14 @@ public class User : AggregateRoot<UserId>
 
     private static void ValidateName(string firstName, string? middleName, string? lastName)
     {
-        if (string.IsNullOrWhiteSpace(firstName))
-            throw new DomainException("First name should be present");
-
         if (firstName.Length is > MaxPropertyLength.User.FirstName or < 1)
             throw new DomainException($"First name length should be between 1 and {MaxPropertyLength.User.FirstName}");
         if (middleName?.Length is > MaxPropertyLength.User.MiddleName or < 1)
             throw new DomainException($"Middle name length should be between 1 and {MaxPropertyLength.User.MiddleName}");
         if (lastName?.Length is > MaxPropertyLength.User.LastName or < 1)
             throw new DomainException($"Last name length should be between 1 and {MaxPropertyLength.User.LastName}");
+        
+        if (string.IsNullOrWhiteSpace(firstName))
+            throw new DomainException("First name should be present");
     }
 }
