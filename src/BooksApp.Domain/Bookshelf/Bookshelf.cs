@@ -75,10 +75,10 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     
     private static void ValidateName(string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new DomainException("Name could not be empty");
-
         if (name.Length is > MaxPropertyLength.Bookshelf.Name or < 1)
             throw new DomainException($"Name should be inclusively between 1 and {MaxPropertyLength.Bookshelf.Name}");
+        
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Name could not be empty");
     }
 }

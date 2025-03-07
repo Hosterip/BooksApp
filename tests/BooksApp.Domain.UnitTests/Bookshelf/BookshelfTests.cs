@@ -72,7 +72,9 @@ public class BookshelfTests
             name);
 
         // Assert
-        Assert.ThrowsAny<DomainException>(act);
+        act.Should()
+            .Throw<DomainException>()
+            .WithMessage($"Name should be inclusively between 1 and {MaxPropertyLength.Bookshelf.Name}");
     }
     
     [Theory]
