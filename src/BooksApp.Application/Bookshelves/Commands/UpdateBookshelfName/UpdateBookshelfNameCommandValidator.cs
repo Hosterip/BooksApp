@@ -10,13 +10,13 @@ public sealed class UpdateBookshelfNameCommandValidator : AbstractValidator<Upda
 {
     public UpdateBookshelfNameCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
-        var userId = userService.GetId();
+        var userId = userService.GetId()!.Value;
         RuleFor(x => x.BookshelfId)
             .MustAsync(async (bookshelfId, token) =>
             {
                 return await unitOfWork.Bookshelves
                     .AnyAsync(x => x.Id == BookshelfId.Create(bookshelfId) &&
-                                   x.UserId == UserId.Create(userId!.Value), token);
+                                   x.UserId == UserId.Create(userId), token);
             })
             .WithMessage(ValidationMessages.Bookshelf.NotYours);
         
