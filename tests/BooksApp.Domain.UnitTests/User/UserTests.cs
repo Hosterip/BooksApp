@@ -218,10 +218,9 @@ public class UserTests
     {
         // Arrange
         var user = UserFactory.CreateUser();
-        var follower = UserFactory.CreateUser();
 
         // Act
-        var act = () => user.RemoveFollower(follower);
+        var act = () => user.RemoveFollower(user);
         
         // Assert
         act.Should()
