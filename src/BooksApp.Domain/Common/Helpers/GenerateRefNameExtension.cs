@@ -14,5 +14,5 @@ public static partial class GenerateRefNameExtension
     }
 
     [GeneratedRegex("[^0-9A-Za-z _-]", RegexOptions.NonBacktracking, 5)]
-    public static partial Regex RefNameRegex();
+    private static partial Regex RefNameRegex();
 }

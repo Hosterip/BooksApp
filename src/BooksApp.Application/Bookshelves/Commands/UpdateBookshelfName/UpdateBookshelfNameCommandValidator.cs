@@ -26,7 +26,7 @@ public sealed class UpdateBookshelfNameCommandValidator : AbstractValidator<Upda
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, token);
                 return bookshelf?.Name != request.NewName;
             })
-            .OverridePropertyName(nameof(UpdateBookshelfNameCommand.NewName))
+            .WithName(nameof(UpdateBookshelfNameCommand.NewName))
             .WithMessage(ValidationMessages.Bookshelf.NameIsTheSameAsItWas);
     }
 }
