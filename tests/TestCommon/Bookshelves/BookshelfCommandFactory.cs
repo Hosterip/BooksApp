@@ -1,3 +1,4 @@
+using BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
 using BooksApp.Application.Bookshelves.Commands.UpdateBookshelfName;
 using TestCommon.Common.Constants;
 
@@ -13,6 +14,17 @@ public static class BookshelfCommandFactory
         {
             NewName = newName,
             BookshelfId = bookshelfId ?? Guid.NewGuid()
+        };
+    }
+    
+    public static RemoveBookByNameCommand CreateRemoveBookByNameCommand(
+        Guid? bookId = null,
+        string bookshelfName = Constants.Bookshelves.Name)
+    {
+        return new RemoveBookByNameCommand
+        {
+            BookId = bookId ?? Guid.NewGuid(),
+            BookshelfName = bookshelfName
         };
     }
 }
