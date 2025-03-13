@@ -18,8 +18,8 @@ public class UpdateBookshelfNameCommandValidatorTests
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
         
-        _unitOfWork.Bookshelves.AnyAsync(x => true).ReturnsForAnyArgs(true);
-        _unitOfWork.Bookshelves.GetSingleById(Guid.Empty).ReturnsForAnyArgs(bookshelf);
+        _unitOfWork.Bookshelves.AnyAsync(default!).ReturnsForAnyArgs(true);
+        _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
 
         _userService.GetId().ReturnsForAnyArgs(Guid.Empty);
 
@@ -40,8 +40,8 @@ public class UpdateBookshelfNameCommandValidatorTests
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
         
-        _unitOfWork.Bookshelves.AnyAsync(x => true).ReturnsForAnyArgs(false);
-        _unitOfWork.Bookshelves.GetSingleById(Guid.Empty).ReturnsForAnyArgs(bookshelf);
+        _unitOfWork.Bookshelves.AnyAsync(default!).ReturnsForAnyArgs(false);
+        _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
 
         _userService.GetId().ReturnsForAnyArgs(Guid.Empty);
 
@@ -63,8 +63,8 @@ public class UpdateBookshelfNameCommandValidatorTests
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
         
-        _unitOfWork.Bookshelves.AnyAsync(x => true).ReturnsForAnyArgs(true);
-        _unitOfWork.Bookshelves.GetSingleById(Guid.Empty).ReturnsForAnyArgs(bookshelf);
+        _unitOfWork.Bookshelves.AnyAsync(default!).ReturnsForAnyArgs(true);
+        _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
 
         _userService.GetId().ReturnsForAnyArgs(Guid.Empty);
 
@@ -86,8 +86,8 @@ public class UpdateBookshelfNameCommandValidatorTests
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
         
-        _unitOfWork.Bookshelves.AnyAsync(x => true).ReturnsForAnyArgs(false);
-        _unitOfWork.Bookshelves.GetSingleById(Guid.Empty).ReturnsForAnyArgs(bookshelf);
+        _unitOfWork.Bookshelves.AnyAsync(default!).ReturnsForAnyArgs(false);
+        _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
 
         _userService.GetId().ReturnsForAnyArgs(Guid.Empty);
 

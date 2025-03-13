@@ -23,7 +23,7 @@ public class UpdateBookshelfNameCommandHandlerTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
         var command = BookshelfCommandFactory.CreateUpdateBookshelfNameCommand();
         
-        _unitOfWork.Bookshelves.GetSingleById(Guid.Empty, default).ReturnsForAnyArgs(bookshelf);
+        _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
         
         // Act
         var result = _handler.Handle(command, default);
