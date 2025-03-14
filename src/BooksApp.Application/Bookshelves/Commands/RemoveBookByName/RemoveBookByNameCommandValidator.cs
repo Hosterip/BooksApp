@@ -10,7 +10,7 @@ public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveB
     public RemoveBookByNameCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId()!.Value;
-
+        
         RuleFor(request => request)
             .MustAsync(async (_, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
@@ -24,6 +24,6 @@ public sealed class RemoveBookByNameCommandValidator : AbstractValidator<RemoveB
                     request.BookId,
                     cancellationToken))
             .WithMessage(ValidationMessages.Bookshelf.NoBookToRemove)
-            .WithName(nameof(RemoveBookByNameCommand.BookshelfName));
+            .WithName(nameof(RemoveBookByNameCommand.BookId));
     }
 }

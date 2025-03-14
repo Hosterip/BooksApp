@@ -12,8 +12,7 @@ public class RemoveBookByNameCommandValidatorTests
 {
     private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly IUserService _userService = Substitute.For<IUserService>();
-
-
+    
     [Fact]
     public async Task ValidateAsync_WhenEverythingIsOkay_ShouldBeValid()
     {
@@ -50,7 +49,7 @@ public class RemoveBookByNameCommandValidatorTests
 
         // Assert
         result.Errors.Should().Contain(x => x.ErrorMessage == ValidationMessages.Bookshelf.NoBookToRemove);
-        result.Errors.Should().Contain(x => x.PropertyName == nameof(RemoveBookByNameCommand.BookshelfName));
+        result.Errors.Should().Contain(x => x.PropertyName == nameof(RemoveBookByNameCommand.BookId));
     }
     
     [Fact]
@@ -92,6 +91,6 @@ public class RemoveBookByNameCommandValidatorTests
         result.Errors.Should().Contain(x => x.ErrorMessage == ValidationMessages.User.NotFound);
         result.Errors.Should().Contain(x => x.PropertyName == nameof(UserId));
         result.Errors.Should().Contain(x => x.ErrorMessage == ValidationMessages.Bookshelf.NoBookToRemove);
-        result.Errors.Should().Contain(x => x.PropertyName == nameof(RemoveBookByNameCommand.BookshelfName));
+        result.Errors.Should().Contain(x => x.PropertyName == nameof(RemoveBookByNameCommand.BookId));
     }
 }
