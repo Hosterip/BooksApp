@@ -1,4 +1,5 @@
 using BooksApp.Application.Bookshelves.Commands.AddBook;
+using BooksApp.Application.Bookshelves.Commands.AddBookByName;
 using BooksApp.Application.Bookshelves.Commands.CreateDefaultBookshelves;
 using BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using BooksApp.Application.Bookshelves.Commands.RemoveBook;
@@ -60,6 +61,18 @@ public static class BookshelfCommandFactory
             UserId = userId ?? Guid.NewGuid()
         };
     }
+    
+    public static AddBookByNameCommand CreateAddBookByNameCommand(
+        Guid? bookId = null,
+        string bookshelfName = Constants.Bookshelves.Name)
+    {
+        return new AddBookByNameCommand
+        {
+            BookId = bookId ?? Guid.NewGuid(),
+            BookshelfName = bookshelfName
+        };
+    }
+    
     
     public static AddBookCommand CreateAddBookCommand(
         Guid? bookId = null,
