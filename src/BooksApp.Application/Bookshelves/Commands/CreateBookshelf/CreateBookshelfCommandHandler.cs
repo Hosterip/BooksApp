@@ -7,12 +7,15 @@ namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 
 internal sealed class CreateBookshelfCommandHandler(
     IUnitOfWork unitOfWork,
+    IUserService userService,
     IMapper mapper)
     : IRequestHandler<CreateBookshelfCommand, BookshelfResult>
 {
     public async Task<BookshelfResult> Handle(CreateBookshelfCommand request, CancellationToken cancellationToken)
     {
-        var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
+        var userId = userService.GetId()!.Value;
+        
+        var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);
         var bookshelf = Bookshelf.Create(user!, request.Name);
         await unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);
         await unitOfWork.SaveAsync(cancellationToken);

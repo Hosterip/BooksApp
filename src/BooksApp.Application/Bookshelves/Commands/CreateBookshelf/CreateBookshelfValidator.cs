@@ -2,23 +2,26 @@
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
 using BooksApp.Domain.Common.Constants.MaxLengths;
+using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 
 public sealed class CreateBookshelfValidator : AbstractValidator<CreateBookshelfCommand>
 {
-    public CreateBookshelfValidator(IUnitOfWork unitOfWork)
+    public CreateBookshelfValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
-        RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(ValidationMessages.User.NotFound);
+        var userId = userService.GetId()!.Value;
+        
         RuleFor(request => request)
-            .MustAsync(async (request, cancellationToken) =>
-                !await unitOfWork.Bookshelves.AnyByName(request.Name, request.UserId, cancellationToken))
-            .WithMessage(ValidationMessages.Bookshelf.AlreadyHaveWithSameName)
-            .WithName(nameof(CreateBookshelfCommand.Name));
+            .MustAsync(async (_, cancellationToken) =>
+                await unitOfWork.Users.AnyById(userId, cancellationToken))
+            .WithMessage(ValidationMessages.User.NotFound)
+            .WithName(nameof(UserId));
+        RuleFor(request => request.Name)
+            .MustAsync(async (name, cancellationToken) =>
+                !await unitOfWork.Bookshelves.AnyByName(name, userId, cancellationToken))
+            .WithMessage(ValidationMessages.Bookshelf.AlreadyHaveWithSameName);
         RuleFor(request => request.Name)
             .MaximumLength(MaxPropertyLength.Bookshelf.Name);
     }
