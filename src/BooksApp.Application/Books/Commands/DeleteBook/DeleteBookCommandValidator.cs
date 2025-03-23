@@ -16,7 +16,8 @@ public sealed class DeleteBookCommandValidator : AbstractValidator<DeleteBookCom
                     .AnyAsync(
                         book => book.Id == BookId.Create(request.Id) &&
                                 book.Author.Id == UserId.Create(userService.GetId()!.Value),
-                        cancellationToken)
-            ).WithMessage(ValidationMessages.Book.BookNotYour);
+                        cancellationToken))
+            .WithMessage(ValidationMessages.Book.BookNotYour)
+            .WithName(nameof(UserId));
     }
 }
