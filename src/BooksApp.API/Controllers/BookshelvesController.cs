@@ -67,7 +67,6 @@ public class BookshelvesController(
         var command = new CreateBookshelfCommand
         {
             Name = request.Name,
-            UserId = userId
         };
         var result = await sender.Send(command, token);
 
