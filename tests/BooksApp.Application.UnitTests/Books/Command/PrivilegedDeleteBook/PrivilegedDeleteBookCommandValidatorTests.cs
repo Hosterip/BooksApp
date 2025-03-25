@@ -21,7 +21,7 @@ public class PrivilegedDeleteBookCommandValidatorTests
 
         _unitOfWork.Users.GetSingleById(default).ReturnsForAnyArgs(user);
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
-        _unitOfWork.Books.AnyAsync(default!).ReturnsForAnyArgs(true);
+        _unitOfWork.Books.AnyById(default!).ReturnsForAnyArgs(true);
         _unitOfWork.Users.AnyById(default!).ReturnsForAnyArgs(true);
     }
 
@@ -29,6 +29,7 @@ public class PrivilegedDeleteBookCommandValidatorTests
     public async Task ValidateAsync_WhenEverythingIsGood_ShouldReturnValidResult()
     {
         // Arrange
+        
         var command = BookCommandFactory.CreatePrivilegedDeleteBookCommand();
         var validator = new PrivilegedDeleteBookCommandValidator(_unitOfWork, _userService);
 
@@ -61,6 +62,10 @@ public class PrivilegedDeleteBookCommandValidatorTests
     public async Task ValidateAsync_WhenUserHasNotAdminRole_ShouldReturnSpecificError()
     {
         // Arrange
+        var user = UserFactory.CreateUser(role: RoleFactory.Member());
+        
+        _unitOfWork.Users.GetSingleById(default).ReturnsForAnyArgs(user);
+        
         _unitOfWork.Books.AnyAsync(default!).ReturnsForAnyArgs(false);
         
         var command = BookCommandFactory.CreatePrivilegedDeleteBookCommand();
