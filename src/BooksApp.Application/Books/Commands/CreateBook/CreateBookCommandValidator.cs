@@ -59,6 +59,6 @@ public sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCom
             .LessThan(10000000);
         RuleFor(request => request.Image.FileName)
             .Must(imageFileBuilder.IsValid)
-            .WithMessage(ValidationMessages.Image.WrongFileName);
+            .WithMessage(ValidationMessages.Image.InvalidFileName);
     }
 }

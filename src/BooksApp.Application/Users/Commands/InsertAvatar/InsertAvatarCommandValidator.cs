@@ -17,6 +17,6 @@ public sealed class InsertAvatarCommandValidator : AbstractValidator<InsertAvata
             .LessThan(10000000);
         RuleFor(request => request.Image)
             .Must(file => file == null || imageFileBuilder.IsValid(file.FileName))
-            .WithMessage(ValidationMessages.Image.WrongFileName);
+            .WithMessage(ValidationMessages.Image.InvalidFileName);
     }
 }

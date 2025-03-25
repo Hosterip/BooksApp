@@ -18,8 +18,10 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
 
         // Books
         RuleFor(book => book.Title)
+            .NotEmpty()
             .MaximumLength(MaxPropertyLength.Book.Title);
-        RuleFor(post => post.Description)
+        RuleFor(book => book.Description)
+            .NotEmpty()
             .MaximumLength(MaxPropertyLength.Book.Description);
 
         RuleFor(request => request)
@@ -53,6 +55,6 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
             .LessThan(10000000);
         RuleFor(request => request.Image)
             .Must(file => file == null || imageFileBuilder.IsValid(file.FileName))
-            .WithMessage(ValidationMessages.Image.WrongFileName);
+            .WithMessage(ValidationMessages.Image.InvalidFileName);
     }
 }
