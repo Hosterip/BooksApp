@@ -189,7 +189,7 @@ public class CreateBookCommandValidatorTests
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Image.WrongFileName).PropertyName
+        result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Image.InvalidFileName).PropertyName
             .Should().Be("Image.FileName");
     }
 }
