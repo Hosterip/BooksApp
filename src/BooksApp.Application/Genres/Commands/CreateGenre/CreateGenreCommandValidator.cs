@@ -19,7 +19,7 @@ public sealed class CreateGenreCommandValidator : AbstractValidator<CreateGenreC
             .WithMessage(ValidationMessages.Genre.AlreadyExists);
 
         RuleFor(x => x.Name)
-            .MinimumLength(1)
+            .NotEmpty()
             .MaximumLength(MaxPropertyLength.Genre.Name);
     }
 }
