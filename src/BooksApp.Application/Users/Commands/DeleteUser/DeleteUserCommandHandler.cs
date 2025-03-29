@@ -7,7 +7,7 @@ internal sealed class DeleteUserCommandHandler(IUnitOfWork unitOfWork) : IReques
 {
     public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await unitOfWork.Users.GetSingleById(request.Id, cancellationToken);
+        var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
         await unitOfWork.Users.Remove(user!);
         await unitOfWork.SaveAsync(cancellationToken);
     }
