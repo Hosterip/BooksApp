@@ -8,14 +8,15 @@ namespace BooksApp.Application.Users.Commands.InsertAvatar;
 
 internal sealed class InsertAvatarCommandHandler(
     IUnitOfWork unitOfWork,
+    IUserService userService,
     IMapper mapper,
     IImageFileBuilder imageFileBuilder)
     : IRequestHandler<InsertAvatarCommand, UserResult>
 {
     public async Task<UserResult> Handle(InsertAvatarCommand request, CancellationToken cancellationToken)
     {
-        var user =
-            await unitOfWork.Users.GetSingleById(request.Id, cancellationToken);
+        var userId = userService.GetId()!.Value;
+        var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);
         var fileName = await imageFileBuilder.CreateImage(request.Image, cancellationToken);
         if (user?.Avatar is null)
         {

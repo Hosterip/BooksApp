@@ -6,6 +6,5 @@ namespace BooksApp.Application.Users.Commands.InsertAvatar;
 
 public class InsertAvatarCommand : IRequest<UserResult>
 {
-    public required Guid Id { get; init; }
     public required IFormFile Image { get; init; }
 }

@@ -3,11 +3,15 @@ using MediatR;
 
 namespace BooksApp.Application.Users.Commands.UpdateName;
 
-internal sealed class UpdateNameCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateNameCommand>
+internal sealed class UpdateNameCommandHandler(
+    IUnitOfWork unitOfWork,
+    IUserService userService) 
+    : IRequestHandler<UpdateNameCommand>
 {
     public async Task Handle(UpdateNameCommand request, CancellationToken cancellationToken)
     {
-        var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
+        var userId = userService.GetId()!.Value;
+        var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);
         user!.ChangeName(
             request.FirstName,
             request.MiddleName,
