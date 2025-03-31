@@ -98,7 +98,7 @@ public class UsersController(
     public async Task<IActionResult> Delete(
         CancellationToken cancellationToken)
     {
-        var command = new DeleteUserCommand { Id = userService.GetId()!.Value };
+        var command = new DeleteUserCommand { UserId = userService.GetId()!.Value };
         await sender.Send(command, cancellationToken);
 
         await HttpContext.SignOutAsync();
@@ -124,7 +124,6 @@ public class UsersController(
     {
         var command = new UpdateEmailCommand
         {
-            Id = userService.GetId()!.Value,
             Email = request.Email
         };
 
@@ -147,7 +146,6 @@ public class UsersController(
     {
         var command = new UpdateNameCommand
         {
-            UserId = userService.GetId()!.Value,
             FirstName = request.FirstName,
             MiddleName = request.MiddleName,
             LastName = request.LastName
@@ -170,7 +168,6 @@ public class UsersController(
     {
         var command = new InsertAvatarCommand
         {
-            Id = userService.GetId()!.Value,
             Image = request.Image
         };
 
