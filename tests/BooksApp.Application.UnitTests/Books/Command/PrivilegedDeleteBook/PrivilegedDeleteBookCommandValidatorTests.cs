@@ -29,7 +29,6 @@ public class PrivilegedDeleteBookCommandValidatorTests
     public async Task ValidateAsync_WhenEverythingIsGood_ShouldReturnValidResult()
     {
         // Arrange
-        
         var command = BookCommandFactory.CreatePrivilegedDeleteBookCommand();
         var validator = new PrivilegedDeleteBookCommandValidator(_unitOfWork, _userService);
 
@@ -44,7 +43,7 @@ public class PrivilegedDeleteBookCommandValidatorTests
     public async Task ValidateAsync_WhenThereIsNoSpecifiedBook_ShouldReturnSpecificError()
     {
         // Arrange
-        _unitOfWork.Books.AnyAsync(default!).ReturnsForAnyArgs(false);
+        _unitOfWork.Books.AnyById(default!).ReturnsForAnyArgs(false);
         
         var command = BookCommandFactory.CreatePrivilegedDeleteBookCommand();
         var validator = new PrivilegedDeleteBookCommandValidator(_unitOfWork, _userService);
