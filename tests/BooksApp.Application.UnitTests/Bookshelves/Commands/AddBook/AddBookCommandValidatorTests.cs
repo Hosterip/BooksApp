@@ -61,8 +61,9 @@ public class AddBookCommandValidatorTests
         // Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().BeGreaterThan(0);
-        result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Bookshelf.NotFound).PropertyName
-            .Should().Be(nameof(AddBookCommand.BookshelfId));
+        result.Errors.Should().ContainSingle(x => 
+            x.ErrorMessage == ValidationMessages.Bookshelf.NotFound &&
+            x.PropertyName == nameof(AddBookCommand.BookshelfId));
     }
     
     [Fact]
@@ -88,8 +89,9 @@ public class AddBookCommandValidatorTests
         // Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().BeGreaterThan(0);
-        result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Book.NotFound).PropertyName
-            .Should().Be(nameof(AddBookCommand.BookId));
+        result.Errors.Should().ContainSingle(x => 
+            x.ErrorMessage == ValidationMessages.Book.NotFound &&
+            x.PropertyName == nameof(AddBookCommand.BookId));
     }
     
     [Fact]
@@ -115,7 +117,7 @@ public class AddBookCommandValidatorTests
         // Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().BeGreaterThan(0);
-        result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Bookshelf.NotYours).PropertyName
-            .Should().Be(nameof(UserId));
+        result.Errors.Should().ContainSingle(x => x.ErrorMessage == ValidationMessages.Bookshelf.NotYours &&
+            x.PropertyName == nameof(UserId));
     }
 }

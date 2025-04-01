@@ -34,48 +34,51 @@ public class PrivilegedDeleteBookCommandValidatorTests
 
         // Act
         var result = await validator.ValidateAsync(command);
-        
+
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoSpecifiedBook_ShouldReturnSpecificError()
     {
         // Arrange
         _unitOfWork.Books.AnyById(default!).ReturnsForAnyArgs(false);
-        
+
         var command = BookCommandFactory.CreatePrivilegedDeleteBookCommand();
         var validator = new PrivilegedDeleteBookCommandValidator(_unitOfWork, _userService);
 
         // Act
         var result = await validator.ValidateAsync(command);
-        
+
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Book.NotFound).PropertyName
-            .Should().Be(nameof(PrivilegedDeleteBookCommand.Id));
+        result.Errors.Should().ContainSingle(x =>
+            x.ErrorMessage == ValidationMessages.Book.NotFound &&
+            x.PropertyName == nameof(PrivilegedDeleteBookCommand.Id));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenUserHasNotAdminRole_ShouldReturnSpecificError()
     {
         // Arrange
         var user = UserFactory.CreateUser(role: RoleFactory.Member());
-        
+
         _unitOfWork.Users.GetSingleById(default).ReturnsForAnyArgs(user);
-        
+
         _unitOfWork.Books.AnyAsync(default!).ReturnsForAnyArgs(false);
-        
+
         var command = BookCommandFactory.CreatePrivilegedDeleteBookCommand();
         var validator = new PrivilegedDeleteBookCommandValidator(_unitOfWork, _userService);
 
         // Act
         var result = await validator.ValidateAsync(command);
-        
+
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Single(x => x.ErrorMessage == ValidationMessages.User.Permission).PropertyName
-            .Should().Be(nameof(UserId));
+        result.Errors.Should().ContainSingle(x =>
+            x.ErrorMessage == ValidationMessages.User.Permission &&
+            x.PropertyName == nameof(UserId)
+        );
     }
 }
