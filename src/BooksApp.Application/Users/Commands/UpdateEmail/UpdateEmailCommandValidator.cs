@@ -22,11 +22,7 @@ public sealed class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailC
             .WithName(nameof(UserId));
         
         RuleFor(user => user.Email)
-            .MustAsync(async (email, cancellationToken) =>
-            {
-                return !await unitOfWork.Users.AnyAsync(
-                           user => user.Email == email, cancellationToken);
-            })
+            .MustAsync(async (email, cancellationToken) => !await unitOfWork.Users.AnyByEmail(email, cancellationToken))
             .WithMessage(ValidationMessages.User.Occupied);
         RuleFor(user => user.Email)
             .Must(EmailValidator.Validate)
