@@ -1,4 +1,9 @@
+using System.Reflection;
+using BooksApp.Application.Common.Attributes;
+using BooksApp.Application.Common.Constants.ValidationMessages;
+using BooksApp.Application.Common.Errors;
 using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.User.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -11,8 +16,15 @@ public class UserValidationBehavior<TRequest, TResponse>(
     IUnitOfWork unitOfWork) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
+        var attribute = request.GetType().GetCustomAttribute<AuthorizationAttribute>();
+        if (attribute == null);
+        {
+            return await next();
+        }
+        
         var id = userService.GetId();
         var securityStamp = userService.GetSecurityStamp();
         var role = userService.GetRole();
@@ -22,7 +34,16 @@ public class UserValidationBehavior<TRequest, TResponse>(
             if (user != null && user.SecurityStamp == securityStamp)
                 userService.ChangeRole(user.Role.Name);
             else
+            {
                 await accessor.HttpContext!.SignOutAsync();
+                throw new ValidationException([
+                    new ValidationFailure
+                    {
+                        PropertyName = nameof(UserId),
+                        ErrorMessage = ValidationMessages.User.NotFound
+                    }
+                ]);
+            }
         }
 
         return await next();
