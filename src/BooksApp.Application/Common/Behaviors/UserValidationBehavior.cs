@@ -14,13 +14,13 @@ public class UserValidationBehavior<TRequest, TResponse>(
     IHttpContextAccessor accessor,
     IUserService userService,
     IUnitOfWork unitOfWork) : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+    where TRequest : notnull
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        var attribute = request.GetType().GetCustomAttribute<AuthorizationAttribute>();
-        if (attribute == null);
+        var attribute = request.GetType().GetCustomAttribute<AuthorizeAttribute>();
+        if (attribute == null)
         {
             return await next();
         }
@@ -31,9 +31,10 @@ public class UserValidationBehavior<TRequest, TResponse>(
         if (id != null && securityStamp != null)
         {
             var user = await unitOfWork.Users.GetSingleById(id.Value, cancellationToken);
-            if (user != null && user.SecurityStamp == securityStamp)
+            if (user != null &&
+                (user.SecurityStamp == securityStamp || user.Role.Name != role))
                 userService.ChangeRole(user.Role.Name);
-            else
+            else if (user == null || user.SecurityStamp != securityStamp)
             {
                 await accessor.HttpContext!.SignOutAsync();
                 throw new ValidationException([
