@@ -71,6 +71,11 @@ public class UserService(IHttpContextAccessor accessor) : IUserService
             authProperties);
     }
 
+    public async Task Logout()
+    {
+        await _httpContext.SignOutAsync();
+    }
+
     private async void ChangeClaim(string typeOfClaim, string valueOfClaim)
     {
         var claims = _httpContext.User.Claims.ToList();

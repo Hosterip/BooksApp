@@ -10,4 +10,5 @@ public interface IUserService
     public void ChangeRole(string valueOfClaim);
     public void ChangeSecurityStamp(string valueOfClaim);
     public Task Login(string id, string email, string role, string securityStamp);
+    public Task Logout();
 }
