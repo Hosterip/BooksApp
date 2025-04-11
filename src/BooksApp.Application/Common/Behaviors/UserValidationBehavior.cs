@@ -5,13 +5,11 @@ using BooksApp.Application.Common.Errors;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.User.ValueObjects;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
 namespace BooksApp.Application.Common.Behaviors;
 
 public class UserValidationBehavior<TRequest, TResponse>(
-    IHttpContextAccessor accessor,
     IUserService userService,
     IUnitOfWork unitOfWork) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
@@ -36,7 +34,7 @@ public class UserValidationBehavior<TRequest, TResponse>(
                 userService.ChangeRole(user.Role.Name);
             else if (user == null || user.SecurityStamp != securityStamp)
             {
-                await accessor.HttpContext!.SignOutAsync();
+                await userService.Logout();
                 throw new ValidationException([
                     new ValidationFailure
                     {
