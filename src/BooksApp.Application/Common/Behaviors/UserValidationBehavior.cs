@@ -5,7 +5,6 @@ using BooksApp.Application.Common.Errors;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.User.ValueObjects;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace BooksApp.Application.Common.Behaviors;
 
