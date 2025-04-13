@@ -14,7 +14,7 @@ internal sealed class GetBookshelvesQueryHandler(
     {
         var rawBookshelves = await unitOfWork.Bookshelves
             .GetAllWhereAsync(bookshelf =>
-                bookshelf.UserId == UserId.Create(request.UserId), cancellationToken);
+                bookshelf.User.Id == UserId.Create(request.UserId), cancellationToken);
         var bookshelves =
             rawBookshelves.Select(mapper.Map<BookshelfResult>).ToList();
         return bookshelves;

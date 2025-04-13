@@ -21,7 +21,7 @@ public class DeleteBookshelfCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _unitOfWork.Bookshelves.GetSingleById(bookshelf.Id.Value).Returns(bookshelf);
-        _userService.GetId().ReturnsForAnyArgs(bookshelf.UserId.Value);
+        _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
 
         var command = BookshelfCommandFactory.CreateDeleteBookshelfCommand(bookshelf.Id.Value);
         var validator = new DeleteBookshelfCommandValidator(_unitOfWork, _userService);
@@ -65,7 +65,7 @@ public class DeleteBookshelfCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf(name: bookshelfName);
 
         _unitOfWork.Bookshelves.GetSingleById(bookshelf.Id.Value).Returns(bookshelf);
-        _userService.GetId().ReturnsForAnyArgs(bookshelf.UserId.Value);
+        _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
 
         var command = BookshelfCommandFactory.CreateDeleteBookshelfCommand(bookshelf.Id.Value);
         var validator = new DeleteBookshelfCommandValidator(_unitOfWork, _userService);

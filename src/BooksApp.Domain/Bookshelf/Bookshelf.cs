@@ -18,7 +18,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         User.User user,
         string name) : base(id)
     {
-        UserId = user.Id;
+        User = user;
         _bookshelfBooks = [];
         Name = name
             .TrimStart()
@@ -29,7 +29,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     public string Name { get; private set; }
 
     public string ReferentialName { get; private set; }
-    public UserId UserId { get; init; }
+    public User.User User { get; init; }
     private readonly List<BookshelfBook> _bookshelfBooks = [];
     public IReadOnlyList<BookshelfBook> BookshelfBooks => _bookshelfBooks.AsReadOnly();
 

@@ -26,7 +26,7 @@ public class RemoveBookCommandValidatorTests
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(true);
         
-        _userService.GetId().ReturnsForAnyArgs(bookshelf.UserId.Value);
+        _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
 
         var command = BookshelfCommandFactory.CreateRemoveBookCommand();
         var validator = new RemoveBookCommandValidator(_unitOfWork, _userService);
@@ -50,7 +50,7 @@ public class RemoveBookCommandValidatorTests
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(false);
         
-        _userService.GetId().ReturnsForAnyArgs(bookshelf.UserId.Value);
+        _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
 
         var command = BookshelfCommandFactory.CreateRemoveBookCommand();
         var validator = new RemoveBookCommandValidator(_unitOfWork, _userService);

@@ -24,12 +24,6 @@ public class BookshelvesConfiguration : IEntityTypeConfiguration<Bookshelf>
             .HasMaxLength(MaxPropertyLength.Bookshelf.Name)
             .IsRequired();
 
-        builder.Property(b => b.UserId)
-            .ValueGeneratedNever()
-            .HasConversion(
-                id => id.Value,
-                value => UserId.Create(value));
-
         builder.OwnsMany(b => b.BookshelfBooks, bb =>
         {
             bb.HasKey(b => b.Id);

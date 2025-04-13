@@ -26,7 +26,7 @@ public sealed class AddBookCommandValidator : AbstractValidator<AddBookCommand>
             .MustAsync(async (request, cancellationToken) =>
             {
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
-                return bookshelf != null && bookshelf.UserId == UserId.Create(userId);
+                return bookshelf != null && bookshelf.User.Id == UserId.Create(userId);
             })
             .WithMessage(ValidationMessages.Bookshelf.NotYours)
             .WithName(nameof(UserId)); 

@@ -26,7 +26,7 @@ public sealed class DeleteBookshelfCommandValidator : AbstractValidator<DeleteBo
             {
                 var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
 
-                return bookshelf != null && bookshelf.UserId.Value == userId;
+                return bookshelf != null && bookshelf.User.Id.Value == userId;
             })
             .WithName(nameof(UserId))
             .WithMessage(ValidationMessages.Bookshelf.NotYours);

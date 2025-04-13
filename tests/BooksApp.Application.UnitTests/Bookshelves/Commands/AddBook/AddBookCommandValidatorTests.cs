@@ -19,7 +19,7 @@ public class AddBookCommandValidatorTests
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
-        _userService.GetId().ReturnsForAnyArgs(bookshelf.UserId.Value);
+        _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
         
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Bookshelves.AnyBookById(default, default).ReturnsForAnyArgs(false);
@@ -44,7 +44,7 @@ public class AddBookCommandValidatorTests
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
-        _userService.GetId().ReturnsForAnyArgs(bookshelf.UserId.Value);
+        _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
         
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(false);
         _unitOfWork.Bookshelves.AnyBookById(default, default).ReturnsForAnyArgs(false);
@@ -72,7 +72,7 @@ public class AddBookCommandValidatorTests
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
-        _userService.GetId().ReturnsForAnyArgs(bookshelf.UserId.Value);
+        _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
         
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Bookshelves.AnyBookById(default, default).ReturnsForAnyArgs(false);

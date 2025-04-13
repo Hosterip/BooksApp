@@ -13,7 +13,7 @@ internal sealed class RemoveBookByNameCommandHandler(IUnitOfWork unitOfWork, IUs
         
         var bookshelf = await unitOfWork.Bookshelves.GetSingleWhereAsync(bookshelf =>
             bookshelf.Name == request.BookshelfName &&
-            bookshelf.UserId == UserId.Create(userId), cancellationToken);
+            bookshelf.User.Id == UserId.Create(userId), cancellationToken);
         if (bookshelf is null)
         {
             var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);

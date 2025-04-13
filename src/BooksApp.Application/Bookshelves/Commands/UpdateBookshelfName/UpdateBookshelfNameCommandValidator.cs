@@ -16,7 +16,7 @@ public sealed class UpdateBookshelfNameCommandValidator : AbstractValidator<Upda
             {
                 return await unitOfWork.Bookshelves
                     .AnyAsync(x => x.Id == BookshelfId.Create(bookshelfId) &&
-                                   x.UserId == UserId.Create(userId), token);
+                                   x.User.Id == UserId.Create(userId), token);
             })
             .WithMessage(ValidationMessages.Bookshelf.NotYours);
         
