@@ -87,4 +87,20 @@ public class UserValidationBehaviorTests
         // Assert 
         await act.Should().ThrowAsync<ValidationException>();
     }
+    
+    [Fact]
+    public async Task Handle_WhenDbUsersRoleDoesNotCorrespondTheRoleInMemory_ShouldCallNext()
+    {
+        // Arrange
+        _userService.GetRole().ReturnsForAnyArgs(Guid.NewGuid().ToString());
+        //  Creating behavior  
+        var behavior =
+            new UserValidationBehavior<InsertAvatarCommand, UserResult>(_userService, _unitOfWork);
+
+        // Act
+        var result = await behavior.Handle(RequestWithAuthorizeAttribute, _next, default);
+
+        // Assert 
+        result.Should().BeOfType<UserResult>();
+    }
 }
