@@ -8,6 +8,7 @@ using BooksApp.Domain.Role;
 using FluentAssertions;
 using MediatR;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using TestCommon.Users;
 
 namespace BooksApp.Application.UnitTests.Common.Behaviors;
@@ -77,6 +78,24 @@ public class UserValidationBehaviorTests
     {
         // Arrange
         _userService.GetSecurityStamp().ReturnsForAnyArgs(Guid.NewGuid().ToString());
+        //  Creating behavior  
+        var behavior =
+            new UserValidationBehavior<InsertAvatarCommand, UserResult>(_userService, _unitOfWork);
+
+        // Act
+        var act = async () => await behavior.Handle(RequestWithAuthorizeAttribute, _next, default);
+
+        // Assert 
+        await act.Should().ThrowAsync<ValidationException>();
+    }
+    
+    [Fact]
+    public async Task Handle_WhenUserWasNotFound_ShouldThrowASpecificError()
+    {
+        // Arrange
+        //  Making UserRepository GetSingleById return null
+        _unitOfWork.Users.GetSingleById(default).ReturnsNullForAnyArgs();
+        
         //  Creating behavior  
         var behavior =
             new UserValidationBehavior<InsertAvatarCommand, UserResult>(_userService, _unitOfWork);
