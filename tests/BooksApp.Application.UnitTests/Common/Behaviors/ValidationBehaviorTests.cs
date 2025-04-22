@@ -25,7 +25,7 @@ public class ValidationBehaviorTests
     }
 
     [Fact]
-    public async Task InvokeHandle_WhenValidatorIsReturnsValid_ShouldInvokeNext()
+    public async Task InvokeHandle_WhenValidatorReturnsValid_ShouldInvokeNext()
     {
         // Arrange
         //  Create a command
@@ -46,7 +46,7 @@ public class ValidationBehaviorTests
     }
 
     [Fact]
-    public async Task InvokeHandle_WhenValidatorIsReturnsError_ShouldThrowAnError()
+    public async Task InvokeHandle_WhenValidatorReturnsError_ShouldThrowAnError()
     {
         // Arrange
         //  Create a command
