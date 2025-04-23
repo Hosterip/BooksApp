@@ -1,4 +1,5 @@
-﻿using BooksApp.Application.Common.Constants.ValidationMessages;
+﻿using BooksApp.Application.Common.Attributes;
+using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Book.ValueObjects;
 using BooksApp.Domain.Common.Constants.MaxLengths;
@@ -7,6 +8,7 @@ using FluentValidation;
 
 namespace BooksApp.Application.Reviews.Commands.CreateReview;
 
+[Authorize]
 public sealed class CreateReviewCommandValidator : AbstractValidator<CreateReviewCommand>
 {
     public CreateReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
@@ -19,13 +21,9 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
         RuleFor(request => request.Rating)
             .GreaterThanOrEqualTo(1)
             .LessThanOrEqualTo(5);
-        RuleFor(request => request)
-            .MustAsync(async (_, cancellationToken) => await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(ValidationMessages.User.NotFound)
-            .WithName(nameof(UserId));
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) => await unitOfWork.Books.AnyById(bookId, cancellationToken))
-            .WithMessage(ValidationMessages.Review.NotFound);
+            .WithMessage(ValidationMessages.Book.NotFound);
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {
