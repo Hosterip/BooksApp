@@ -18,12 +18,6 @@ public sealed class PrivilegedDeleteReviewCommandValidator : AbstractValidator<P
 
         RuleFor(request => request)
             .MustAsync(async (_, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(ValidationMessages.User.NotFound)
-            .WithName(nameof(userId));
-
-        RuleFor(request => request)
-            .MustAsync(async (_, cancellationToken) =>
             {
                 var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);
 
