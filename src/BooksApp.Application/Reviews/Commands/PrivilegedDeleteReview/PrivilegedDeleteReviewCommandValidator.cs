@@ -1,6 +1,7 @@
 ﻿using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
+using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
 namespace BooksApp.Application.Reviews.Commands.PrivilegedDeleteReview;
@@ -24,6 +25,6 @@ public sealed class PrivilegedDeleteReviewCommandValidator : AbstractValidator<P
                 return user?.Role.Name is RoleNames.Admin or RoleNames.Moderator;
             })
             .WithMessage(ValidationMessages.User.Permission)
-            .WithName(nameof(userId));
+            .WithName(nameof(UserId));
     }
 }
