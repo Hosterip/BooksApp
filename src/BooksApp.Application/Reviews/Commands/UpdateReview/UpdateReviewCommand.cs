@@ -1,8 +1,10 @@
-﻿using BooksApp.Application.Reviews.Results;
+﻿using BooksApp.Application.Common.Attributes;
+using BooksApp.Application.Reviews.Results;
 using MediatR;
 
 namespace BooksApp.Application.Reviews.Commands.UpdateReview;
 
+[Authorize]
 public class UpdateReviewCommand : IRequest<ReviewResult>
 {
     public required Guid ReviewId { get; init; }

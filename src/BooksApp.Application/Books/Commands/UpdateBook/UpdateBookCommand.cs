@@ -1,9 +1,11 @@
 using BooksApp.Application.Books.Results;
+using BooksApp.Application.Common.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace BooksApp.Application.Books.Commands.UpdateBook;
 
+[Authorize]
 public class UpdateBookCommand : IRequest<BookResult>
 {
     public required Guid Id { get; init; }
