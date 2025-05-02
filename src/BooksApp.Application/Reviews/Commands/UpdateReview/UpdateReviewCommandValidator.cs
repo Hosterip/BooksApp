@@ -3,9 +3,11 @@ using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BooksApp.Application.Reviews.Commands.UpdateReview;
 
+[Authorize]
 public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewCommand>
 {
     public UpdateReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
