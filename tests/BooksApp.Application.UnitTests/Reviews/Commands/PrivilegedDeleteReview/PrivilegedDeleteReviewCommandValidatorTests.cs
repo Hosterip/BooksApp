@@ -21,10 +21,8 @@ public class PrivilegedDeleteReviewCommandValidatorTests
 
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
         _unitOfWork.Users.GetSingleById(Guid.Empty).ReturnsForAnyArgs(user);
-        _unitOfWork.Users.AnyById(Guid.Empty).ReturnsForAnyArgs(true);
         
         _unitOfWork.Reviews.AnyById(Guid.Empty).ReturnsForAnyArgs(true);
-        _unitOfWork.Users.AnyById(Guid.Empty).ReturnsForAnyArgs(true);
     }
 
     [Fact]
