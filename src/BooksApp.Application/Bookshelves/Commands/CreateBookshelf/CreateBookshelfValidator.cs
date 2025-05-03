@@ -1,8 +1,6 @@
 ﻿using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Common.Constants;
 using BooksApp.Domain.Common.Constants.MaxLengths;
-using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
@@ -12,12 +10,7 @@ public sealed class CreateBookshelfValidator : AbstractValidator<CreateBookshelf
     public CreateBookshelfValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId()!.Value;
-        
-        RuleFor(request => request)
-            .MustAsync(async (_, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(ValidationMessages.User.NotFound)
-            .WithName(nameof(UserId));
+
         RuleFor(request => request.Name)
             .MustAsync(async (name, cancellationToken) =>
                 !await unitOfWork.Bookshelves.AnyByName(name, userId, cancellationToken))

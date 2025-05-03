@@ -8,18 +8,8 @@ namespace BooksApp.Application.Users.Commands.UpdateName;
 
 public sealed class UpdateNameCommandValidator : AbstractValidator<UpdateNameCommand>
 {
-    public UpdateNameCommandValidator(
-        IUnitOfWork unitOfWork,
-        IUserService userService)
+    public UpdateNameCommandValidator()
     {
-        var userId = userService.GetId()!.Value;
-
-        RuleFor(request => request)
-            .MustAsync(async (_, cancellationToken) => 
-                await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithName(nameof(UserId))
-            .WithMessage(ValidationMessages.User.NotFound);
-
         RuleFor(user => user.FirstName)
             .NotEmpty()
             .Length(1, MaxPropertyLength.User.FirstName);

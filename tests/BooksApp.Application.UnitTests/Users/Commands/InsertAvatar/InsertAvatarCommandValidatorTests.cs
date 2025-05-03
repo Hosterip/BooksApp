@@ -25,7 +25,7 @@ public class InsertAvatarCommandValidatorTests
     {
         // Arrange
         var command = UserCommandFactory.CreateInsertAvatarCommand();
-        var validator = new InsertAvatarCommandValidator(_unitOfWork, _userService, _imageFileBuilder);
+        var validator = new InsertAvatarCommandValidator(_imageFileBuilder);
         
         // Act
         var result = await validator.ValidateAsync(command);
@@ -41,7 +41,7 @@ public class InsertAvatarCommandValidatorTests
         _imageFileBuilder.IsValid(default!).ReturnsForAnyArgs(false);
         
         var command = UserCommandFactory.CreateInsertAvatarCommand();
-        var validator = new InsertAvatarCommandValidator(_unitOfWork, _userService, _imageFileBuilder);
+        var validator = new InsertAvatarCommandValidator(_imageFileBuilder);
         
         // Act
         var result = await validator.ValidateAsync(command);

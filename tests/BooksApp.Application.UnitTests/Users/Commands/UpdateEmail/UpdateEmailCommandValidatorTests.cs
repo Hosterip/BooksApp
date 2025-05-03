@@ -26,7 +26,7 @@ public class UpdateEmailCommandValidatorTests
     {
         // Arrange
         var command = UserCommandFactory.CreateUpdateEmailCommand();
-        var validator = new UpdateEmailCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateEmailCommandValidator(_unitOfWork);
 
         // Act
         var result = await validator.ValidateAsync(command);
@@ -42,7 +42,7 @@ public class UpdateEmailCommandValidatorTests
         _unitOfWork.Users.AnyByEmail(default!).ReturnsForAnyArgs(true);
 
         var command = UserCommandFactory.CreateUpdateEmailCommand();
-        var validator = new UpdateEmailCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateEmailCommandValidator(_unitOfWork);
 
         // Act
         var result = await validator.ValidateAsync(command);
@@ -63,7 +63,7 @@ public class UpdateEmailCommandValidatorTests
     {
         // Arrange
         var command = UserCommandFactory.CreateUpdateEmailCommand(email: email);
-        var validator = new UpdateEmailCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateEmailCommandValidator(_unitOfWork);
 
         // Act
         var result = await validator.ValidateAsync(command);
@@ -83,7 +83,7 @@ public class UpdateEmailCommandValidatorTests
         // Arrange
         var email = StringUtilities.GenerateLongString(emailLength);
         var command = UserCommandFactory.CreateUpdateEmailCommand(email: email);
-        var validator = new UpdateEmailCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateEmailCommandValidator(_unitOfWork);
 
         // Act
         var result = await validator.ValidateAsync(command);
@@ -101,7 +101,7 @@ public class UpdateEmailCommandValidatorTests
         // Arrange
         var email = StringUtilities.GenerateLongWhiteSpace(emailLength);
         var command = UserCommandFactory.CreateUpdateEmailCommand(email: email);
-        var validator = new UpdateEmailCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateEmailCommandValidator(_unitOfWork);
 
         // Act
         var result = await validator.ValidateAsync(command);

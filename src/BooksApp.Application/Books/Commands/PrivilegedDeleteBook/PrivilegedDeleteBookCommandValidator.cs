@@ -19,12 +19,6 @@ public sealed class PrivilegedDeleteBookCommandValidator : AbstractValidator<Pri
 
         RuleFor(request => request)
             .MustAsync(async (_, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(ValidationMessages.User.NotFound)
-            .WithName(nameof(UserId));
-
-        RuleFor(request => request)
-            .MustAsync(async (_, cancellationToken) =>
             {
                 var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);
 

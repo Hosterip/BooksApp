@@ -24,7 +24,7 @@ public class UpdateNameCommandValidatorTests
     {
         // Arrange
         var command = UserCommandFactory.CreateUpdateNameCommand();
-        var validator = new UpdateNameCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateNameCommandValidator();
 
         // Act
         var result = await validator.ValidateAsync(command);
@@ -41,7 +41,7 @@ public class UpdateNameCommandValidatorTests
         // Arrange
         var firstName = StringUtilities.GenerateLongString(firstNameLength);
         var command = UserCommandFactory.CreateUpdateNameCommand(firstName: firstName);
-        var validator = new UpdateNameCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateNameCommandValidator();
 
         // Act
         var result = await validator.ValidateAsync(command);
@@ -59,7 +59,7 @@ public class UpdateNameCommandValidatorTests
         // Arrange
         var firstName = StringUtilities.GenerateLongWhiteSpace(firstNameLength);
         var command = UserCommandFactory.CreateUpdateNameCommand(firstName: firstName);
-        var validator = new UpdateNameCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateNameCommandValidator();
 
         // Act
         var result = await validator.ValidateAsync(command);
@@ -75,7 +75,7 @@ public class UpdateNameCommandValidatorTests
         // Arrange
         var middleName = StringUtilities.GenerateLongWhiteSpace(MaxPropertyLength.User.MiddleName + 1);
         var command = UserCommandFactory.CreateUpdateNameCommand(middleName: middleName);
-        var validator = new UpdateNameCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateNameCommandValidator();
 
         // Act
         var result = await validator.ValidateAsync(command);
@@ -91,7 +91,7 @@ public class UpdateNameCommandValidatorTests
         // Arrange
         var lastName = StringUtilities.GenerateLongWhiteSpace(MaxPropertyLength.User.LastName + 1);
         var command = UserCommandFactory.CreateUpdateNameCommand(lastName: lastName);
-        var validator = new UpdateNameCommandValidator(_unitOfWork, _userService);
+        var validator = new UpdateNameCommandValidator();
 
         // Act
         var result = await validator.ValidateAsync(command);

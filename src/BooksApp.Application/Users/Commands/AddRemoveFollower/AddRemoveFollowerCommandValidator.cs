@@ -12,15 +12,9 @@ public sealed class AddRemoveFollowerCommandValidator : AbstractValidator<AddRem
         var followerId = userService.GetId()!.Value;
 
         RuleFor(x => x.UserId)
-            .MustAsync(async (guid, token) => 
-                await unitOfWork.Users.AnyById(guid, token))
+            .MustAsync(async (userId, token) => 
+                await unitOfWork.Users.AnyById(userId, token))
             .WithMessage(ValidationMessages.User.NotFound);
-        
-        RuleFor(x => x)
-            .MustAsync(async (_, token) =>
-                await unitOfWork.Users.AnyById(followerId, token))
-            .WithMessage(ValidationMessages.User.NotFound)
-            .WithName(nameof(followerId));
         
         RuleFor(x => x)
             .Must(request =>

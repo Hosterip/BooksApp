@@ -36,11 +36,5 @@ public sealed class RemoveBookCommandValidator : AbstractValidator<RemoveBookCom
             .MustAsync(async (bookId, cancellationToken) =>
                 await unitOfWork.Books.AnyById(bookId, cancellationToken))
             .WithMessage(ValidationMessages.Book.NotFound);
-
-        RuleFor(request => request)
-            .MustAsync(async (_, cancellationToken) =>
-                await unitOfWork.Users.AnyById(userId, cancellationToken))
-            .WithMessage(ValidationMessages.User.NotFound)
-            .WithName(nameof(UserId));
     }
 }
