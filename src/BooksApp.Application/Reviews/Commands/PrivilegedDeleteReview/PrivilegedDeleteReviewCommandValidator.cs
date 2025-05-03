@@ -1,5 +1,4 @@
-﻿using BooksApp.Application.Common.Attributes;
-using BooksApp.Application.Common.Constants.ValidationMessages;
+﻿using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
 using BooksApp.Domain.User.ValueObjects;
@@ -7,7 +6,6 @@ using FluentValidation;
 
 namespace BooksApp.Application.Reviews.Commands.PrivilegedDeleteReview;
 
-[Authorize]
 public sealed class PrivilegedDeleteReviewCommandValidator : AbstractValidator<PrivilegedDeleteReviewCommand>
 {
     public PrivilegedDeleteReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
