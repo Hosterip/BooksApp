@@ -31,9 +31,7 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
             .MaximumLength(MaxPropertyLength.User.LastName);
 
         RuleFor(user => user.Password)
-            .MaximumLength(MaxPropertyLength.User.Password);
-
-        RuleFor(user => user.Password)
+            .MaximumLength(MaxPropertyLength.User.Password)
             .NotEmpty();
     }
 }
