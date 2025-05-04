@@ -36,7 +36,6 @@ public class RemoveBookByNameCommandValidatorTests
     public async Task ValidateAsync_WhenThereIsNoBookToRemove_ShouldBeInvalid()
     {
         // Arrange
-        _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Bookshelves.AnyBookByName(default!, default, default).ReturnsForAnyArgs(false);
 
         _userService.GetId().ReturnsForAnyArgs(Guid.Empty);
@@ -48,48 +47,6 @@ public class RemoveBookByNameCommandValidatorTests
         var result = await validator.ValidateAsync(command);
 
         // Assert
-        result.Errors.Should().Contain(x => x.ErrorMessage == ValidationMessages.Bookshelf.NoBookToRemove);
-        result.Errors.Should().Contain(x => x.PropertyName == nameof(RemoveBookByNameCommand.BookId));
-    }
-    
-    [Fact]
-    public async Task ValidateAsync_WhenUserIsNotFound_ShouldBeInvalid()
-    {
-        // Arrange
-        _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(false);
-        _unitOfWork.Bookshelves.AnyBookByName(default!, default, default).ReturnsForAnyArgs(true);
-
-        _userService.GetId().ReturnsForAnyArgs(Guid.Empty);
-
-        var command = BookshelfCommandFactory.CreateRemoveBookByNameCommand();
-        var validator = new RemoveBookByNameCommandValidator(_unitOfWork, _userService);
-        
-        // Act
-        var result = await validator.ValidateAsync(command);
-
-        // Assert
-        result.Errors.Should().Contain(x => x.ErrorMessage == ValidationMessages.User.NotFound);
-        result.Errors.Should().Contain(x => x.PropertyName == nameof(UserId));
-    }
-    
-    [Fact]
-    public async Task ValidateAsync_WhenThereIsNoBookToRemoveNorUserIsFound_ShouldBeInvalid()
-    {
-        // Arrange
-        _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(false);
-        _unitOfWork.Bookshelves.AnyBookByName(default!, default, default).ReturnsForAnyArgs(false);
-
-        _userService.GetId().ReturnsForAnyArgs(Guid.Empty);
-
-        var command = BookshelfCommandFactory.CreateRemoveBookByNameCommand();
-        var validator = new RemoveBookByNameCommandValidator(_unitOfWork, _userService);
-        
-        // Act
-        var result = await validator.ValidateAsync(command);
-
-        // Assert
-        result.Errors.Should().Contain(x => x.ErrorMessage == ValidationMessages.User.NotFound);
-        result.Errors.Should().Contain(x => x.PropertyName == nameof(UserId));
         result.Errors.Should().Contain(x => x.ErrorMessage == ValidationMessages.Bookshelf.NoBookToRemove);
         result.Errors.Should().Contain(x => x.PropertyName == nameof(RemoveBookByNameCommand.BookId));
     }

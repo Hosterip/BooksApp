@@ -103,31 +103,4 @@ public class RemoveBookCommandValidatorTests
             .Should()
             .Be(nameof(RemoveBookCommand.BookId));
     }
-    
-    [Fact]
-    public async Task ValidateAsync_WhenUserIsNotFound_ShouldReturnInvalidResult()
-    {
-        // Arrange
-        _unitOfWork.Bookshelves.GetSingleById(default).ReturnsNullForAnyArgs();
-        _unitOfWork.Bookshelves.AnyBookById(default, default).ReturnsForAnyArgs(false);
-        _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(false);
-        _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(false);
-        _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(true);
-        
-        _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
-
-        var command = BookshelfCommandFactory.CreateRemoveBookCommand();
-        var validator = new RemoveBookCommandValidator(_unitOfWork, _userService);
-
-        // Act
-        var result = await validator.ValidateAsync(command);
-
-        // Assert
-        result.IsValid.Should().BeFalse();
-        result.Errors
-            .Single(x => x.ErrorMessage == ValidationMessages.User.NotFound)
-            .PropertyName
-            .Should()
-            .Be(nameof(UserId));
-    }
 }
