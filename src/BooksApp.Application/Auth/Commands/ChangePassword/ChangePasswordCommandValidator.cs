@@ -8,6 +8,7 @@ public sealed class ChangePasswordCommandValidator : AbstractValidator<ChangePas
     public ChangePasswordCommandValidator()
     {
         RuleFor(request => request.NewPassword)
+            .NotEmpty()
             .MaximumLength(MaxPropertyLength.User.Password);
     }
 }
