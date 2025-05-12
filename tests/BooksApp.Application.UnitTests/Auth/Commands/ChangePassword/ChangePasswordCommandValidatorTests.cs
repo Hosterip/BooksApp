@@ -43,7 +43,7 @@ public class ChangePasswordCommandValidatorTests
         var result = await validator.ValidateAsync(command);
 
         // Assert
-        result.Errors.Should().ContainSingle(x => x.PropertyName == command.NewPassword);
+        result.Errors.Should().ContainSingle(x => x.PropertyName == nameof(ChangePasswordCommand.NewPassword));
     }
     
     [Theory]
@@ -56,7 +56,7 @@ public class ChangePasswordCommandValidatorTests
         var password = StringUtilities.GenerateLongWhiteSpace(passwordLength);
         
         //  Creating command
-        var command = AuthCommandFactory.CreateChangePasswordCommand(password);
+        var command = AuthCommandFactory.CreateChangePasswordCommand(newPassword:password);
         
         //  Creating validator
         var validator = new ChangePasswordCommandValidator();
@@ -65,6 +65,6 @@ public class ChangePasswordCommandValidatorTests
         var result = await validator.ValidateAsync(command);
 
         // Assert
-        result.Errors.Should().ContainSingle(x => x.PropertyName == command.NewPassword);
+        result.Errors.Should().Contain(x => x.PropertyName == nameof(ChangePasswordCommand.NewPassword));
     }
 }
