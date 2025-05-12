@@ -1,5 +1,6 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
+using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Auth.Queries.Login;
@@ -10,7 +11,7 @@ public sealed class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
     {
         RuleFor(user => user.Email)
             .NotEmpty()
-            .Length(0, 255);
+            .Length(0, MaxPropertyLength.User.Email);
         RuleFor(user => user.Password)
             .NotEmpty();
         RuleFor(request => request.Email)
