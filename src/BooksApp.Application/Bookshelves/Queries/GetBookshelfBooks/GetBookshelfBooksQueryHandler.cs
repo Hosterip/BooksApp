@@ -14,7 +14,7 @@ internal sealed class GetBookshelfBooksQueryHandler(IUnitOfWork unitOfWork, IUse
         var books = await unitOfWork.Books
             .GetPaginatedBookshelfBooks(
                 userService.GetId()!.Value,
-                request.BookshelfId, 
+                request.BookshelfId,
                 request.Limit ?? 10,
                 request.Page ?? 1)!;
         return books!;

@@ -20,19 +20,19 @@ public static class ReviewCommandFactory
             BookId = bookId ?? Guid.NewGuid()
         };
     }
-    
+
     public static UpdateReviewCommand CreateUpdateReviewCommand(
-            int rating = Constants.Reviews.Rating,
-            string body = Constants.Reviews.Body,
-            Guid? reviewId = null)
+        int rating = Constants.Reviews.Rating,
+        string body = Constants.Reviews.Body,
+        Guid? reviewId = null)
+    {
+        return new UpdateReviewCommand
         {
-            return new UpdateReviewCommand
-            {
-                Rating = rating,
-                Body = body,
-                ReviewId = reviewId ?? Guid.NewGuid()
-            };
-        }
+            Rating = rating,
+            Body = body,
+            ReviewId = reviewId ?? Guid.NewGuid()
+        };
+    }
 
     public static DeleteReviewCommand CreateDeleteReviewCommand(
         Guid? reviewId = null)

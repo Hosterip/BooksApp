@@ -33,7 +33,7 @@ public class RegisterUserCommandValidatorTests
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Theory]
     [InlineData("@com.com")]
     [InlineData("foo@@foo.com")]
@@ -42,7 +42,7 @@ public class RegisterUserCommandValidatorTests
     {
         // Arrange
         //  Creating a command
-        var command = AuthCommandFactory.CreateRegisterUserCommand(email: email);
+        var command = AuthCommandFactory.CreateRegisterUserCommand(email);
 
         //  Creating a validator
         var validator = new RegisterUserCommandValidator(_unitOfWork);
@@ -51,11 +51,11 @@ public class RegisterUserCommandValidatorTests
         var result = await validator.ValidateAsync(command);
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => 
+        result.Errors.Should().ContainSingle(x =>
             x.ErrorMessage == ValidationMessages.User.InappropriateEmail &&
             x.PropertyName == nameof(command.Email));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenEmailIsOccupied_ShouldReturnASpecificError()
     {
@@ -73,11 +73,11 @@ public class RegisterUserCommandValidatorTests
         var result = await validator.ValidateAsync(command);
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => 
+        result.Errors.Should().ContainSingle(x =>
             x.ErrorMessage == ValidationMessages.Auth.Occupied &&
             x.PropertyName == nameof(command.Email));
-    }   
-    
+    }
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.User.FirstName + 1)]
@@ -86,7 +86,7 @@ public class RegisterUserCommandValidatorTests
         // Arrange
         //  Creating inflated string
         var firstName = StringUtilities.GenerateLongString(firstNameLength);
-        
+
         //  Creating a command
         var command = AuthCommandFactory.CreateRegisterUserCommand(firstName: firstName);
 
@@ -97,10 +97,10 @@ public class RegisterUserCommandValidatorTests
         var result = await validator.ValidateAsync(command);
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(x => 
+        result.Errors.Should().Contain(x =>
             x.PropertyName == nameof(command.FirstName));
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(MaxPropertyLength.User.FirstName)]
@@ -109,7 +109,7 @@ public class RegisterUserCommandValidatorTests
         // Arrange
         //  Creating inflated string
         var firstName = StringUtilities.GenerateLongWhiteSpace(firstNameLength);
-        
+
         //  Creating a command
         var command = AuthCommandFactory.CreateRegisterUserCommand(firstName: firstName);
 
@@ -120,7 +120,7 @@ public class RegisterUserCommandValidatorTests
         var result = await validator.ValidateAsync(command);
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => 
+        result.Errors.Should().ContainSingle(x =>
             x.PropertyName == nameof(command.FirstName));
     }
 }

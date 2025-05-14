@@ -19,6 +19,7 @@ public static class UserCommandFactory
             UserId = userId ?? Guid.NewGuid()
         };
     }
+
     public static DeleteUserCommand CreateDeleteUserCommand(
         Guid? userId = null)
     {
@@ -27,7 +28,7 @@ public static class UserCommandFactory
             UserId = userId ?? Guid.NewGuid()
         };
     }
-    
+
     public static InsertAvatarCommand CreateInsertAvatarCommand(
         IFormFile? image = null)
     {
@@ -36,7 +37,7 @@ public static class UserCommandFactory
             Image = image ?? ImageFactory.CreateFormFileImage()
         };
     }
-    
+
     public static UpdateEmailCommand CreateUpdateEmailCommand(
         string email = Constants.Users.Email)
     {
@@ -45,6 +46,7 @@ public static class UserCommandFactory
             Email = email
         };
     }
+
     public static UpdateNameCommand CreateUpdateNameCommand(
         string firstName = Constants.Users.FirstName,
         string? middleName = null,

@@ -48,9 +48,9 @@ public static class ApiRoutes
         public const string GetBooks = $"{Base}/{{bookshelfId:guid}}/books/";
 
         public const string Create = $"{Base}";
-        
+
         public const string Update = $"{Base}/{{bookshelfId:guid}}/{{newName}}";
-        
+
         public const string Remove = $"{Base}/{{bookshelfId:guid}}";
     }
 
@@ -107,7 +107,7 @@ public static class ApiRoutes
         // Books
 
         public const string GetManyBooks = $"{Base}/{{userId:guid}}/books";
-        
+
         // Followers
 
         public const string AddRemoveFollower = $"{Base}/{{followingId:guid}}/followers";

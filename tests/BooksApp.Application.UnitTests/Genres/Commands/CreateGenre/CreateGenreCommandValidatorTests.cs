@@ -47,11 +47,11 @@ public class CreateGenreCommandValidatorTests
         // Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle(x =>
-                x.ErrorMessage == ValidationMessages.Genre.AlreadyExists &&
-                x.PropertyName == nameof(CreateGenreCommand.Name)
-            );
+            x.ErrorMessage == ValidationMessages.Genre.AlreadyExists &&
+            x.PropertyName == nameof(CreateGenreCommand.Name)
+        );
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(5)]
@@ -60,8 +60,8 @@ public class CreateGenreCommandValidatorTests
     {
         // Arrange
         var name = StringUtilities.GenerateLongWhiteSpace(stringLength);
-        
-        var command = GenreCommandFactory.CreateCreateGenreCommand(name: name);
+
+        var command = GenreCommandFactory.CreateCreateGenreCommand(name);
         var validator = new CreateGenreCommandValidator(_unitOfWork);
 
         // Act
@@ -73,7 +73,7 @@ public class CreateGenreCommandValidatorTests
             x.PropertyName == nameof(CreateGenreCommand.Name)
         );
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Genre.Name + 1)]
@@ -81,8 +81,8 @@ public class CreateGenreCommandValidatorTests
     {
         // Arrange
         var name = StringUtilities.GenerateLongString(stringLength);
-        
-        var command = GenreCommandFactory.CreateCreateGenreCommand(name: name);
+
+        var command = GenreCommandFactory.CreateCreateGenreCommand(name);
         var validator = new CreateGenreCommandValidator(_unitOfWork);
 
         // Act

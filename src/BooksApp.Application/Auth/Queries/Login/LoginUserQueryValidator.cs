@@ -4,7 +4,7 @@ using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentValidation;
 
 namespace BooksApp.Application.Auth.Queries.Login;
- 
+
 public sealed class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
 {
     public LoginUserQueryValidator(IUnitOfWork unitOfWork)
@@ -15,7 +15,7 @@ public sealed class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
         RuleFor(user => user.Password)
             .NotEmpty();
         RuleFor(request => request.Email)
-            .MustAsync(async (email, cancellationToken) => 
+            .MustAsync(async (email, cancellationToken) =>
                 await unitOfWork.Users.AnyByEmail(email, cancellationToken))
             .WithMessage(ValidationMessages.User.NotFound);
     }

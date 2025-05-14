@@ -27,12 +27,12 @@ internal sealed class UpdateBookCommandHandler(
         }
 
         var genres = await unitOfWork.Genres.GetAllByIds(request.GenreIds, cancellationToken);
-        
+
         book!.ChangeGenres(genres.ToList());
 
-        await unitOfWork.Books.Update(book);   
+        await unitOfWork.Books.Update(book);
         await unitOfWork.SaveAsync(cancellationToken);
-        
+
         var result = mapper.Map<BookResult>(book);
         var bookStats = unitOfWork.Books.RatingStatistics(book.Id.Value);
         result.AverageRating = bookStats.AverageRating;

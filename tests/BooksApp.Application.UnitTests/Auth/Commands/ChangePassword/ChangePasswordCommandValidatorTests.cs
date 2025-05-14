@@ -14,7 +14,7 @@ public class ChangePasswordCommandValidatorTests
         // Arrange
         //  Creating command
         var command = AuthCommandFactory.CreateChangePasswordCommand();
-        
+
         //  Creating validator
         var validator = new ChangePasswordCommandValidator();
 
@@ -34,8 +34,8 @@ public class ChangePasswordCommandValidatorTests
         //  Creating password
         var password = StringUtilities.GenerateLongString(passwordLength);
         //  Creating command
-        var command = AuthCommandFactory.CreateChangePasswordCommand(newPassword:password);
-        
+        var command = AuthCommandFactory.CreateChangePasswordCommand(newPassword: password);
+
         //  Creating validator
         var validator = new ChangePasswordCommandValidator();
 
@@ -45,7 +45,7 @@ public class ChangePasswordCommandValidatorTests
         // Assert
         result.Errors.Should().ContainSingle(x => x.PropertyName == nameof(ChangePasswordCommand.NewPassword));
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(MaxPropertyLength.User.Password)]
@@ -54,10 +54,10 @@ public class ChangePasswordCommandValidatorTests
         // Arrange
         //  Creating password
         var password = StringUtilities.GenerateLongWhiteSpace(passwordLength);
-        
+
         //  Creating command
-        var command = AuthCommandFactory.CreateChangePasswordCommand(newPassword:password);
-        
+        var command = AuthCommandFactory.CreateChangePasswordCommand(newPassword: password);
+
         //  Creating validator
         var validator = new ChangePasswordCommandValidator();
 

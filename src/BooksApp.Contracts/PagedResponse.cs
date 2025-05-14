@@ -1,7 +1,7 @@
 namespace BooksApp.Contracts;
 
-public class PagedResponse<T> 
-    where T : class 
+public class PagedResponse<T>
+    where T : class
 {
     public required IEnumerable<T> Items { get; init; }
     public required int TotalCount { get; init; }

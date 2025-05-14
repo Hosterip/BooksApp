@@ -25,7 +25,7 @@ public class RemoveBookCommandValidatorTests
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(true);
-        
+
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
 
         var command = BookshelfCommandFactory.CreateRemoveBookCommand();
@@ -37,7 +37,7 @@ public class RemoveBookCommandValidatorTests
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoBook_ShouldReturnInvalidResult()
     {
@@ -49,7 +49,7 @@ public class RemoveBookCommandValidatorTests
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(false);
-        
+
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
 
         var command = BookshelfCommandFactory.CreateRemoveBookCommand();
@@ -66,7 +66,7 @@ public class RemoveBookCommandValidatorTests
             .Should()
             .Be(nameof(RemoveBookCommand.BookId));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenBookshelfNotFound_ShouldReturnInvalidResult()
     {
@@ -76,7 +76,7 @@ public class RemoveBookCommandValidatorTests
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(false);
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(true);
-        
+
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
 
         var command = BookshelfCommandFactory.CreateRemoveBookCommand();

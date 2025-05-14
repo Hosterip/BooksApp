@@ -13,7 +13,7 @@ public static class UserResultFactory
         string firstName = Constants.Users.FirstName,
         string? middleName = null,
         string? lastName = null,
-        string? role = null, 
+        string? role = null,
         string? avatar = null,
         ViewerRelationship? viewerRelationship = null)
     {

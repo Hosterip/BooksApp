@@ -5,10 +5,9 @@ namespace BooksApp.Domain.User.Entities;
 
 public class Relationship : Entity<FollowerId>
 {
-    public UserId FollowerId { get; private set; }
-    public UserId UserId { get; private set; }
-    
-    private Relationship(FollowerId id) : base(id) {}
+    private Relationship(FollowerId id) : base(id)
+    {
+    }
 
     private Relationship(FollowerId id, UserId userId, UserId follower) : base(id)
     {
@@ -16,8 +15,11 @@ public class Relationship : Entity<FollowerId>
         UserId = userId;
     }
 
-    public static Relationship Create(User user,User follower)
+    public UserId FollowerId { get; private set; }
+    public UserId UserId { get; private set; }
+
+    public static Relationship Create(User user, User follower)
     {
-        return new(ValueObjects.FollowerId.Create(), user.Id, follower.Id);
+        return new Relationship(ValueObjects.FollowerId.Create(), user.Id, follower.Id);
     }
 }

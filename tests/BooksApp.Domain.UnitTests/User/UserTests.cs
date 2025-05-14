@@ -19,7 +19,7 @@ public class UserTests
         var image = ImageFactory.CreateImage();
         var role = RoleFactory.Member();
         var passwordHasher = PasswordHasherFactory.CreatePasswordHasher();
-        
+
         // Act
         var result = Domain.User.User.Create(
             passwordHasher,
@@ -38,7 +38,8 @@ public class UserTests
     [InlineData(0)]
     [InlineData(0, 0, 0)]
     [InlineData(MaxPropertyLength.User.FirstName + 1)]
-    [InlineData(MaxPropertyLength.User.FirstName + 1, MaxPropertyLength.User.MiddleName + 1, MaxPropertyLength.User.LastName + 1)]
+    [InlineData(MaxPropertyLength.User.FirstName + 1, MaxPropertyLength.User.MiddleName + 1,
+        MaxPropertyLength.User.LastName + 1)]
     public void Create_WhenNameIsNotRight_ShouldThrowAnError(
         int firstNameLength,
         int? middleNameLength = null,
@@ -53,10 +54,10 @@ public class UserTests
         var middleName = middleNameLength != null
             ? StringUtilities.GenerateLongString(middleNameLength.Value)
             : null;
-        var lastName = lastNameLength != null 
-            ? StringUtilities.GenerateLongString(lastNameLength.Value) 
+        var lastName = lastNameLength != null
+            ? StringUtilities.GenerateLongString(lastNameLength.Value)
             : null;
-        
+
         // Act
         var act = () => Domain.User.User.Create(
             passwordHasher,
@@ -73,7 +74,7 @@ public class UserTests
             .Throw<DomainException>()
             .WithMessage($"First name length should be between 1 and {MaxPropertyLength.User.FirstName}");
     }
-    
+
     [Theory]
     [InlineData(1, 1, 1)]
     [InlineData(MaxPropertyLength.User.FirstName, MaxPropertyLength.User.MiddleName, MaxPropertyLength.User.LastName)]
@@ -90,7 +91,7 @@ public class UserTests
         var firstName = StringUtilities.GenerateLongWhiteSpace(firstNameLength);
         var middleName = StringUtilities.GenerateLongWhiteSpace(middleNameLength);
         var lastName = StringUtilities.GenerateLongWhiteSpace(lastNameLength);
-        
+
         // Act
         var act = () => Domain.User.User.Create(
             passwordHasher,
@@ -107,7 +108,7 @@ public class UserTests
             .Throw<DomainException>()
             .WithMessage("First name should be present");
     }
-    
+
     [Theory]
     [InlineData("")]
     [InlineData("@")]
@@ -119,7 +120,7 @@ public class UserTests
         var image = ImageFactory.CreateImage();
         var role = RoleFactory.Member();
         var passwordHasher = PasswordHasherFactory.CreatePasswordHasher();
-        
+
         // Act
         var act = () => Domain.User.User.Create(
             passwordHasher,
@@ -134,7 +135,7 @@ public class UserTests
             .Throw<DomainException>()
             .WithMessage("Invalid email");
     }
-    
+
     [Fact]
     public void AddFollower_WhenEverythingInOrder_ShouldAddAFollower()
     {
@@ -144,11 +145,11 @@ public class UserTests
 
         // Act
         user.AddFollower(follower);
-        
+
         // Assert
         user.HasFollower(follower.Id).Should().BeTrue();
     }
-    
+
     [Fact]
     public void AddFollower_WhenFollowerAlreadyInAList_ShouldThrowAnError()
     {
@@ -159,13 +160,13 @@ public class UserTests
 
         // Act
         var act = () => user.AddFollower(follower);
-        
+
         // Assert
         act.Should()
             .Throw<DomainException>()
             .WithMessage("There is already a follower");
     }
-    
+
     [Fact]
     public void AddFollower_WhenAddingOneself_ShouldThrowAnError()
     {
@@ -174,13 +175,13 @@ public class UserTests
 
         // Act
         var act = () => user.AddFollower(user);
-        
+
         // Assert
         act.Should()
             .Throw<DomainException>()
             .WithMessage("Can't add yourself to followers");
     }
-    
+
     [Fact]
     public void RemoveFollower_WhenEverythingInOrder_ShouldRemoveAFollower()
     {
@@ -191,11 +192,11 @@ public class UserTests
 
         // Act
         user.RemoveFollower(follower);
-        
+
         // Assert
         user.HasFollower(follower.Id).Should().BeFalse();
     }
-    
+
     [Fact]
     public void RemoveFollower_WhenThereIsNoFollower_ShouldThrowAnError()
     {
@@ -205,14 +206,13 @@ public class UserTests
 
         // Act
         var act = () => user.RemoveFollower(follower);
-        
+
         // Assert
         act.Should()
             .Throw<DomainException>()
             .WithMessage("No follower to remove");
-        
     }
-    
+
     [Fact]
     public void RemoveFollower_WhenRemovingOneself_ShouldThrowAnError()
     {
@@ -221,14 +221,13 @@ public class UserTests
 
         // Act
         var act = () => user.RemoveFollower(user);
-        
+
         // Assert
         act.Should()
             .Throw<DomainException>()
             .WithMessage("Can't remove yourself to followers");
-        
     }
-    
+
     [Fact]
     public void ViewerRelationship_WhenThereIsNoFollower_ShouldReturnATuple()
     {
@@ -238,13 +237,13 @@ public class UserTests
 
         // Act
         var result = user.ViewerRelationship(secondUser.Id.Value);
-        
+
         // Assert
         result.IsFollowing.Should().BeFalse();
         result.IsFriend.Should().BeFalse();
         result.IsMe.Should().BeFalse();
     }
-    
+
     [Fact]
     public void ViewerRelationship_WhenThereIsFollower_ShouldReturnATuple()
     {
@@ -252,25 +251,25 @@ public class UserTests
         var user = UserFactory.CreateUser();
         var follower = UserFactory.CreateUser();
         user.AddFollower(follower);
-        
+
         // Act
         var result = user.ViewerRelationship(follower.Id.Value);
-        
+
         // Assert
         result.IsFollowing.Should().BeTrue();
         result.IsFriend.Should().BeFalse();
         result.IsMe.Should().BeFalse();
     }
-    
+
     [Fact]
     public void ViewerRelationship_WhenComparingToOneself_ShouldReturnATuple()
     {
         // Arrange
         var user = UserFactory.CreateUser();
-        
+
         // Act
         var result = user.ViewerRelationship(user.Id.Value);
-        
+
         // Assert
         result.IsFollowing.Should().BeFalse();
         result.IsFriend.Should().BeFalse();

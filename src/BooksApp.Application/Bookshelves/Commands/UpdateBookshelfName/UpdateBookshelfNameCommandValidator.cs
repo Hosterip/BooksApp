@@ -19,7 +19,7 @@ public sealed class UpdateBookshelfNameCommandValidator : AbstractValidator<Upda
                                    x.User.Id == UserId.Create(userId), token);
             })
             .WithMessage(ValidationMessages.Bookshelf.NotYours);
-        
+
         RuleFor(x => x)
             .MustAsync(async (request, token) =>
             {

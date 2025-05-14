@@ -23,8 +23,8 @@ public sealed class AppDbContext : DbContext
         if (!databaseCreator.CanConnect()) databaseCreator.Create();
         if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
         Database.GetAppliedMigrations();
-    }    
-    
+    }
+
     public DbSet<User> Users { get; init; }
     public DbSet<Relationship> Relationships { get; init; }
     public DbSet<Book> Books { get; init; }

@@ -5,12 +5,13 @@ using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
 
-internal sealed class RemoveBookByNameCommandHandler(IUnitOfWork unitOfWork, IUserService userService) : IRequestHandler<RemoveBookByNameCommand>
+internal sealed class RemoveBookByNameCommandHandler(IUnitOfWork unitOfWork, IUserService userService)
+    : IRequestHandler<RemoveBookByNameCommand>
 {
     public async Task Handle(RemoveBookByNameCommand request, CancellationToken cancellationToken)
     {
         var userId = userService.GetId()!.Value;
-        
+
         var bookshelf = await unitOfWork.Bookshelves.GetSingleWhereAsync(bookshelf =>
             bookshelf.Name == request.BookshelfName &&
             bookshelf.User.Id == UserId.Create(userId), cancellationToken);

@@ -1,17 +1,18 @@
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Bookshelf;
-using BooksApp.Domain.User.ValueObjects;
 using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.AddBookByName;
 
-internal sealed class AddBookByNameCommandHandler(IUnitOfWork unitOfWork, IUserService userService) : IRequestHandler<AddBookByNameCommand>
+internal sealed class AddBookByNameCommandHandler(IUnitOfWork unitOfWork, IUserService userService)
+    : IRequestHandler<AddBookByNameCommand>
 {
     public async Task Handle(AddBookByNameCommand request, CancellationToken cancellationToken)
     {
         var userId = userService.GetId()!.Value;
-        
-        var bookshelf = await unitOfWork.Bookshelves.GetBookshelfByName(request.BookshelfName, userId, cancellationToken);
+
+        var bookshelf =
+            await unitOfWork.Bookshelves.GetBookshelfByName(request.BookshelfName, userId, cancellationToken);
         if (bookshelf is null)
         {
             var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);

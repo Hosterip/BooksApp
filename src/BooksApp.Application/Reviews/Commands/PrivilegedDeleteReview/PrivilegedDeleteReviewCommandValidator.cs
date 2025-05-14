@@ -11,7 +11,7 @@ public sealed class PrivilegedDeleteReviewCommandValidator : AbstractValidator<P
     public PrivilegedDeleteReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId()!.Value;
-        
+
         RuleFor(request => request.ReviewId)
             .MustAsync(async (reviewId, cancellationToken) =>
                 await unitOfWork.Reviews.AnyById(reviewId, cancellationToken))

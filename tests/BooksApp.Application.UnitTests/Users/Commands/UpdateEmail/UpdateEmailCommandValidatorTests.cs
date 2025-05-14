@@ -62,7 +62,7 @@ public class UpdateEmailCommandValidatorTests
     public async Task ValidateAsync_WhenEmailIsInappropriate_ShouldReturnASpecificError(string email)
     {
         // Arrange
-        var command = UserCommandFactory.CreateUpdateEmailCommand(email: email);
+        var command = UserCommandFactory.CreateUpdateEmailCommand(email);
         var validator = new UpdateEmailCommandValidator(_unitOfWork);
 
         // Act
@@ -82,7 +82,7 @@ public class UpdateEmailCommandValidatorTests
     {
         // Arrange
         var email = StringUtilities.GenerateLongString(emailLength);
-        var command = UserCommandFactory.CreateUpdateEmailCommand(email: email);
+        var command = UserCommandFactory.CreateUpdateEmailCommand(email);
         var validator = new UpdateEmailCommandValidator(_unitOfWork);
 
         // Act
@@ -92,7 +92,7 @@ public class UpdateEmailCommandValidatorTests
         result.IsValid.Should().BeFalse();
         result.Errors.Should().Contain(x => x.PropertyName == nameof(UpdateEmailCommand.Email));
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(MaxPropertyLength.User.Email)]
@@ -100,7 +100,7 @@ public class UpdateEmailCommandValidatorTests
     {
         // Arrange
         var email = StringUtilities.GenerateLongWhiteSpace(emailLength);
-        var command = UserCommandFactory.CreateUpdateEmailCommand(email: email);
+        var command = UserCommandFactory.CreateUpdateEmailCommand(email);
         var validator = new UpdateEmailCommandValidator(_unitOfWork);
 
         // Act

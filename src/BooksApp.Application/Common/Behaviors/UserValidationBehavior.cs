@@ -17,11 +17,8 @@ public class UserValidationBehavior<TRequest, TResponse>(
         CancellationToken cancellationToken)
     {
         var attribute = request.GetType().GetCustomAttribute<AuthorizeAttribute>();
-        if (attribute == null)
-        {
-            return await next();
-        }
-        
+        if (attribute == null) return await next();
+
         var id = userService.GetId();
         var securityStamp = userService.GetSecurityStamp();
         var role = userService.GetRole();
@@ -30,7 +27,9 @@ public class UserValidationBehavior<TRequest, TResponse>(
             var user = await unitOfWork.Users.GetSingleById(id.Value, cancellationToken);
             if (user != null &&
                 (user.SecurityStamp == securityStamp || user.Role.Name != role))
+            {
                 userService.ChangeRole(user.Role.Name);
+            }
             else if (user == null || user.SecurityStamp != securityStamp)
             {
                 await userService.Logout();

@@ -24,23 +24,23 @@ public class DeleteUserCommandValidatorTests
         var validator = new DeleteUserCommandValidator(_unitOfWork);
 
         // Act
-        var result = await validator.ValidateAsync(command);    
+        var result = await validator.ValidateAsync(command);
 
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenUserIsNotFound_ShouldReturnSpecificResult()
     {
         // Arrange
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(false);
-        
+
         var command = UserCommandFactory.CreateDeleteUserCommand();
         var validator = new DeleteUserCommandValidator(_unitOfWork);
 
         // Act
-        var result = await validator.ValidateAsync(command);    
+        var result = await validator.ValidateAsync(command);
 
         // Assert
         result.IsValid.Should().BeFalse();

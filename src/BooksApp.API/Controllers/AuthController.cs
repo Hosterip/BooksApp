@@ -19,8 +19,30 @@ namespace BooksApp.API.Controllers;
 
 public class AuthController(ISender sender, IUserService userService) : ApiController
 {
+    [HttpPut(ApiRoutes.Auth.UpdatePassword)]
+    [Authorize]
+    [ProducesResponseType(typeof(AuthResult), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<UserResponse>> UpdatePassword(
+        [FromBodyOrDefault] UpdatePasswordRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new ChangePasswordCommand
+        {
+            NewPassword = request.NewPassword,
+            OldPassword = request.OldPassword
+        };
+        var result = await sender.Send(command, cancellationToken);
+        userService.ChangeSecurityStamp(result.SecurityStamp);
+        return CreatedAtAction(
+            nameof(UsersController.GetById),
+            "Users",
+            new { id = result.Id },
+            result.Adapt<UserResponse>());
+    }
+
     #region Authorization endpoints
-    
+
     [HttpPost(ApiRoutes.Auth.Register)]
     [Authorize(Policies.NotAuthorized)]
     [ProducesResponseType(typeof(AuthResult), StatusCodes.Status201Created)]
@@ -64,7 +86,7 @@ public class AuthController(ISender sender, IUserService userService) : ApiContr
         await userService.Login(user.Id, user.Email, user.Role, user.SecurityStamp);
         return Ok(user.Adapt<UserResponse>());
     }
-    
+
     [HttpPost(ApiRoutes.Auth.Logout)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -73,28 +95,6 @@ public class AuthController(ISender sender, IUserService userService) : ApiContr
         HttpContext.SignOutAsync();
         return NoContent();
     }
-    
+
     #endregion Authorization endpoints
-    
-    [HttpPut(ApiRoutes.Auth.UpdatePassword)]
-    [Authorize]
-    [ProducesResponseType(typeof(AuthResult), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationFailureResponse),StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<UserResponse>> UpdatePassword(
-        [FromBodyOrDefault] UpdatePasswordRequest request,
-        CancellationToken cancellationToken)
-    {
-        var command = new ChangePasswordCommand
-        {
-            NewPassword = request.NewPassword,
-            OldPassword = request.OldPassword
-        };
-        var result = await sender.Send(command, cancellationToken);
-        userService.ChangeSecurityStamp(result.SecurityStamp);
-        return CreatedAtAction(
-            nameof(UsersController.GetById),
-            "Users",
-            new { id = result.Id },
-            result.Adapt<UserResponse>());
-    }
 }

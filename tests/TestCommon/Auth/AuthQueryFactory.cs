@@ -9,7 +9,8 @@ public static class AuthQueryFactory
         string email = Constants.Users.Email,
         string password = Constants.Users.Password)
     {
-        return new LoginUserQuery {
+        return new LoginUserQuery
+        {
             Email = email,
             Password = password
         };

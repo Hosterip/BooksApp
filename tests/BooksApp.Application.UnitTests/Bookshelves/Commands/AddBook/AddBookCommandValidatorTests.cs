@@ -20,7 +20,7 @@ public class AddBookCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
-        
+
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Bookshelves.AnyBookById(default, default).ReturnsForAnyArgs(false);
         _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
@@ -37,7 +37,7 @@ public class AddBookCommandValidatorTests
         result.IsValid.Should().BeTrue();
         result.Errors.Count.Should().Be(0);
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoBookshelf_ShouldReturnSpecificError()
     {
@@ -45,7 +45,7 @@ public class AddBookCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
-        
+
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(false);
         _unitOfWork.Bookshelves.AnyBookById(default, default).ReturnsForAnyArgs(false);
         _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
@@ -61,11 +61,11 @@ public class AddBookCommandValidatorTests
         // Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().BeGreaterThan(0);
-        result.Errors.Should().ContainSingle(x => 
+        result.Errors.Should().ContainSingle(x =>
             x.ErrorMessage == ValidationMessages.Bookshelf.NotFound &&
             x.PropertyName == nameof(AddBookCommand.BookshelfId));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoBook_ShouldReturnSpecificError()
     {
@@ -73,7 +73,7 @@ public class AddBookCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
-        
+
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Bookshelves.AnyBookById(default, default).ReturnsForAnyArgs(false);
         _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
@@ -89,11 +89,11 @@ public class AddBookCommandValidatorTests
         // Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().BeGreaterThan(0);
-        result.Errors.Should().ContainSingle(x => 
+        result.Errors.Should().ContainSingle(x =>
             x.ErrorMessage == ValidationMessages.Book.NotFound &&
             x.PropertyName == nameof(AddBookCommand.BookId));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenOwnershipUserIsNotAnOwner_ShouldReturnSpecificError()
     {
@@ -101,7 +101,7 @@ public class AddBookCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
-        
+
         _unitOfWork.Bookshelves.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Bookshelves.AnyBookById(default, default).ReturnsForAnyArgs(false);
         _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
@@ -118,6 +118,6 @@ public class AddBookCommandValidatorTests
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().BeGreaterThan(0);
         result.Errors.Should().ContainSingle(x => x.ErrorMessage == ValidationMessages.Bookshelf.NotYours &&
-            x.PropertyName == nameof(UserId));
+                                                  x.PropertyName == nameof(UserId));
     }
 }

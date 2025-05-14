@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants.MaxLengths;

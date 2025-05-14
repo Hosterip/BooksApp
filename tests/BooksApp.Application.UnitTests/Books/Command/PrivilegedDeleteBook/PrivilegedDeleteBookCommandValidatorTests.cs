@@ -17,7 +17,7 @@ public class PrivilegedDeleteBookCommandValidatorTests
 
     public PrivilegedDeleteBookCommandValidatorTests()
     {
-        var user = UserFactory.CreateUser(role: RoleFactory.Admin());
+        var user = UserFactory.CreateUser(RoleFactory.Admin());
 
         _unitOfWork.Users.GetSingleById(default).ReturnsForAnyArgs(user);
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
@@ -62,7 +62,7 @@ public class PrivilegedDeleteBookCommandValidatorTests
     public async Task ValidateAsync_WhenUserHasNotAdminRole_ShouldReturnSpecificError()
     {
         // Arrange
-        var user = UserFactory.CreateUser(role: RoleFactory.Member());
+        var user = UserFactory.CreateUser(RoleFactory.Member());
 
         _unitOfWork.Users.GetSingleById(default).ReturnsForAnyArgs(user);
 

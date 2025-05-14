@@ -11,15 +11,15 @@ internal sealed class AddRemoveFollowerCommandHandler(
     public async Task Handle(AddRemoveFollowerCommand request, CancellationToken cancellationToken)
     {
         var followerId = userService.GetId()!.Value;
-        
+
         var user = await unitOfWork.Users.GetSingleById(
             request.UserId,
             cancellationToken,
-            includeRelationships: true,
-            asTracking: true);
+            true,
+            true);
 
-        var follower = await unitOfWork.Users.GetSingleById(followerId, token: cancellationToken);
-        if(user!.HasFollower(follower!.Id))
+        var follower = await unitOfWork.Users.GetSingleById(followerId, cancellationToken);
+        if (user!.HasFollower(follower!.Id))
             user.RemoveFollower(follower);
         else
             user.AddFollower(follower);

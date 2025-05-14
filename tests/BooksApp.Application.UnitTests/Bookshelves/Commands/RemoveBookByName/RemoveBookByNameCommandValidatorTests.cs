@@ -1,7 +1,6 @@
 using BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.User.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
 using TestCommon.Bookshelves;
@@ -12,7 +11,7 @@ public class RemoveBookByNameCommandValidatorTests
 {
     private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly IUserService _userService = Substitute.For<IUserService>();
-    
+
     [Fact]
     public async Task ValidateAsync_WhenEverythingIsOkay_ShouldBeValid()
     {
@@ -24,14 +23,14 @@ public class RemoveBookByNameCommandValidatorTests
 
         var command = BookshelfCommandFactory.CreateRemoveBookByNameCommand();
         var validator = new RemoveBookByNameCommandValidator(_unitOfWork, _userService);
-        
+
         // Act
         var result = await validator.ValidateAsync(command);
 
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoBookToRemove_ShouldBeInvalid()
     {
@@ -42,7 +41,7 @@ public class RemoveBookByNameCommandValidatorTests
 
         var command = BookshelfCommandFactory.CreateRemoveBookByNameCommand();
         var validator = new RemoveBookByNameCommandValidator(_unitOfWork, _userService);
-        
+
         // Act
         var result = await validator.ValidateAsync(command);
 

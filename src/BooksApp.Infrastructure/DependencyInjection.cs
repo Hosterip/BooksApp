@@ -19,7 +19,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSqlServer(
-                $"Server={dbHost};Database={dbName};User Id=sa;Password={dbPassword};Trusted_Connection=False;TrustServerCertificate=True")
+                    $"Server={dbHost};Database={dbName};User Id=sa;Password={dbPassword};Trusted_Connection=False;TrustServerCertificate=True")
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
         services.AddScoped<IUnitOfWork, UnitOfWork>();

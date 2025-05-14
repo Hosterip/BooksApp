@@ -9,7 +9,7 @@ namespace TestCommon.Users;
 public static class UserFactory
 {
     public static User CreateUser(
-        Role? role = null, 
+        Role? role = null,
         string email = Constants.Users.Email,
         string password = Constants.Users.Password,
         string firstName = Constants.Users.FirstName,

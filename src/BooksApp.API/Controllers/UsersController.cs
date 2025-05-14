@@ -32,7 +32,7 @@ public class UsersController(
     #region Users endpoints
 
     #region Get endpoints
-    
+
     [HttpGet(ApiRoutes.Users.GetMe)]
     [Authorize]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
@@ -41,11 +41,11 @@ public class UsersController(
     {
         var id = userService.GetId()!.Value;
         var query = new GetSingleUserQuery { Id = id };
-        
+
         var user = await sender.Send(query, cancellationToken);
 
         var response = mapster.Map<UserResponse>(user);
-        
+
         return Ok(response);
     }
 
@@ -63,11 +63,11 @@ public class UsersController(
             Page = request.Page,
             Limit = request.PageSize
         };
-        
+
         var users = await sender.Send(query, cancellationToken);
-        
+
         var response = mapster.Map<UsersResponse>(users);
-        
+
         return Ok(response);
     }
 
@@ -81,16 +81,16 @@ public class UsersController(
     {
         var query = new GetSingleUserQuery { Id = userId };
         var user = await sender.Send(query, cancellationToken);
-        
+
         var response = mapster.Map<ExtendedUserResponse>(user);
-        
+
         return Ok(response);
     }
-    
+
     #endregion Get endpoints
 
     #region Delete endpoints
-    
+
     [HttpDelete(ApiRoutes.Users.Delete)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -104,16 +104,16 @@ public class UsersController(
         await HttpContext.SignOutAsync();
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
-        
+
         return NoContent();
     }
-    
+
     #endregion Delete endpoints
 
     #region Put endpoints
 
     #region Authorized
-    
+
     [HttpPut(ApiRoutes.Users.UpdateEmail)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -132,7 +132,7 @@ public class UsersController(
         userService.ChangeEmail(request.Email);
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
-        
+
         return NoContent();
     }
 
@@ -152,7 +152,7 @@ public class UsersController(
         };
 
         await sender.Send(command, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return NoContent();
@@ -172,18 +172,18 @@ public class UsersController(
         };
 
         var result = await sender.Send(command, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
-        
+
         var response = mapster.Map<UserResponse>(result);
-        
+
         return CreatedAtAction(nameof(GetById), new { userId = result.Id }, response);
     }
-    
+
     #endregion Authorized
-    
+
     #region Privileged
-    
+
     [HttpPut(ApiRoutes.Users.UpdateRole)]
     [Authorize(Policies.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -199,20 +199,20 @@ public class UsersController(
         };
 
         await sender.Send(command, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return NoContent();
     }
-    
+
     #endregion Priveleged
-    
+
     #endregion Put endpoints
-    
+
     #endregion Users endpoints
-    
+
     #region Followers
-    
+
     [HttpPut(ApiRoutes.Users.AddRemoveFollower)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -227,12 +227,12 @@ public class UsersController(
         };
 
         await sender.Send(command, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
 
         return NoContent();
     }
-    
+
     [HttpGet(ApiRoutes.Users.GetFollowers)]
     [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
     [ProducesResponseType(typeof(UsersResponse), StatusCodes.Status200OK)]
@@ -250,16 +250,16 @@ public class UsersController(
             UserId = userId,
             RelationshipType = RelationshipType.Followers
         };
-        
+
         var users = await sender.Send(query, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
-        
+
         var response = mapster.Map<UsersResponse>(users);
-        
+
         return Ok(response);
     }
-    
+
     [HttpGet(ApiRoutes.Users.GetFollowing)]
     [OutputCache(PolicyName = OutputCache.Users.PolicyName)]
     [ProducesResponseType(typeof(UsersResponse), StatusCodes.Status200OK)]
@@ -278,13 +278,13 @@ public class UsersController(
             RelationshipType = RelationshipType.Following
         };
         var users = await sender.Send(query, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Users.Tag, cancellationToken);
-        
+
         var response = mapster.Map<UsersResponse>(users);
-        
+
         return Ok(response);
     }
-    
+
     #endregion Followers
 }

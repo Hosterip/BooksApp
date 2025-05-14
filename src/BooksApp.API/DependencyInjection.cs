@@ -30,19 +30,16 @@ public static class DependencyInjection
             .AddHttpContextAccessor();
 
         services.AddScoped<IUserService, UserService>();
-        
+
         return services;
     }
 
     private static IServiceCollection AddMyControllers(this IServiceCollection services)
     {
-        services.AddControllers(options =>
-        {
-            options.ModelBinderProviders.InsertBodyOrDefaultBinding();
-        });
+        services.AddControllers(options => { options.ModelBinderProviders.InsertBodyOrDefaultBinding(); });
         return services;
     }
-    
+
     private static IServiceCollection AddAuth(this IServiceCollection services)
     {
         // Overriding default AuthorizationMiddlewareResultHandler
@@ -60,21 +57,21 @@ public static class DependencyInjection
         // Adding policies
         services.AddAuthorization(options =>
         {
-            options.AddPolicy(Policies.Admin, policy => policy.RequireRole([RoleNames.Admin]));
+            options.AddPolicy(Policies.Admin, policy => policy.RequireRole(RoleNames.Admin));
 
             options.AddPolicy(Policies.Moderator, policy => policy.RequireAssertion(x =>
                 x.User.HasClaim(ClaimTypes.Role, RoleNames.Admin) ||
                 x.User.HasClaim(ClaimTypes.Role, RoleNames.Moderator)
             ));
 
-            options.AddPolicy(Policies.Author, policy => policy.RequireRole([RoleNames.Author]));
+            options.AddPolicy(Policies.Author, policy => policy.RequireRole(RoleNames.Author));
 
             options.AddPolicy(Policies.NotAuthorized, policy =>
                 policy.Requirements.Add(AuthRequirements.NotAuthorized));
         });
         return services;
     }
-    
+
     private static IServiceCollection AddCorsPolicy(this IServiceCollection services, string policyName)
     {
         services.AddCors(options =>
@@ -94,9 +91,9 @@ public static class DependencyInjection
         services.AddOutputCache(x =>
         {
             x.AddBasePolicy(c => c.Cache());
-            
+
             #region Books policy
-            
+
             x.AddPolicy(OutputCache.Books.PolicyName, c =>
             {
                 c.Cache()
@@ -113,11 +110,11 @@ public static class DependencyInjection
                     ])
                     .Tag(OutputCache.Books.Tag);
             });
-            
+
             #endregion Books policy
-            
+
             #region Users policy
-            
+
             x.AddPolicy(OutputCache.Users.PolicyName, c =>
             {
                 c.Cache()
@@ -135,11 +132,11 @@ public static class DependencyInjection
                     ])
                     .Tag(OutputCache.Users.Tag);
             });
-            
+
             #endregion Users policy
-            
+
             #region Bookshelves policy
-            
+
             x.AddPolicy(OutputCache.Bookshelves.PolicyName, c =>
             {
                 c.Cache()
@@ -156,11 +153,11 @@ public static class DependencyInjection
                     ])
                     .Tag(OutputCache.Bookshelves.Tag);
             });
-            
+
             #endregion Bookshelves policy
-            
+
             #region Reviews policy
-            
+
             x.AddPolicy(OutputCache.Reviews.PolicyName, c =>
             {
                 c.Cache()
@@ -174,24 +171,24 @@ public static class DependencyInjection
                     ])
                     .Tag(OutputCache.Reviews.Tag);
             });
-            
+
             #endregion Reviews policy
 
             #region Genres policy
-            
+
             x.AddPolicy(OutputCache.Genres.PolicyName, c =>
             {
                 c.Cache()
                     .Expire(TimeSpan.FromMinutes(10))
                     .Tag(OutputCache.Genres.Tag);
             });
-            
+
             #endregion Genres policy
         });
-        
+
         return services;
     }
-    
+
     private static IServiceCollection AddMapping(this IServiceCollection services)
     {
         var config = TypeAdapterConfig.GlobalSettings;

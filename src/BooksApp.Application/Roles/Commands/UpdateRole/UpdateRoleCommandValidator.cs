@@ -35,7 +35,7 @@ public sealed class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCom
             .WithName($"{nameof(UpdateRoleCommand.UserId)} And {nameof(changerId)}");
 
         RuleFor(request => request.UserId)
-            .MustAsync(async (userId, cancellationToken) => 
+            .MustAsync(async (userId, cancellationToken) =>
                 await unitOfWork.Users.AnyById(userId, cancellationToken))
             .WithMessage(ValidationMessages.User.NotFound);
     }

@@ -8,7 +8,7 @@ public sealed class AddBookByNameCommandValidator : AbstractValidator<AddBookByN
 {
     public AddBookByNameCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
-        var userId = userService.GetId()!.Value; 
+        var userId = userService.GetId()!.Value;
 
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) =>
@@ -17,7 +17,8 @@ public sealed class AddBookByNameCommandValidator : AbstractValidator<AddBookByN
 
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
-                !await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfName, userId, request.BookId, cancellationToken))
+                !await unitOfWork.Bookshelves.AnyBookByName(request.BookshelfName, userId, request.BookId,
+                    cancellationToken))
             .WithMessage(ValidationMessages.Bookshelf.AlreadyExists)
             .WithName(nameof(AddBookByNameCommand.BookshelfName));
     }

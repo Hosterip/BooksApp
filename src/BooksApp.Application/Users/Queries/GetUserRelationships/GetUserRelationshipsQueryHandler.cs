@@ -15,7 +15,7 @@ internal sealed class GetUserRelationshipsQueryHandler(
         CancellationToken cancellationToken)
     {
         var currentUserId = userService.GetId();
-        
+
         var query = request.Query ?? "";
         var limit = request.Limit ?? 10;
         var page = request.Page ?? 1;
@@ -23,7 +23,7 @@ internal sealed class GetUserRelationshipsQueryHandler(
         if (request.RelationshipType == RelationshipType.Followers)
             return await unitOfWork.Users
                 .GetPaginatedFollowers(currentUserId, request.UserId, page, limit, query);
-        
+
         return await unitOfWork.Users
             .GetPaginatedFollowing(currentUserId, request.UserId, page, limit, query);
     }

@@ -14,7 +14,7 @@ internal sealed class CreateBookshelfCommandHandler(
     public async Task<BookshelfResult> Handle(CreateBookshelfCommand request, CancellationToken cancellationToken)
     {
         var userId = userService.GetId()!.Value;
-        
+
         var user = await unitOfWork.Users.GetSingleById(userId, cancellationToken);
         var bookshelf = Bookshelf.Create(user!, request.Name);
         await unitOfWork.Bookshelves.AddAsync(bookshelf, cancellationToken);

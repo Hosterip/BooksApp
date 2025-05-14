@@ -1,3 +1,5 @@
 namespace BooksApp.Contracts.Reviews;
 
-public class GetReviewsRequest : PagedRequest { }
+public class GetReviewsRequest : PagedRequest
+{
+}

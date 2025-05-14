@@ -9,5 +9,5 @@ public static class GenreFactory
         string name = Constants.Genres.Name)
     {
         return Genre.Create(name);
-    } 
+    }
 }

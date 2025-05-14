@@ -8,9 +8,9 @@ internal sealed class DeleteBookshelfCommandHandler(IUnitOfWork unitOfWork) : IR
     public async Task Handle(DeleteBookshelfCommand request, CancellationToken cancellationToken)
     {
         var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
-        
+
         await unitOfWork.Bookshelves.Remove(bookshelf!);
-        
+
         await unitOfWork.SaveAsync(cancellationToken);
     }
 }

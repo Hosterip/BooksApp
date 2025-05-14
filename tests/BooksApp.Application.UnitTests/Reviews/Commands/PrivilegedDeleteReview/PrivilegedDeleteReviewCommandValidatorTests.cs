@@ -17,11 +17,11 @@ public class PrivilegedDeleteReviewCommandValidatorTests
 
     public PrivilegedDeleteReviewCommandValidatorTests()
     {
-        var user = UserFactory.CreateUser(role: RoleFactory.Admin());
+        var user = UserFactory.CreateUser(RoleFactory.Admin());
 
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
         _unitOfWork.Users.GetSingleById(Guid.Empty).ReturnsForAnyArgs(user);
-        
+
         _unitOfWork.Reviews.AnyById(Guid.Empty).ReturnsForAnyArgs(true);
     }
 
@@ -31,7 +31,7 @@ public class PrivilegedDeleteReviewCommandValidatorTests
         // Arrange
         //  Creating command
         var command = ReviewCommandFactory.CreatePrivilegedDeleteReviewCommand();
-        
+
         //  Creating validator
         var validator = new PrivilegedDeleteReviewCommandValidator(_unitOfWork, _userService);
 
@@ -41,18 +41,18 @@ public class PrivilegedDeleteReviewCommandValidatorTests
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenModeratorDeletesAReview_ShouldBeValid()
     {
         // Arrange
-        var user = UserFactory.CreateUser(role: RoleFactory.Moderator());
+        var user = UserFactory.CreateUser(RoleFactory.Moderator());
 
         _unitOfWork.Users.GetSingleById(Guid.Empty).ReturnsForAnyArgs(user);
-        
+
         //  Creating command
         var command = ReviewCommandFactory.CreatePrivilegedDeleteReviewCommand();
-        
+
         //  Creating validator
         var validator = new PrivilegedDeleteReviewCommandValidator(_unitOfWork, _userService);
 
@@ -62,17 +62,17 @@ public class PrivilegedDeleteReviewCommandValidatorTests
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoReview_ShouldReturnSpecificError()
     {
         // Arrange
         //  Making Reviews' AnyById method to return false
         _unitOfWork.Reviews.AnyById(Guid.Empty).ReturnsForAnyArgs(false);
-        
+
         //  Creating command
         var command = ReviewCommandFactory.CreatePrivilegedDeleteReviewCommand();
-        
+
         //  Creating validator
         var validator = new PrivilegedDeleteReviewCommandValidator(_unitOfWork, _userService);
 
@@ -81,23 +81,23 @@ public class PrivilegedDeleteReviewCommandValidatorTests
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => 
+        result.Errors.Should().ContainSingle(x =>
             x.PropertyName == nameof(PrivilegedDeleteReviewCommand.ReviewId) &&
             x.ErrorMessage == ValidationMessages.Review.NotFound);
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenUserHasNoPermissionToDelete_ShouldReturnSpecificError()
     {
         // Arrange
         //  Making user
-        var user = UserFactory.CreateUser(role: RoleFactory.Member());
+        var user = UserFactory.CreateUser(RoleFactory.Member());
 
         _unitOfWork.Users.GetSingleById(Guid.Empty).ReturnsForAnyArgs(user);
-        
+
         //  Creating command
         var command = ReviewCommandFactory.CreatePrivilegedDeleteReviewCommand();
-        
+
         //  Creating validator
         var validator = new PrivilegedDeleteReviewCommandValidator(_unitOfWork, _userService);
 
@@ -106,7 +106,7 @@ public class PrivilegedDeleteReviewCommandValidatorTests
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => 
+        result.Errors.Should().ContainSingle(x =>
             x.PropertyName == nameof(UserId) &&
             x.ErrorMessage == ValidationMessages.User.Permission);
     }

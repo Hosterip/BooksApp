@@ -23,7 +23,7 @@ public class PasswordHasherTests
         // Assert
         result.Should().BeTrue();
     }
-    
+
     [Fact]
     public void IsPasswordValid_WhenHashAndSaltInvalid_ShouldReturnFalse()
     {

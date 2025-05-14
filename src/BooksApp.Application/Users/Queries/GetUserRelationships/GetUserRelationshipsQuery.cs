@@ -10,7 +10,7 @@ public class GetUserRelationshipsQuery : IRequest<PaginatedArray<UserResult>>
     public int? Page { get; init; }
     public int? Limit { get; init; }
     public required Guid UserId { get; init; }
-    public required RelationshipType RelationshipType { get; init; } 
+    public required RelationshipType RelationshipType { get; init; }
 }
 
 public enum RelationshipType

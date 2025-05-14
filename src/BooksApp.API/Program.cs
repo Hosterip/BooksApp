@@ -3,7 +3,6 @@ using BooksApp.API.Common.Constants;
 using BooksApp.API.Middlewares;
 using BooksApp.Application;
 using BooksApp.Infrastructure;
-using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 
 // Add CORS
@@ -28,11 +27,11 @@ var dbHost = config["Database:Host"];
 var dbName = config["Database:Name"];
 var dbPassword = config["Database:Password"];
 builder.Services.AddInfrastructure(
-    imagesPath: imagesPath!,
-    dbHost: dbHost!,
-    dbName: dbName!,
-    dbPassword: dbPassword!
-    );
+    imagesPath!,
+    dbHost!,
+    dbName!,
+    dbPassword!
+);
 
 // Building app
 var app = builder.Build();

@@ -26,7 +26,7 @@ public class BookshelfTests
         result.Should().BeOfType<Domain.Bookshelf.Bookshelf>();
         result.Name.Should().Be(Constants.Bookshelves.Name);
     }
-    
+
     [Fact]
     public void AddBook_WhenEverythingIsOK_ShouldAddBook()
     {
@@ -40,7 +40,7 @@ public class BookshelfTests
         // Assert
         bookshelf.HasBook(book.Id.Value).Should().BeTrue();
     }
-    
+
     [Fact]
     public void RemoveBook_WhenEverythingIsOK_ShouldRemoveBook()
     {
@@ -55,7 +55,7 @@ public class BookshelfTests
         // Assert
         bookshelf.HasBook(book.Id.Value).Should().BeFalse();
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Bookshelf.Name + 1)]
@@ -65,7 +65,7 @@ public class BookshelfTests
         var user = UserFactory.CreateUser();
 
         var name = StringUtilities.GenerateLongString(stringLength);
-        
+
         // Act
         var act = () => Domain.Bookshelf.Bookshelf.Create(
             user,
@@ -76,7 +76,7 @@ public class BookshelfTests
             .Throw<DomainException>()
             .WithMessage($"Name should be inclusively between 1 and {MaxPropertyLength.Bookshelf.Name}");
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(20)]
@@ -87,7 +87,7 @@ public class BookshelfTests
         var user = UserFactory.CreateUser();
 
         var name = StringUtilities.GenerateLongWhiteSpace(whiteSpaceLength);
-        
+
         // Act
         var act = () => Domain.Bookshelf.Bookshelf.Create(
             user,
@@ -98,7 +98,7 @@ public class BookshelfTests
             .Throw<DomainException>()
             .WithMessage("Name could not be empty");
     }
-    
+
     [Fact]
     public void AddBook_WhenThereIsAlreadyABook_ShouldThrowAnError()
     {
@@ -115,7 +115,7 @@ public class BookshelfTests
             .Throw<DomainException>()
             .WithMessage("Bookshelf already have this book");
     }
-    
+
     [Fact]
     public void RemoveBook_WhenThereIsNoBookToRemove_ShouldThrowAnError()
     {

@@ -17,7 +17,7 @@ public class UpdateBookshelfNameCommandValidatorTests
     {
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
-        
+
         _unitOfWork.Bookshelves.AnyAsync(default!).ReturnsForAnyArgs(true);
         _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
 
@@ -26,20 +26,20 @@ public class UpdateBookshelfNameCommandValidatorTests
         var updateBookshelfNameCommand = BookshelfCommandFactory
             .CreateUpdateBookshelfNameCommand(bookshelfId: bookshelf.Id.Value);
         var validator = new UpdateBookshelfNameCommandValidator(_unitOfWork, _userService);
-        
+
         // Act
         var result = await validator.ValidateAsync(updateBookshelfNameCommand);
 
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenBookshelfIsNotPossessedByAnUser_ShouldReturnSpecificErrorMessage()
     {
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
-        
+
         _unitOfWork.Bookshelves.AnyAsync(default!).ReturnsForAnyArgs(false);
         _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
 
@@ -48,7 +48,7 @@ public class UpdateBookshelfNameCommandValidatorTests
         var updateBookshelfNameCommand = BookshelfCommandFactory
             .CreateUpdateBookshelfNameCommand(bookshelfId: bookshelf.Id.Value);
         var validator = new UpdateBookshelfNameCommandValidator(_unitOfWork, _userService);
-        
+
         // Act
         var result = await validator.ValidateAsync(updateBookshelfNameCommand);
 
@@ -56,13 +56,13 @@ public class UpdateBookshelfNameCommandValidatorTests
         result.IsValid.Should().BeFalse();
         result.Errors.Any(x => x.ErrorMessage == ValidationMessages.Bookshelf.NotYours).Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenOldBookshelfAndNewBookshelfNameAreTheSame_ShouldReturnSpecificErrorMessage()
     {
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
-        
+
         _unitOfWork.Bookshelves.AnyAsync(default!).ReturnsForAnyArgs(true);
         _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
 
@@ -71,7 +71,7 @@ public class UpdateBookshelfNameCommandValidatorTests
         var updateBookshelfNameCommand = BookshelfCommandFactory
             .CreateUpdateBookshelfNameCommand(bookshelfId: bookshelf.Id.Value, newName: bookshelf.Name);
         var validator = new UpdateBookshelfNameCommandValidator(_unitOfWork, _userService);
-        
+
         // Act
         var result = await validator.ValidateAsync(updateBookshelfNameCommand);
 
@@ -79,13 +79,13 @@ public class UpdateBookshelfNameCommandValidatorTests
         result.IsValid.Should().BeFalse();
         result.Errors.Any(x => x.ErrorMessage == ValidationMessages.Bookshelf.NameIsTheSameAsItWas).Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenEveryErrorOccurs_ShouldTwoErrorMessages()
     {
         // Arrange
         var bookshelf = BookshelfFactory.CreateBookshelf();
-        
+
         _unitOfWork.Bookshelves.AnyAsync(default!).ReturnsForAnyArgs(false);
         _unitOfWork.Bookshelves.GetSingleById(default).ReturnsForAnyArgs(bookshelf);
 
@@ -94,7 +94,7 @@ public class UpdateBookshelfNameCommandValidatorTests
         var updateBookshelfNameCommand = BookshelfCommandFactory
             .CreateUpdateBookshelfNameCommand(bookshelfId: bookshelf.Id.Value, newName: bookshelf.Name);
         var validator = new UpdateBookshelfNameCommandValidator(_unitOfWork, _userService);
-        
+
         // Act
         var result = await validator.ValidateAsync(updateBookshelfNameCommand);
 

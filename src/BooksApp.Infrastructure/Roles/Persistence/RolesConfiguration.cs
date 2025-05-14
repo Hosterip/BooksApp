@@ -24,7 +24,7 @@ public class RolesConfiguration : IEntityTypeConfiguration<Role>
             .HasConversion(
                 id => id.Value,
                 value => RoleId.Create(value));
-        
+
         builder.HasData(RoleFactory.Member());
         builder.HasData(RoleFactory.Author());
         builder.HasData(RoleFactory.Moderator());

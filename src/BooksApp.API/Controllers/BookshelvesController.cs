@@ -32,7 +32,7 @@ public class BookshelvesController(
     : ApiController
 {
     #region Bookshelves endpoints
-    
+
     [HttpGet(ApiRoutes.Bookshelves.GetBooks)]
     [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
     [ProducesResponseType(typeof(BooksResponse), StatusCodes.Status200OK)]
@@ -51,7 +51,7 @@ public class BookshelvesController(
         var result = await sender.Send(query, token);
 
         var response = mapster.Map<BooksResponse>(result);
-        
+
         return Ok(response);
     }
 
@@ -66,20 +66,20 @@ public class BookshelvesController(
         var userId = userService.GetId()!.Value;
         var command = new CreateBookshelfCommand
         {
-            Name = request.Name,
+            Name = request.Name
         };
         var result = await sender.Send(command, token);
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
 
         var response = mapster.Map<BookshelfResponse>(result);
-        
+
         return CreatedAtAction(
             nameof(GetBookshelf),
             new { idOrName = result.Id, userId },
             response);
     }
-    
+
     [HttpPut(ApiRoutes.Bookshelves.Update)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -104,7 +104,7 @@ public class BookshelvesController(
             new { idOrName = bookshelfId, userId });
     }
 
-    
+
     [HttpDelete(ApiRoutes.Bookshelves.Remove)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -121,10 +121,10 @@ public class BookshelvesController(
         await sender.Send(command, token);
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
-        
+
         return NoContent();
     }
-    
+
     #endregion Bookshelves endpoints
 
     #region Books endpoints
@@ -143,12 +143,12 @@ public class BookshelvesController(
             ? new AddBookCommand
             {
                 BookshelfId = bookshelfId,
-                BookId = bookId,
+                BookId = bookId
             }
             : new AddBookByNameCommand
             {
                 BookshelfName = idOrName,
-                BookId = bookId,
+                BookId = bookId
             }, token);
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
@@ -177,15 +177,15 @@ public class BookshelvesController(
                 BookshelfName = idOrName,
                 BookId = bookId
             }, token);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Bookshelves.Tag, token);
 
         return NoContent();
     }
-    
+
     #endregion Books endpoints
 
-    #region Users endpoints 
+    #region Users endpoints
 
     [HttpGet(ApiRoutes.Users.GetBookshelves)]
     [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
@@ -202,10 +202,10 @@ public class BookshelvesController(
         var result = await sender.Send(query, token);
 
         var response = mapster.Map<IEnumerable<BookshelfResponse>>(result);
-        
+
         return Ok(response);
     }
-    
+
     [HttpGet(ApiRoutes.Users.GetBookshelf)]
     [OutputCache(PolicyName = OutputCache.Bookshelves.PolicyName)]
     [ProducesResponseType(typeof(BookshelfResponse), StatusCodes.Status200OK)]
@@ -218,22 +218,22 @@ public class BookshelvesController(
     {
         var success = Guid.TryParse(idOrName, out var bookshelfId);
         var result = await sender.Send(success
-            ? new BookshelfByIdQuery
-            {
-                BookshelfId = bookshelfId
-            }
-            : new BookshelfByNameQuery
-            {
-                UserId = userId,
-                Name = idOrName
-            },
+                ? new BookshelfByIdQuery
+                {
+                    BookshelfId = bookshelfId
+                }
+                : new BookshelfByNameQuery
+                {
+                    UserId = userId,
+                    Name = idOrName
+                },
             token
         );
 
         var response = mapster.Map<BookshelfResponse>(result!);
-        
+
         return Ok(response);
     }
-    
-    #endregion Users endpoints 
+
+    #endregion Users endpoints
 }

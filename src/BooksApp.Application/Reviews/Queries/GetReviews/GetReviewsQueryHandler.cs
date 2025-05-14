@@ -13,7 +13,7 @@ internal sealed class GetReviewsQueryHandler(
     public async Task<PaginatedArray<ReviewResult>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
     {
         var currentUserId = userService.GetId();
-        
+
         return await unitOfWork.Reviews
             .GetPaginated(currentUserId, request.BookId, request.Page, request.Limit);
     }

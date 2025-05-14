@@ -16,7 +16,7 @@ public class ReviewTests
         // Arrange
         var book = BookFactory.CreateBook();
         var user = UserFactory.CreateUser();
-        
+
         // Act
         var result = Domain.Review.Review.Create(
             Constants.Reviews.Rating,
@@ -28,7 +28,7 @@ public class ReviewTests
         result.Should().BeOfType<Domain.Review.Review>();
         result.Rating.Should().Be(Constants.Reviews.Rating);
     }
-    
+
     [Theory]
     [InlineData(6)]
     [InlineData(0)]
@@ -38,7 +38,7 @@ public class ReviewTests
         // Arrange
         var book = BookFactory.CreateBook();
         var user = UserFactory.CreateUser();
-        
+
         // Act
         var act = () => Domain.Review.Review.Create(
             rating,
@@ -50,9 +50,8 @@ public class ReviewTests
         act.Should()
             .Throw<DomainException>()
             .WithMessage("Rating should be between 1 to 5 inclusively");
-        
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Review.Body + 1)]
@@ -63,11 +62,11 @@ public class ReviewTests
         var user = UserFactory.CreateUser();
 
         var body = StringUtilities.GenerateLongString(stringLength);
-        
+
         // Act
         var act = () => Domain.Review.Review.Create(
             Constants.Reviews.Rating,
-            body, 
+            body,
             user,
             book);
 
@@ -76,7 +75,7 @@ public class ReviewTests
             .Throw<DomainException>()
             .WithMessage($"Body length should be between 1 and {MaxPropertyLength.Review.Body}");
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(MaxPropertyLength.Review.Body)]
@@ -87,11 +86,11 @@ public class ReviewTests
         var user = UserFactory.CreateUser();
 
         var body = StringUtilities.GenerateLongWhiteSpace(stringLength);
-        
+
         // Act
         var act = () => Domain.Review.Review.Create(
             Constants.Reviews.Rating,
-            body, 
+            body,
             user,
             book);
 

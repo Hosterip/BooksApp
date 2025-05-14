@@ -33,7 +33,7 @@ public class DeleteBookshelfCommandValidatorTests
         result.IsValid.Should().BeTrue();
         result.Errors.Count.Should().Be(0);
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenOneDoesNotOwnBookshelf_ShouldHaveAnError()
     {
@@ -54,7 +54,7 @@ public class DeleteBookshelfCommandValidatorTests
             .Single(x => x.ErrorMessage == ValidationMessages.Bookshelf.NotYours).PropertyName
             .Should().Be(nameof(UserId));
     }
-    
+
     [Theory]
     [InlineData(DefaultBookshelvesNames.Read)]
     [InlineData(DefaultBookshelvesNames.ToRead)]

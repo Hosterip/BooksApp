@@ -2,7 +2,6 @@
 using BooksApp.Domain.Bookshelf;
 using BooksApp.Domain.Bookshelf.ValueObjects;
 using BooksApp.Domain.Common.Constants.MaxLengths;
-using BooksApp.Domain.User.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

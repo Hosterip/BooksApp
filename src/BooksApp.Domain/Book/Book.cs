@@ -8,6 +8,8 @@ namespace BooksApp.Domain.Book;
 
 public class Book : AggregateRoot<BookId>
 {
+    private List<Genre.Genre> _genres;
+
     private Book(BookId id) : base(id)
     {
     }
@@ -33,7 +35,6 @@ public class Book : AggregateRoot<BookId>
     public string ReferentialName { get; private set; }
     public Image.Image Cover { get; private set; }
     public User.User Author { get; init; }
-    private List<Genre.Genre> _genres;
     public IReadOnlyList<Genre.Genre> Genres => _genres;
 
     public static Book Create(
@@ -46,14 +47,14 @@ public class Book : AggregateRoot<BookId>
         ValidateGenres(genres);
         ValidateTitle(title);
         ValidateDescription(description);
-        
+
         return new Book(BookId.Create(), title, description, cover, author, genres);
     }
 
     public void ChangeGenres(List<Genre.Genre> genres)
     {
         ValidateGenres(genres);
-        
+
         _genres = genres;
     }
 
@@ -70,7 +71,7 @@ public class Book : AggregateRoot<BookId>
     public void ChangeDescription(string description)
     {
         ValidateDescription(description);
-        
+
         Description = description;
     }
 
@@ -81,15 +82,16 @@ public class Book : AggregateRoot<BookId>
         if (string.IsNullOrWhiteSpace(title))
             throw new DomainException("Title should be present and not be white space");
     }
-    
+
     private static void ValidateDescription(string description)
     {
         if (description.Length is > MaxPropertyLength.Book.Description or < 1)
-            throw new DomainException($"Description should be inclusively between 1 and {MaxPropertyLength.Book.Description}");
+            throw new DomainException(
+                $"Description should be inclusively between 1 and {MaxPropertyLength.Book.Description}");
         if (string.IsNullOrWhiteSpace(description))
             throw new DomainException("Description should be present and not be white space");
     }
-    
+
     private static void ValidateGenres(List<Genre.Genre> genres)
     {
         if (genres.Count == 0)

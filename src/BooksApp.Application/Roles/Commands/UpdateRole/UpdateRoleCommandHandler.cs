@@ -14,9 +14,9 @@ internal sealed class UpdateRoleCommandHandler(
     {
         var user = await unitOfWork.Users.GetSingleById(request.UserId, cancellationToken);
         var role = await unitOfWork.Roles.GetSingleWhereAsync(role => role.Name == request.Role, cancellationToken);
-        
+
         user!.ChangeRole(role!);
-        
+
         await unitOfWork.Users.Update(user);
         await unitOfWork.SaveAsync(cancellationToken);
         return mapper.Map<UserResult>(user);

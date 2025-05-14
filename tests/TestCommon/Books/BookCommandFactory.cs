@@ -12,7 +12,7 @@ namespace TestCommon.Books;
 public static class BookCommandFactory
 {
     public static CreateBookCommand CreateCreateBookCommand(
-        string title = Constants.Books.Title, 
+        string title = Constants.Books.Title,
         string description = Constants.Books.Description,
         List<Guid>? genres = null,
         IFormFile? image = null)
@@ -25,10 +25,10 @@ public static class BookCommandFactory
             Image = image ?? ImageFactory.CreateFormFileImage()
         };
     }
-    
+
     public static UpdateBookCommand CreateUpdateBookCommand(
         Guid? bookId = null,
-        string title = Constants.Books.Title, 
+        string title = Constants.Books.Title,
         string description = Constants.Books.Description,
         List<Guid>? genres = null,
         IFormFile? image = null)
@@ -42,7 +42,7 @@ public static class BookCommandFactory
             Image = image ?? ImageFactory.CreateFormFileImage()
         };
     }
-    
+
     public static DeleteBookCommand CreateDeleteBookCommand(
         Guid? bookId = null
     )
@@ -52,7 +52,7 @@ public static class BookCommandFactory
             Id = bookId ?? Guid.NewGuid()
         };
     }
-    
+
     public static PrivilegedDeleteBookCommand CreatePrivilegedDeleteBookCommand(
         Guid? bookId = null
     )

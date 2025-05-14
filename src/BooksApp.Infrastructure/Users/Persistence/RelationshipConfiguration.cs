@@ -15,20 +15,19 @@ public sealed class RelationshipConfiguration : IEntityTypeConfiguration<Relatio
             .HasConversion(
                 id => id.Value,
                 value => FollowerId.Create(value));
-            
-            
+
+
         builder.Property(o => o.FollowerId)
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
                 value => UserId.Create(value));
-            
-            
+
+
         builder.Property(o => o.UserId)
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
                 value => UserId.Create(value));
-
     }
 }

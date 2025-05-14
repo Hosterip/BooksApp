@@ -40,7 +40,7 @@ public class UpdateNameCommandValidatorTests
     {
         // Arrange
         var firstName = StringUtilities.GenerateLongString(firstNameLength);
-        var command = UserCommandFactory.CreateUpdateNameCommand(firstName: firstName);
+        var command = UserCommandFactory.CreateUpdateNameCommand(firstName);
         var validator = new UpdateNameCommandValidator();
 
         // Act
@@ -58,7 +58,7 @@ public class UpdateNameCommandValidatorTests
     {
         // Arrange
         var firstName = StringUtilities.GenerateLongWhiteSpace(firstNameLength);
-        var command = UserCommandFactory.CreateUpdateNameCommand(firstName: firstName);
+        var command = UserCommandFactory.CreateUpdateNameCommand(firstName);
         var validator = new UpdateNameCommandValidator();
 
         // Act

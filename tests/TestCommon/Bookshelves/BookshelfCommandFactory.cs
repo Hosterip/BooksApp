@@ -22,7 +22,7 @@ public static class BookshelfCommandFactory
             BookshelfId = bookshelfId ?? Guid.NewGuid()
         };
     }
-    
+
     public static RemoveBookByNameCommand CreateRemoveBookByNameCommand(
         Guid? bookId = null,
         string bookshelfName = Constants.Bookshelves.Name)
@@ -33,7 +33,7 @@ public static class BookshelfCommandFactory
             BookshelfName = bookshelfName
         };
     }
-    
+
     public static RemoveBookCommand CreateRemoveBookCommand(
         Guid? bookId = null,
         Guid? bookshelfId = null)
@@ -44,7 +44,7 @@ public static class BookshelfCommandFactory
             BookshelfId = bookshelfId ?? Guid.NewGuid()
         };
     }
-    
+
     public static DeleteBookshelfCommand CreateDeleteBookshelfCommand(
         Guid? bookshelfId = null)
     {
@@ -53,7 +53,7 @@ public static class BookshelfCommandFactory
             BookshelfId = bookshelfId ?? Guid.NewGuid()
         };
     }
-    
+
     public static CreateDefaultBookshelvesCommand CreateCreateDefaultBookshelvesCommand(
         Guid? userId = null)
     {
@@ -62,7 +62,7 @@ public static class BookshelfCommandFactory
             UserId = userId ?? Guid.NewGuid()
         };
     }
-    
+
     public static CreateBookshelfCommand CreateCreateBookshelfCommand(
         string bookshelfName = Constants.Bookshelves.Name)
     {
@@ -71,7 +71,7 @@ public static class BookshelfCommandFactory
             Name = bookshelfName
         };
     }
-    
+
     public static AddBookByNameCommand CreateAddBookByNameCommand(
         Guid? bookId = null,
         string bookshelfName = Constants.Bookshelves.Name)
@@ -82,8 +82,8 @@ public static class BookshelfCommandFactory
             BookshelfName = bookshelfName
         };
     }
-    
-    
+
+
     public static AddBookCommand CreateAddBookCommand(
         Guid? bookId = null,
         Guid? bookshelfId = null)

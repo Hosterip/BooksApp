@@ -1,4 +1,3 @@
-using BooksApp.Application.Bookshelves.Commands.AddBookByName;
 using BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
@@ -12,7 +11,7 @@ public class CreateBookshelfValidatorTests
 {
     private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly IUserService _userService = Substitute.For<IUserService>();
-    
+
     [Fact]
     public async Task ValidateAsync_WhenEverythingIsOkay_ShouldReturnValidResult()
     {
@@ -20,7 +19,7 @@ public class CreateBookshelfValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
-        
+
         _unitOfWork.Bookshelves.AnyByName(default!, default).ReturnsForAnyArgs(false);
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
 
@@ -34,7 +33,7 @@ public class CreateBookshelfValidatorTests
         result.IsValid.Should().BeTrue();
         result.Errors.Count.Should().Be(0);
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsAlreadyABookshelf_ShouldReturnSpecificError()
     {
@@ -42,7 +41,7 @@ public class CreateBookshelfValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
-        
+
         _unitOfWork.Bookshelves.AnyByName(default!, default).ReturnsForAnyArgs(true);
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
 

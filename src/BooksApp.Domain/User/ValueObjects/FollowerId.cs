@@ -13,7 +13,7 @@ public class FollowerId : ValueObject
 
     public static FollowerId Create(Guid? value = null)
     {
-        return new(value ?? Guid.NewGuid());
+        return new FollowerId(value ?? Guid.NewGuid());
     }
 
     public override IEnumerable<object> GetEqualityComponents()

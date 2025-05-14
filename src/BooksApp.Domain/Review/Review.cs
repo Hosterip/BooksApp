@@ -39,7 +39,7 @@ public class Review : Entity<ReviewId>
     {
         ValidateRating(rating);
         ValidateBody(body);
-        
+
         return new Review(
             ReviewId.Create(),
             rating,
@@ -52,23 +52,23 @@ public class Review : Entity<ReviewId>
     public void ChangeRating(int rating)
     {
         ValidateRating(rating);
-        
+
         Rating = rating;
     }
 
     public void ChangeBody(string body)
     {
         ValidateBody(body);
-        
+
         Body = body;
     }
-    
+
     private static void ValidateRating(int rating)
     {
         if (rating is > 5 or < 1)
             throw new DomainException("Rating should be between 1 to 5 inclusively");
     }
-    
+
     private static void ValidateBody(string body)
     {
         if (body.Length is > MaxPropertyLength.Review.Body or < 1)

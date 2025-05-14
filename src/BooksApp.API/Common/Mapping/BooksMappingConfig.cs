@@ -15,11 +15,11 @@ public class BooksMappingConfig : IRegister
             .Map(dest => dest.Cover, src => src.CoverName)
             .Map(dest => dest.Slug, src => src.ReferentialName)
             .Map(dest => dest.Author, src => src.Author.Adapt<ExtendedUserResponse>(config))
-            .Map(dest => dest.Genres, 
+            .Map(dest => dest.Genres,
                 src => src.Genres.Select(x => x.Adapt<GenreResponse>(config)));
-        
+
         config.NewConfig<PaginatedArray<BookResult>, BooksResponse>()
             .Map(dest => dest.Items,
                 src => src.Items.Select(x => x.Adapt<BookResult, BookResponse>(config)));
-    }   
+    }
 }

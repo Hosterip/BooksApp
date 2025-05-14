@@ -18,21 +18,21 @@ public class UserValidationBehaviorTests
     private static readonly InsertAvatarCommand RequestWithAuthorizeAttribute =
         UserCommandFactory.CreateInsertAvatarCommand();
 
-    private static readonly GetSingleUserQuery RequestWithoutAuthorizeAttribute = new GetSingleUserQuery
+    private static readonly GetSingleUserQuery RequestWithoutAuthorizeAttribute = new()
     {
         Id = default
     };
 
-    private static RequestHandlerDelegate<UserResult> _next =
+    private static readonly RequestHandlerDelegate<UserResult> _next =
         Substitute.For<RequestHandlerDelegate<UserResult>>();
 
-    private IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
-    private IUserService _userService = Substitute.For<IUserService>();
+    private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
+    private readonly IUserService _userService = Substitute.For<IUserService>();
 
     public UserValidationBehaviorTests()
     {
         var role = RoleFactory.Admin();
-        var user = UserFactory.CreateUser(role: role);
+        var user = UserFactory.CreateUser(role);
         var userResult = UserResultFactory.CreateUserResult();
 
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
@@ -88,14 +88,14 @@ public class UserValidationBehaviorTests
         // Assert 
         await act.Should().ThrowAsync<ValidationException>();
     }
-    
+
     [Fact]
     public async Task Handle_WhenUserWasNotFound_ShouldThrowASpecificError()
     {
         // Arrange
         //  Making UserRepository GetSingleById return null
         _unitOfWork.Users.GetSingleById(default).ReturnsNullForAnyArgs();
-        
+
         //  Creating behavior  
         var behavior =
             new UserValidationBehavior<InsertAvatarCommand, UserResult>(_userService, _unitOfWork);
@@ -106,7 +106,7 @@ public class UserValidationBehaviorTests
         // Assert 
         await act.Should().ThrowAsync<ValidationException>();
     }
-    
+
     [Fact]
     public async Task Handle_WhenDbUsersRoleDoesNotCorrespondTheRoleInMemory_ShouldCallNext()
     {

@@ -11,7 +11,7 @@ public sealed class DeleteReviewCommandValidator : AbstractValidator<DeleteRevie
     public DeleteReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId()!.Value;
-        
+
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
             {

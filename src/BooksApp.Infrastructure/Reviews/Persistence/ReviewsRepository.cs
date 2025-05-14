@@ -35,14 +35,14 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
                     LastName = review.User.LastName,
                     Role = review.User.Role.Name,
                     AvatarName = review.User.Avatar.ImageName,
-                    ViewerRelationship = currentUserId == null 
-                            ? null
-                            : new ViewerRelationship
-                    {
-                        IsFollowing = viewerRelationship.IsFollowing,
-                        IsFriend = viewerRelationship.IsFriend,
-                        IsMe = viewerRelationship.IsMe
-                    }
+                    ViewerRelationship = currentUserId == null
+                        ? null
+                        : new ViewerRelationship
+                        {
+                            IsFollowing = viewerRelationship.IsFollowing,
+                            IsFriend = viewerRelationship.IsFriend,
+                            IsMe = viewerRelationship.IsMe
+                        }
                 }
                 select new ReviewResult
                 {
@@ -63,7 +63,7 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
         return await DbContext.Reviews
             .SingleOrDefaultAsync(
                 review => review.Id == ReviewId.Create(reviewId),
-                cancellationToken: token);
+                token);
     }
 
     public async Task<bool> AnyById(
@@ -72,6 +72,6 @@ public class ReviewsRepository : GenericRepository<Review>, IReviewsRepository
     {
         return await DbContext.Reviews.AnyAsync(
             review => review.Id == ReviewId.Create(reviewId),
-            cancellationToken: token);
+            token);
     }
 }

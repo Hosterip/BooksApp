@@ -10,7 +10,8 @@ internal sealed class GetBookshelvesQueryHandler(
     IMapper mapper)
     : IRequestHandler<GetBookshelvesQuery, IEnumerable<BookshelfResult>>
 {
-    public async Task<IEnumerable<BookshelfResult>> Handle(GetBookshelvesQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<BookshelfResult>> Handle(GetBookshelvesQuery request,
+        CancellationToken cancellationToken)
     {
         var rawBookshelves = await unitOfWork.Bookshelves
             .GetAllWhereAsync(bookshelf =>

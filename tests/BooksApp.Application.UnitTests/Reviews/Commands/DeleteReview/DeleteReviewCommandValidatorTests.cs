@@ -35,14 +35,14 @@ public class DeleteReviewCommandValidatorTests
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereUserDoesNotOwnAReview_ShouldReturnInvalidResult()
     {
         // Arrange
         //  Making AnyAsync method return false
         _unitOfWork.Reviews.AnyAsync(default!).ReturnsForAnyArgs(false);
-        
+
         //  Creating a command
         var command = ReviewCommandFactory.CreateDeleteReviewCommand();
 
@@ -54,8 +54,8 @@ public class DeleteReviewCommandValidatorTests
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => 
-            x.PropertyName == nameof(UserId) && 
+        result.Errors.Should().ContainSingle(x =>
+            x.PropertyName == nameof(UserId) &&
             x.ErrorMessage == ValidationMessages.User.Permission);
     }
 }

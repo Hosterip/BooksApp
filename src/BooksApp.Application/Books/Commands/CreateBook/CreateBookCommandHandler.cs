@@ -21,11 +21,11 @@ internal sealed class CreateBookCommandHandler(
         // Images
         var imageName = await imageFileBuilder.CreateImage(request.Image, cancellationToken);
         var image = Image.Create(imageName);
-        
+
         // Book creation
         var genres = await unitOfWork.Genres.GetAllByIds(request.GenreIds, cancellationToken);
         var book = Book.Create(request.Title, request.Description, image, user!, genres.ToList());
-        
+
         await unitOfWork.Images.AddAsync(image, cancellationToken);
         await unitOfWork.Books.AddAsync(book, cancellationToken);
         await unitOfWork.SaveAsync(cancellationToken);

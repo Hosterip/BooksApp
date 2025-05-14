@@ -9,7 +9,7 @@ internal sealed class AddBookCommandHandler(IUnitOfWork unitOfWork) : IRequestHa
     {
         var bookshelf = await unitOfWork.Bookshelves.GetSingleById(request.BookshelfId, cancellationToken);
         var book = await unitOfWork.Books.GetSingleById(request.BookId, cancellationToken);
-        
+
         bookshelf!.AddBook(book!);
 
         await unitOfWork.Bookshelves.Update(bookshelf);

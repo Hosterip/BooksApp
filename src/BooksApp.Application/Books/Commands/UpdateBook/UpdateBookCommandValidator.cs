@@ -40,8 +40,7 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
 
         // Genres
 
-        RuleFor(request => request.GenreIds).MustAsync(
-            async (genreIds, cancellationToken) =>
+        RuleFor(request => request.GenreIds).MustAsync(async (genreIds, cancellationToken) =>
         {
             if (genreIds.Count == 0)
                 return false;

@@ -5,7 +5,7 @@ namespace BooksApp.Application.Users.Commands.UpdateName;
 
 internal sealed class UpdateNameCommandHandler(
     IUnitOfWork unitOfWork,
-    IUserService userService) 
+    IUserService userService)
     : IRequestHandler<UpdateNameCommand>
 {
     public async Task Handle(UpdateNameCommand request, CancellationToken cancellationToken)

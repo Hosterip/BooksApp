@@ -1,4 +1,3 @@
-using BooksApp.Application.Bookshelves.Commands.AddBook;
 using BooksApp.Application.Bookshelves.Commands.AddBookByName;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
@@ -20,7 +19,7 @@ public class AddBookByNameCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
-        
+
         _unitOfWork.Bookshelves.AnyBookByName(default!, default, default).ReturnsForAnyArgs(false);
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
@@ -35,7 +34,7 @@ public class AddBookByNameCommandValidatorTests
         result.IsValid.Should().BeTrue();
         result.Errors.Count.Should().Be(0);
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoBook_ShouldReturnSpecificError()
     {
@@ -43,7 +42,7 @@ public class AddBookByNameCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
-        
+
         _unitOfWork.Bookshelves.AnyBookByName(default!, default, default).ReturnsForAnyArgs(false);
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(false);
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);
@@ -60,7 +59,7 @@ public class AddBookByNameCommandValidatorTests
             .PropertyName
             .Should().Be(nameof(AddBookByNameCommand.BookId));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsAlreadyABook_ShouldReturnSpecificError()
     {
@@ -68,7 +67,7 @@ public class AddBookByNameCommandValidatorTests
         var bookshelf = BookshelfFactory.CreateBookshelf();
 
         _userService.GetId().ReturnsForAnyArgs(bookshelf.User.Id.Value);
-        
+
         _unitOfWork.Bookshelves.AnyBookByName(default!, default, default).ReturnsForAnyArgs(true);
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Users.AnyById(default).ReturnsForAnyArgs(true);

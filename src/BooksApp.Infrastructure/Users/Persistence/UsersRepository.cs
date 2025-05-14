@@ -47,7 +47,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     .Where(x => x.Id == UserId.Create(userId))
                     .Include(x => x.Followers)
                     .SelectMany(x => x.Followers)
-                join user in DbContext.Users 
+                join user in DbContext.Users
                     on relationship.FollowerId equals user.Id
                 where query == null || user.FirstName.Contains(query)
                 let viewerRelationship = user.ViewerRelationship(currentUserId)
@@ -84,7 +84,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                     .Where(x => x.Id == UserId.Create(userId))
                     .Include(x => x.Following)
                     .SelectMany(x => x.Following)
-                join user in DbContext.Users 
+                join user in DbContext.Users
                     on relationship.UserId equals user.Id
                 where query == null || user.FirstName.Contains(query)
                 let viewerRelationship = user.ViewerRelationship(currentUserId)
@@ -123,7 +123,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                 .Include(x => x.Followers)
                 .Include(x => x.Following);
         return await query.FirstOrDefaultAsync(x => x.Id == UserId.Create(guid), token);
-
     }
 
     public async Task<bool> AnyById(
@@ -132,8 +131,8 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         return await DbContext.Users
             .AnyAsync(
-            user => user.Id == UserId.Create(guid),
-            cancellationToken: token);
+                user => user.Id == UserId.Create(guid),
+                token);
     }
 
     public async Task<bool> AnyByEmail(
@@ -142,7 +141,20 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
         if (new EmailAddressAttribute().IsValid(email) != true) return false;
         var parsedEmail = email.Trim().ToLower();
-        return await DbContext.Users.AnyAsync(user => user.Email == parsedEmail, cancellationToken: token);
+        return await DbContext.Users.AnyAsync(user => user.Email == parsedEmail, token);
+    }
+
+    public async Task<int> CountFollowers(
+        Guid userId,
+        CancellationToken token = default)
+    {
+        var parsedUserId = UserId.Create(userId);
+        return await DbContext.Users
+            .Include(x => x.Followers)
+            .Take(1)
+            .Where(x => x.Id == parsedUserId)
+            .SelectMany(x => x.Followers)
+            .CountAsync(token);
     }
 
     public async Task<bool> AnyFollower(
@@ -157,26 +169,12 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                 .SelectMany(u => u.Followers)
                 .AnyAsync(
                     f => f.FollowerId == UserId.Create(followerId),
-                    cancellationToken: token);
-    }
-
-    public async Task<int> CountFollowers(
-        Guid userId,
-        CancellationToken token = default)
-    {
-        var parsedUserId = UserId.Create(userId);
-        return await DbContext.Users
-            .Include(x => x.Followers)
-            .Take(1)
-            .Where(x => x.Id == parsedUserId)
-            .SelectMany(x => x.Followers)
-            .CountAsync(cancellationToken: token);
+                    token);
     }
 
     private static IQueryable<UserResult> ConvertToUserResult(IQueryable<User> users, Guid? currentUserId)
     {
-        return (
-            from user in users
+        return from user in users
             let viewerRelationship = user.ViewerRelationship(currentUserId)
             select new UserResult
             {
@@ -195,6 +193,6 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
                         IsFriend = viewerRelationship.IsFriend,
                         IsMe = viewerRelationship.IsMe
                     }
-            });
+            };
     }
 }

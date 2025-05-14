@@ -10,6 +10,9 @@ namespace BooksApp.Domain.User;
 
 public class User : AggregateRoot<UserId>
 {
+    private readonly List<Relationship> _followers = [];
+    private readonly List<Relationship> _following = [];
+
     private User(UserId id) : base(id)
     {
     }
@@ -37,9 +40,7 @@ public class User : AggregateRoot<UserId>
     private string Salt { get; set; }
     public string SecurityStamp { get; private set; }
     public Image.Image? Avatar { get; set; }
-    private readonly List<Relationship> _followers = [];
     public IReadOnlyList<Relationship> Followers => _following.AsReadOnly();
-    private readonly List<Relationship> _following = [];
     public IReadOnlyList<Relationship> Following => _following.AsReadOnly();
 
     public static User Create(
@@ -157,10 +158,11 @@ public class User : AggregateRoot<UserId>
         if (firstName.Length is > MaxPropertyLength.User.FirstName or < 1)
             throw new DomainException($"First name length should be between 1 and {MaxPropertyLength.User.FirstName}");
         if (middleName?.Length is > MaxPropertyLength.User.MiddleName or < 1)
-            throw new DomainException($"Middle name length should be between 1 and {MaxPropertyLength.User.MiddleName}");
+            throw new DomainException(
+                $"Middle name length should be between 1 and {MaxPropertyLength.User.MiddleName}");
         if (lastName?.Length is > MaxPropertyLength.User.LastName or < 1)
             throw new DomainException($"Last name length should be between 1 and {MaxPropertyLength.User.LastName}");
-        
+
         if (string.IsNullOrWhiteSpace(firstName))
             throw new DomainException("First name should be present");
     }

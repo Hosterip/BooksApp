@@ -1,6 +1,4 @@
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Book.ValueObjects;
-using BooksApp.Domain.User.ValueObjects;
 using MediatR;
 
 namespace BooksApp.Application.Books.Commands.DeleteBook;

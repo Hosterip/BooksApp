@@ -21,7 +21,7 @@ internal sealed class GetBooksQueryHandler(IUnitOfWork unitOfWork, IUserService 
                 request.Title,
                 request.UserId,
                 request.GenreId);
-        
+
         return result;
     }
 }

@@ -10,7 +10,7 @@ public sealed class RemoveBookCommandValidator : AbstractValidator<RemoveBookCom
     public RemoveBookCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId()!.Value;
-        
+
         // Bookshelf
         RuleFor(request => request.BookshelfId)
             .MustAsync(async (bookshelfId, cancellationToken) =>

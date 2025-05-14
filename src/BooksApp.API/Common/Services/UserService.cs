@@ -9,7 +9,7 @@ namespace BooksApp.API.Common.Services;
 public class UserService(IHttpContextAccessor accessor) : IUserService
 {
     private readonly HttpContext _httpContext = accessor.HttpContext!;
-    
+
     public string? GetEmail()
     {
         return _httpContext.User.Claims.SingleOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;

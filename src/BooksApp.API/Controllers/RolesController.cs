@@ -1,5 +1,4 @@
 using BooksApp.API.Common.Constants;
-using BooksApp.Application.Common.Interfaces;
 using BooksApp.Application.Roles;
 using BooksApp.Application.Roles.Queries.GetRoles;
 using BooksApp.Contracts.Roles;
@@ -12,7 +11,7 @@ namespace BooksApp.API.Controllers;
 
 public class RolesController(
     ISender sender,
-    IMapper mapster) 
+    IMapper mapster)
     : ApiController
 {
     [HttpGet(ApiRoutes.Users.GetRoles)]
@@ -26,7 +25,7 @@ public class RolesController(
         var roles = await sender.Send(command, cancellationToken);
 
         var response = mapster.Map<IEnumerable<RoleResponse>>(roles);
-        
+
         return Ok(response);
     }
 }

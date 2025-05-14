@@ -29,7 +29,7 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
         CancellationToken token = default)
     {
         return await DbContext.Set<T>()
-            .SingleOrDefaultAsync(expression, cancellationToken: token);
+            .SingleOrDefaultAsync(expression, token);
     }
 
     public virtual async Task<bool> AnyAsync(
@@ -37,14 +37,14 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
         CancellationToken token = default)
     {
         return await DbContext.Set<T>()
-            .AnyAsync(expression, cancellationToken: token);
+            .AnyAsync(expression, token);
     }
 
     public async Task AddAsync(
         T entity,
         CancellationToken token = default)
     {
-        await DbContext.Set<T>().AddAsync(entity, cancellationToken: token);
+        await DbContext.Set<T>().AddAsync(entity, token);
     }
 
     public Task Remove(T entity)
@@ -57,14 +57,14 @@ public abstract class GenericRepository<T>(AppDbContext dbContext) : IGenericRep
     public Task Update(T entity)
     {
         DbContext.Set<T>().Update(entity);
-        
+
         return Task.CompletedTask;
     }
 
     public Task Attach(T entity)
     {
         DbContext.Set<T>().Attach(entity);
-        
+
         return Task.CompletedTask;
     }
 }

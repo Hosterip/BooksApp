@@ -25,7 +25,8 @@ internal sealed class LoginUserQueryHandler(
         {
             var property = $"{nameof(LoginUserQuery.Email)} and/or {nameof(LoginUserQuery.Password)}";
             throw new ValidationException([
-                new ValidationFailure {
+                new ValidationFailure
+                {
                     PropertyName = property,
                     ErrorMessage = ValidationMessages.Auth.EmailOrPassword
                 }

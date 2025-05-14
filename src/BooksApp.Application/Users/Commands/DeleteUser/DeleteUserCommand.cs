@@ -3,7 +3,6 @@ using MediatR;
 
 namespace BooksApp.Application.Users.Commands.DeleteUser;
 
-
 [Authorize]
 public class DeleteUserCommand : IRequest
 {

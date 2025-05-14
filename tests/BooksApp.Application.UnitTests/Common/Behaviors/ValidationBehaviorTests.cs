@@ -14,8 +14,8 @@ namespace BooksApp.Application.UnitTests.Common.Behaviors;
 public class ValidationBehaviorTests
 {
     private readonly RequestHandlerDelegate<BookResult> _next;
-    private readonly IValidator<CreateBookCommand> _validator;
     private readonly ValidationBehavior<CreateBookCommand, BookResult> _validationBehavior;
+    private readonly IValidator<CreateBookCommand> _validator;
 
     public ValidationBehaviorTests()
     {
@@ -59,7 +59,7 @@ public class ValidationBehaviorTests
 
         // Act
         Func<Task> act = () => _validationBehavior.Handle(command, _next, default);
-        
+
         // Assert
         await Assert.ThrowsAsync<ValidationException>(act);
     }

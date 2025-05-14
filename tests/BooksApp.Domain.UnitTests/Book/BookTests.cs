@@ -21,7 +21,7 @@ public class BookTests
         };
         var image = ImageFactory.CreateImage();
         var user = UserFactory.CreateUser();
-        
+
         // Act
         var result = Domain.Book.Book.Create(
             Constants.Books.Title,
@@ -34,7 +34,7 @@ public class BookTests
         result.Should().BeOfType<Domain.Book.Book>();
         result.Title.Should().Be(Constants.Books.Title);
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Book.Title + 1)]
@@ -48,7 +48,7 @@ public class BookTests
         var image = ImageFactory.CreateImage();
         var user = UserFactory.CreateUser();
         var title = StringUtilities.GenerateLongString(stringLength);
-        
+
         // Act
         var act = () => Domain.Book.Book.Create(
             title,
@@ -62,7 +62,7 @@ public class BookTests
             .Throw<DomainException>()
             .WithMessage($"Title should be inclusively between 1 and {MaxPropertyLength.Book.Title}");
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(MaxPropertyLength.Book.Title)]
@@ -76,7 +76,7 @@ public class BookTests
         var image = ImageFactory.CreateImage();
         var user = UserFactory.CreateUser();
         var title = StringUtilities.GenerateLongWhiteSpace(stringLength);
-        
+
         // Act
         var act = () => Domain.Book.Book.Create(
             title,
@@ -90,7 +90,7 @@ public class BookTests
             .Throw<DomainException>()
             .WithMessage("Title should be present and not be white space");
     }
-    
+
     [Fact]
     public void Create_WhenGenreArrayIsEmpty_ShouldThrowAnError()
     {
@@ -98,7 +98,7 @@ public class BookTests
         var genres = new List<Genre.Genre>();
         var image = ImageFactory.CreateImage();
         var user = UserFactory.CreateUser();
-        
+
         // Act
         var act = () => Domain.Book.Book.Create(
             Constants.Books.Title,
@@ -112,7 +112,7 @@ public class BookTests
             .Throw<DomainException>()
             .WithMessage("Book must have at least one genre");
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Book.Description + 1)]
@@ -127,7 +127,7 @@ public class BookTests
         var user = UserFactory.CreateUser();
 
         var description = StringUtilities.GenerateLongString(descriptionLength);
-        
+
         // Act
         var act = () => Domain.Book.Book.Create(
             Constants.Books.Title,
@@ -141,7 +141,7 @@ public class BookTests
             .Throw<DomainException>()
             .WithMessage($"Description should be inclusively between 1 and {MaxPropertyLength.Book.Description}");
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(MaxPropertyLength.Book.Description)]
@@ -156,7 +156,7 @@ public class BookTests
         var user = UserFactory.CreateUser();
 
         var description = StringUtilities.GenerateLongWhiteSpace(descriptionLength);
-        
+
         // Act
         var act = () => Domain.Book.Book.Create(
             Constants.Books.Title,

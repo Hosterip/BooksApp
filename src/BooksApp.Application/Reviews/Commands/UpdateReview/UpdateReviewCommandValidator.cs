@@ -11,7 +11,7 @@ public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateRevie
     public UpdateReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId()!.Value;
-        
+
         RuleFor(request => request.Body)
             .MaximumLength(MaxPropertyLength.Review.Body)
             .NotEmpty();
@@ -19,7 +19,7 @@ public sealed class UpdateReviewCommandValidator : AbstractValidator<UpdateRevie
             .GreaterThanOrEqualTo(1)
             .LessThanOrEqualTo(5);
         RuleFor(request => request.ReviewId)
-            .MustAsync(async (reviewId, cancellationToken) => 
+            .MustAsync(async (reviewId, cancellationToken) =>
                 await unitOfWork.Reviews.AnyById(reviewId, cancellationToken))
             .WithMessage(ValidationMessages.Review.NotFound);
         RuleFor(request => request)

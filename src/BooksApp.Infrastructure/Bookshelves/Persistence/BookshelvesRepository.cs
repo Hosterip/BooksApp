@@ -18,32 +18,38 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
 
     public override async Task<bool> AnyAsync(
         Expression<Func<Bookshelf, bool>> expression,
-        CancellationToken token = default) =>
-        await DbContext.Bookshelves
+        CancellationToken token = default)
+    {
+        return await DbContext.Bookshelves
             .Include(x => x.User)
             .AnyAsync(expression, token);
+    }
 
     public override async Task<IEnumerable<Bookshelf>> GetAllWhereAsync(
         Expression<Func<Bookshelf, bool>> expression,
-        CancellationToken token = default) =>
-        await DbContext.Bookshelves
+        CancellationToken token = default)
+    {
+        return await DbContext.Bookshelves
             .Include(x => x.User)
             .Where(expression)
             .ToListAsync(token);
+    }
 
     public override async Task<Bookshelf?> GetSingleWhereAsync(
         Expression<Func<Bookshelf, bool>> expression,
-        CancellationToken token = default) =>
-      await DbContext.Bookshelves
-          .Include(x => x.User)
-          .SingleOrDefaultAsync(expression, token);
+        CancellationToken token = default)
+    {
+        return await DbContext.Bookshelves
+            .Include(x => x.User)
+            .SingleOrDefaultAsync(expression, token);
+    }
 
     public async Task<bool> AnyById(Guid bookshelfId, CancellationToken token = default)
     {
         return await DbContext.Bookshelves
             .AnyAsync(
-                bookshelf => bookshelf.Id == BookshelfId.Create(bookshelfId), 
-                cancellationToken: token);
+                bookshelf => bookshelf.Id == BookshelfId.Create(bookshelfId),
+                token);
     }
 
     public async Task<bool> AnyByName(string name, Guid userId, CancellationToken token = default)
@@ -54,7 +60,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .AnyAsync(
                 bookshelf => bookshelf.User.Id == UserId.Create(userId) &&
                              bookshelf.ReferentialName == refName,
-                cancellationToken: token);
+                token);
     }
 
     public async Task<bool> AnyBookById(Guid bookshelfId, Guid bookId, CancellationToken token = default)
@@ -64,7 +70,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
             .AnyAsync(
                 book => book.Book.Id == BookId.Create(bookId),
-                cancellationToken: token);
+                token);
     }
 
     public async Task<bool> AnyBookByName(string name, Guid userId, Guid bookId, CancellationToken token = default)
@@ -76,7 +82,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
                                 bookshelf.User.Id == UserId.Create(userId))
             .SelectMany(bookshelf => bookshelf.BookshelfBooks)
             .AnyAsync(book => book.Book.Id == BookId.Create(bookId),
-                cancellationToken: token);
+                token);
     }
 
     public async Task<Bookshelf?> GetBookshelfByName(string name, Guid userId, CancellationToken token = default)
@@ -87,7 +93,7 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .FirstOrDefaultAsync(
                 bookshelf => bookshelf.User.Id == UserId.Create(userId) &&
                              bookshelf.ReferentialName == refName,
-                cancellationToken: token);
+                token);
     }
 
     public async Task<Bookshelf?> GetSingleById(Guid bookshelfId, CancellationToken token = default)
@@ -96,6 +102,6 @@ public class BookshelvesRepository : GenericRepository<Bookshelf>, IBookshelvesR
             .AsSplitQuery()
             .SingleOrDefaultAsync(
                 bookshelf => bookshelf.Id == BookshelfId.Create(bookshelfId),
-                cancellationToken: token);
+                token);
     }
 }

@@ -13,6 +13,6 @@ public sealed class ReviewsMappingConfig : IRegister
             .Map(dest => dest.User,
                 src => src.User.Adapt<ExtendedUserResponse>(config))
             .Map(dest => dest.Text,
-                    src => src.Body);
+                src => src.Body);
     }
 }

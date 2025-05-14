@@ -15,7 +15,7 @@ internal sealed class GetUsersQueryHandler(
         CancellationToken cancellationToken)
     {
         var currentUserId = userService.GetId();
-        
+
         var query = request.Query ?? "";
         var limit = request.Limit ?? 10;
         var page = request.Page ?? 1;

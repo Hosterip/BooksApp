@@ -16,21 +16,21 @@ internal sealed class GetSingleUserQueryHandler(
     public async Task<UserResult> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
     {
         var user = await unitOfWork.Users.GetSingleById(
-            request.Id, cancellationToken, includeRelationships: true);
+            request.Id, cancellationToken, true);
 
         (bool IsFollowing, bool IsFriend, bool IsMe) viewerRelationship = (false, false, false);
         var currentUserId = userService.GetId();
-        if (currentUserId.HasValue) 
+        if (currentUserId.HasValue)
             viewerRelationship = user!.ViewerRelationship(currentUserId);
-        
+
         var userResult = mapper.Adapt<UserResult>();
         userResult.ViewerRelationship = new ViewerRelationship
         {
             IsFollowing = viewerRelationship.IsFollowing,
             IsFriend = viewerRelationship.IsFriend,
-            IsMe = viewerRelationship.IsMe 
+            IsMe = viewerRelationship.IsMe
         };
-        
+
         return userResult;
     }
 }

@@ -23,19 +23,19 @@ internal sealed class InsertAvatarCommandHandler(
             var image = Image.Create(fileName!);
             user!.Avatar = image;
             await unitOfWork.Images.AddAsync(image, cancellationToken);
-            
+
             await unitOfWork.Users.Update(user);
         }
         else
         {
             imageFileBuilder.DeleteImage(user.Avatar.ImageName);
             user.Avatar.ChangeImageName(fileName!);
-            
+
             await unitOfWork.Images.Update(user.Avatar);
         }
 
         await unitOfWork.SaveAsync(cancellationToken);
-        
+
         return mapper.Map<UserResult>(user);
     }
 }

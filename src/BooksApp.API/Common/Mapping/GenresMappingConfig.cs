@@ -11,7 +11,7 @@ public sealed class GenresMappingConfig : IRegister
         config.NewConfig<GenreResult, GenreResponse>();
 
         config.NewConfig<IEnumerable<GenreResult>, IEnumerable<GenreResult>>()
-            .Map(dest => dest, 
+            .Map(dest => dest,
                 src => src.Select(x => x.Adapt<GenreResponse>(config)));
     }
 }

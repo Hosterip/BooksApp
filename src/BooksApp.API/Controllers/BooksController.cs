@@ -22,10 +22,39 @@ public class BooksController(
     IMapper mapster)
     : ApiController
 {
+    #region Users endpoints
+
+    [HttpGet(ApiRoutes.Users.GetManyBooks)]
+    [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
+    [ProducesResponseType(typeof(BooksResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BooksResponse>> GetManyByUserId(
+        CancellationToken cancellationToken,
+        [FromRoute] Guid userId,
+        [FromQuery] GetUserBooksRequest request
+    )
+    {
+        var query = new GetBooksQuery
+        {
+            Title = request.Title,
+            Limit = request.PageSize,
+            Page = request.Page,
+            GenreId = request.GenreId,
+            UserId = userId
+        };
+        var result = await sender.Send(query, cancellationToken);
+
+        var response = mapster.Map<BooksResponse>(result);
+
+        return Ok(response);
+    }
+
+    #endregion Users endpoints
+
     #region Books Endpoints
-    
+
     #region Get endpoints
-    
+
     [HttpGet(ApiRoutes.Books.GetMany)]
     [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
     [ProducesResponseType(typeof(BooksResponse), StatusCodes.Status200OK)]
@@ -44,13 +73,13 @@ public class BooksController(
             UserId = null
         };
         var result = await sender.Send(query, cancellationToken);
-        
+
         var response = mapster.Map<BooksResponse>(result);
-        
+
         return Ok(response);
     }
 
-    [HttpGet(ApiRoutes.Books.GetSingle)]  
+    [HttpGet(ApiRoutes.Books.GetSingle)]
     [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
     [ProducesResponseType(typeof(BookResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
@@ -62,10 +91,10 @@ public class BooksController(
         var book = await sender.Send(query, cancellationToken);
 
         var response = mapster.Map<BookResponse>(book);
-        
+
         return Ok(response);
     }
-    
+
     #endregion Get endpoints
 
     #region Post endpoints
@@ -89,20 +118,20 @@ public class BooksController(
         var book = await sender.Send(createBookCommand, cancellationToken);
 
         await outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
-        
+
         var response = mapster.Map<BookResponse>(book);
-        
+
         return CreatedAtAction(
             nameof(GetSingle),
             new { bookId = book.Id },
             response
-            );
+        );
     }
-    
+
     #endregion Post endpoints
 
     #region Put endpoints
-    
+
     [HttpPut(ApiRoutes.Books.Update)]
     [Authorize]
     [ProducesResponseType(typeof(BookResponse), StatusCodes.Status201Created)]
@@ -119,23 +148,23 @@ public class BooksController(
             Image = request.Cover,
             GenreIds = request.GenreIds
         };
-        
+
         var result = await sender.Send(updateBookCommand, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
 
         var response = mapster.Map<BookResponse>(result);
-        
+
         return CreatedAtAction(
             nameof(GetSingle),
-            new { bookId = result.Id }, 
+            new { bookId = result.Id },
             response);
     }
-    
+
     #endregion Put endpoints
 
     #region Delete endpoints
-    
+
     [HttpDelete(ApiRoutes.Books.Delete)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -145,11 +174,11 @@ public class BooksController(
         CancellationToken cancellationToken)
     {
         var command = new DeleteBookCommand { Id = bookId };
-        
+
         await sender.Send(command, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
-        
+
         return NoContent();
     }
 
@@ -166,42 +195,13 @@ public class BooksController(
             Id = bookId
         };
         await sender.Send(command, cancellationToken);
-        
+
         await outputCacheStore.EvictByTagAsync(OutputCache.Books.Tag, cancellationToken);
-        
+
         return NoContent();
     }
-    
-    #endregion Delete endpoints
-    
-    #endregion Books Endpoints
 
-    #region Users endpoints
-    
-    [HttpGet(ApiRoutes.Users.GetManyBooks)]
-    [OutputCache(PolicyName = OutputCache.Books.PolicyName)]
-    [ProducesResponseType(typeof(BooksResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BooksResponse>> GetManyByUserId(
-        CancellationToken cancellationToken,
-        [FromRoute] Guid userId,
-        [FromQuery] GetUserBooksRequest request
-    )
-    {
-        var query = new GetBooksQuery
-        {
-            Title = request.Title,
-            Limit = request.PageSize,
-            Page = request.Page,
-            GenreId = request.GenreId,
-            UserId = userId,
-        };
-        var result = await sender.Send(query, cancellationToken);
-        
-        var response = mapster.Map<BooksResponse>(result);
-        
-        return Ok(response);
-    }
-    
-    #endregion Users endpoints
+    #endregion Delete endpoints
+
+    #endregion Books Endpoints
 }

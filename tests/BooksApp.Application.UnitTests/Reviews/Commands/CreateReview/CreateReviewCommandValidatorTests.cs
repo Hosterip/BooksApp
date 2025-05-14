@@ -17,7 +17,7 @@ public class CreateReviewCommandValidatorTests
     public CreateReviewCommandValidatorTests()
     {
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
-        
+
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(true);
         _unitOfWork.Reviews.AnyAsync(default!).ReturnsForAnyArgs(false);
     }
@@ -38,7 +38,7 @@ public class CreateReviewCommandValidatorTests
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Review.Body + 1)]
@@ -47,7 +47,7 @@ public class CreateReviewCommandValidatorTests
         // Arrange
         //  Creating body according to bodyLength param
         var body = StringUtilities.GenerateLongString(bodyLength);
-        
+
         // Creating a command
         var command = ReviewCommandFactory.CreateCreateReviewCommand(body: body);
 
@@ -61,7 +61,7 @@ public class CreateReviewCommandValidatorTests
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle(x => x.PropertyName == nameof(CreateReviewCommand.Body));
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(6)]
@@ -69,7 +69,7 @@ public class CreateReviewCommandValidatorTests
     {
         // Arrange
         // Creating a command
-        var command = ReviewCommandFactory.CreateCreateReviewCommand(rating: rating);
+        var command = ReviewCommandFactory.CreateCreateReviewCommand(rating);
 
         // Creating a validator
         var validator = new CreateReviewCommandValidator(_unitOfWork, _userService);
@@ -81,14 +81,14 @@ public class CreateReviewCommandValidatorTests
         result.IsValid.Should().BeFalse();
         result.Errors.Should().ContainSingle(x => x.PropertyName == nameof(CreateReviewCommand.Rating));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenBookWasNotFound_ShouldReturnAnInvalidResult()
     {
         // Arrange
         // Making BooksRepository AnyById method return false
         _unitOfWork.Books.AnyById(default).ReturnsForAnyArgs(false);
-        
+
         // Creating a command
         var command = ReviewCommandFactory.CreateCreateReviewCommand();
 
@@ -100,18 +100,18 @@ public class CreateReviewCommandValidatorTests
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => 
-            x.PropertyName == nameof(CreateReviewCommand.BookId) && 
+        result.Errors.Should().ContainSingle(x =>
+            x.PropertyName == nameof(CreateReviewCommand.BookId) &&
             x.ErrorMessage == ValidationMessages.Book.NotFound);
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenReviewAlreadyExists_ShouldReturnAnInvalidResult()
     {
         // Arrange
         // Making ReviewsRepository AnyAsync method return true
         _unitOfWork.Reviews.AnyAsync(default!).ReturnsForAnyArgs(true);
-        
+
         // Creating a command
         var command = ReviewCommandFactory.CreateCreateReviewCommand();
 
@@ -123,8 +123,8 @@ public class CreateReviewCommandValidatorTests
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => 
-            x.PropertyName == nameof(CreateReviewCommand.BookId) && 
+        result.Errors.Should().ContainSingle(x =>
+            x.PropertyName == nameof(CreateReviewCommand.BookId) &&
             x.ErrorMessage == ValidationMessages.Review.AlreadyHave);
     }
 }

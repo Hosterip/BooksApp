@@ -14,7 +14,7 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<Review>
 
         builder.HasOne(r => r.User);
         builder.HasOne(r => r.Book);
-        
+
         builder.Property(o => o.Id)
             .ValueGeneratedNever()
             .HasConversion(

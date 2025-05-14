@@ -1,6 +1,5 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
 namespace BooksApp.Application.Users.Commands.AddRemoveFollower;
@@ -12,10 +11,10 @@ public sealed class AddRemoveFollowerCommandValidator : AbstractValidator<AddRem
         var followerId = userService.GetId()!.Value;
 
         RuleFor(x => x.UserId)
-            .MustAsync(async (userId, token) => 
+            .MustAsync(async (userId, token) =>
                 await unitOfWork.Users.AnyById(userId, token))
             .WithMessage(ValidationMessages.User.NotFound);
-        
+
         RuleFor(x => x)
             .Must(request =>
                 followerId != request.UserId)

@@ -10,12 +10,12 @@ public sealed class AddBookCommandValidator : AbstractValidator<AddBookCommand>
     public AddBookCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId()!.Value;
-        
+
         RuleFor(request => request.BookshelfId)
             .MustAsync(async (bookshelfId, cancellationToken) =>
                 await unitOfWork.Bookshelves.AnyById(bookshelfId, cancellationToken))
             .WithMessage(ValidationMessages.Bookshelf.NotFound);
-        
+
         RuleFor(request => request)
             .MustAsync(async (request, cancellationToken) =>
                 !await unitOfWork.Bookshelves.AnyBookById(request.BookshelfId, request.BookId, cancellationToken))
@@ -29,7 +29,7 @@ public sealed class AddBookCommandValidator : AbstractValidator<AddBookCommand>
                 return bookshelf != null && bookshelf.User.Id == UserId.Create(userId);
             })
             .WithMessage(ValidationMessages.Bookshelf.NotYours)
-            .WithName(nameof(UserId)); 
+            .WithName(nameof(UserId));
 
         RuleFor(request => request.BookId)
             .MustAsync(async (bookId, cancellationToken) =>

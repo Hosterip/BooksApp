@@ -25,7 +25,7 @@ public class Genre : AggregateRoot<GenreId>
             throw new DomainException("Name should be present and not whitespace");
         if (name.Length is > MaxPropertyLength.Genre.Name or < 1)
             throw new DomainException($"Name should be inclusively between 1 and {MaxPropertyLength.Genre.Name}");
-        
+
         return new Genre(GenreId.Create(), name);
     }
 }

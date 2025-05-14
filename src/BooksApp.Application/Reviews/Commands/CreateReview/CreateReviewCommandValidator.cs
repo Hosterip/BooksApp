@@ -14,7 +14,7 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
     public CreateReviewCommandValidator(IUnitOfWork unitOfWork, IUserService userService)
     {
         var userId = userService.GetId()!.Value;
-        
+
         RuleFor(request => request.Body)
             .MaximumLength(MaxPropertyLength.Review.Body)
             .NotEmpty();
@@ -28,8 +28,8 @@ public sealed class CreateReviewCommandValidator : AbstractValidator<CreateRevie
             .MustAsync(async (request, cancellationToken) =>
             {
                 return !await unitOfWork.Reviews.AnyAsync(review =>
-                    review.User.Id == UserId.Create(userId)
-                    && review.Book.Id == BookId.Create(request.BookId), 
+                        review.User.Id == UserId.Create(userId)
+                        && review.Book.Id == BookId.Create(request.BookId),
                     cancellationToken);
             })
             .WithMessage(ValidationMessages.Review.AlreadyHave)

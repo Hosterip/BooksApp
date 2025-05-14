@@ -5,13 +5,16 @@ using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.Common.Models;
-using BooksApp.Domain.User.ValueObjects;
 
 namespace BooksApp.Domain.Bookshelf;
 
 public class Bookshelf : AggregateRoot<BookshelfId>
 {
-    private Bookshelf(BookshelfId id) : base(id) { }
+    private readonly List<BookshelfBook> _bookshelfBooks = [];
+
+    private Bookshelf(BookshelfId id) : base(id)
+    {
+    }
 
     private Bookshelf(
         BookshelfId id,
@@ -30,7 +33,6 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     public string ReferentialName { get; private set; }
     public User.User User { get; init; }
-    private readonly List<BookshelfBook> _bookshelfBooks = [];
     public IReadOnlyList<BookshelfBook> BookshelfBooks => _bookshelfBooks.AsReadOnly();
 
     public static Bookshelf Create(
@@ -38,20 +40,20 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         string name)
     {
         ValidateName(name);
-        
+
         return new Bookshelf(BookshelfId.Create(), user, name);
     }
 
     public void ChangeName(string name)
     {
         ValidateName(name);
-        
+
         Name = name
             .TrimStart()
             .TrimEnd();
         ReferentialName = name.GenerateRefName();
     }
-    
+
     public bool HasBook(Guid bookId)
     {
         return _bookshelfBooks.Any(x => x.Book.Id == BookId.Create(bookId));
@@ -61,7 +63,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     {
         if (HasBook(book.Id.Value))
             throw new DomainException("Bookshelf already have this book");
-        
+
         _bookshelfBooks.Add(BookshelfBook.Create(book));
     }
 
@@ -69,15 +71,15 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     {
         if (!HasBook(bookId))
             throw new DomainException("Bookshelf does not have this book");
-        
+
         _bookshelfBooks.RemoveAll(book => book.Book.Id == BookId.Create(bookId));
     }
-    
+
     private static void ValidateName(string name)
     {
         if (name.Length is > MaxPropertyLength.Bookshelf.Name or < 1)
             throw new DomainException($"Name should be inclusively between 1 and {MaxPropertyLength.Bookshelf.Name}");
-        
+
         if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Name could not be empty");
     }

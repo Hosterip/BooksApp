@@ -2,7 +2,6 @@ using BooksApp.Application.Books.Commands.UpdateBook;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants.MaxLengths;
-using BooksApp.Domain.User.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
 using TestCommon.Books;
@@ -13,9 +12,9 @@ namespace BooksApp.Application.UnitTests.Books.Command.UpdateBook;
 
 public class UpdateBookCommandValidatorTests
 {
+    private readonly IImageFileBuilder _imageFileBuilder = Substitute.For<IImageFileBuilder>();
     private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly IUserService _userService = Substitute.For<IUserService>();
-    private readonly IImageFileBuilder _imageFileBuilder = Substitute.For<IImageFileBuilder>();
 
     public UpdateBookCommandValidatorTests()
     {
@@ -148,7 +147,7 @@ public class UpdateBookCommandValidatorTests
                 x.ErrorMessage == ValidationMessages.Book.WithSameNameAlreadyExists &&
                 x.PropertyName == nameof(UpdateBookCommand.Title));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoGenres_ShouldReturnSpecificError()
     {
@@ -168,7 +167,7 @@ public class UpdateBookCommandValidatorTests
                 x.ErrorMessage == ValidationMessages.Book.GenresNotFound &&
                 x.PropertyName == nameof(UpdateBookCommand.GenreIds));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenImageHasInvalidName_ShouldReturnSpecificError()
     {

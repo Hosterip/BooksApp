@@ -1,6 +1,5 @@
 using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.User;
-using BooksApp.Domain.User.Entities;
 using BooksApp.Domain.User.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -36,16 +35,16 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
         builder.HasOne(u => u.Role)
             .WithMany();
 
-        builder.HasMany<Relationship>(u => u.Followers)
+        builder.HasMany(u => u.Followers)
             .WithOne()
             .HasForeignKey(f => f.UserId)
             .OnDelete(DeleteBehavior.ClientSetNull);
-        
-        builder.HasMany<Relationship>(u => u.Following)
+
+        builder.HasMany(u => u.Following)
             .WithOne()
             .HasForeignKey(f => f.FollowerId)
             .OnDelete(DeleteBehavior.ClientSetNull);
-        
+
         builder.Property("Hash")
             .IsRequired();
         builder.Property("Salt")

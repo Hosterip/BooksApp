@@ -13,9 +13,9 @@ namespace BooksApp.Application.UnitTests.Books.Command.CreateBook;
 
 public class CreateBookCommandValidatorTests
 {
+    private readonly IImageFileBuilder _imageFileBuilder = Substitute.For<IImageFileBuilder>();
     private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly IUserService _userService = Substitute.For<IUserService>();
-    private readonly IImageFileBuilder _imageFileBuilder = Substitute.For<IImageFileBuilder>();
 
     public CreateBookCommandValidatorTests()
     {
@@ -23,12 +23,12 @@ public class CreateBookCommandValidatorTests
         _unitOfWork.Users.AnyAsync(default!).ReturnsForAnyArgs(true);
         _unitOfWork.Books.AnyByTitle(default, default!).ReturnsForAnyArgs(false);
         _unitOfWork.Genres.GetAllByIds(default!).ReturnsForAnyArgs([GenreFactory.CreateGenre()]);
-        
+
         _userService.GetId().ReturnsForAnyArgs(Guid.NewGuid());
 
         _imageFileBuilder.IsValid(default!).ReturnsForAnyArgs(true);
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenEverythingIsOkay_ShouldBeValid()
     {
@@ -42,7 +42,7 @@ public class CreateBookCommandValidatorTests
         // Assert
         result.IsValid.Should().BeTrue();
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(5)]
@@ -51,7 +51,7 @@ public class CreateBookCommandValidatorTests
     public async Task ValidateAsync_WhenTitleIsWhitespace_ShouldReturnSpecificError(int stringLength)
     {
         // Arrange
-        var command = BookCommandFactory.CreateCreateBookCommand(title: StringUtilities.GenerateLongWhiteSpace(stringLength));
+        var command = BookCommandFactory.CreateCreateBookCommand(StringUtilities.GenerateLongWhiteSpace(stringLength));
         var validator = new CreateBookCommandValidator(_unitOfWork, _imageFileBuilder, _userService);
 
         // Act
@@ -62,14 +62,14 @@ public class CreateBookCommandValidatorTests
         result.Errors.Count.Should().Be(1);
         result.Errors.Any(x => x.PropertyName == nameof(command.Title)).Should().BeTrue();
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Book.Title + 1)]
     public async Task ValidateAsync_WhenTitleExceedsMaxLength_ShouldReturnSpecificError(int stringLength)
     {
         // Arrange
-        var command = BookCommandFactory.CreateCreateBookCommand(title: StringUtilities.GenerateLongString(stringLength));
+        var command = BookCommandFactory.CreateCreateBookCommand(StringUtilities.GenerateLongString(stringLength));
         var validator = new CreateBookCommandValidator(_unitOfWork, _imageFileBuilder, _userService);
 
         // Act
@@ -80,7 +80,7 @@ public class CreateBookCommandValidatorTests
         result.Errors.Count.Should().Be(1);
         result.Errors.Any(x => x.PropertyName == nameof(command.Title)).Should().BeTrue();
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(5)]
@@ -89,7 +89,9 @@ public class CreateBookCommandValidatorTests
     public async Task ValidateAsync_WhenDescriptionIsWhitespace_ShouldReturnSpecificError(int stringLength)
     {
         // Arrange
-        var command = BookCommandFactory.CreateCreateBookCommand(description: StringUtilities.GenerateLongWhiteSpace(stringLength));
+        var command =
+            BookCommandFactory.CreateCreateBookCommand(
+                description: StringUtilities.GenerateLongWhiteSpace(stringLength));
         var validator = new CreateBookCommandValidator(_unitOfWork, _imageFileBuilder, _userService);
 
         // Act
@@ -100,14 +102,15 @@ public class CreateBookCommandValidatorTests
         result.Errors.Count.Should().Be(1);
         result.Errors.Any(x => x.PropertyName == nameof(command.Description)).Should().BeTrue();
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(MaxPropertyLength.Book.Description + 1)]
     public async Task ValidateAsync_WhenDescriptionExceedsMaxLength_ShouldReturnSpecificError(int stringLength)
     {
         // Arrange
-        var command = BookCommandFactory.CreateCreateBookCommand(description: StringUtilities.GenerateLongString(stringLength));
+        var command =
+            BookCommandFactory.CreateCreateBookCommand(description: StringUtilities.GenerateLongString(stringLength));
         var validator = new CreateBookCommandValidator(_unitOfWork, _imageFileBuilder, _userService);
 
         // Act
@@ -118,7 +121,7 @@ public class CreateBookCommandValidatorTests
         result.Errors.Count.Should().Be(1);
         result.Errors.Any(x => x.PropertyName == nameof(command.Description)).Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenUserIsNotAnAuthor_ShouldReturnSpecificError()
     {
@@ -136,9 +139,8 @@ public class CreateBookCommandValidatorTests
         result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Book.MustBeAnAuthor).PropertyName
             .Should().Be(nameof(UserId));
     }
-    
-    
-    
+
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsAlreadyABookWithTheSameName_ShouldReturnSpecificError()
     {
@@ -156,13 +158,13 @@ public class CreateBookCommandValidatorTests
         result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Book.WithSameNameAlreadyExists).PropertyName
             .Should().Be(nameof(CreateBookCommand.Title));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenThereIsNoGenres_ShouldReturnSpecificError()
     {
         // Arrange
         _unitOfWork.Genres.GetAllByIds(default!).ReturnsForAnyArgs([]);
-        
+
         var command = BookCommandFactory.CreateCreateBookCommand();
         var validator = new CreateBookCommandValidator(_unitOfWork, _imageFileBuilder, _userService);
 
@@ -174,7 +176,7 @@ public class CreateBookCommandValidatorTests
         result.Errors.Single(x => x.ErrorMessage == ValidationMessages.Book.GenresNotFound).PropertyName
             .Should().Be(nameof(CreateBookCommand.GenreIds));
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenImageIsNotValid_ShouldReturnSpecificError()
     {

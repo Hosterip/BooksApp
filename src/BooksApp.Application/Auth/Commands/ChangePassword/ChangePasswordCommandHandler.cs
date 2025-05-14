@@ -22,14 +22,15 @@ internal sealed class ChangePasswordCommandHandler(
 
         if (!user!.IsPasswordValid(passwordHasher, request.OldPassword))
             throw new ValidationException([
-                new ValidationFailure {
+                new ValidationFailure
+                {
                     PropertyName = nameof(ChangePasswordCommand.OldPassword),
                     ErrorMessage = ValidationMessages.Auth.Password
                 }
             ]);
 
         user.ChangePassword(passwordHasher, request.NewPassword);
-        
+
         user.ChangeSecurityStamp();
 
         await unitOfWork.Users.Update(user);

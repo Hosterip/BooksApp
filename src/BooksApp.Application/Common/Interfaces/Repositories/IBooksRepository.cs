@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using BooksApp.Application.Books.Results;
 using BooksApp.Application.Common.Results;
 using BooksApp.Domain.Book;
@@ -14,7 +13,9 @@ public interface IBooksRepository : IGenericRepository<Book>
         string? title,
         Guid? userId,
         Guid? genreId);
-    Task<PaginatedArray<BookResult>?>? GetPaginatedBookshelfBooks(Guid? currentUserId, Guid bookshelfId, int limit, int page);
+
+    Task<PaginatedArray<BookResult>?>? GetPaginatedBookshelfBooks(Guid? currentUserId, Guid bookshelfId, int limit,
+        int page);
 
     Task<Book?> GetSingleById(Guid guid, CancellationToken token = default);
     Task<bool> AnyById(Guid guid, CancellationToken token = default);

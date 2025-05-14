@@ -77,14 +77,14 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         return await DbContext.Books
             .SingleOrDefaultAsync(
                 book => book.Id == BookId.Create(guid),
-                cancellationToken: token);
+                token);
     }
 
     public async Task<bool> AnyById(Guid guid, CancellationToken token = default)
     {
         return await DbContext.Books.AnyAsync(
             book => book.Id == BookId.Create(guid),
-            cancellationToken: token);
+            token);
     }
 
     public async Task<bool> AnyByTitle(Guid userId, string title, CancellationToken token = default)
@@ -93,7 +93,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
         return await DbContext.Books.AnyAsync(
             book => book.Author.Id == UserId.Create(userId) &&
                     book.ReferentialName == refTitle,
-            cancellationToken: token);
+            token);
     }
 
     public RatingStatistics RatingStatistics(Guid bookId)
@@ -135,8 +135,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     private static IQueryable<BookResult> ConvertToBookResult(IQueryable<Book> books,
         IQueryable<Review> reviewsQueryable, Guid? currentUserId)
     {
-        return (
-            from book in books
+        return from book in books
             join review in reviewsQueryable
                     .Include(x => x.Book)
                     .Select(x => new { x.Book, x.Rating })
@@ -171,6 +170,6 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
                 Ratings = ratingStatistics.Ratings,
                 CoverName = book.Cover.ImageName,
                 Genres = book.Genres.Select(genre => new GenreResult { Id = genre.Id.Value, Name = genre.Name })
-            });
+            };
     }
 }

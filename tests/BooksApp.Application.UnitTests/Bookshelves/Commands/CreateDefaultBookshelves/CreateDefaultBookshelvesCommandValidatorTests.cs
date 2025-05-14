@@ -19,7 +19,7 @@ public class CreateDefaultBookshelvesCommandValidatorTests
 
         var command = BookshelfCommandFactory.CreateCreateDefaultBookshelvesCommand();
         var validator = new CreateDefaultBookshelvesCommandValidator(_unitOfWork);
-        
+
         // Act
         var result = await validator.ValidateAsync(command);
 
@@ -27,7 +27,7 @@ public class CreateDefaultBookshelvesCommandValidatorTests
         result.IsValid.Should().BeTrue();
         result.Errors.Count.Should().Be(0);
     }
-    
+
     [Fact]
     public async Task ValidateAsync_WhenUserIsNotFound_ShouldHaveAnError()
     {
@@ -36,7 +36,7 @@ public class CreateDefaultBookshelvesCommandValidatorTests
 
         var command = BookshelfCommandFactory.CreateCreateDefaultBookshelvesCommand();
         var validator = new CreateDefaultBookshelvesCommandValidator(_unitOfWork);
-        
+
         // Act
         var result = await validator.ValidateAsync(command);
 
