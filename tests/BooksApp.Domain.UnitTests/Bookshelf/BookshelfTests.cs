@@ -17,14 +17,13 @@ public class BookshelfTests
         // Arrange
         var user = UserFactory.CreateUser();
 
+        var bookshelf = BookshelfFactory.CreateBookshelf(user);
         // Act
-        var result = Domain.Bookshelf.Bookshelf.Create(
-            user,
-            Constants.Bookshelves.Name);
+        var result = bookshelf;
 
         // Assert
         result.Should().BeOfType<Domain.Bookshelf.Bookshelf>();
-        result.Name.Should().Be(Constants.Bookshelves.Name);
+        result.Name.Should().Be(bookshelf.Name);
     }
 
     [Fact]
