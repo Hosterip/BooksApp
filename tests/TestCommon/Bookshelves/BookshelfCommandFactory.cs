@@ -1,3 +1,4 @@
+using Bogus;
 using BooksApp.Application.Bookshelves.Commands.AddBook;
 using BooksApp.Application.Bookshelves.Commands.AddBookByName;
 using BooksApp.Application.Bookshelves.Commands.CreateBookshelf;
@@ -6,81 +7,66 @@ using BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using BooksApp.Application.Bookshelves.Commands.RemoveBook;
 using BooksApp.Application.Bookshelves.Commands.RemoveBookByName;
 using BooksApp.Application.Bookshelves.Commands.UpdateBookshelfName;
-using TestCommon.Common.Constants;
 
 namespace TestCommon.Bookshelves;
 
 public static class BookshelfCommandFactory
 {
     public static UpdateBookshelfNameCommand CreateUpdateBookshelfNameCommand(
-        string newName = Constants.Bookshelves.Name + "Foo",
+        string? newName = null,
         Guid? bookshelfId = null)
     {
-        return new UpdateBookshelfNameCommand
-        {
-            NewName = newName,
-            BookshelfId = bookshelfId ?? Guid.NewGuid()
-        };
+        return new Faker<UpdateBookshelfNameCommand>()
+            .RuleFor(x => x.BookshelfId, f => bookshelfId ?? f.Random.Guid())
+            .RuleFor(x => x.NewName, f => newName ?? f.Lorem.Sentence());
     }
 
     public static RemoveBookByNameCommand CreateRemoveBookByNameCommand(
         Guid? bookId = null,
-        string bookshelfName = Constants.Bookshelves.Name)
+        string? bookshelfName = null)
     {
-        return new RemoveBookByNameCommand
-        {
-            BookId = bookId ?? Guid.NewGuid(),
-            BookshelfName = bookshelfName
-        };
+        return new Faker<RemoveBookByNameCommand>()
+            .RuleFor(x => x.BookId, f => bookId ?? f.Random.Guid())
+            .RuleFor(x => x.BookshelfName, f => bookshelfName ?? f.Lorem.Sentence());
     }
 
     public static RemoveBookCommand CreateRemoveBookCommand(
         Guid? bookId = null,
         Guid? bookshelfId = null)
     {
-        return new RemoveBookCommand
-        {
-            BookId = bookId ?? Guid.NewGuid(),
-            BookshelfId = bookshelfId ?? Guid.NewGuid()
-        };
+        return new Faker<RemoveBookCommand>()
+            .RuleFor(x => x.BookId, f => bookId ?? f.Random.Guid())
+            .RuleFor(x => x.BookshelfId, f => bookshelfId ?? f.Random.Guid());
     }
 
     public static DeleteBookshelfCommand CreateDeleteBookshelfCommand(
         Guid? bookshelfId = null)
     {
-        return new DeleteBookshelfCommand
-        {
-            BookshelfId = bookshelfId ?? Guid.NewGuid()
-        };
+        return new Faker<DeleteBookshelfCommand>()
+            .RuleFor(x => x.BookshelfId, f => bookshelfId ?? f.Random.Guid());
     }
 
     public static CreateDefaultBookshelvesCommand CreateCreateDefaultBookshelvesCommand(
         Guid? userId = null)
     {
-        return new CreateDefaultBookshelvesCommand
-        {
-            UserId = userId ?? Guid.NewGuid()
-        };
+        return new Faker<CreateDefaultBookshelvesCommand>()
+            .RuleFor(x => x.UserId, f => userId ?? f.Random.Guid());
     }
 
     public static CreateBookshelfCommand CreateCreateBookshelfCommand(
-        string bookshelfName = Constants.Bookshelves.Name)
+        string? bookshelfName = null)
     {
-        return new CreateBookshelfCommand
-        {
-            Name = bookshelfName
-        };
+        return new Faker<CreateBookshelfCommand>()
+            .RuleFor(x => x.Name, f => bookshelfName ?? f.Lorem.Sentence());
     }
 
     public static AddBookByNameCommand CreateAddBookByNameCommand(
         Guid? bookId = null,
-        string bookshelfName = Constants.Bookshelves.Name)
+        string? bookshelfName = null)
     {
-        return new AddBookByNameCommand
-        {
-            BookId = bookId ?? Guid.NewGuid(),
-            BookshelfName = bookshelfName
-        };
+        return new Faker<AddBookByNameCommand>()
+            .RuleFor(x => x.BookId, f => bookId ?? f.Random.Guid())
+            .RuleFor(x => x.BookshelfName, f => bookshelfName ?? f.Lorem.Sentence());
     }
 
 
@@ -88,10 +74,8 @@ public static class BookshelfCommandFactory
         Guid? bookId = null,
         Guid? bookshelfId = null)
     {
-        return new AddBookCommand
-        {
-            BookId = bookId ?? Guid.NewGuid(),
-            BookshelfId = bookshelfId ?? Guid.NewGuid()
-        };
+        return new Faker<AddBookCommand>()
+            .RuleFor(x => x.BookId, f => bookId ?? f.Random.Guid())
+            .RuleFor(x => x.BookshelfId, f => bookshelfId ?? f.Random.Guid());
     }
 }
