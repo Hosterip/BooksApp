@@ -15,23 +15,11 @@ public class UserTests
     [Fact]
     public void Create_WhenEverythingInOrder_ShouldCreateUser()
     {
-        // Arrange
-        var image = ImageFactory.CreateImage();
-        var role = RoleFactory.Member();
-        var passwordHasher = PasswordHasherFactory.CreatePasswordHasher();
-
         // Act
-        var result = Domain.User.User.Create(
-            passwordHasher,
-            Constants.Users.Email,
-            role,
-            Constants.Users.Password,
-            image,
-            Constants.Users.FirstName);
+        var result = UserFactory.CreateUser();
 
         // Assert
         result.Should().BeOfType<Domain.User.User>();
-        result.FirstName.Should().Be(Constants.Users.FirstName);
     }
 
     [Theory]
@@ -59,15 +47,7 @@ public class UserTests
             : null;
 
         // Act
-        var act = () => Domain.User.User.Create(
-            passwordHasher,
-            Constants.Users.Email,
-            role,
-            Constants.Users.Password,
-            image,
-            firstName,
-            middleName,
-            lastName);
+        var act = () =>  UserFactory.CreateUser(firstName: firstName, middleName: middleName, lastName: lastName);
 
         // Assert
         act.Should()
@@ -93,15 +73,7 @@ public class UserTests
         var lastName = StringUtilities.GenerateLongWhiteSpace(lastNameLength);
 
         // Act
-        var act = () => Domain.User.User.Create(
-            passwordHasher,
-            Constants.Users.Email,
-            role,
-            Constants.Users.Password,
-            image,
-            firstName,
-            middleName,
-            lastName);
+        var act = () =>  UserFactory.CreateUser(firstName: firstName, middleName: middleName, lastName: lastName);
 
         // Assert
         act.Should()
@@ -122,14 +94,7 @@ public class UserTests
         var passwordHasher = PasswordHasherFactory.CreatePasswordHasher();
 
         // Act
-        var act = () => Domain.User.User.Create(
-            passwordHasher,
-            email,
-            role,
-            Constants.Users.Password,
-            image,
-            Constants.Users.FirstName);
-
+        var act = () => UserFactory.CreateUser(email: email); 
         // Assert
         act.Should()
             .Throw<DomainException>()

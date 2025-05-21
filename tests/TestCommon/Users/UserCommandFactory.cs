@@ -1,10 +1,10 @@
+using Bogus;
 using BooksApp.Application.Users.Commands.AddRemoveFollower;
 using BooksApp.Application.Users.Commands.DeleteUser;
 using BooksApp.Application.Users.Commands.InsertAvatar;
 using BooksApp.Application.Users.Commands.UpdateEmail;
 using BooksApp.Application.Users.Commands.UpdateName;
 using Microsoft.AspNetCore.Http;
-using TestCommon.Common.Constants;
 using TestCommon.Images;
 
 namespace TestCommon.Users;
@@ -39,24 +39,20 @@ public static class UserCommandFactory
     }
 
     public static UpdateEmailCommand CreateUpdateEmailCommand(
-        string email = Constants.Users.Email)
+        string? email = null)
     {
-        return new UpdateEmailCommand
-        {
-            Email = email
-        };
+        return new Faker<UpdateEmailCommand>()
+            .RuleFor(x => x.Email, f => email ?? f.Person.Email);
     }
 
     public static UpdateNameCommand CreateUpdateNameCommand(
-        string firstName = Constants.Users.FirstName,
+        string? firstName = null,
         string? middleName = null,
         string? lastName = null)
     {
-        return new UpdateNameCommand
-        {
-            FirstName = firstName,
-            MiddleName = middleName,
-            LastName = lastName
-        };
+        return new Faker<UpdateNameCommand>()
+            .RuleFor(x => x.FirstName, f => firstName ?? f.Person.FirstName)
+            .RuleFor(x => x.MiddleName, _ => middleName)
+            .RuleFor(x => x.LastName, _ => lastName);
     }
 }

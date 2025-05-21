@@ -1,3 +1,4 @@
+using Bogus;
 using BooksApp.Application.Auth.Commands.ChangePassword;
 using BooksApp.Application.Auth.Commands.Register;
 using TestCommon.Common.Constants;
@@ -7,30 +8,26 @@ namespace TestCommon.Auth;
 public static class AuthCommandFactory
 {
     public static ChangePasswordCommand CreateChangePasswordCommand(
-        string oldPassword = Constants.Users.Password,
-        string newPassword = Constants.Users.Password + "foo")
+        string? oldPassword = null,
+        string? newPassword = null)
     {
-        return new ChangePasswordCommand
-        {
-            OldPassword = oldPassword,
-            NewPassword = newPassword
-        };
+        return new Faker<ChangePasswordCommand>()
+            .RuleFor(x => x.OldPassword, f => oldPassword ?? f.Lorem.Slug())
+            .RuleFor(x => x.NewPassword, f => newPassword ?? f.Lorem.Slug());
     }
 
     public static RegisterUserCommand CreateRegisterUserCommand(
-        string email = Constants.Users.Email,
-        string firstName = Constants.Users.FirstName,
-        string middleName = Constants.Users.LastName,
-        string lastName = Constants.Users.LastName,
-        string password = Constants.Users.Password)
+        string? email = null,
+        string? firstName = null,
+        string? middleName = null,
+        string? lastName = null,
+        string? password = null)
     {
-        return new RegisterUserCommand
-        {
-            Email = email,
-            FirstName = firstName,
-            MiddleName = middleName,
-            LastName = lastName,
-            Password = password
-        };
+        return new Faker<RegisterUserCommand>()
+            .RuleFor(x => x.Email, f => email ?? f.Person.Email)
+            .RuleFor(x => x.FirstName, f => firstName ?? f.Person.FirstName)
+            .RuleFor(x => x.MiddleName, f => middleName ?? f.Person.FirstName)
+            .RuleFor(x => x.LastName, f => lastName ?? f.Person.LastName)
+            .RuleFor(x => x.Password, f => password ?? f.Lorem.Slug());
     }
 }
