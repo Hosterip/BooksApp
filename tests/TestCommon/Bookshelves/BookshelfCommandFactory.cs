@@ -18,7 +18,7 @@ public static class BookshelfCommandFactory
     {
         return new Faker<UpdateBookshelfNameCommand>()
             .RuleFor(x => x.BookshelfId, f => bookshelfId ?? f.Random.Guid())
-            .RuleFor(x => x.NewName, f => newName ?? f.Lorem.Sentence());
+            .RuleFor(x => x.NewName, f => newName ?? f.Lorem.Slug());
     }
 
     public static RemoveBookByNameCommand CreateRemoveBookByNameCommand(
@@ -27,7 +27,7 @@ public static class BookshelfCommandFactory
     {
         return new Faker<RemoveBookByNameCommand>()
             .RuleFor(x => x.BookId, f => bookId ?? f.Random.Guid())
-            .RuleFor(x => x.BookshelfName, f => bookshelfName ?? f.Lorem.Sentence());
+            .RuleFor(x => x.BookshelfName, f => bookshelfName ?? f.Lorem.Slug());
     }
 
     public static RemoveBookCommand CreateRemoveBookCommand(
@@ -57,7 +57,7 @@ public static class BookshelfCommandFactory
         string? bookshelfName = null)
     {
         return new Faker<CreateBookshelfCommand>()
-            .RuleFor(x => x.Name, f => bookshelfName ?? f.Lorem.Sentence());
+            .RuleFor(x => x.Name, f => bookshelfName ?? f.Lorem.Slug());
     }
 
     public static AddBookByNameCommand CreateAddBookByNameCommand(
@@ -66,7 +66,7 @@ public static class BookshelfCommandFactory
     {
         return new Faker<AddBookByNameCommand>()
             .RuleFor(x => x.BookId, f => bookId ?? f.Random.Guid())
-            .RuleFor(x => x.BookshelfName, f => bookshelfName ?? f.Lorem.Sentence());
+            .RuleFor(x => x.BookshelfName, f => bookshelfName ?? f.Lorem.Slug());
     }
 
 
