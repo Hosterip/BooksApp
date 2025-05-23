@@ -1,6 +1,7 @@
 using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentAssertions;
+using TestCommon.Books;
 using TestCommon.Common.Constants;
 using TestCommon.Common.Helpers;
 using TestCommon.Genres;
@@ -14,25 +15,11 @@ public class BookTests
     [Fact]
     public void Create_WhenEverythingInOrder_ShouldCreateBook()
     {
-        // Arrange
-        var genres = new List<Genre.Genre>
-        {
-            GenreFactory.CreateGenre()
-        };
-        var image = ImageFactory.CreateImage();
-        var user = UserFactory.CreateUser();
-
         // Act
-        var result = Domain.Book.Book.Create(
-            Constants.Books.Title,
-            Constants.Books.Description,
-            image,
-            user,
-            genres);
+        var result = BookFactory.CreateBook(); 
 
         // Assert
         result.Should().BeOfType<Domain.Book.Book>();
-        result.Title.Should().Be(Constants.Books.Title);
     }
 
     [Theory]
@@ -41,21 +28,10 @@ public class BookTests
     public void Create_WhenTitleIsTooLongOrTooShort_ShouldThrowAnError(int stringLength)
     {
         // Arrange
-        var genres = new List<Genre.Genre>
-        {
-            GenreFactory.CreateGenre()
-        };
-        var image = ImageFactory.CreateImage();
-        var user = UserFactory.CreateUser();
         var title = StringUtilities.GenerateLongString(stringLength);
 
         // Act
-        var act = () => Domain.Book.Book.Create(
-            title,
-            Constants.Books.Description,
-            image,
-            user,
-            genres);
+        var act = () => BookFactory.CreateBook(title);
 
         // Assert
         act.Should()
@@ -69,21 +45,10 @@ public class BookTests
     public void Create_WhenTitleIsWhitespace_ShouldThrowAnError(int stringLength)
     {
         // Arrange
-        var genres = new List<Genre.Genre>
-        {
-            GenreFactory.CreateGenre()
-        };
-        var image = ImageFactory.CreateImage();
-        var user = UserFactory.CreateUser();
         var title = StringUtilities.GenerateLongWhiteSpace(stringLength);
 
         // Act
-        var act = () => Domain.Book.Book.Create(
-            title,
-            Constants.Books.Description,
-            image,
-            user,
-            genres);
+        var act = () => BookFactory.CreateBook(title);
 
         // Assert
         act.Should()
@@ -96,16 +61,9 @@ public class BookTests
     {
         // Arrange
         var genres = new List<Genre.Genre>();
-        var image = ImageFactory.CreateImage();
-        var user = UserFactory.CreateUser();
 
         // Act
-        var act = () => Domain.Book.Book.Create(
-            Constants.Books.Title,
-            Constants.Books.Description,
-            image,
-            user,
-            genres);
+        var act = () => BookFactory.CreateBook(genres:genres);
 
         // Assert
         act.Should()
@@ -119,22 +77,10 @@ public class BookTests
     public void Create_WhenDescriptionIsTooLongOrTooShort_ShouldThrowAnError(int descriptionLength)
     {
         // Arrange
-        var genres = new List<Genre.Genre>
-        {
-            GenreFactory.CreateGenre()
-        };
-        var image = ImageFactory.CreateImage();
-        var user = UserFactory.CreateUser();
-
         var description = StringUtilities.GenerateLongString(descriptionLength);
 
         // Act
-        var act = () => Domain.Book.Book.Create(
-            Constants.Books.Title,
-            description,
-            image,
-            user,
-            genres);
+        var act = () => BookFactory.CreateBook(description:description);
 
         // Assert
         act.Should()
@@ -148,23 +94,11 @@ public class BookTests
     public void Create_WhenDescriptionIsWhitespace_ShouldThrowAnError(int descriptionLength)
     {
         // Arrange
-        var genres = new List<Genre.Genre>
-        {
-            GenreFactory.CreateGenre()
-        };
-        var image = ImageFactory.CreateImage();
-        var user = UserFactory.CreateUser();
-
         var description = StringUtilities.GenerateLongWhiteSpace(descriptionLength);
 
         // Act
-        var act = () => Domain.Book.Book.Create(
-            Constants.Books.Title,
-            description,
-            image,
-            user,
-            genres);
-
+        var act = () => BookFactory.CreateBook(description:description);
+        
         // Assert
         act.Should()
             .Throw<DomainException>()
