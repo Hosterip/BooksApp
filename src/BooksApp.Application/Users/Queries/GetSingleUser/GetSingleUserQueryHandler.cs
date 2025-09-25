@@ -9,7 +9,7 @@ namespace BooksApp.Application.Users.Queries.GetSingleUser;
 
 internal sealed class GetSingleUserQueryHandler(
     IUnitOfWork unitOfWork,
-    IMapper mapper,
+    IMapper mapster,
     IUserService userService)
     : IRequestHandler<GetSingleUserQuery, UserResult>
 {
@@ -23,7 +23,7 @@ internal sealed class GetSingleUserQueryHandler(
         if (currentUserId.HasValue)
             viewerRelationship = user!.ViewerRelationship(currentUserId);
 
-        var userResult = mapper.Adapt<UserResult>();
+        var userResult = mapster.Map<UserResult>(user!);
         userResult.ViewerRelationship = new ViewerRelationship
         {
             IsFollowing = viewerRelationship.IsFollowing,
