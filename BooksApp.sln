@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksApp.Domain.UnitTests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{46293D6C-5C02-4909-BDD6-7A16C378B3C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksApp.API.IntegrationTests", "tests\BooksApp.API.IntegrationTests\BooksApp.API.IntegrationTests.csproj", "{E1E07693-C236-4FCB-91A5-E9999D12BE7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{703BA893-9C67-43DC-B644-6730B877C8C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{703BA893-9C67-43DC-B644-6730B877C8C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{703BA893-9C67-43DC-B644-6730B877C8C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1E07693-C236-4FCB-91A5-E9999D12BE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1E07693-C236-4FCB-91A5-E9999D12BE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1E07693-C236-4FCB-91A5-E9999D12BE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1E07693-C236-4FCB-91A5-E9999D12BE7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{703BA893-9C67-43DC-B644-6730B877C8C5} = {46293D6C-5C02-4909-BDD6-7A16C378B3C2}
 		{45471FAB-16C2-48C5-87F7-6F29F23B5EC5} = {46293D6C-5C02-4909-BDD6-7A16C378B3C2}
 		{D972B807-F79A-47F7-B33C-CEF6F6E4125B} = {46293D6C-5C02-4909-BDD6-7A16C378B3C2}
+		{E1E07693-C236-4FCB-91A5-E9999D12BE7A} = {46293D6C-5C02-4909-BDD6-7A16C378B3C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8D9923F-3F14-4D50-9DE0-E0C593BF79CF}

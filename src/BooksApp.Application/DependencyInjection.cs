@@ -1,5 +1,6 @@
 using System.Reflection;
 using BooksApp.Application.Common.Behaviors;
+using BooksApp.Application.Common.Mapping;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
@@ -15,7 +16,6 @@ public static class DependencyInjection
         config.Scan(Assembly.GetExecutingAssembly());
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();
-
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg =>
