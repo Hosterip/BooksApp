@@ -1,5 +1,4 @@
-﻿using BooksApp.Domain.Image;
-using BooksApp.Domain.Image.ValueObjects;
+﻿using BooksApp.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

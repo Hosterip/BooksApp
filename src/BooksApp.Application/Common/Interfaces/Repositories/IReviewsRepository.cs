@@ -1,6 +1,6 @@
 ﻿using BooksApp.Application.Common.Results;
 using BooksApp.Application.Reviews.Results;
-using BooksApp.Domain.Review;
+using BooksApp.Domain;
 
 namespace BooksApp.Application.Common.Interfaces.Repositories;
 

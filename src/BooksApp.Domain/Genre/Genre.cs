@@ -1,9 +1,8 @@
 ﻿using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Common.Models;
-using BooksApp.Domain.Genre.ValueObjects;
 
-namespace BooksApp.Domain.Genre;
+namespace BooksApp.Domain;
 
 public class Genre : AggregateRoot<GenreId>
 {
@@ -17,7 +16,7 @@ public class Genre : AggregateRoot<GenreId>
     }
 
     public string Name { get; init; }
-    public IReadOnlyList<Book.Book> Books { get; init; }
+    public IReadOnlyList<Book> Books { get; init; }
 
     public static Genre Create(string name)
     {

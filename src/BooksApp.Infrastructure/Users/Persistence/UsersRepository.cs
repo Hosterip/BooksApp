@@ -3,8 +3,7 @@ using BooksApp.Application.Common.Extensions;
 using BooksApp.Application.Common.Interfaces.Repositories;
 using BooksApp.Application.Common.Results;
 using BooksApp.Application.Users.Results;
-using BooksApp.Domain.User;
-using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Domain;
 using BooksApp.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 

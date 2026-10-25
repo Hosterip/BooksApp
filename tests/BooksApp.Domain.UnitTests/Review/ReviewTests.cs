@@ -18,14 +18,14 @@ public class ReviewTests
         var user = UserFactory.CreateUser();
 
         // Act
-        var result = Domain.Review.Review.Create(
+        var result = Domain.Review.Create(
             Constants.Reviews.Rating,
             Constants.Reviews.Body,
             user,
             book);
 
         // Assert
-        result.Should().BeOfType<Domain.Review.Review>();
+        result.Should().BeOfType<Domain.Review>();
         result.Rating.Should().Be(Constants.Reviews.Rating);
     }
 
@@ -40,7 +40,7 @@ public class ReviewTests
         var user = UserFactory.CreateUser();
 
         // Act
-        var act = () => Domain.Review.Review.Create(
+        var act = () => Domain.Review.Create(
             rating,
             Constants.Reviews.Body,
             user,
@@ -64,7 +64,7 @@ public class ReviewTests
         var body = StringUtilities.GenerateLongString(stringLength);
 
         // Act
-        var act = () => Domain.Review.Review.Create(
+        var act = () => Domain.Review.Create(
             Constants.Reviews.Rating,
             body,
             user,
@@ -88,7 +88,7 @@ public class ReviewTests
         var body = StringUtilities.GenerateLongWhiteSpace(stringLength);
 
         // Act
-        var act = () => Domain.Review.Review.Create(
+        var act = () => Domain.Review.Create(
             Constants.Reviews.Rating,
             body,
             user,

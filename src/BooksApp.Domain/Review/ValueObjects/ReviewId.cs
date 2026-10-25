@@ -1,6 +1,6 @@
 ﻿using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.Review.ValueObjects;
+namespace BooksApp.Domain;
 
 public class ReviewId : ValueObject
 {

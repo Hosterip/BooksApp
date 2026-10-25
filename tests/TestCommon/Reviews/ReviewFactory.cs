@@ -1,6 +1,4 @@
-using BooksApp.Domain.Book;
-using BooksApp.Domain.Review;
-using BooksApp.Domain.User;
+using BooksApp.Domain;
 using TestCommon.Books;
 using TestCommon.Common.Constants;
 using TestCommon.Users;

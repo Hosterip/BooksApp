@@ -1,6 +1,6 @@
 using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
-using BooksApp.Domain.Role;
+using BooksApp.Domain;
 using FluentAssertions;
 using TestCommon.Common.Constants;
 using TestCommon.Common.Factories;
@@ -19,7 +19,7 @@ public class UserTests
         var result = UserFactory.CreateUser();
 
         // Assert
-        result.Should().BeOfType<Domain.User.User>();
+        result.Should().BeOfType<Domain.User>();
     }
 
     [Theory]

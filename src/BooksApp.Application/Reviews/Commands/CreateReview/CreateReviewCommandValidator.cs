@@ -1,9 +1,8 @@
 ﻿using BooksApp.Application.Common.Attributes;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Book.ValueObjects;
+using BooksApp.Domain;
 using BooksApp.Domain.Common.Constants.MaxLengths;
-using BooksApp.Domain.User.ValueObjects;
 using FluentValidation;
 
 namespace BooksApp.Application.Reviews.Commands.CreateReview;

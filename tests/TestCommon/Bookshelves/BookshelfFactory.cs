@@ -1,8 +1,5 @@
 using Bogus;
-using BooksApp.Domain.Book;
-using BooksApp.Domain.Bookshelf;
-using BooksApp.Domain.Bookshelf.Entities;
-using BooksApp.Domain.User;
+using BooksApp.Domain;
 using TestCommon.Books;
 using TestCommon.Users;
 

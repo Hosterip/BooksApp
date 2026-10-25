@@ -2,11 +2,7 @@ using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentAssertions;
 using TestCommon.Books;
-using TestCommon.Common.Constants;
 using TestCommon.Common.Helpers;
-using TestCommon.Genres;
-using TestCommon.Images;
-using TestCommon.Users;
 
 namespace BooksApp.Domain.UnitTests.Book;
 
@@ -19,7 +15,7 @@ public class BookTests
         var result = BookFactory.CreateBook(); 
 
         // Assert
-        result.Should().BeOfType<Domain.Book.Book>();
+        result.Should().BeOfType<Domain.Book>();
     }
 
     [Theory]
@@ -60,7 +56,7 @@ public class BookTests
     public void Create_WhenGenreArrayIsEmpty_ShouldThrowAnError()
     {
         // Arrange
-        var genres = new List<Genre.Genre>();
+        var genres = new List<Genre>();
 
         // Act
         var act = () => BookFactory.CreateBook(genres:genres);

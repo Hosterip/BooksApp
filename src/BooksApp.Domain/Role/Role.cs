@@ -1,7 +1,6 @@
 using BooksApp.Domain.Common.Models;
-using BooksApp.Domain.Role.ValueObjects;
 
-namespace BooksApp.Domain.Role;
+namespace BooksApp.Domain;
 
 public class Role : AggregateRoot<RoleId>
 {

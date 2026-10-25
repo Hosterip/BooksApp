@@ -1,12 +1,9 @@
-﻿using BooksApp.Domain.Book.ValueObjects;
-using BooksApp.Domain.Bookshelf.Entities;
-using BooksApp.Domain.Bookshelf.ValueObjects;
-using BooksApp.Domain.Common;
+﻿using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.Bookshelf;
+namespace BooksApp.Domain;
 
 public class Bookshelf : AggregateRoot<BookshelfId>
 {
@@ -18,7 +15,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
 
     private Bookshelf(
         BookshelfId id,
-        User.User user,
+        User user,
         string name) : base(id)
     {
         User = user;
@@ -32,11 +29,11 @@ public class Bookshelf : AggregateRoot<BookshelfId>
     public string Name { get; private set; }
 
     public string ReferentialName { get; private set; }
-    public User.User User { get; init; }
+    public User User { get; init; }
     public IReadOnlyList<BookshelfBook> BookshelfBooks => _bookshelfBooks.AsReadOnly();
 
     public static Bookshelf Create(
-        User.User user,
+        User user,
         string name)
     {
         ValidateName(name);
@@ -59,7 +56,7 @@ public class Bookshelf : AggregateRoot<BookshelfId>
         return _bookshelfBooks.Any(x => x.Book.Id == BookId.Create(bookId));
     }
 
-    public void AddBook(Book.Book book)
+    public void AddBook(Book book)
     {
         if (HasBook(book.Id.Value))
             throw new DomainException("Bookshelf already have this book");

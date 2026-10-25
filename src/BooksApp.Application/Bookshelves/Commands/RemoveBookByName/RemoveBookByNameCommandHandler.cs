@@ -1,6 +1,5 @@
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Bookshelf;
-using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Domain;
 using MediatR;
 
 namespace BooksApp.Application.Bookshelves.Commands.RemoveBookByName;

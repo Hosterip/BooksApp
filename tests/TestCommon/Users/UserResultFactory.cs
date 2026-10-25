@@ -1,7 +1,7 @@
 using Bogus;
 using BooksApp.Application.Common.Results;
 using BooksApp.Application.Users.Results;
-using BooksApp.Domain.Role;
+using BooksApp.Domain;
 
 namespace TestCommon.Users;
 

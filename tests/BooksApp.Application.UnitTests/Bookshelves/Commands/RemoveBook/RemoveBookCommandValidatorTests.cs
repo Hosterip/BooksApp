@@ -1,7 +1,7 @@
 using BooksApp.Application.Bookshelves.Commands.RemoveBook;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Domain;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;

@@ -1,6 +1,6 @@
 ﻿using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.Image.ValueObjects;
+namespace BooksApp.Domain;
 
 public class ImageId : ValueObject
 {

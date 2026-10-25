@@ -1,6 +1,6 @@
 using BooksApp.Domain.Common.Constants;
 
-namespace BooksApp.Domain.Role;
+namespace BooksApp.Domain;
 
 public static class RoleFactory
 {

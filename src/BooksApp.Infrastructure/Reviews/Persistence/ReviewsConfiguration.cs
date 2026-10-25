@@ -1,6 +1,5 @@
 ﻿using BooksApp.Domain.Common.Constants.MaxLengths;
-using BooksApp.Domain.Review;
-using BooksApp.Domain.Review.ValueObjects;
+using BooksApp.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -2,7 +2,7 @@ using BooksApp.Application.Bookshelves.Commands.DeleteBookshelf;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
-using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Domain;
 using FluentAssertions;
 using NSubstitute;
 using TestCommon.Bookshelves;

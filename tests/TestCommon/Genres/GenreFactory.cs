@@ -1,4 +1,4 @@
-using BooksApp.Domain.Genre;
+using BooksApp.Domain;
 using TestCommon.Common.Constants;
 
 namespace TestCommon.Genres;

@@ -1,5 +1,5 @@
 ﻿using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Genre;
+using BooksApp.Domain;
 using MediatR;
 
 namespace BooksApp.Application.Genres.Commands.CreateGenre;

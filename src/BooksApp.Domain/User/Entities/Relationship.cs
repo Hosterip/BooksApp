@@ -1,7 +1,6 @@
 using BooksApp.Domain.Common.Models;
-using BooksApp.Domain.User.ValueObjects;
 
-namespace BooksApp.Domain.User.Entities;
+namespace BooksApp.Domain;
 
 public class Relationship : Entity<FollowerId>
 {
@@ -20,6 +19,6 @@ public class Relationship : Entity<FollowerId>
 
     public static Relationship Create(User user, User follower)
     {
-        return new Relationship(ValueObjects.FollowerId.Create(), user.Id, follower.Id);
+        return new Relationship(Domain.FollowerId.Create(), user.Id, follower.Id);
     }
 }

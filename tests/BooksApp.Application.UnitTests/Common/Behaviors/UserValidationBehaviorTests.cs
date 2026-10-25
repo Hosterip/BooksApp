@@ -4,7 +4,7 @@ using BooksApp.Application.Common.Interfaces;
 using BooksApp.Application.Users.Commands.InsertAvatar;
 using BooksApp.Application.Users.Queries.GetSingleUser;
 using BooksApp.Application.Users.Results;
-using BooksApp.Domain.Role;
+using BooksApp.Domain;
 using FluentAssertions;
 using MediatR;
 using NSubstitute;

@@ -1,5 +1,5 @@
 ﻿using BooksApp.Application.Bookshelves;
-using BooksApp.Domain.Bookshelf;
+using BooksApp.Domain;
 using Mapster;
 
 namespace BooksApp.Application.Common.Mapping;

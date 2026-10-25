@@ -1,6 +1,6 @@
 ﻿using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.Book.ValueObjects;
+namespace BooksApp.Domain;
 
 public class BookId : ValueObject
 {

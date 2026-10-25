@@ -1,6 +1,6 @@
 ﻿using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.User.ValueObjects;
+namespace BooksApp.Domain;
 
 public sealed class UserId : ValueObject
 {

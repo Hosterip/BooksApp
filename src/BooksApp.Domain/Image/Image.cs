@@ -1,7 +1,6 @@
 ﻿using BooksApp.Domain.Common.Models;
-using BooksApp.Domain.Image.ValueObjects;
 
-namespace BooksApp.Domain.Image;
+namespace BooksApp.Domain;
 
 public class Image : AggregateRoot<ImageId>
 {

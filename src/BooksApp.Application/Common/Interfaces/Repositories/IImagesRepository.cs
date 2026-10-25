@@ -1,4 +1,4 @@
-﻿using BooksApp.Domain.Image;
+﻿using BooksApp.Domain;
 
 namespace BooksApp.Application.Common.Interfaces.Repositories;
 

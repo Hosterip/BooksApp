@@ -1,5 +1,5 @@
 using System.Text;
-using BooksApp.Domain.Image;
+using BooksApp.Domain;
 using Microsoft.AspNetCore.Http;
 using TestCommon.Common.Constants;
 

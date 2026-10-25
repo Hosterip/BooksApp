@@ -1,7 +1,5 @@
 using Bogus;
-using BooksApp.Domain.Image;
-using BooksApp.Domain.Role;
-using BooksApp.Domain.User;
+using BooksApp.Domain;
 using TestCommon.Common.Factories;
 
 namespace TestCommon.Users;

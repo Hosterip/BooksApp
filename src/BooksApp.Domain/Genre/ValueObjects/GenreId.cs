@@ -1,6 +1,6 @@
 ﻿using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.Genre.ValueObjects;
+namespace BooksApp.Domain;
 
 public class GenreId : ValueObject
 {

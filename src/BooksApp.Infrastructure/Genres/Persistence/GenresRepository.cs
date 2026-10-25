@@ -1,6 +1,5 @@
 ﻿using BooksApp.Application.Common.Interfaces.Repositories;
-using BooksApp.Domain.Genre;
-using BooksApp.Domain.Genre.ValueObjects;
+using BooksApp.Domain;
 using BooksApp.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 

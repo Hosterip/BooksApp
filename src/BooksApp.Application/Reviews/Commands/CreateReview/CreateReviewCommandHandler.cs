@@ -1,6 +1,6 @@
 ﻿using BooksApp.Application.Common.Interfaces;
 using BooksApp.Application.Reviews.Results;
-using BooksApp.Domain.Review;
+using BooksApp.Domain;
 using MapsterMapper;
 using MediatR;
 

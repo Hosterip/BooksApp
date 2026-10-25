@@ -2,7 +2,7 @@ using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Application.Reviews.Commands.UpdateReview;
 using BooksApp.Domain.Common.Constants.MaxLengths;
-using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Domain;
 using FluentAssertions;
 using NSubstitute;
 using TestCommon.Common.Helpers;

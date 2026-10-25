@@ -3,7 +3,6 @@ using BooksApp.Domain.Common.Constants.MaxLengths;
 using FluentAssertions;
 using TestCommon.Books;
 using TestCommon.Bookshelves;
-using TestCommon.Common.Constants;
 using TestCommon.Common.Helpers;
 using TestCommon.Users;
 
@@ -22,7 +21,7 @@ public class BookshelfTests
         var result = bookshelf;
 
         // Assert
-        result.Should().BeOfType<Domain.Bookshelf.Bookshelf>();
+        result.Should().BeOfType<Domain.Bookshelf>();
         result.Name.Should().Be(bookshelf.Name);
     }
 
@@ -66,7 +65,7 @@ public class BookshelfTests
         var name = StringUtilities.GenerateLongString(stringLength);
 
         // Act
-        var act = () => Domain.Bookshelf.Bookshelf.Create(
+        var act = () => Domain.Bookshelf.Create(
             user,
             name);
 
@@ -88,7 +87,7 @@ public class BookshelfTests
         var name = StringUtilities.GenerateLongWhiteSpace(whiteSpaceLength);
 
         // Act
-        var act = () => Domain.Bookshelf.Bookshelf.Create(
+        var act = () => Domain.Bookshelf.Create(
             user,
             name);
 

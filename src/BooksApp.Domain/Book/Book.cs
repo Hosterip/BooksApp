@@ -1,14 +1,13 @@
-﻿using BooksApp.Domain.Book.ValueObjects;
-using BooksApp.Domain.Common;
+﻿using BooksApp.Domain.Common;
 using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.Book;
+namespace BooksApp.Domain;
 
 public class Book : AggregateRoot<BookId>
 {
-    private List<Genre.Genre> _genres;
+    private List<Genre> _genres;
 
     private Book(BookId id) : base(id)
     {
@@ -18,9 +17,9 @@ public class Book : AggregateRoot<BookId>
         BookId id,
         string title,
         string description,
-        Image.Image cover,
-        User.User author,
-        List<Genre.Genre> genres) : base(id)
+        Image cover,
+        User author,
+        List<Genre> genres) : base(id)
     {
         Title = title.TrimStart().TrimEnd();
         Description = description;
@@ -33,16 +32,16 @@ public class Book : AggregateRoot<BookId>
     public string Title { get; private set; }
     public string Description { get; private set; }
     public string ReferentialName { get; private set; }
-    public Image.Image Cover { get; private set; }
-    public User.User Author { get; init; }
-    public IReadOnlyList<Genre.Genre> Genres => _genres;
+    public Image Cover { get; private set; }
+    public User Author { get; init; }
+    public IReadOnlyList<Genre> Genres => _genres;
 
     public static Book Create(
         string title,
         string description,
-        Image.Image cover,
-        User.User author,
-        List<Genre.Genre> genres)
+        Image cover,
+        User author,
+        List<Genre> genres)
     {
         ValidateGenres(genres);
         ValidateTitle(title);
@@ -51,7 +50,7 @@ public class Book : AggregateRoot<BookId>
         return new Book(BookId.Create(), title, description, cover, author, genres);
     }
 
-    public void ChangeGenres(List<Genre.Genre> genres)
+    public void ChangeGenres(List<Genre> genres)
     {
         ValidateGenres(genres);
 
@@ -92,7 +91,7 @@ public class Book : AggregateRoot<BookId>
             throw new DomainException("Description should be present and not be white space");
     }
 
-    private static void ValidateGenres(List<Genre.Genre> genres)
+    private static void ValidateGenres(List<Genre> genres)
     {
         if (genres.Count == 0)
             throw new DomainException("Book must have at least one genre");

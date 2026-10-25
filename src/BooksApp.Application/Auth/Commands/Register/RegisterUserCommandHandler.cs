@@ -1,7 +1,7 @@
 using BooksApp.Application.Common.Interfaces;
 using BooksApp.Domain.Common.Constants;
 using BooksApp.Domain.Common.Interfaces;
-using BooksApp.Domain.User;
+using BooksApp.Domain;
 using MapsterMapper;
 using MediatR;
 

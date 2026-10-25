@@ -1,10 +1,7 @@
 ﻿using System.Linq.Expressions;
 using BooksApp.Application.Common.Interfaces.Repositories;
-using BooksApp.Domain.Book.ValueObjects;
-using BooksApp.Domain.Bookshelf;
-using BooksApp.Domain.Bookshelf.ValueObjects;
+using BooksApp.Domain;
 using BooksApp.Domain.Common.Helpers;
-using BooksApp.Domain.User.ValueObjects;
 using BooksApp.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 

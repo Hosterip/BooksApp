@@ -1,5 +1,5 @@
 using BooksApp.Application.Common.Interfaces.Repositories;
-using BooksApp.Domain.Role;
+using BooksApp.Domain;
 using BooksApp.Infrastructure.Common.Persistence;
 
 namespace BooksApp.Infrastructure.Roles.Persistence;

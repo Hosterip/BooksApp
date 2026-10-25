@@ -1,13 +1,5 @@
 using System.Reflection;
-using BooksApp.Domain.Book;
-using BooksApp.Domain.Bookshelf;
-using BooksApp.Domain.Bookshelf.Entities;
-using BooksApp.Domain.Genre;
-using BooksApp.Domain.Image;
-using BooksApp.Domain.Review;
-using BooksApp.Domain.Role;
-using BooksApp.Domain.User;
-using BooksApp.Domain.User.Entities;
+using BooksApp.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;

@@ -1,6 +1,6 @@
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Domain;
 using FluentValidation;
 
 namespace BooksApp.Application.Bookshelves.Commands.RemoveBook;

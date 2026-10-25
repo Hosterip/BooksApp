@@ -1,6 +1,6 @@
 ﻿using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.Role.ValueObjects;
+namespace BooksApp.Domain;
 
 public class RoleId : ValueObject
 {

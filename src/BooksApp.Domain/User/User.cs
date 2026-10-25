@@ -3,10 +3,8 @@ using BooksApp.Domain.Common.Constants.MaxLengths;
 using BooksApp.Domain.Common.Helpers;
 using BooksApp.Domain.Common.Interfaces;
 using BooksApp.Domain.Common.Models;
-using BooksApp.Domain.User.Entities;
-using BooksApp.Domain.User.ValueObjects;
 
-namespace BooksApp.Domain.User;
+namespace BooksApp.Domain;
 
 public class User : AggregateRoot<UserId>
 {
@@ -17,8 +15,8 @@ public class User : AggregateRoot<UserId>
     {
     }
 
-    private User(UserId id, string email, string firstName, string? middleName, string? lastName, Role.Role role,
-        string hash, string salt, string securityStamp, Image.Image? avatar) : base(id)
+    private User(UserId id, string email, string firstName, string? middleName, string? lastName, Role role,
+        string hash, string salt, string securityStamp, Image? avatar) : base(id)
     {
         Email = email;
         FirstName = firstName;
@@ -35,20 +33,20 @@ public class User : AggregateRoot<UserId>
     public string FirstName { get; private set; }
     public string? MiddleName { get; private set; }
     public string? LastName { get; private set; }
-    public Role.Role Role { get; private set; }
+    public Role Role { get; private set; }
     private string Hash { get; set; }
     private string Salt { get; set; }
     public string SecurityStamp { get; private set; }
-    public Image.Image? Avatar { get; set; }
+    public Image? Avatar { get; set; }
     public IReadOnlyList<Relationship> Followers => _following.AsReadOnly();
     public IReadOnlyList<Relationship> Following => _following.AsReadOnly();
 
     public static User Create(
         IPasswordHasher passwordHasher,
         string email,
-        Role.Role role,
+        Role role,
         string password,
-        Image.Image? avatar,
+        Image? avatar,
         string firstName,
         string? middleName = null,
         string? lastName = null)
@@ -98,7 +96,7 @@ public class User : AggregateRoot<UserId>
         LastName = string.IsNullOrWhiteSpace(lastName) ? null : lastName;
     }
 
-    public void ChangeRole(Role.Role role)
+    public void ChangeRole(Role role)
     {
         Role = role;
     }

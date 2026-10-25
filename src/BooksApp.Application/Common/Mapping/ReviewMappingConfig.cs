@@ -1,6 +1,6 @@
 ﻿using BooksApp.Application.Reviews.Results;
 using BooksApp.Application.Users.Results;
-using BooksApp.Domain.Review;
+using BooksApp.Domain;
 using Mapster;
 
 namespace BooksApp.Application.Common.Mapping;

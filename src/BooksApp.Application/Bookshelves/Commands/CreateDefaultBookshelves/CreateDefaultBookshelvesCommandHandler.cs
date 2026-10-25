@@ -1,5 +1,5 @@
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Bookshelf;
+using BooksApp.Domain;
 using BooksApp.Domain.Common.Constants;
 using MediatR;
 

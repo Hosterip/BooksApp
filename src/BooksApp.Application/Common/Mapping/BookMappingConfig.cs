@@ -1,7 +1,7 @@
 ﻿using BooksApp.Application.Books.Results;
 using BooksApp.Application.Genres;
 using BooksApp.Application.Users.Results;
-using BooksApp.Domain.Book;
+using BooksApp.Domain;
 using Mapster;
 
 namespace BooksApp.Application.Common.Mapping;

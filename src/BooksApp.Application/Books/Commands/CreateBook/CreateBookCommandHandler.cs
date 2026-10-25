@@ -1,7 +1,6 @@
 using BooksApp.Application.Books.Results;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Book;
-using BooksApp.Domain.Image;
+using BooksApp.Domain;
 using MapsterMapper;
 using MediatR;
 

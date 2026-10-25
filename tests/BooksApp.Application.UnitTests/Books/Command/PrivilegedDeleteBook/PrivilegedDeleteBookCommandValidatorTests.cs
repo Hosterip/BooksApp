@@ -1,8 +1,7 @@
 using BooksApp.Application.Books.Commands.PrivilegedDeleteBook;
 using BooksApp.Application.Common.Constants.ValidationMessages;
 using BooksApp.Application.Common.Interfaces;
-using BooksApp.Domain.Role;
-using BooksApp.Domain.User.ValueObjects;
+using BooksApp.Domain;
 using FluentAssertions;
 using NSubstitute;
 using TestCommon.Books;

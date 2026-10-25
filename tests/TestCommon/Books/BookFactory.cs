@@ -1,8 +1,5 @@
 using Bogus;
-using BooksApp.Domain.Book;
-using BooksApp.Domain.Genre;
-using BooksApp.Domain.Image;
-using BooksApp.Domain.User;
+using BooksApp.Domain;
 using TestCommon.Genres;
 using TestCommon.Images;
 using TestCommon.Users;

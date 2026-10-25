@@ -1,7 +1,6 @@
-﻿using BooksApp.Domain.Bookshelf.ValueObjects;
-using BooksApp.Domain.Common.Models;
+﻿using BooksApp.Domain.Common.Models;
 
-namespace BooksApp.Domain.Bookshelf.Entities;
+namespace BooksApp.Domain;
 
 public class BookshelfBook : Entity<BookshelfBookId>
 {
@@ -9,14 +8,14 @@ public class BookshelfBook : Entity<BookshelfBookId>
     {
     }
 
-    private BookshelfBook(BookshelfBookId id, Book.Book book) : base(id)
+    private BookshelfBook(BookshelfBookId id, Book book) : base(id)
     {
         Book = book;
     }
 
-    public Book.Book Book { get; set; }
+    public Book Book { get; set; }
 
-    public static BookshelfBook Create(Book.Book book)
+    public static BookshelfBook Create(Book book)
     {
         return new BookshelfBook(BookshelfBookId.Create(), book);
     }
